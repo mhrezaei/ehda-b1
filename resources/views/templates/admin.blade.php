@@ -19,9 +19,12 @@
 
 	{{-- BOOTSTRAP --}}
 	{!! Html::style('assets/libs/bootstrap/css/bootstrap.min.css') !!}
+	{!! Html::style('assets/libs/materialkit/css/material-kit.css') !!}
 	{!! Html::style('assets/libs/bootstrap/css/bootstrap-rtl.min.css') !!}
 
 	{!! HTML::script ('assets/libs/bootstrap/js/bootstrap.min.js') !!}
+	{!! HTML::script ('assets/libs/materialkit/js/material.min.js') !!}
+	{!! HTML::script ('assets/libs/materialkit/js/material-kit.js') !!}
 
 	{{-- Other libs --}}
 	{{--{!! HTML::style('assets/libs/font-awesome/css/font-awesome.min.css') !!}--}}
@@ -35,6 +38,11 @@
 	{!! HTML::script('assets/js/hadi.js') !!}
 	{!! HTML::script('assets/js/taha.js') !!}
 
+	<link rel="icon" type="image/png" href="favicon.ico">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+	<link rel="apple-touch-icon" sizes="76x76" href="assets/images/materialkit/apple-icon.png">
+
 	@yield('assets')
 
 	<title>{{ $pageTitle or trans('global.siteTitle') }}</title>
@@ -42,6 +50,7 @@
 <body>
 
 @yield('content'  )
+@yield('sidebar'  )
 @yield('modals'   )
 </body>
 </html>
