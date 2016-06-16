@@ -3,7 +3,9 @@
     <head>
         <title>Laravel</title>
 
+
         <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
+        <link href="assets/css/fontiran.css" rel="stylesheet" type="text/css">
 
         <style>
             html, body {
@@ -17,6 +19,7 @@
                 display: table;
                 font-weight: 100;
                 font-family: 'Lato';
+                font-family: IRANSans;
             }
 
             .container {
@@ -38,7 +41,7 @@
     <body>
         <div class="container">
             <div class="content">
-                <div class="title">Laravel 5</div>
+                <div class="title">لاراول ۵</div>
             </div>
         </div>
     </body>
