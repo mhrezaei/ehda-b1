@@ -1,1 +1,75 @@
-//
+
+// Font Correction
+* {
+  font-family: "IRANSans";
+}
+.btn , .modal-title{
+  font-family: "IRANSans";
+  font-weight: 700;
+}
+
+.row {
+  width: 100%;
+}
+
+
+// LOOPS
+@for $i from 14 to 21 {
+  .w#{$i*5} {
+    width: 5% * $i;
+  }
+}
+
+@for $i from 1 to 5 {
+  .ph#{$i*5} {
+    padding-left: 5px * $i;
+    padding-right: 5px * $i;
+  }
+  .pv#{$i*5} {
+    padding-top: 5px * $i;
+    padding-bottom: 5px *$i;
+  }
+
+  .mh#{$i*5} {
+    margin-left: 5px * $i;
+    margin-right: 5px * $i;
+  }
+  .mv#{$i*5} {
+    margin-top: 5px * $i;
+    margin-bottom: 5px *$i;
+  }
+
+}
+@for $i from 1 to 5 {
+  .p#{$i*5} {
+    @extend .ph#{$i*5};
+    @extend .pv#{$i*5};
+  }
+  .m#{$i*5} {
+    @extend .mh#{$i*5};
+    @extend .mv#{$i*5};
+  }
+}
+
+
+.text-center {
+  text-align: center;
+}
+
+// Color Codes...
+.colorGray {
+  color: gray;
+}
+
+.colorRed {
+  color: red;
+}
+
+.colorWhite {
+  color: #ffffff;
+}
+
+//Loading Effect...
+.loading {
+  opacity: 0.2;
+}
