@@ -51,14 +51,14 @@
 										<span class="input-group-addon">
 											<i class="material-icons">lock_outline</i>
 										</span>
-                                    <input type="text" class="form-control" placeholder="{{ trans('login.password') }}">
+                                    <input type="password" class="form-control" placeholder="{{ trans('login.password') }}">
                                 </div>
 
                                 <div class="input-group">
 										<span class="input-group-addon">
 											<i class="material-icons">visibility</i>
 										</span>
-                                    <input type="password" placeholder="{{ trans('login.captcha') }}" class="form-control" />
+                                    <input type="text" placeholder="{{ trans('login.captcha') }}" class="form-control" />
                                 </div>
 
                                 <!-- If you want to add a checkbox to this form, uncomment this code
