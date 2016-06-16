@@ -1,3 +1,3 @@
-/**
- * Created by Mohammad on 6/16/2016.
- */
+function hi() {
+    alert('hi');
+}
