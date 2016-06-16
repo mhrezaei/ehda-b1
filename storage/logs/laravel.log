@@ -140,3 +140,15 @@ Stack trace:
 #6 /Applications/MAMP/htdocs/taha/ehda-b1/public/index.php(58): Illuminate\Foundation\Http\Kernel->terminate(Object(Illuminate\Http\Request), Object(Illuminate\Http\Response))
 #7 /Applications/MAMP/htdocs/taha/ehda-b1/server.php(21): require_once('/Applications/M...')
 #8 {main}  
+[2016-06-16 20:28:28] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Call to undefined method Illuminate\Foundation\Application::bindShared()' in /Applications/MAMP/htdocs/taha/ehda-b1/vendor/illuminate/html/HtmlServiceProvider.php:36
+Stack trace:
+#0 {main}  
+[2016-06-16 20:28:44] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Call to undefined method Illuminate\Foundation\Application::bindShared()' in /Applications/MAMP/htdocs/taha/ehda-b1/vendor/illuminate/html/HtmlServiceProvider.php:36
+Stack trace:
+#0 {main}  
+[2016-06-16 20:29:19] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Call to undefined method Illuminate\Foundation\Application::bindShared()' in /Applications/MAMP/htdocs/taha/ehda-b1/vendor/illuminate/html/HtmlServiceProvider.php:36
+Stack trace:
+#0 {main}  
+[2016-06-16 20:29:33] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Call to undefined method Illuminate\Foundation\Application::bindShared()' in /Applications/MAMP/htdocs/taha/ehda-b1/vendor/illuminate/html/HtmlServiceProvider.php:36
+Stack trace:
+#0 {main}  

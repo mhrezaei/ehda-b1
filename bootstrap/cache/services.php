@@ -26,6 +26,7 @@
     22 => 'App\\Providers\\AuthServiceProvider',
     23 => 'App\\Providers\\EventServiceProvider',
     24 => 'App\\Providers\\RouteServiceProvider',
+    25 => 'Illuminate\\Html\\HtmlServiceProvider',
   ),
   'eager' => 
   array (
@@ -128,6 +129,8 @@
     'translation.loader' => 'Illuminate\\Translation\\TranslationServiceProvider',
     'validator' => 'Illuminate\\Validation\\ValidationServiceProvider',
     'validation.presence' => 'Illuminate\\Validation\\ValidationServiceProvider',
+    'html' => 'Illuminate\\Html\\HtmlServiceProvider',
+    'form' => 'Illuminate\\Html\\HtmlServiceProvider',
   ),
   'when' => 
   array (
@@ -165,6 +168,9 @@
     array (
     ),
     'Illuminate\\Validation\\ValidationServiceProvider' => 
+    array (
+    ),
+    'Illuminate\\Html\\HtmlServiceProvider' => 
     array (
     ),
   ),
