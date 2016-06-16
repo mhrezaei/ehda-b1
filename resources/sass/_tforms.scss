@@ -1,0 +1,41 @@
+.tForms {
+
+  .form-group {
+    padding-top: 5px;
+
+  }
+  .control-label {
+    font-family: "IRANSans";
+    font-weight: 500;
+  }
+
+  .form-control {
+    font-family: "IRANSans";
+    font-weight: 500;
+  }
+
+  .help-block {
+    font-family: "IRANSans";
+    font-weight: 200;
+    font-size: 9px;
+  }
+
+  .form-ps {
+    font-family: "IRANSans";
+    font-weight: 400;
+    font-size: 12px;
+    padding: 5px;
+  }
+
+  .form-feed {
+    font-family: "IRANSans";
+    font-weight: 400;
+    display: none;
+    font-size: 11px;
+    line-height: 2.0;
+  }
+
+  .ltr {
+    direction: ltr;
+  }
+}
