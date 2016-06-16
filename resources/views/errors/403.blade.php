@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Be right back.</title>
+        <title>{{ trans('global.siteTitle') }}</title>
 
-        <link href="//fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
+        {{--<link href="//fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">--}}
+        {!! HTML::style('assets/css/fonts-fa.css') !!}
+        {!! HTML::style('assets/css/home.css') !!}
 
         <style>
             html, body {
@@ -17,7 +19,7 @@
                 color: #B0BEC5;
                 display: table;
                 font-weight: 100;
-                font-family: 'Lato';
+                font-family: 'tahaTitr';
             }
 
             .container {
@@ -32,7 +34,7 @@
             }
 
             .title {
-                font-size: 72px;
+                font-size: 42px;
                 margin-bottom: 40px;
             }
         </style>
@@ -40,7 +42,9 @@
     <body>
         <div class="container">
             <div class="content">
-                <div class="title">Be right back.</div>
+                <div class="title">
+                    با ما به از این باش که با خلق جهانی
+                </div>
             </div>
         </div>
     </body>
