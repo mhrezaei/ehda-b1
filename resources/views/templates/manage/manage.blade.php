@@ -25,13 +25,15 @@
 	{!! HTML::script ('assets/libs/bootstrap/js/bootstrap.min.js') !!}
 	{!! HTML::script ('assets/libs/materialkit/js/material.min.js') !!}
 	{!! HTML::script ('assets/libs/materialkit/js/material-kit.js') !!}
+	{!! HTML::script ('assets/libs/jquery.animate-colors-min.js') !!}
+	{!! HTML::script ('assets/libs/js-persian-cal.min.js') !!}
 
 	{{-- Other libs --}}
 	{{--{!! HTML::style('assets/libs/font-awesome/css/font-awesome.min.css') !!}--}}
 
 	{{-- Personal stuff --}}
 	{!! Html::style('assets/css/fontiran.css') !!}
-	{!! Html::style('assets/css/home-h.min.css') !!}
+	{!! Html::style('assets/css/admin-h.min.css') !!}
 	{!! Html::style('assets/css/home-t.min.css') !!}
 
 	{{--{!! HTML::script('assets/js/forms.js') !!}--}}
@@ -48,9 +50,9 @@
 	<title>{{ $pageTitle or trans('global.siteTitle') }}</title>
 </head>
 <body>
-
+@include('templates.manage.navbar')
+@include('templates.manage.sidebar')
 @yield('content'  )
-@yield('sidebar'  )
 @yield('modals'   )
 </body>
 </html>

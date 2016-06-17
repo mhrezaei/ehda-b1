@@ -13,3 +13,4 @@
 
 Route::get('/' , 'HomeController@index');
 Route::get('/manage/login', 'AuthenticationController@login');
+Route::get('/manage/index', 'ManageController@index');

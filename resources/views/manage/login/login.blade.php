@@ -1,7 +1,36 @@
-@extends('templates.admin')
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script language="javascript">
+        function base_url($ext) {
+            if(!$ext) $ext = "" ;
+            var $result = '{{ URL::to('/') }}' + $ext ;
+            return $result  ;
+        }
+    </script>
 
-@section('assets')
-<!--     Fonts and icons     -->
+    {{-- JQuery --}}
+    {!! Html::script ('assets/libs/jquery.js') !!}
+
+    {{-- BOOTSTRAP --}}
+    {!! Html::style('assets/libs/bootstrap/css/bootstrap.min.css') !!}
+    {!! Html::style('assets/libs/materialkit/css/material-kit.css') !!}
+    {!! Html::style('assets/libs/bootstrap/css/bootstrap-rtl.min.css') !!}
+
+    {!! HTML::script ('assets/libs/bootstrap/js/bootstrap.min.js') !!}
+    {!! HTML::script ('assets/libs/materialkit/js/material.min.js') !!}
+    {!! HTML::script ('assets/libs/materialkit/js/material-kit.js') !!}
+
+    {{-- Personal stuff --}}
+    {!! Html::style('assets/css/fontiran.css') !!}
+
+
+    <link rel="icon" type="image/png" href="favicon.ico">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <link rel="apple-touch-icon" sizes="76x76" href="assets/images/materialkit/apple-icon.png">
+    <!--     Fonts and icons     -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
@@ -17,9 +46,8 @@
     }
 </style>
 <title>{{ $pageTitle or trans('login.pageTitle') }}</title>
-@endsection
+</head>
 
-@section('content')
 <body class="signup-page">
 <nav class="navbar navbar-transparent navbar-absolute">
     <div class="container">
@@ -99,4 +127,6 @@
         $(window).on('scroll', materialKit.checkScrollForTransparentNavbar);
     });
 </script>
-@endsection
+
+</body>
+</html>
