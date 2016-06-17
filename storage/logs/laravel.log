@@ -538,6 +538,7 @@ Stack trace:
 [2016-06-17 03:35:24] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'HTML' not found' in /Applications/MAMP/htdocs/taha/ehda-b1/storage/framework/views/7305c7b7bdc0fa52c1ef6cef0c13a28b4445a50f.php:7
 Stack trace:
 #0 {main}  
+<<<<<<< Updated upstream
 [2016-06-17 07:48:12] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'HTML' not found' in D:\xampp\htdocs\ehda\storage\framework\views\b649b9813b2a8a2c84e182f67ddfd63a3613f141.php:7
 Stack trace:
 #0 {main}  
@@ -573,3 +574,11 @@ Stack trace:
 #18 D:\xampp\htdocs\ehda\public\index.php(54): Illuminate\Foundation\Http\Kernel->handle(Object(Illuminate\Http\Request))
 #19 D:\xampp\htdocs\ehda\server.php(21): require_once('D:\\xampp\\htdocs...')
 #20 {main}  
+=======
+[2016-06-17 04:42:07] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'HTML' not found' in /Applications/MAMP/htdocs/taha/ehda-b1/storage/framework/views/7305c7b7bdc0fa52c1ef6cef0c13a28b4445a50f.php:7
+Stack trace:
+#0 {main}  
+[2016-06-17 04:48:04] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'HTML' not found' in /Applications/MAMP/htdocs/taha/ehda-b1/storage/framework/views/7305c7b7bdc0fa52c1ef6cef0c13a28b4445a50f.php:7
+Stack trace:
+#0 {main}  
+>>>>>>> Stashed changes
