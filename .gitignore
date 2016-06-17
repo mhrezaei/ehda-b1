@@ -32,3 +32,5 @@ gulpfile.js
 storage/logs/laravel.log
 
 *.log
+
+.env
