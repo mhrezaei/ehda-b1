@@ -16,6 +16,6 @@ class AuthenticationController extends Controller
 
     public function login()
     {
-        return view('admin.login.login');
+        return view('manage.login.login');
     }
 }
