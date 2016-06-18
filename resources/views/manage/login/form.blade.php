@@ -22,8 +22,10 @@
 		@include('manage.login.input' , [
 			'name' => 'captcha' ,
 			'icon' => 'visibility',
-			'cap' => trans('validation.attributes.security')
+			'cap' => $captcha['question']
 		])
+
+		{!! Form::hidden('captcha-key', $captcha['key'] ) !!}
 	</div>
 
 	<div class="footer text-center">

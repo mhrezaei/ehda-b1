@@ -15,4 +15,5 @@ Route::get('/' , 'HomeController@index');
 
 /* Manage Section:: Volunteers Panels */
 Route::get('/manage/login', 'ManageController@login');
+Route::post('/manage/auth', 'AuthController@login');
 Route::get('/manage/index', 'ManageController@index');
