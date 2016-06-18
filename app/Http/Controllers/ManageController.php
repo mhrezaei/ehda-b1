@@ -13,4 +13,9 @@ class ManageController extends Controller
     {
         return view('manage.index.main');
     }
+
+    public function login()
+    {
+        return view('manage.login.0');
+    }
 }
