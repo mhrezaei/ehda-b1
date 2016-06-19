@@ -1,0 +1,2 @@
+Hadi, please run this sql: 
+ALTER TABLE `volunteers` ADD `settings` LONGTEXT NOT NULL AFTER `unverified_changes`;
