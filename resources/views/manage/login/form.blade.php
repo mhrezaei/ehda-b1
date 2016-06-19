@@ -20,12 +20,12 @@
 			'type' => 'password',
 		])
 		@include('manage.login.input' , [
-			'name' => 'captcha' ,
+			'name' => 'security' ,
 			'icon' => 'visibility',
 			'cap' => $captcha['question']
 		])
 
-		{!! Form::hidden('captcha-key', $captcha['key'] ) !!}
+		{!! Form::text('key', $captcha['key'] ) !!}
 	</div>
 
 	<div class="footer text-center">
@@ -34,5 +34,11 @@
 		</button>
 	</div>
 
+@foreach ($errors->all() as $error)
+	<li>{{ $error }}</li>
+@endforeach
+
 
 {!! Form::close() !!}
+
+@include('templates.say' , ['array'=>$captcha]);
