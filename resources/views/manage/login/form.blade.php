@@ -25,7 +25,8 @@
 			'cap' => $captcha['question']
 		])
 
-		{!! Form::text('key', $captcha['key'] ) !!}
+		{{--{!! Form::text('key', $captcha['key'] ) !!}--}}
+		<input type="hidden" name="key" value="{{$captcha['key']}}">
 	</div>
 
 	<div class="footer text-center">
@@ -34,11 +35,12 @@
 		</button>
 	</div>
 
-@foreach ($errors->all() as $error)
-	<li>{{ $error }}</li>
-@endforeach
-
+@if($errors->all())
+	<div class="alert alert-danger">
+		@foreach ($errors->all() as $error)
+			<li>{{ $error }}</li>
+		@endforeach
+	</div>
+@endif
 
 {!! Form::close() !!}
-
-@include('templates.say' , ['array'=>$captcha]);

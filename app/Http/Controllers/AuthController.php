@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth ;
 
 use App\Http\Requests;
 
 class AuthController extends Controller
 {
 	//
+	protected $redirectTo = '/manage' ;
 
 	public function login(Requests\AuthLoginRequest $request)
 	{
@@ -28,7 +30,7 @@ class AuthController extends Controller
 				'email' => $request['username'] ,
 				'password' => $request['password'],
 
-		] , $request['remember']);
+		] , 0);
 
 		if(!$logged) {
 			return json_encode(['message'=>trans('authentications.login-invalid'),'refresh'=>$refresh]);

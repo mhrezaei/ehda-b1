@@ -43,7 +43,7 @@
 		.card-signup .content{
 			padding: 0 10px 0 10px;
 		}
-		.form-control, .header h4, .btn{
+		.form-control, .header h4, .btn , .alert{
 			font-family: 'IRANSans';
 		}
 	</style>
