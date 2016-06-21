@@ -4,7 +4,7 @@
 ]) !!}
 
 	<div class="header header-success text-center">
-		<h4>{{ trans('manage.login-pageTitle') }}</h4>
+		<h4>{{ trans('manage.login.head_title') }}</h4>
 	</div>
 
 	<div class="content">
@@ -25,7 +25,6 @@
 			'cap' => $captcha['question']
 		])
 
-		{{--{!! Form::text('key', $captcha['key'] ) !!}--}}
 		<input type="hidden" name="key" value="{{$captcha['key']}}">
 	</div>
 

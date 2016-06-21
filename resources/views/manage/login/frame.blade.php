@@ -47,7 +47,7 @@
 			font-family: 'IRANSans';
 		}
 	</style>
-	<title>{{trans('manage.login-pageTitle') }}</title>
+	<title>{{trans('manage.login.page_title') }}</title>
 </head>
 
 <body class="signup-page">
