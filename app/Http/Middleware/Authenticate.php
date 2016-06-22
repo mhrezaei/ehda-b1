@@ -2,8 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Events\VolunteerClick;
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Event;
 
 class Authenticate
 {
@@ -21,10 +23,11 @@ class Authenticate
             if ($request->ajax() || $request->wantsJson()) {
                 return response('Unauthorized.', 401);
             } else {
-                return redirect()->guest('login');
+                return redirect('/manage/login');
             }
         }
 
+//        Event::fire(new VolunteerClick() );
         return $next($request);
     }
 }

@@ -33,7 +33,7 @@
 
 	{{-- Personal stuff --}}
 	{!! Html::style('assets/css/fontiran.css') !!}
-	{!! Html::style('assets/css/admin-h.min.css') !!}
+	{!! Html::style('assets/css/manage-h.min.css') !!}
 	{!! Html::style('assets/css/home-t.min.css') !!}
 
 	{{--{!! HTML::script('assets/js/forms.js') !!}--}}
