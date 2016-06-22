@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\VolunteerLoggedIn;
 use App\Providers\SecKeyServiceProvider;
 use App\Volunteer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth ;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -46,7 +48,7 @@ class AuthController extends Controller
 		Auth::loginUsingId( $volunteer->id );
 		return redirect()->back();
 
-		//@TODO: register login session!
+		//@TODO: Event for login (save into `volunteers_logins`)
 	}
 
 	/**
@@ -62,7 +64,7 @@ class AuthController extends Controller
 	public function logout()
 	{
 		Auth::logout();
-		return redirect('/manage/login');
+		return redirect('/manage/index');
 	}
 
 	private function _login(Requests\AuthLoginRequest $request)
