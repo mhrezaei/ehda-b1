@@ -1,2 +1,5 @@
-Hadi, please run this sql: 
-ALTER TABLE `volunteers` ADD `settings` LONGTEXT NOT NULL AFTER `unverified_changes`;
+Hadi, please run this sql:
+and delete the lines once you executed:
+
+ALTER TABLE `volunteer_logins` CHANGE `duration` `duration` TIMESTAMP NULL DEFAULT NULL;
+ALTER TABLE `volunteer_logins` ADD `details` LONGTEXT NOT NULL AFTER `duration`;
