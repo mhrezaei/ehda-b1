@@ -7610,3 +7610,12 @@ Stack trace:
 #2 D:\xampp\htdocs\ehda\vendor\laravel\framework\src\Illuminate\Foundation\Console\Kernel.php(107): Symfony\Component\Console\Application->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
 #3 D:\xampp\htdocs\ehda\artisan(36): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
 #4 {main}  
+[2016-06-23 20:17:43] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'HTML' not found' in D:\xampp\htdocs\ehda\storage\framework\views\b649b9813b2a8a2c84e182f67ddfd63a3613f141.php:7
+Stack trace:
+#0 {main}  
+[2016-06-23 21:41:12] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'HTML' not found' in D:\xampp\htdocs\ehda\storage\framework\views\b649b9813b2a8a2c84e182f67ddfd63a3613f141.php:7
+Stack trace:
+#0 {main}  
+[2016-06-23 21:41:33] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'HTML' not found' in D:\xampp\htdocs\ehda\storage\framework\views\b649b9813b2a8a2c84e182f67ddfd63a3613f141.php:7
+Stack trace:
+#0 {main}  
