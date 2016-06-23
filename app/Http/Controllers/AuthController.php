@@ -50,6 +50,11 @@ class AuthController extends Controller
 		//@TODO: Event for login (save into `volunteers_logins`)
 	}
 
+	public function reset_password()
+	{
+		return view('manage.reset_password.0');
+	}
+
 	/**
 	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
 	 */
@@ -58,6 +63,39 @@ class AuthController extends Controller
 		if(Auth::check()) return redirect('/manage/index');
 		$captcha	= SecKeyServiceProvider::getQuestion('fa');
 		return view('manage.login.0', compact('captcha'));
+	}
+
+	public function old_password()
+	{
+		if(!Auth::check()) return redirect()->back();
+		$volunteer = Auth::user();
+		if (! $volunteer['password_force_change']) return redirect('/manage/index');
+		return view('manage.old_password.0');
+	}
+
+	public function old_password_process(Requests\OldPasswordRequest $request)
+	{
+		if(!Auth::check()) return redirect()->back();
+		$volunteer = Auth::user();
+		if ($volunteer['password_force_change'] == 1)
+		{
+			if (Hash::check($request->password, $volunteer['password']))
+				return redirect()->back()->withErrors(trans('manage.old_password.error_new_password_equal_old_password'));
+		}
+
+		$affected = Volunteer::where('id', $volunteer['id'])
+			->update([
+				'password'=> Hash::make($request->password),
+				'password_force_change' => 0
+			]);
+		if ($affected)
+		{
+			return redirect('/manage/index');
+		}
+		else
+		{
+			return redirect()->back()->withErrors(trans('validation.invalid'));
+		}
 	}
 
 	public function logout()

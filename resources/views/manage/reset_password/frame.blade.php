@@ -53,7 +53,7 @@
 			font-size: 12px;
 		}
 	</style>
-	<title>{{trans('manage.login.page_title') }}</title>
+	<title>{{trans('manage.reset_password.page_title') }}</title>
 </head>
 
 <body class="signup-page">

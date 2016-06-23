@@ -26,7 +26,7 @@
 	{!! Html::style('assets/css/fontiran.css') !!}
 	{!! Html::style('https://fonts.googleapis.com/icon?family=Material+Icons') !!}
 	{!! Html::style('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700') !!}
-	{!! Html::style('https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css') !!}
+	{!! Html::style('https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css') !!}  <!-- //@TODO taha bia ino dorost kon -->
 
 	{{-- Icons --}}
 	<link rel="icon" type="image/png" href="favicon.ico">
@@ -43,17 +43,11 @@
 		.card-signup .content{
 			padding: 0 10px 0 10px;
 		}
-		.form-control, .header h4, .btn , .alert, .reset_password_link{
+		.form-control, .header h4, .btn , .alert{
 			font-family: 'IRANSans';
 		}
-		.reset_password_link{
-			padding-top: 10px;
-			color: #D2D2D2 !important;
-			font-weight: 500;
-			font-size: 12px;
-		}
 	</style>
-	<title>{{trans('manage.login.page_title') }}</title>
+	<title>{{trans('manage.old_password.page_title') }}</title>
 </head>
 
 <body class="signup-page">
