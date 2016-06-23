@@ -27,7 +27,7 @@ class AuthLoginRequest extends Request
     {
         $input = $this->all();
         return [
-             'username' => 'required', //no need to check existence here.
+             'username' => 'required|number', //no need to check existence here.
              'password' => 'required',
 //             'security' => 'required|captcha:'.$input['key'], @TODO: Remove Comment
         ];
@@ -37,8 +37,8 @@ class AuthLoginRequest extends Request
     {
         $value	= parent::all();
         $purified = ValidationServiceProvider::purifier($value,[
-             'security'  =>  'ed',
-             'email'  =>  'ed',
+            'security'  =>  'ed',
+            'username'  =>  'ed',
         ]);
         return $purified;
 

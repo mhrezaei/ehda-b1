@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\VolunteerLoggedIn;
 use App\Providers\SecKeyServiceProvider;
 use App\Volunteer;
 use Illuminate\Http\Request;
@@ -28,7 +27,7 @@ class AuthController extends Controller
 		$true_pass = false ;
 		if($volunteer['password_force_change']==2) {
 			//old verification:
-			if(sha1(md5($request->password)) == $volunteer['password']) //@TODO: @Hadi: Check the encryption please :)
+			if(md5(sha1($request->password)) == $volunteer['password'])
 				$true_pass = true ;
 		}
 		else {
@@ -65,35 +64,5 @@ class AuthController extends Controller
 	{
 		Auth::logout();
 		return redirect('/manage/index');
-	}
-
-	private function _login(Requests\AuthLoginRequest $request)
-	{
-		//Fail Safety Loop...
-		$loginTries = $request->session()->get('loginTried',0)+1;
-		if($loginTries>3) {
-			$request->session()->set('loginTried',0);
-			$refresh = true ;
-		}
-		else {
-			$request->session()->set('loginTried',$loginTries);
-			$refresh = false ;
-		}
-
-		//Attempts...
-		$logged = Auth::attempt([
-				'email' => $request['username'] ,
-				'password' => $request['password'],
-
-		] , 0);
-
-		if(!$logged) {
-			return json_encode(['message'=>trans('authentications.login-invalid'),'refresh'=>$refresh]);
-		}
-
-		//Killing Safety Loop...
-		$request->session()->forget('loginTried');
-		return json_encode(['ok'=>$logged , 'message'=>trans('authentications.login-success') , 'refresh'=>1]);
-
 	}
 }
