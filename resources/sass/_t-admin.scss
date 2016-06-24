@@ -1,0 +1,20 @@
+//Bootstrap Corrections...
+a.navbar-brand {
+  font-weight: 500;
+  font-size: 18px ;
+}
+  .dropdown-menu {
+    right: auto;
+    left: 0;
+
+  }
+
+  .navbar-top-links .dropdown-menu li a {
+    font-weight: 200;
+    font-size: 14px;
+    color: #565656;
+  }
+body {
+  margin-top: 50px ;
+}
+

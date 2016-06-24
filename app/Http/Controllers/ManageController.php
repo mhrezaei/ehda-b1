@@ -17,7 +17,7 @@ class ManageController extends Controller
 	}
 	public function index()
 	{
-		return view('manage.index.main');
+		return view('manage.index.0');
 	}
 
 
