@@ -15,6 +15,10 @@
                 <a class="navbar-brand" href="{{ url ('') }}">
 					@yield('navbar-brand')
 				</a>
+                <span class="navbar-brand">/</span>
+                <span class="navbar-brand">
+                    @yield('page_heading')
+                </span>
             </div>
             <!-- /.navbar-header -->
 

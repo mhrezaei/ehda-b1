@@ -15,16 +15,13 @@ class PrivilegeServiceProvider extends ServiceProvider
 		if(!$user_roles)
 			$user_roles = json_decode(Crypt::decrypt($logged_volunteer->roles));
 
-		if(!is_array($user_roles))
-			return false;
-
 		//Check public things
 		if(in_array($required_role, ['index', 'settings', 'settings_profile', 'logout']))
 			return true;
 
 		//Check super powers...
-//		if($logged_volunteer->id == 1)
-//			return true;
+		if($logged_volunteer->id == 1)
+			return true;
 
 		//check super admins...
 		if($logged_volunteer == 'super') {

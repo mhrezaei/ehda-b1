@@ -6,7 +6,7 @@
 <!--<![endif]-->
 <head>
 	<meta charset="utf-8"/>
-	<title>SB Admin v2.0 in Laravel 5</title>
+	<title>@yield('page_title')</title>
 
 	{{-- JQuery --}}
 	{!! Html::script ('assets/libs/jquery.js') !!}

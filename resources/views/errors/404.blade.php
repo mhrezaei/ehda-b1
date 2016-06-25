@@ -4,8 +4,8 @@
         <title>{{ trans('global.siteTitle') }}</title>
 
         {{--<link href="//fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">--}}
-        {!! HTML::style('assets/css/fonts-fa.css') !!}
-        {!! HTML::style('assets/css/home.css') !!}
+        {!! Html::style('assets/css/fontiran.css') !!}
+        {!! Html::style('assets/css/home.css') !!}
 
         <style>
             html, body {
@@ -19,7 +19,7 @@
                 color: #B0BEC5;
                 display: table;
                 font-weight: 100;
-                font-family: 'tahaTitr';
+                font-family: 'IRANSans';
             }
 
             .container {
@@ -42,9 +42,7 @@
     <body>
         <div class="container">
             <div class="content">
-                <div class="title">
-این نشانی را نمی‌شناسیم
-                </div>
+                <div class="title">{{ trans('validation.http.Eror404') }}</div>
             </div>
         </div>
     </body>
