@@ -26,14 +26,21 @@ class ManageController extends Controller
 		return $this->$method() ;
 	}
 
-	public function auth() //@TODO: Remove this function at Production
+	public function auth() //@TODO: Remove this method and its route at Production
 	{
-//		$roles = ['cards', 'cards_new_one', 'volunteers_browse', 'settings_generala'];
-//		$user_roles = Crypt::encrypt(json_encode($roles));
-//
-//		return view('templates.say', ['array' => $user_roles]);
-//
-		return view('templates.say', ['array' => Auth::user()]);
+		//in...
+		$user = Auth::user() ;
+		$output = $user ;
+
+		//here...
+//		$command = ['cards.*' , 'volunteers.add,new,edit'] ;
+//		$user->setPermits($command) ;
+		$output = $user->getPermits() ;
+
+		$output = $user->can('volunteers') ;
+
+		//out...
+		return view('templates.say')->with(['array' => $output]) ;
 
 	}
 
