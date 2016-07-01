@@ -1,5 +1,5 @@
 <?php
-namespace App;
+namespace App\Models;
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
@@ -19,7 +19,7 @@ class Volunteer extends Model implements AuthenticatableContract, CanResetPasswo
 
 	public function volunteer_logins()
 	{
-		return $this->hasMany('App\Volunteer_login') ;
+		return $this->hasMany('App\Models\Volunteer_login') ;
 	}
 
 	public function isDeveloper()
