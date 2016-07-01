@@ -60,7 +60,7 @@ class AnnotationFinder
     }
 
     /**
-     * Determine if the application models have been scanned.
+     * Determine if the application Models have been scanned.
      *
      * @return string
      */
@@ -70,12 +70,12 @@ class AnnotationFinder
     }
 
     /**
-     * Get the path to the scanned models file.
+     * Get the path to the scanned Models file.
      *
      * @return string
      */
     public function getScannedModelsPath()
     {
-        return $this->app['path.storage'].'/framework/models.scanned.php';
+        return $this->app['path.storage'].'/framework/Models.scanned.php';
     }
 }
