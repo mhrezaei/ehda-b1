@@ -13748,12 +13748,3 @@ Stack trace:
 #66 /Applications/MAMP/htdocs/taha/ehda-b1/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(99): Illuminate\Foundation\Http\Kernel->sendRequestThroughRouter(Object(Illuminate\Http\Request))
 #67 /Applications/MAMP/htdocs/taha/ehda-b1/public/index.php(54): Illuminate\Foundation\Http\Kernel->handle(Object(Illuminate\Http\Request))
 #68 {main}  
-[2016-07-02 16:18:55] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'syntax error, unexpected 'Route' (T_STRING)' in /Applications/MAMP/htdocs/taha/ehda-b1/app/Http/routes.php:17
-Stack trace:
-#0 {main}  
-[2016-07-02 16:21:03] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'syntax error, unexpected 'Route' (T_STRING)' in /Applications/MAMP/htdocs/taha/ehda-b1/app/Http/routes.php:17
-Stack trace:
-#0 {main}  
-[2016-07-02 16:23:48] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'syntax error, unexpected 'Route' (T_STRING)' in /Applications/MAMP/htdocs/taha/ehda-b1/app/Http/routes.php:16
-Stack trace:
-#0 {main}  
