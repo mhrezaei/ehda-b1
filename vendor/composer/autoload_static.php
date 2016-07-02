@@ -17,6 +17,7 @@ class ComposerStaticInitd22b1f41ad3b1e47c885a75b72357a10
         'f18cc91337d49233e5754e93f3ed9ec3' => __DIR__ . '/..' . '/laravelcollective/html/src/helpers.php',
         'f0906e6318348a765ffb6eb24e0d0938' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/helpers.php',
         '58571171fd5812e6e447dce228f52f4d' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Support/helpers.php',
+        'e4e590a9b5afe940db71ee1662c02677' => __DIR__ . '/..' . '/morilog/jalali/src/helpers.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -59,6 +60,7 @@ class ComposerStaticInitd22b1f41ad3b1e47c885a75b72357a10
         ),
         'M' => 
         array (
+            'Morilog\\Jalali\\' => 15,
             'Monolog\\' => 8,
         ),
         'L' => 
@@ -181,6 +183,10 @@ class ComposerStaticInitd22b1f41ad3b1e47c885a75b72357a10
         'PhpParser\\' => 
         array (
             0 => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser',
+        ),
+        'Morilog\\Jalali\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/morilog/jalali/src',
         ),
         'Monolog\\' => 
         array (
@@ -1661,6 +1667,11 @@ class ComposerStaticInitd22b1f41ad3b1e47c885a75b72357a10
         'Monolog\\Processor\\UidProcessor' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Processor/UidProcessor.php',
         'Monolog\\Processor\\WebProcessor' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Processor/WebProcessor.php',
         'Monolog\\Registry' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Registry.php',
+        'Morilog\\Jalali\\Facades\\jDate' => __DIR__ . '/..' . '/morilog/jalali/src/Facades/jDate.php',
+        'Morilog\\Jalali\\Facades\\jDateTime' => __DIR__ . '/..' . '/morilog/jalali/src/Facades/jDateTime.php',
+        'Morilog\\Jalali\\JalaliServiceProvider' => __DIR__ . '/..' . '/morilog/jalali/src/JalaliServiceProvider.php',
+        'Morilog\\Jalali\\jDate' => __DIR__ . '/..' . '/morilog/jalali/src/jDate.php',
+        'Morilog\\Jalali\\jDateTime' => __DIR__ . '/..' . '/morilog/jalali/src/jDateTime.php',
         'PHPUnit_Exception' => __DIR__ . '/..' . '/phpunit/phpunit/src/Exception.php',
         'PHPUnit_Extensions_GroupTestSuite' => __DIR__ . '/..' . '/phpunit/phpunit/src/Extensions/GroupTestSuite.php',
         'PHPUnit_Extensions_PhptTestCase' => __DIR__ . '/..' . '/phpunit/phpunit/src/Extensions/PhptTestCase.php',

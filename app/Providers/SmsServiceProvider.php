@@ -6,8 +6,6 @@ use Illuminate\Support\ServiceProvider;
 
 class SmsServiceProvider extends ServiceProvider
 {
-    private $username = 'm.rezaei@4472';
-    private $password = 'xTi!95jdHYt7@@';
     /**
      * Bootstrap the application services.
      *
@@ -28,12 +26,14 @@ class SmsServiceProvider extends ServiceProvider
         //
     }
 
-    function SendREST($username,$password, $Source, $Destination, $MsgBody, $Encoding)
+    public static function send($destination, $msgBody)
     {
-
+        $destination = self::purifier_destination($destination);
+        if (!$destination)
+            return false;
         $URL = "http://panel.asanak.ir/webservice/v1rest/sendsms";
-        $msg = urlencode(trim($MsgBody));
-        $url = $URL.'?username='.$username.'&password='.$password.'&source='.$Source.'&destination='.$Destination.'&message='. $msg;
+        $msg = urlencode(trim($msgBody));
+        $url = $URL.'?username='.self::config()['username'].'&password='.self::config()['password'].'&source='.self::config()['source'].'&destination='.$destination.'&message='. $msg;
         $headers[] = 'Accept: text/html';
         $headers[] = 'Connection: Keep-Alive';
         $headers[] = 'Content-type: application/x-www-form-urlencoded;charset=UTF-8';
@@ -53,5 +53,38 @@ class SmsServiceProvider extends ServiceProvider
         {
             return $ex->errorMessage();
         }
+    }
+
+    private static function config()
+    {
+        return [
+            'username' => 'm.rezaei@4472',
+            'password' => 'xTi!95jdHYt7@@',
+            'source'   => '02122324472',
+        ];
+    }
+
+    private static function purifier_destination($dis)
+    {
+        $destination = '';
+        if (is_array($dis))
+        {
+            for($i = 0; $i < count($dis); $i++)
+            {
+                if(is_numeric($dis[$i]) and strlen($dis[$i]) == 11)
+                {
+                    $destination .= $dis[$i] . ',';
+                }
+            }
+        }
+        else
+        {
+            if(is_numeric($dis) and strlen($dis) == 11)
+            {
+                $destination = $dis;
+            }
+        }
+
+        return $destination;
     }
 }

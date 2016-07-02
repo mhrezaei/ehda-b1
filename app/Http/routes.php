@@ -26,3 +26,4 @@ Route::get('/manage/old_password', 'AuthController@old_password');
 Route::post('/manage/auth_password', 'AuthController@old_password_process');
 Route::get('/manage/{module}', 'ManageController@show');
 Route::get('/manage/{module}/{sub}', 'ManageController@show');
+Route::get('/sms', 'AuthController@sms');

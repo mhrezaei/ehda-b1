@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Providers\SecKeyServiceProvider;
 use App\Models\Volunteer;
+use App\Providers\SmsServiceProvider;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth ;
 
@@ -109,5 +111,11 @@ class AuthController extends Controller
 	{
 		Auth::logout();
 		return redirect('/manage/index');
+	}
+
+	public function sms()
+	{
+		//return view('templates.widget.email');
+		echo Carbon::now();
 	}
 }
