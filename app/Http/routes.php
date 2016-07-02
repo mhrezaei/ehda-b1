@@ -18,4 +18,6 @@ Route::get('/manage/logout', 'AuthController@logout');
 Route::get('/manage/login', 'AuthController@login_panel');
 Route::post('/manage/auth', 'AuthController@login');
 
-Route::get('/manage/index', 'ManageController@index');
+Route::get('/manage/auth' , 'ManageController@auth'); //@TODO: Remove this line at production
+Route::get('/manage/{method}', 'ManageController@show');
+//Route::get('/manage/index', 'ManageController@index');
