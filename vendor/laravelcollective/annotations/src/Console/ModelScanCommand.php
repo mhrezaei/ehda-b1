@@ -84,6 +84,6 @@ class ModelScanCommand extends Command
      */
     protected function getOutputPath()
     {
-        return $this->laravel['path.storage'].'/framework/models.scanned.php';
+        return $this->laravel['path.storage'].'/framework/Models.scanned.php';
     }
 }

@@ -364,7 +364,7 @@ class AnnotationsServiceProvider extends ServiceProvider
     }
 
     /**
-     * Load the annotated models.
+     * Load the annotated Models.
      *
      * @return void
      */
@@ -382,7 +382,7 @@ class AnnotationsServiceProvider extends ServiceProvider
     }
 
     /**
-     * Scan the models and write the scanned models file.
+     * Scan the Models and write the scanned Models file.
      *
      * @return void
      */
@@ -404,7 +404,7 @@ class AnnotationsServiceProvider extends ServiceProvider
     }
 
     /**
-     * Load the scanned application models.
+     * Load the scanned application Models.
      *
      * @return void
      */

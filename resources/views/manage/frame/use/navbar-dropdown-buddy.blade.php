@@ -6,21 +6,21 @@
 
 		@include('manage.frame.use.navbar-dropdown-link' , [
 			'target' => url('manage/profile'),
-			'caption'=> trans('manage.menu.profile'),
+			'caption'=> trans('manage.modules.profile'),
 			'icon' => 'user'
 		])
 
-		@include('manage.frame.use.navbar-dropdown-link' , [
-			'target' => url('manage/settings'),
-			'caption'=> trans('manage.menu.settings'),
-			'icon' => 'cog'
-		])
-
-		<li class="divider"></li>
+		{{--@include('manage.frame.use.navbar-dropdown-link' , [--}}
+			{{--'target' => url('manage/settings'),--}}
+			{{--'caption'=> trans('manage.menu.settings'),--}}
+			{{--'icon' => 'cog'--}}
+		{{--])--}}
+{{----}}
+		{{--<li class="divider"></li>--}}
 
 		@include('manage.frame.use.navbar-dropdown-link' , [
 			'target' => url('manage/logout'),
-			'caption'=> trans('manage.menu.logout'),
+			'caption'=> trans('manage.modules.logout'),
 			'icon' => 'sign-out'
 		])
 	</ul>

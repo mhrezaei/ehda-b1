@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\VolunteerLoggedIn;
 use App\Providers\SecKeyServiceProvider;
-use App\Volunteer;
+use App\Models\Volunteer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth ;
 
