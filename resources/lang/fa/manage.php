@@ -24,7 +24,7 @@ return [
 	"reset_password" => [
 		'page_title' => 'بازیابی رمز عبور',
 		'head_title' => 'بازیابی رمز عبور',
-	]
+	],
     
     "global" => [
     	'page_title' => 'سفیران زندگی',

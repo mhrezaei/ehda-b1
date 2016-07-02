@@ -6259,3 +6259,6 @@ Stack trace:
 [2016-06-22 14:40:37] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'HTML' not found' in /Applications/MAMP/htdocs/taha/ehda-b1/storage/framework/views/7305c7b7bdc0fa52c1ef6cef0c13a28b4445a50f.php:7
 Stack trace:
 #0 {main}  
+[2016-07-02 11:06:19] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'syntax error, unexpected '"global"' (T_CONSTANT_ENCAPSED_STRING), expecting ']'' in D:\xampp\htdocs\ehda\resources\lang\fa\manage.php:29
+Stack trace:
+#0 {main}  
