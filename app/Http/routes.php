@@ -11,16 +11,11 @@
 |
 */
 
-use App\Http\Controllers\AuthController;
-
 Route::get('/' , 'HomeController@index');
 
 /* Manage Section:: Volunteers Panels */
 Route::get('/manage/logout', 'AuthController@logout');
 Route::get('/manage/login', 'AuthController@login_panel');
-Route::get('/manage/reset_password', 'AuthController@reset_password');
-Route::post('/manage/reset_password_process', 'AuthController@reset_password_process');
 Route::post('/manage/auth', 'AuthController@login');
-Route::get('/manage/old_password', 'AuthController@old_password');
-Route::post('/manage/auth_password', 'AuthController@old_password_process');
+
 Route::get('/manage/index', 'ManageController@index');
