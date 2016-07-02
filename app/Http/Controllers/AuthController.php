@@ -45,6 +45,8 @@ class AuthController extends Controller
 
 		//Actual Login...
 		Auth::loginUsingId( $volunteer->id );
+		if($volunteer['password_force_change'])
+			return redirect('/manage/old_password');
 		return redirect()->back();
 
 		//@TODO: Event for login (save into `volunteers_logins`)
@@ -53,6 +55,11 @@ class AuthController extends Controller
 	public function reset_password()
 	{
 		return view('manage.reset_password.0');
+	}
+
+	public function reset_password_process()
+	{
+		if(Auth::check()) return redirect('/manage/index');
 	}
 
 	/**

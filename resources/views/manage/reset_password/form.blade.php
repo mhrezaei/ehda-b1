@@ -13,21 +13,19 @@
 			'icon' => 'face',
 			'cap' => trans('validation.attributes.username')
 		])
-		@include('manage.reset_password.input' , [
-			'name' => 'password' ,
-			'icon' => 'lock_outline',
-			'cap' => trans('validation.attributes.password'),
-			'type' => 'password',
-		])
+		{{--@include('manage.reset_password.input' , [--}}
+			{{--'name' => 'password' ,--}}
+			{{--'icon' => 'lock_outline',--}}
+			{{--'cap' => trans('validation.attributes.password'),--}}
+			{{--'type' => 'password',--}}
+		{{--])--}}
 		
 	</div>
 
 	<div class="footer text-center">
 		<button type="submit" class="btn btn-success btn-wd btn-lg">
-			{{ trans('forms.button.login') }}
+			{{ trans('forms.button.recovery') }}
 		</button>
-		<div style="clear: both;"></div>
-		<a href="{{ url('/manage/reset_password') }}" class="btn btn-link reset_password_link">{{ trans('manage.login.reset_password_link') }}</a>
 	</div>
 
 @if($errors->all())

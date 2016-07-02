@@ -27,7 +27,7 @@ class AuthLoginRequest extends Request
     {
         $input = $this->all();
         return [
-             'username' => 'required|numeric', //no need to check existence here.
+             'username' => 'required|numeric|digits_between:9,11', //no need to check existence here. //@TODO: taha che khaki bar sar konim? 10 character bayad bashad
              'password' => 'required',
 //             'security' => 'required|captcha:'.$input['key'], @TODO: Remove Comment
         ];

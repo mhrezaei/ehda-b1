@@ -22,23 +22,23 @@
 	{!! Html::style('assets/libs/materialkit/css/material-kit.css') !!}
 	{!! Html::style('assets/libs/bootstrap/css/bootstrap-rtl.min.css') !!}
 
-	{!! HTML::script ('assets/libs/bootstrap/js/bootstrap.min.js') !!}
-	{!! HTML::script ('assets/libs/materialkit/js/material.min.js') !!}
-	{!! HTML::script ('assets/libs/materialkit/js/material-kit.js') !!}
-	{!! HTML::script ('assets/libs/jquery.animate-colors-min.js') !!}
-	{!! HTML::script ('assets/libs/js-persian-cal.min.js') !!}
+	{!! Html::script ('assets/libs/bootstrap/js/bootstrap.min.js') !!}
+	{!! Html::script ('assets/libs/materialkit/js/material.min.js') !!}
+	{!! Html::script ('assets/libs/materialkit/js/material-kit.js') !!}
+	{!! Html::script ('assets/libs/jquery.animate-colors-min.js') !!}
+	{!! Html::script ('assets/libs/js-persian-cal.min.js') !!}
 
 	{{-- Other libs --}}
-	{{--{!! HTML::style('assets/libs/font-awesome/css/font-awesome.min.css') !!}--}}
+	{{--{!! Html::style('assets/libs/font-awesome/css/font-awesome.min.css') !!}--}}
 
 	{{-- Personal stuff --}}
 	{!! Html::style('assets/css/fontiran.css') !!}
 	{!! Html::style('assets/css/manage-h.min.css') !!}
 	{!! Html::style('assets/css/home-t.min.css') !!}
 
-	{{--{!! HTML::script('assets/js/forms.js') !!}--}}
-	{!! HTML::script('assets/js/hadi.js') !!}
-	{!! HTML::script('assets/js/taha.js') !!}
+	{{--{!! Html::script('assets/js/forms.js') !!}--}}
+	{!! Html::script('assets/js/hadi.js') !!}
+	{!! Html::script('assets/js/taha.js') !!}
 
 	<link rel="icon" type="image/png" href="favicon.ico">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
