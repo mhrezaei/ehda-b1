@@ -116,6 +116,8 @@ class AuthController extends Controller
 	public function sms()
 	{
 		//return view('templates.widget.email');
-		echo Carbon::now();
+		$date = Carbon::now();
+		$date = $date->diffInMinutes($date->copy()->addMinutes(10));
+		return view('templates.say' , ['array'=> $date]);
 	}
 }

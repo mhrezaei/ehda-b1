@@ -29,6 +29,7 @@
     25 => 'App\\Providers\\RouteServiceProvider',
     26 => 'App\\Providers\\AnnotationsServiceProvider',
     27 => 'Collective\\Html\\HtmlServiceProvider',
+    28 => 'Morilog\\Jalali\\JalaliServiceProvider',
   ),
   'eager' => 
   array (
@@ -47,6 +48,7 @@
     12 => 'App\\Providers\\EventServiceProvider',
     13 => 'App\\Providers\\RouteServiceProvider',
     14 => 'App\\Providers\\AnnotationsServiceProvider',
+    15 => 'Morilog\\Jalali\\JalaliServiceProvider',
   ),
   'deferred' => 
   array (
