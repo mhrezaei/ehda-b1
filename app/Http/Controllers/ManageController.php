@@ -18,12 +18,17 @@ class ManageController extends Controller
 		$this->middleware('auth');
 	}
 
-	public function show($method)
+	public function show($module , $sub='*')
 	{
-		if(!method_exists($this,$method)) return view('errors.404');
-		if(!PrivilegeServiceProvider::check_role($method)) return view('errors.403');
+		if(!method_exists($this,$module)) return view('errors.404');
 
-		return $this->$method() ;
+		if(!Auth::user()->can("$module.$sub"))
+			return view('errors.403');
+
+
+		if(!PrivilegeServiceProvider::check_role($module)) return view('errors.403');
+
+		return $this->$module() ;
 	}
 
 	public function auth() //@TODO: Remove this method and its route at Production
@@ -33,11 +38,10 @@ class ManageController extends Controller
 		$output = $user ;
 
 		//here...
-//		$command = ['cards.*' , 'volunteers.add,new,edit'] ;
-//		$user->setPermits($command) ;
-		$output = $user->getPermits() ;
+//		$user->attachPermits('posts-celebs.*') ;
+		$user->detachPermits('cards.edit') ;
 
-		$output = $user->can('volunteers') ;
+		$output = $user->getPermits() ;
 
 		//out...
 		return view('templates.say')->with(['array' => $output]) ;
@@ -52,6 +56,11 @@ class ManageController extends Controller
 	private function angels()
 	{
 
+	}
+
+	private function cards()
+	{
+		echo 1 ;
 	}
 
 

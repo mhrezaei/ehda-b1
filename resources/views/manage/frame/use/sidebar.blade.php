@@ -1,62 +1,65 @@
-@include('manage.frame.widgets.sidebar-search' , [
-	'url' => '#' ,
-	'placeholder' => trans('manage.menu.search-all').'...'
-])
+{{--@include('manage.frame.widgets.sidebar-search' , [--}}
+	{{--'url' => '#' ,--}}
+	{{--'placeholder' => trans('manage.menu.search-all').'...'--}}
+{{--])--}}
 @include('manage.frame.widgets.sidebar-link' , [
-	'url' => 'index' ,
+	'module' => 'index' ,
 	'icon' => 'dashboard' ,
 ])
+
 @include('manage.frame.widgets.sidebar-link' , [
-	'url' => 'posts' ,
+	'module' => 'posts' ,
 	'icon' => 'file-text-o' ,
+	'sub_menus' => ['posts-static' , 'posts-news']
 ])
 @include('manage.frame.widgets.sidebar-link' , [
-	'url' => 'galleries' ,
+	'module' => 'galleries' ,
 	'icon' => 'picture-o' ,
+	'sub_menus' => ['posts-slideshows']
 ])
 
 @include('manage.frame.widgets.sidebar-link' , [
-	'url' => 'cards' ,
+	'module' => 'cards' ,
 	'icon' => 'credit-card',
-	'sub_menus' => ['cards_browse' , 'cards_verify' , 'cards_new_one' , 'cards_new_bulk' , 'cards_print_bulk' , 'cards_search' , 'cards_report' , 'cards_meli' ]
+	'sub_menus' => ['.browse' , '.publish' , '.add' , '.bulk' , '.search' , '.report' ]
 ])
 
 @include('manage.frame.widgets.sidebar-link' , [
-	'url' => 'volunteers' ,
+	'module' => 'volunteers' ,
 	'icon' => 'child',
-	'sub_menus' => ['volunteers_browse' , 'volunteers_new' , 'volunteers_verify' , 'volunteers_search' , 'cards_new_bulk' , 'volunteers_report' ]
+	'sub_menus' => ['.browse' , '.add' , '.publish' , '.search' , '.bulk' , '.report' ]
 ])
 
 @include('manage.frame.widgets.sidebar-link' , [
-	'url' => 'celebs' ,
+	'module' => 'posts-celebs' ,
 	'icon' => 'street-view',
 ])
 @include('manage.frame.widgets.sidebar-link' , [
-	'url' => 'angels' ,
+	'module' => 'angels' ,
 	'icon' => 'gratipay',
 ])
 @include('manage.frame.widgets.sidebar-link' , [
-	'url' => 'faqs' ,
+	'module' => 'faqs' ,
 	'icon' => 'info-circle',
 ])
 @include('manage.frame.widgets.sidebar-link' , [
-	'url' => 'donates' ,
+	'module' => 'donates' ,
 	'icon' => 'money',
 ])
 @include('manage.frame.widgets.sidebar-link' , [
-	'url' => 'submits' ,
+	'module' => 'submits' ,
 	'icon' => 'comment-o',
 ])
 
 @include('manage.frame.widgets.sidebar-link' , [
-	'url' => 'settings' ,
+	'module' => 'settings' ,
 	'icon' => 'cogs',
-	'sub_menus' => ['settings_profile' , 'settings_socials' , 'settings_contacts' , 'settings_general']
+//	'sub_menus' => ['settings_profile' , 'settings_socials' , 'settings_contacts' , 'settings_general']
 ])
 @include('manage.frame.widgets.sidebar-link' , [
-	'url' => 'devSettings' ,
+	'module' => 'devSettings' ,
 	'icon' => 'user-secret',
-	'sub_menus' => ['devSettings_domains' , 'devSettings_states' , 'devSettings_activities' , 'devSettings_roles' , 'devSettings_cats']
+//	'sub_menus' => ['devSettings_domains' , 'devSettings_states' , 'devSettings_activities' , 'devSettings_roles' , 'devSettings_cats']
 ])
 
 {{--@include('manage.frame.use._sidebar')--}}

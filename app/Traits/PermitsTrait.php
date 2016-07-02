@@ -166,8 +166,8 @@ trait PermitsTrait
 
 	public function can($permit = NULL, $domain = NULL)
 	{
-		//		if($this->isDeveloper())
-		//			return true ;
+		if($this->isDeveloper())
+			return true ;
 
 		return $this->can_domain($domain) AND $this->can_permit($permit);
 	}
@@ -183,8 +183,6 @@ trait PermitsTrait
 		//Bypass...
 		if(in_array($request, config('permit.wildcards')))
 			return true;
-		if(in_array($request, config('permit.public_modules')))
-			return true;
 
 		//safety...
 		if(!str_contains($request, '.'))
@@ -196,8 +194,8 @@ trait PermitsTrait
 		$request_module = $request[0];
 		$request_permit = $request[1];
 
-		echo view('templates.say')->with(['array' => $request]);
-
+		if(in_array($request_module, config('permit.public_modules')))
+			return true;
 		if(!isset($stored_permits[$request_module]))
 			return false;
 
@@ -208,7 +206,7 @@ trait PermitsTrait
 		if((array_search($request_permit, $stored_permits[$request_module])) === false)
 			return false;
 
-		//Return true... 
+		//Return true...
 		return true;
 
 

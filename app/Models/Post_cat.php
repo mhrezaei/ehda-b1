@@ -11,4 +11,10 @@ class Post_cat extends Model
 	{
 		return $this->hasMany('App\Models\Post');
 	}
+
+	public static function getName($slug)
+	{
+		$record = self::where('slug' , $slug)->first() ;
+		return $record->title ;
+	}
 }
