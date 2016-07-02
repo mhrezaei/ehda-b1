@@ -40,3 +40,5 @@ storage/logs/laravel.log
 *.log
 storage/logs/laravel.log
 *.log
+*.log
+storage/logs/laravel.log
