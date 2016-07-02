@@ -30,6 +30,7 @@
     26 => 'App\\Providers\\AnnotationsServiceProvider',
     27 => 'Collective\\Html\\HtmlServiceProvider',
     28 => 'Morilog\\Jalali\\JalaliServiceProvider',
+    29 => 'Barryvdh\\Debugbar\\ServiceProvider',
   ),
   'eager' => 
   array (
@@ -49,6 +50,7 @@
     13 => 'App\\Providers\\RouteServiceProvider',
     14 => 'App\\Providers\\AnnotationsServiceProvider',
     15 => 'Morilog\\Jalali\\JalaliServiceProvider',
+    16 => 'Barryvdh\\Debugbar\\ServiceProvider',
   ),
   'deferred' => 
   array (
