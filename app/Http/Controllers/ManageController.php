@@ -25,9 +25,6 @@ class ManageController extends Controller
 		if(!Auth::user()->can("$module.$sub"))
 			return view('errors.403');
 
-
-		if(!PrivilegeServiceProvider::check_role($module)) return view('errors.403');
-
 		return $this->$module() ;
 	}
 
