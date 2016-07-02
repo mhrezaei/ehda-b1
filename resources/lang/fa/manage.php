@@ -53,6 +53,18 @@ return [
     
    ] ,
     
+	"settings" => [
+        "socials" => [
+            'tab-title' => 'شبکه‌های اجتماعی',
+        ]
+    ],
+
+    "devSettings" => [
+        "posts-cats" => [
+            'tab-title' =>' دسته‌بندی مطالب' ,
+        ] ,
+    ],
+
     
 ];
 

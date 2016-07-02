@@ -22,3 +22,6 @@ Route::get('/manage/auth' , 'ManageController@auth'); //@TODO: Remove this line 
 Route::get('/manage/{module}', 'ManageController@show');
 Route::get('/manage/{module}/{sub}', 'ManageController@show');
 //Route::get('/manage/index', 'ManageController@index');
+
+Route::resource('test' , 'TestController') ;
+

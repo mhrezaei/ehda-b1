@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Providers\PrivilegeServiceProvider;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -20,12 +21,20 @@ class ManageController extends Controller
 
 	public function show($module , $sub='*')
 	{
+		//Error 404...
 		if(!method_exists($this,$module)) return view('errors.404');
 
-		if(!Auth::user()->can("$module.$sub"))
+		//Error 403...
+		if(substr($sub,0,1)=='!')
+			$permit_request = "$module.*" ;
+		else
+			$permit_request = "$module.$sub" ;
+
+		if(!Auth::user()->can($permit_request))
 			return view('errors.403');
 
-		return $this->$module() ;
+		//Showing...
+		return $this->$module($sub) ;
 	}
 
 	public function auth() //@TODO: Remove this method and its route at Production
@@ -39,9 +48,12 @@ class ManageController extends Controller
 		$user->detachPermits('cards.edit') ;
 
 		$output = $user->getPermits() ;
+		$output = Carbon::now() ;
 
 		//out...
 		return view('templates.say')->with(['array' => $output]) ;
+
+		echo Carbon::now();
 
 	}
 
@@ -50,14 +62,29 @@ class ManageController extends Controller
 		return view('manage.index.0');
 	}
 
-	private function angels()
+	private function settings($request_tab)
 	{
+		if(!$request_tab or $request_tab=='*') $request_tab = 'posts-cats' ;
+		$request_module = 'settings' ;
 
+		return view("manage.settings.0",compact('request_module','request_tab'));
 	}
 
-	private function cards()
+	private function devSettings($request_tab)
 	{
-		echo 1 ;
+		//Preparetions...
+		if(!$request_tab or $request_tab=='*') $request_tab = 'posts-cats' ;
+		$request_module = 'devSettings' ;
+
+		//Model...
+		switch($request_tab) {
+			case 'posts-cats' :
+				break;
+		}
+
+		//View...
+		return view("manage.settings.dev",compact('request_module','request_tab'));
+
 	}
 
 
