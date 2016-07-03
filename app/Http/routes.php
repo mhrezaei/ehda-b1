@@ -11,17 +11,30 @@
 |
 */
 
-Route::get('/' , 'HomeController@index');
+Route::get('/', 'HomeController@index');
 
-/* Manage Section:: Volunteers Panels */
-Route::get('/manage/logout', 'AuthController@logout');
+/*
+|--------------------------------------------------------------------------
+| ADMIN PANEL
+|--------------------------------------------------------------------------
+| For Volunteers as admins of the entire sites, in 'manage' folder
+*/
+
 Route::get('/manage/login', 'AuthController@login_panel');
 Route::post('/manage/auth', 'AuthController@login');
+Route::get('/manage/logout', 'AuthController@logout');
+Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage'], function () {
 
-Route::get('/manage/auth' , 'ManageController@auth'); //@TODO: Remove this line at production
-Route::get('/manage/{module}', 'ManageController@show');
-Route::get('/manage/{module}/{sub}', 'ManageController@show');
-//Route::get('/manage/index', 'ManageController@index');
+	Route::group(['prefix'=>'devSettings'], function() {
+		Route::get('/' , 'DevSettingsController@index') ;
+	}) ;
 
-Route::resource('test' , 'TestController') ;
+	Route::get('/auth', 'ManageController@auth'); //@TODO: Remove this line at production
+	Route::get('/{module}', 'ManageController@show');
+	Route::get('/{module}/{sub}', 'ManageController@show');
+});
+
+
+
+Route::resource('test', 'TestController');
 

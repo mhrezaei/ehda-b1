@@ -8,5 +8,5 @@
 		'tabs' => ['posts-cats'] ,
 	])
 
-	@include("manage.settings.$request_tab")
+	{{--@include("manage.settings.$request_tab")--}}
 @endsection

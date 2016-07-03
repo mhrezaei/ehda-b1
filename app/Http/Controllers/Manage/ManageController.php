@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Manage;
 
-use App\Providers\PrivilegeServiceProvider;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -16,7 +15,8 @@ class ManageController extends Controller
 {
 	public function __construct()
 	{
-		$this->middleware('auth');
+//		$this->middleware('auth');
+
 	}
 
 	public function show($module , $sub='*')
