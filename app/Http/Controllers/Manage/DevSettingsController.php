@@ -11,7 +11,7 @@ class DevSettingsController extends Controller
 {
 	public function __construct()
 	{
-		$this->middleware('dev');
+		$this->middleware('can:dev');
 	}
 
 	public function index()

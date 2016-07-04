@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Support\Facades\Auth;
 
 
-class DeveloperMiddleware
+class CanMiddleware
 {
 	/**
 	 * Handle an incoming request.
@@ -15,9 +15,9 @@ class DeveloperMiddleware
 	 * @param  \Closure                 $next
 	 * @return mixed
 	 */
-	public function handle($request, Closure $next)
+	public function handle($request, Closure $next , $permit , $domain=null)
 	{
-		if(!Auth::user()->isDeveloper()) {
+		if(!Auth::user()->can($permit,$domain)) {
 			if($request->ajax() || $request->wantsJson()) {
 				return response('Unauthorized.', 401);
 			}
