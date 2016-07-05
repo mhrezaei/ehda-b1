@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
 
 class TestController extends Controller
 {
@@ -15,7 +17,21 @@ class TestController extends Controller
      */
     public function index()
     {
-        echo 'index' ;
+        //in...
+        $user = Auth::user() ;
+        $output = $user ;
+
+        //here...
+        //		$user->attachPermits('posts-celebs.*') ;
+        $user->detachPermits('cards.edit') ;
+
+        $output = $user->getPermits() ;
+        $output = Carbon::now() ;
+
+        //out...
+        return view('templates.say')->with(['array' => $output]) ;
+
+        echo Carbon::now();
     }
 
     /**

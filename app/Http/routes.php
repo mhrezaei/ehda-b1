@@ -24,14 +24,15 @@ Route::get('/manage/login', 'AuthController@login_panel');
 Route::post('/manage/auth', 'AuthController@login');
 Route::get('/manage/logout', 'AuthController@logout');
 Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage'], function () {
+	Route::get('/' , 'ManageController@index');
+	Route::get('/index' , 'ManageController@index');
 
 	Route::group(['prefix'=>'devSettings'], function() {
 		Route::get('/' , 'DevSettingsController@index') ;
+		Route::get('/{request_tab}/' , 'DevSettingsController@index') ;
+		Route::get('/{request_tab}/new' , 'DevSettingsController@add') ;
 	}) ;
 
-	Route::get('/auth', 'ManageController@auth'); //@TODO: Remove this line at production
-	Route::get('/{module}', 'ManageController@show');
-	Route::get('/{module}/{sub}', 'ManageController@show');
 });
 
 

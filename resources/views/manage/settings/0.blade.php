@@ -4,7 +4,7 @@
 @section('page_heading' , trans("manage.modules.$request_module"))
 
 @section('section')
-	@include('manage.settings.tabs' , [
+	@include('manage.settings.dev_tab' , [
 		'tabs' => ['socials'] ,
 	])
 

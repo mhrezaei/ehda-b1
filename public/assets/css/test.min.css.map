@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AACA,KAAM,CACJ,OAAO,CAAE,KAAK,CAEhB,KAAM,CACJ,KAAK,CAAE,IAAI",
+"sources": ["../../../resources/sass/test.scss"],
+"names": [],
+"file": "test.min.css"
+}

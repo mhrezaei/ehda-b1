@@ -1,27 +1,78 @@
-//Bootstrap Corrections...
+/*
+|--------------------------------------------------------------------------
+| General Body
+|--------------------------------------------------------------------------
+|
+*/
+body {
+  margin-top: 50px;
+}
+
+thead {
+  td {
+    font-weight: bold;
+  }
+}
+
+/*
+|--------------------------------------------------------------------------
+| Navbar & Sidebar
+|--------------------------------------------------------------------------
+|
+*/
+
 a.navbar-brand {
   font-weight: 500;
-  font-size: 18px ;
+  font-size: 18px;
+}
+
+a.navbar-brand-sub {
+  font-weight: 400;
+  font-size: 14px;
+  font-family: Yekan;
 }
 
 span.navbar-brand {
   font-weight: 400;
-  font-size: 18px ;
-  padding-left:  0;
-  padding-right:  10px;
-}
-  .dropdown-menu {
-    right: auto;
-    left: 0;
-
-  }
-
-  .navbar-top-links .dropdown-menu li a {
-    font-weight: 200;
-    font-size: 14px;
-    color: #565656;
-  }
-body {
-  margin-top: 50px ;
+  font-size: 14px;
+  padding-left: 0;
+  padding-right: 0;
+  font-family: Yekan;
 }
 
+.dropdown-menu {
+  right: auto;
+  left: 0;
+
+}
+
+.navbar-top-links .dropdown-menu li a {
+  font-weight: 200;
+  font-size: 14px;
+  color: #565656;
+}
+
+#side-menu {
+  li a{
+    font-family: Yekan;
+    font-size: 12px
+  ;
+  }
+}
+
+/*
+|--------------------------------------------------------------------------
+| Toolbars
+|--------------------------------------------------------------------------
+|
+*/
+.panel-toolbar {
+  text-align: left;
+}
+
+.tbtn-toolbar {
+  width: 100px;
+  font-family: Yekan;
+  font-weight: bold;
+  font-size: 10px;
+}
