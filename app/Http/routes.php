@@ -31,6 +31,9 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 		Route::get('/' , 'DevSettingsController@index') ;
 		Route::get('/{request_tab}/' , 'DevSettingsController@index') ;
 		Route::get('/{request_tab}/new' , 'DevSettingsController@add') ;
+		Route::get('/{request_tab}/{id}' , 'DevSettingsController@item') ;
+
+		Route::post('/posts-cats/save' , 'DevSettingsController@save_postsCats');
 	}) ;
 
 });

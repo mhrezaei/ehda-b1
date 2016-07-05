@@ -1,6 +1,5 @@
 $(document).ready(function() {
       forms_listener();
-      alert(1);
 });
 
 function forms_listener()
@@ -29,8 +28,10 @@ function forms_listener()
 }
 
 function forms_validate(formData, jqForm, options) {
+
       //Variables...
-      var $formId = jqForm[0].id    ;
+//      var $formId = jqForm[0].id    ;
+	var $formId = jqForm.attr('id');
       var $errors = 0               ;
       var $feed   = "#" + $formId + " .form-feed";
 
@@ -39,7 +40,7 @@ function forms_validate(formData, jqForm, options) {
       $($feed).removeClass('alert-success').removeClass('alert-danger').slideDown();
 
       //Checking required fields...
-      $("#" + $formId + " .required").each(function(){
+      $("#" + $formId + " .form-required").each(function(){
             $errors += forms_errorIfEmpty(this);
             if($errors==1) $(this).focus();
       });
@@ -112,8 +113,8 @@ function forms_responde(data, statusText, xhr, $form)
       //after effects...
       if(data.refresh==1) 	forms_delaiedPageRefresh(1);
       if(data.modalClose==1) 	setTimeout(function(){$(".modal").modal('hide');},1000);
-      if(data.login==1) 	setTimeout(function(){window.location = base_url()+"login";},1000);
-      if(data.redirect)       setTimeout(function(){window.location = base_url()+data.redirect;},1000);
+//      if(data.login==1) 	setTimeout(function(){window.location = base_url()+"login";},1000);
+      if(data.redirect)       setTimeout(function(){window.location = data.redirect;},1000);
       if(data.updater)		allForms_updater(data.updater);
       if(data.callback)		setTimeout(data.callback,1000);
 
@@ -185,11 +186,11 @@ function forms_isPersian(string) {
 
 function forms_markError(selector, handle) {
       if (handle == "success")
-            $(selector).parent().addClass("has-success").removeClass('has-error');
+            $(selector).parent().parent().addClass("has-success").removeClass('has-error');
       else if (handle == "null" || handle == "reset")
-            $(selector).parent().removeClass('has-error').removeClass('has-success');
+            $(selector).parent().parent().removeClass('has-error').removeClass('has-success');
       else //including "error"
-            $(selector).parent().addClass("has-error").removeClass('has-success');//.effect	("shake"	,{times:2},100);
+            $(selector).parent().parent().addClass("has-error").removeClass('has-success');//.effect	("shake"	,{times:2},100);
 
 }
 

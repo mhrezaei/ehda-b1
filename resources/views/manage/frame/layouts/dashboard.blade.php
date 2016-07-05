@@ -237,9 +237,9 @@
 			<div class="row">
 				@yield('section')
 
-            </div>
-            <!-- /#page-wrapper -->
-        </div>
-    </div>
+			</div>
+					<!-- /#page-wrapper -->
+		</div>
+ </div>
 @stop
 

@@ -10,11 +10,11 @@
 		<table class="table table-hover">
 			<thead>
 			<tr>
-				<td>{{ trans('forms.field.title') }}</td>
-				<td>{{ trans('forms.field.slug') }}</td>
+				<td>{{ trans('validation.attributes.title') }}</td>
+				<td>{{ trans('validation.attributes.slug') }}</td>
 				<td>{{ trans('manage.devSettings.posts-cats.have_rss') }}</td>
 				<td>{{ trans('manage.devSettings.posts-cats.have_comments') }}</td>
-				<td>{{ trans('forms.field.content') }}</td>
+				<td>{{ trans('validation.attributes.content') }}</td>
 				<td>{{ trans('manage.devSettings.posts-cats.is_hidden') }}</td>
 			</tr>
 			</thead>

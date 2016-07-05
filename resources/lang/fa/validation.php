@@ -117,6 +117,7 @@ return [
 				"gender"=> "جنسیت",
 				'title' => 'عنوان',
 				'slug' => 'نامک',
+			'content' => 'محتوا',
 		],
 
 		"http" => [

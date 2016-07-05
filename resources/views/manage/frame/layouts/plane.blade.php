@@ -10,6 +10,7 @@
 
 	{{-- JQuery --}}
 	{!! Html::script ('assets/libs/jquery.js') !!}
+	{!! Html::script ('assets/libs/jquery.form.min.js') !!}
 
 	{{-- BOOTSTRAP --}}
 	{!! Html::style('assets/libs/bootstrap/css/bootstrap.min.css') !!}
