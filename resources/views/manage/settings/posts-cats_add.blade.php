@@ -51,10 +51,6 @@
 
 	@include('forms.group-start')
 
-	@include('forms.note' , [
-		'text' => trans('manage.login.error_username')
-	])
-
 	@include('forms.button' , [
 		'label' => trans('forms.button.save'),
 		'shape' => 'success',
