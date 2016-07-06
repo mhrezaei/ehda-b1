@@ -83,6 +83,8 @@ class DevSettingsController extends Controller
 		$model = Post_cat::where('parent_id', $parent_id)->orderBy('title')->get();
 
 		return $model;
+
+		//TODO: browse, edition and deletion of sub-cats 
 	}
 
 	private function item_postscats($item_id)

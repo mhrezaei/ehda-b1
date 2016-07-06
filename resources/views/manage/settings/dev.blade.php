@@ -4,4 +4,6 @@
 	@include('manage.settings.dev_tab')
 
 	@include("manage.settings.".$page[1][0])
+
 @endsection
+

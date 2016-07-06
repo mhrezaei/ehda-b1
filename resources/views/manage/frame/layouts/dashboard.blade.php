@@ -236,9 +236,9 @@
            </div>
 			<div class="row">
 				@yield('section')
-
 			</div>
 					<!-- /#page-wrapper -->
+			@yield('modal')
 		</div>
  </div>
 @stop

@@ -77,5 +77,5 @@
 	@include('forms.feed' , [
 	])
 
-	{!! Form::close() !!}
+	@include('forms.closer')
 @endsection
