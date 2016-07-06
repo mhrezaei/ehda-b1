@@ -33,8 +33,8 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 		Route::get('/{request_tab}/new' , 'DevSettingsController@add') ;
 		Route::get('/{request_tab}/{id}' , 'DevSettingsController@item') ;
 
-//		Route::post('/posts-cats/save' , 'DevSettingsController@save_postsCats');
-		Route::post('/{request_tab}/save' , 'DevSettingsController@save');
+		Route::post('/posts-cats/save' , 'DevSettingsController@save_postsCats');
+		Route::post('/domains/save' , 'DevSettingsController@save_domains');
 	}) ;
 
 });

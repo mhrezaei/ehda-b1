@@ -108,33 +108,14 @@ class DevSettingsController extends Controller
 
 	/*
 	|--------------------------------------------------------------------------
-	| Save Functions
+	| Save Methods
 	|--------------------------------------------------------------------------
-	| Route passes everything to 'save' and the request is splitted overthere.
+	|
 	*/
 
 
-	public function save($request_tab, Request $request)
+	public function save_domains(Requests\Manage\DomainSaveRequest $request)
 	{
-		$sub_method = str_replace('-', '', 'save_' . $request_tab);
-
-		if(!method_exists($this, $sub_method))
-			return json_encode([
-					'message' => trans('validation.invalid'),
-			]);
-		else
-			return $this->$sub_method($request) ;
-	}
-
-	private function save_domains(Request $request)
-	{
-		//Validation...
-		$id = $request->id ;
-		$this->validate($request, [
-			'title' => "required|unique:domains,title,$id",
-			'slug' => "required|unique:domains,slug,$id",
-		]);
-
 		//Save...
 		$is_saved = Domain::store($request);
 
@@ -154,13 +135,13 @@ class DevSettingsController extends Controller
 		}
 
 	}
-	private function save_postsCats(Request $request)
+	public function save_postsCats(Requests\Manage\PostCatsSaveRequest $request)
 	{
 		//Validation...
-		$this->validate($request, [
-			'title' => 'required',
-			'slug' => 'required',
-		]);
+//		$this->validate($request, [
+//			'title' => 'required',
+//			'slug' => 'required',
+//		]);
 
 		if(!Post_cat::inUnique($request,'title'))
 			return json_encode([
