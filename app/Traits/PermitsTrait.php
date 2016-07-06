@@ -13,42 +13,7 @@ trait PermitsTrait
 	| Works with 'module.permit' pattern and accepts arrays or strings
 	*/
 
-	public function setPermits($command)
-	{
-		$this->attachPermits($command, true);
-	}
 
-	public function attachPermits($command, $forget_stored = false)
-	{
-		if($forget_stored)
-			$stored_permits = array();
-		else
-			$stored_permits = $this->getPermits();
-
-		if(is_array($command)) {
-			$permit_commands = $command;
-		}
-		else {
-			$permit_commands[0] = $command;
-		}
-
-		foreach($permit_commands as $permit_command) {
-			if(!$permit_array = $this->permitCommandCompiler($permit_command))
-				continue;
-			$module = $permit_array[0];
-			$permits = $permit_array[1];
-
-			if(!isset($stored_permits[$module]))
-				$stored_permits[$module] = [];
-
-			foreach($permits as $permit) {
-				if(!in_array($permit, $stored_permits[$module]))
-					array_push($stored_permits[$module], $permit);
-			}
-		}
-
-		$this->savePermits($stored_permits);
-	}
 
 	public function getPermits()
 	{
@@ -90,6 +55,43 @@ trait PermitsTrait
 	{
 		$this->roles = Crypt::encrypt(json_encode($permits_array));
 		$this->save();
+	}
+
+	public function setPermits($command)
+	{
+		$this->attachPermits($command, true);
+	}
+
+	public function attachPermits($command, $forget_stored = false)
+	{
+		if($forget_stored)
+			$stored_permits = array();
+		else
+			$stored_permits = $this->getPermits();
+
+		if(is_array($command)) {
+			$permit_commands = $command;
+		}
+		else {
+			$permit_commands[0] = $command;
+		}
+
+		foreach($permit_commands as $permit_command) {
+			if(!$permit_array = $this->permitCommandCompiler($permit_command))
+				continue;
+			$module = $permit_array[0];
+			$permits = $permit_array[1];
+
+			if(!isset($stored_permits[$module]))
+				$stored_permits[$module] = [];
+
+			foreach($permits as $permit) {
+				if(!in_array($permit, $stored_permits[$module]))
+					array_push($stored_permits[$module], $permit);
+			}
+		}
+
+		$this->savePermits($stored_permits);
 	}
 
 	public function detachPermits($command)

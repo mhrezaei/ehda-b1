@@ -143,11 +143,11 @@ class DevSettingsController extends Controller
 //			'slug' => 'required',
 //		]);
 
-		if(!Post_cat::inUnique($request,'title'))
+		if(!Post_cat::isUnique($request,'title'))
 			return json_encode([
 					'message' => trans('manage.devSettings.posts-cats.add.err_title_unique') ,
 			]);
-		if(!Post_cat::inUnique($request,'slug'))
+		if(!Post_cat::isUnique($request,'slug'))
 			return json_encode([
 					'message' => trans('manage.devSettings.posts-cats.add.err_slug_unique') ,
 			]);

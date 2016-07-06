@@ -19,7 +19,7 @@ class Post_cat extends Model
 		return $record->title ;
 	}
 
-	public static function inUnique($request, $field_name)
+	public static function isUnique($request, $field_name)
 	{
 		$found_models = Self::where([
 				[$field_name,$request->$field_name] ,
