@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Manage;
 
+use App\Models\Domain;
 use App\Models\Post_cat;
 use App\Providers\ValidationServiceProvider;
 use Illuminate\Http\Request;
@@ -37,6 +38,20 @@ class DevSettingsController extends Controller
 		return view("manage.settings.dev", compact('page', 'model_data'));
 
 	}
+	private function index_postscats($parent_id = 0)
+	{
+		$model = Post_cat::where('parent_id', $parent_id)->orderBy('title')->get();
+
+		return $model;
+
+		//TODO: browse, edition and deletion of sub-cats
+	}
+
+	private function index_domains()
+	{
+		$model = Domain::orderBy('title')->get();
+		return $model ;
+	}
 
 	public function add($request_tab)
 	{
@@ -58,7 +73,7 @@ class DevSettingsController extends Controller
 		//Preparetion...
 		$page = $this->page;
 		$page[1] = [$request_tab];
-		$page[2] = ['edit'];
+		$page[2] = ['edit',null,''];
 		$view = "manage.settings." . $request_tab . "_edit";
 
 		$sub_method = str_replace('-', '', 'item_' . $request_tab);
@@ -78,14 +93,6 @@ class DevSettingsController extends Controller
 	}
 
 
-	private function index_postscats($parent_id = 0)
-	{
-		$model = Post_cat::where('parent_id', $parent_id)->orderBy('title')->get();
-
-		return $model;
-
-		//TODO: browse, edition and deletion of sub-cats 
-	}
 
 	private function item_postscats($item_id)
 	{
@@ -99,7 +106,55 @@ class DevSettingsController extends Controller
 
 	}
 
-	public function save_postsCats(Request $request)
+	/*
+	|--------------------------------------------------------------------------
+	| Save Functions
+	|--------------------------------------------------------------------------
+	| Route passes everything to 'save' and the request is splitted overthere.
+	*/
+
+
+	public function save($request_tab, Request $request)
+	{
+		$sub_method = str_replace('-', '', 'save_' . $request_tab);
+
+		if(!method_exists($this, $sub_method))
+			return json_encode([
+					'message' => trans('validation.invalid'),
+			]);
+		else
+			return $this->$sub_method($request) ;
+	}
+
+	private function save_domains(Request $request)
+	{
+		//Validation...
+		$id = $request->id ;
+		$this->validate($request, [
+			'title' => "required|unique:domains,title,$id",
+			'slug' => "required|unique:domains,slug,$id",
+		]);
+
+		//Save...
+		$is_saved = Domain::store($request);
+
+		//Return...
+		if($is_saved) {
+			return json_encode([
+					'ok' => '1',
+					'message' => trans('forms.feed.done'),
+					'refresh' => '1',
+					'callback' => '',
+			]);
+		}
+		else {
+			return json_encode([
+					'message' => trans('validation.invalid'),
+			]);
+		}
+
+	}
+	private function save_postsCats(Request $request)
 	{
 		//Validation...
 		$this->validate($request, [

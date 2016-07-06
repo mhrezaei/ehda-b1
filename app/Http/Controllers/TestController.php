@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Domain;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -64,7 +65,45 @@ class TestController extends Controller
      */
     public function show($id)
     {
-        echo "show: $id" ;
+        $states = [
+             'آذربایجان شرقی',
+             'آذربایجان غربی',
+             'اردبیل',
+             'ایلام',
+             'اصفهان',
+             'البرز',
+             'بوشهر',
+             'تهران',
+             'چهار محال و بختیاری',
+             'خراسان جنوبی',
+             'خراسان رضوی',
+             'خراسان شمالی',
+             'خوزستان',
+             'زنجان',
+             'سمنان',
+             'سیستان و بلوچستان',
+             'فارس',
+             'قزوین',
+             'قم',
+             'کرمانشاه',
+             'کرمان',
+             'کردستان',
+             'کهگیلویه و بویراحمد',
+             'گلستان',
+             'گیلان',
+             'لرستان',
+             'مازندران',
+             'مرکزی',
+             'هرمزگان',
+             'همدان',
+             'یزد',
+        ];
+
+        foreach($states as $idx => $state) {
+            $model = new Domain() ;
+            $model->title = $state;
+            $model->save();
+        }
     }
 
     /**

@@ -74,8 +74,7 @@
 
 	@include('forms.group-end')
 
-	@include('forms.feed' , [
-	])
+	@include('forms.feed')
 
 	@include('forms.closer')
 @endsection

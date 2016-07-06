@@ -34,6 +34,7 @@
 	{{-- Custom --}}
 	{!! Html::style('assets/css/manage.min.css') !!}
 	{!! HTML::script ('assets/js/forms.js') !!}
+	{!! HTML::script ('assets/js/manage.js') !!}
 
 
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
