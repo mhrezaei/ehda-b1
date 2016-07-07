@@ -221,8 +221,8 @@ trait PermitsTrait
 
 	public function can($permit = NULL, $domain = NULL)
 	{
-//		if($this->isDeveloper())
-//			return true ;
+		if($this->isDeveloper())
+			return true ;
 
 		return $this->can_domain($domain) AND $this->can_permit($permit);
 	}

@@ -4,12 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Traits\TahaTrait ;
 
 
 class Domain extends Model
 {
 	protected $guarded = ['id'];
 	use SoftDeletes;
+	use TahaTrait ;
 
 	public static function store($request)
 	{
@@ -30,4 +32,8 @@ class Domain extends Model
 		return $affected;
 	}
 
+	public function states()
+	{
+		return $this->hasMany('App\Models\State') ;
+	}
 }

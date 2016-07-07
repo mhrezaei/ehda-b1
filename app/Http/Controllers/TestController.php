@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Mhr_state;
 use App\Models\Domain;
+use App\Models\State;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -55,53 +57,32 @@ class TestController extends Controller
         return view('templates.say' , ['array' => $request])  ;
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        $states = [
-             'آذربایجان شرقی',
-             'آذربایجان غربی',
-             'اردبیل',
-             'ایلام',
-             'اصفهان',
-             'البرز',
-             'بوشهر',
-             'تهران',
-             'چهار محال و بختیاری',
-             'خراسان جنوبی',
-             'خراسان رضوی',
-             'خراسان شمالی',
-             'خوزستان',
-             'زنجان',
-             'سمنان',
-             'سیستان و بلوچستان',
-             'فارس',
-             'قزوین',
-             'قم',
-             'کرمانشاه',
-             'کرمان',
-             'کردستان',
-             'کهگیلویه و بویراحمد',
-             'گلستان',
-             'گیلان',
-             'لرستان',
-             'مازندران',
-             'مرکزی',
-             'هرمزگان',
-             'همدان',
-             'یزد',
-        ];
+        $city = State::find(245) ;
+        $domain = Domain::find(14) ;
 
-        foreach($states as $idx => $state) {
-            $model = new Domain() ;
-            $model->title = $state;
-            $model->save();
+        return view('templates.say' , ['array'=>$domain->states()->count()]);
+
+    }
+
+    public function set_domain_ids()
+    {
+        $provinces = State::get_provinces();
+        $affected = 0 ;
+
+        foreach($provinces as $province) {
+            $domain = Domain::where('title',$province->title)->first();
+
+            $cities = $province->cities() ;
+            foreach($cities as $city) {
+                $city->domain_id = $domain->id ;
+                $affected += $city->save() ;
+            }
         }
+        
+        return view('templates.say' , ['array'=>$affected]);
+        
     }
 
     /**
