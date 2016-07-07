@@ -28,3 +28,8 @@ function domainEditor($id)
 
 	$('#modalDomainEditor').modal() ;
 }
+
+function domainCities($id)
+{
+	alert($id) ;
+}

@@ -5,6 +5,7 @@
 		'target' => 'domainEditor("0")' ,
 		'type' => 'success' ,
 		'caption' => trans('forms.button.add') ,
+		'icon' => 'plus-circle' ,
 	])
 </div>
 <div class="panel panel-default m20">
@@ -29,8 +30,12 @@
 					<td id="domain-{{$model->id}}-slug" data-toggle="{{$model->slug}}" >
 						{{ $model->slug }}
 					</td>
-					<td>_</td>
-					<td>_</td>
+ 					<td>@pd('as123')</td>
+					<td>
+						<a href="javascript:void(0)" onclick="domainCities('{{$model->id}}')">
+							@pd($model->states()->count().' '.trans('manage.devSettings.domains.city'))
+						</a>
+					</td>
 				</tr>
 			@endforeach
 			</tbody>

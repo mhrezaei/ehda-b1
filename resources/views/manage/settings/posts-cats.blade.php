@@ -3,6 +3,7 @@
 		'target' => 'manage/devSettings/posts-cats/new' ,
 		'type' => 'success' ,
 		'caption' => trans('forms.button.add') ,
+		'icon' => 'plus-circle' ,
 	])
 </div>
 <div class="panel panel-default m20">

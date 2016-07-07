@@ -15,6 +15,8 @@ else {
 ?>
 
 
-<a href="{{$target}}" class="btn btn-{{ $type or 'default' }} tbtn-toolbar" onclick="{{$on_click or ''}}">
-	{{ $caption or '' }}
+<a href="{{$target}}" title="{{$caption or ''}}" onclick="{{$on_click or ''}}">
+	<button class="btn btn-{{ $type or 'default' }} btn-circle btn-lg">
+		<i class="fa fa-{{$icon or 'dot-circle-o'}}"></i>
+	</button>
 </a>
