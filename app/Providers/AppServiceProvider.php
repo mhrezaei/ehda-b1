@@ -7,30 +7,36 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        //
-        Blade::directive('section_php', function() {
-            return "<?php ";
-        });
-        Blade::directive('end_php', function() {
-            return "?> ";
-        });
+	/**
+	 * Bootstrap any application services.
+	 *
+	 * @return void
+	 */
+	public function boot()
+	{
 
-    }
+		Blade::directive('pd', function ($str) {
+			return "<?php echo App\Providers\AppServiceProvider::pd($str) ?>" ;
+		});
 
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        //
-    }
+	}
+
+	/**
+	 * Register any application services.
+	 *
+	 * @return void
+	 */
+	public function register()
+	{
+		//
+	}
+
+	public static function pd($str)
+	{
+		$farsi_chars = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹','۴','۵','۶'];
+		$latin_chars = ['0','1','2','3','4','5','6','7','8','9','٤','٥','٦'];
+		$new_str = str_replace($latin_chars,$farsi_chars,$str);
+
+		return $new_str ;
+	}
 }
