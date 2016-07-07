@@ -1,4 +1,5 @@
 @include('manage.settings.domains-modalEditor')
+@include('manage.settings.domains-modalCities')
 
 <div class="panel panel-toolbar">
 	@include('manage.frame.widgets.toolbar_button' , [

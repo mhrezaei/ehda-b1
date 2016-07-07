@@ -31,5 +31,18 @@ function domainEditor($id)
 
 function domainCities($id)
 {
-	alert($id) ;
+	var $modal_id = "modalDomainCities" ;
+	var $form_selector = '#' + $modal_id + ' form ' ;
+
+	//Form Placement...
+	forms_reset($form_selector , 'cities');
+	$($form_selector + '[name=id] ').val($id) ;
+
+	$('#'+$modal_id+ '-title').html($($form_selector+'._1').html()+'  '+$('#domain-'+$id+'-title').attr('data-toggle'));
+
+	$('#'+$modal_id).modal() ;
+	$($form_selector + '[name=cities] ');
+
+	//@TODO: Make a state selector from an array or something! 
+
 }

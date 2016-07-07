@@ -92,6 +92,16 @@ class DevSettingsController extends Controller
 
 	}
 
+	public function item_domains($q)
+	{
+		$json = '[
+    {"id":"856","name":"House"},
+    {"id":"1035","name":"Desperate Housewives"},
+    ...
+]';
+
+		echo $json;
+	}
 
 
 	private function item_postscats($item_id)
