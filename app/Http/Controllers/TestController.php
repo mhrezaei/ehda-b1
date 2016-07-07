@@ -22,12 +22,10 @@ class TestController extends Controller
         $user = Auth::user() ;
         $output = $user ;
 
-        //here...
-        //		$user->attachPermits('posts-celebs.*') ;
-        $user->detachPermits('cards.edit') ;
-
-        $output = $user->getPermits() ;
-        $output = Carbon::now() ;
+//        here...
+//        $user->detachDomains(['fars','tehran']) ;
+//        $user->attachDomains('all');
+        $output = $user->can('*', 'alborzd' ) ;
 
         //out...
         return view('templates.say')->with(['array' => $output]) ;

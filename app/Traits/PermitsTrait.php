@@ -1,6 +1,7 @@
 <?php
 namespace App\Traits;
 
+use App\Models\Domain;
 use Illuminate\Support\Facades\Crypt;
 
 trait PermitsTrait
@@ -137,25 +138,77 @@ trait PermitsTrait
 	|
 	*/
 
-	public function setDomains($domains)
+	public function saveDomains($domains_array)
 	{
+//		$this->domains = Crypt::encrypt(json_encode($domains_array));
+		$this->domains = json_encode($domains_array);
+		$this->save();
+	}
+
+	public function getDomains()
+	{
+//		return json_decode(Crypt::decrypt($this->domains), true);
+		$return = json_decode($this->domains, true);
+
+		if(!($return)) $return = array() ;
+
+		return $return ;
+	}
+
+
+	public function attachDomains($domains , $forget_stored=false)
+	{
+		if($domains=='all') return $this->attachAllDomains() ;
+		if($forget_stored)
+			$stored_domains = array();
+		else
+			$stored_domains = $this->getDomains();
+
+		foreach($domains as $domain) {
+			if(!in_array($domain , $stored_domains)) {
+				if(Domain::where('slug',$domain)->count())
+					array_push($stored_domains , $domain) ;
+			}
+		}
+
+		$this->saveDomains($stored_domains);
 
 	}
 
-	public function getDomains($domains)
+	public function setDomains($domains_commands)
 	{
-
+		$this->attachDomains($domains_commands,true);
 	}
 
-
-	public function attachDomain($domain)
+	public function detachDomains($domains)
 	{
+		if($domains=='all') return $this->detachAllDomains() ;
+		$stored_domains = $this->getDomains() ;
 
+		foreach($domains as $domain) {
+			if(($key = array_search($domain, $stored_domains)) !== false) {
+				unset($stored_domains[$key]);
+			}
+		}
+
+		$this->saveDomains($stored_domains) ;
 	}
 
-	public function detachDomain($domain)
+	public function attachAllDomains()
 	{
+		$domains = Domain::all() ;
+		$array = array() ;
 
+		foreach($domains as $domain) {
+			array_push($array,$domain->slug) ;
+		}
+
+		$this->saveDomains($array);
+	}
+
+	public function detachAllDomains()
+	{
+		$this->saveDomains(array());
 	}
 
 	/*
@@ -168,16 +221,20 @@ trait PermitsTrait
 
 	public function can($permit = NULL, $domain = NULL)
 	{
-		if($this->isDeveloper())
-			return true ;
+//		if($this->isDeveloper())
+//			return true ;
 
 		return $this->can_domain($domain) AND $this->can_permit($permit);
 	}
 
 	private function can_domain($domain)
 	{
-		if(in_array($domain, config('permit.wildcards')))
-			return true;
+		if(!$domain) return true ;
+
+		$stored_domains = $this->getDomains() ;
+		
+		return in_array($domain , $stored_domains) ;
+
 	}
 
 	private function can_permit($request)
