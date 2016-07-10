@@ -5,9 +5,7 @@ namespace App\Http\Controllers\Manage;
 use App\Models\Domain;
 use App\Models\Post_cat;
 use App\Models\State;
-use App\Providers\ValidationServiceProvider;
 use App\Traits\TahaControllerTrait;
-use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;

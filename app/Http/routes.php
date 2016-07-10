@@ -29,9 +29,8 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 
 	Route::group(['prefix'=>'devSettings'], function() {
 		Route::get('/' , 'DevSettingsController@index') ;
-		Route::get('/domains/cities/{$q}' , 'DevSettingsController@item_domains') ;
 		Route::get('/{request_tab}/' , 'DevSettingsController@index') ;
-		Route::get('/{request_tab}/new' , 'DevSettingsController@add') ;
+		Route::get('/{request_tab}/new' , 'DevSettingsController@add') ; //@TODO: mix it like the others
 
 		Route::get('/{request_tab}/{id}' , 'DevSettingsController@item') ;
 		Route::get('/{request_tab}/{id}/edit/{parent_id}' , 'DevSettingsController@editor') ;
