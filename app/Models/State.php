@@ -13,6 +13,11 @@ class State extends Model
 
 	protected $guarded = ['id'];
 
+	public function domain()
+	{
+		return $this->belongsTo('App\Models\Domain');
+	}
+
 
 	public static function get_provinces($mood='get')
 	{

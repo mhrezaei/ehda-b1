@@ -79,7 +79,7 @@ class DevSettingsController extends Controller
 		return view($view, compact('page'));
 	}
 
-	public function editor($request_tab , $item_id)
+	public function editor($request_tab , $item_id , $parent_id=0)
 	{
 		//Appears in modal and doesn't need $this->page stuff
 
@@ -88,11 +88,27 @@ class DevSettingsController extends Controller
 				if($item_id>0) {
 					$model = State::find($item_id) ;
 					if(!$model) return trans('validation.invalid') ;
-					return view('manage.settings.states-modalEditor' , compact('model')) ;
+					if($model->isProvince()) {
+						return view('manage.settings.states-modalEditor', compact('model'));
+					}
+					else {
+						$provinces = State::get_provinces('self')->orderBy('title')->get() ;
+						$domains = Domain::orderBy('title')->get() ;
+						return view('manage.settings.states-cityEditor', compact('model' , 'provinces' , 'domains'));
+					}
 				}
 				else {
-					$cities = State::get_cities();
-					return view('manage.settings.states-modalEditor' , compact('cities'));
+					if($parent_id) {
+						$provinces = State::get_provinces('self')->orderBy('title')->get() ;
+						$domains = Domain::orderBy('title')->get() ;
+						$guess_domain = State::where('parent_id',$parent_id)->first()->domain->id ;
+
+						return view('manage.settings.states-cityEditor', compact('model' , 'provinces' , 'domains' , 'parent_id' , 'guess_domain'));
+					}
+					else {
+						$cities = State::get_cities('self');
+						return view('manage.settings.states-modalEditor', compact('model', 'cities'));
+					}
 				}
 
 			default:
@@ -103,51 +119,45 @@ class DevSettingsController extends Controller
 
 	public function item($request_tab, $item_id)
 	{
-		//Preparetion...
+
+		//Preparation...
 		$page = $this->page;
 		$page[1] = [$request_tab];
 		$page[2] = ['edit',null,''];
-		$view = "manage.settings." . $request_tab . "_edit";
+		$view = "manage.settings." ;
 
-		$sub_method = str_replace('-', '', 'item_' . $request_tab);
-		if(!method_exists($this, $sub_method))
-			return view('errors.404');
+		switch($request_tab) {
+			case 'posts-cats' :
+				$model_data = Post_cat::find($item_id);
+				$view .= "posts-cats_edit" ;
+				break;
 
-		//Model...
-		$model_data = $this->$sub_method($item_id);
+			case 'states':
+				$model_data = State::get_cities($item_id);
+				$view .= "states-cities";
+				$page[2][1] = trans('manage.devSettings.states.province' , ['province'=>$model_data->first()->province()->title]) ;
+				break;
 
-		//View...
-		if(!View::exists($view))
-			return view('errors.404');
+			default:
+				return view('templates.say' , ['array'=>"What the hell is $request_tab?"]); //@TODO: REMOVE THIS
 
-		return view($view, compact('page', 'model_data'));
-
-
-	}
-
-	public function item_domains($q)
-	{
-		$json = '[
-    {"id":"856","name":"House"},
-    {"id":"1035","name":"Desperate Housewives"},
-    ...
-]';
-
-		echo $json;
-	}
-
-
-	private function item_postscats($item_id)
-	{
-		$model = Post_cat::findOrFail($item_id);
-		if(!$model) {
-			echo view('errors.404');
-			die();
 		}
 
-		return $model;
+
+		if(!View::exists($view))
+			return view('templates.say' , ['array'=>"View '$view' is not found."]); //@TODO: REMOVE THIS
+
+
+
+		if(!isset($model_data) or !$model_data or !View::exists($view))
+			return view('errors.404');
+
+		//View...
+		return view($view, compact('page', 'model_data'));
 
 	}
+
+
 
 	/*
 	|--------------------------------------------------------------------------
@@ -159,13 +169,9 @@ class DevSettingsController extends Controller
 	public function save_postsCats(Requests\Manage\PostCatsSaveRequest $request)
 	{
 		if(!Post_cat::isUnique($request,'title'))
-			return json_encode([
-					'message' => trans('manage.devSettings.posts-cats.add.err_title_unique') ,
-			]);
+			return $this->jsonFeedback(trans('validation.unique', ['attribute' => trans('validation.attributes.title')]) );
 		if(!Post_cat::isUnique($request,'slug'))
-			return json_encode([
-					'message' => trans('manage.devSettings.posts-cats.add.err_slug_unique') ,
-			]);
+			return $this->jsonFeedback(trans('validation.unique', ['attribute' => trans('validation.attributes.slug')]) );
 
 		//Save...
 		return $this->jsonSaveFeedback(Post_cat::store($request) , [
@@ -185,6 +191,18 @@ class DevSettingsController extends Controller
 	{
 		return $this->jsonAjaxSaveFeedback(State::store($request) ,[
 			'success_refresh' => 1,
+		]);
+
+	}
+
+	public function save_cities(Requests\Manage\CitiesSaveRequest $request)
+	{
+		$data = $request->toArray() ;
+		$data['parent_id'] = $data['province_id'] ;
+		unset($data['province_id']);
+
+		return $this->jsonAjaxSaveFeedback(State::store($data) ,[
+				'success_refresh' => 1,
 		]);
 
 	}

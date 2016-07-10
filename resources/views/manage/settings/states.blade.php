@@ -43,7 +43,7 @@
 						{{ $model->capital()->title }}
 					</td>
 					<td>
-						<a href="manage/devSettings/states/{{$model->id}}">
+						<a href="{{url('manage/devSettings/states/'.$model->id)}}" >
 							@pd($model->cities()->count().' '.trans('manage.devSettings.domains.city'))
 						</a>
 					</td>

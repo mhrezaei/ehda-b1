@@ -73,7 +73,7 @@ return [
 				"array"   => ":attribute باسد شامل :size آیتم باشد.",
 		),
 		"timezone"         => "The :attribute must be a valid zone.",
-		"unique"           => ":attribute قبلا انتخاب شده است.",
+		"unique"           => ":attribute تکراری است.",
 		"url"              => "قالب نشانی :attribute اشتباه است.",
 		"auth.fail"              => "شناسه‌ی کاربری یا رمز عبور اشتباه است.",
 
@@ -120,6 +120,8 @@ return [
 				'cities' => 'شهرها',
 			'content' => 'محتوا',
 			'capital_id'=> 'مرکز استان',
+			'province_id' => 'استان',
+			'domain_id' => 'دامنه',
 		],
 
 		"http" => [

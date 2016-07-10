@@ -1,12 +1,13 @@
 /**
  * Created by jafar on 7/6/2016 AD.
  */
-function modalForm($modal_id , $item_id)
+function modalForm($modal_id , $item_id , $parent_id)
 {
 	//Preparetions...
+	if(!$parent_id) $parent_id='0' ;
 	var $modal_selector = '#' + $modal_id ;
 	var $form_selector = $modal_selector + ' form ' ;
-	var $url = $($form_selector+'._0').html().replace('-id-',$item_id);
+	var $url = $($form_selector+'._0').html().replace('-id-',$item_id).replace('-parent-',$parent_id);
 
 	//Form Placement...
 	if($item_id=='0')
