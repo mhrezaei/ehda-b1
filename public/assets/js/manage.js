@@ -1,6 +1,24 @@
 /**
  * Created by jafar on 7/6/2016 AD.
  */
+function modalForm($modal_id , $item_id)
+{
+	//Preparetions...
+	var $modal_selector = '#' + $modal_id ;
+	var $form_selector = $modal_selector + ' form ' ;
+	var $url = $($form_selector+'._0').html().replace('-id-',$item_id);
+
+	//Form Placement...
+	if($item_id=='0')
+		$($modal_selector + '-title').html($($form_selector+'._1').html());
+	else
+		$($modal_selector + '-title').html($($form_selector+'._2').html());
+
+	//Form Load...
+	$($form_selector + 'div.modal-body').html('....').load($url);
+	$($modal_selector).modal() ;
+
+}
 function domainEditor($id)
 {
 	//Preparetions...
@@ -46,3 +64,4 @@ function domainCities($id)
 	//@TODO: Make a state selector from an array or something! 
 
 }
+

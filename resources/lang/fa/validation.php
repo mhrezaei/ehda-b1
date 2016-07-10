@@ -119,6 +119,7 @@ return [
 				'slug' => 'نامک',
 				'cities' => 'شهرها',
 			'content' => 'محتوا',
+			'capital_id'=> 'مرکز استان',
 		],
 
 		"http" => [

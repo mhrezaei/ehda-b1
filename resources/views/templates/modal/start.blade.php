@@ -24,6 +24,12 @@
 				'value' => $modal_id ,
 			])
 
+			@if(isset($hidden_vars))
+				@foreach($hidden_vars as $idx => $hidden_var)
+						<label class="hidden _{{$idx}}">{{$hidden_var}}</label>
+					@endforeach
+			@endif
+
 			{{-- divs classed `modal-body` and `moda-footer` should be included in the page. Sorry but either this or no blade at all. --}}
 
 			@if(0)

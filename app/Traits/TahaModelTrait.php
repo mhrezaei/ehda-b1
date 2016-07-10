@@ -2,7 +2,7 @@
 namespace App\Traits;
 
 
-trait TahaTrait
+trait TahaModelTrait
 {
 	/**
 	 * @param        $stack is a Model::where() return
@@ -23,6 +23,28 @@ trait TahaTrait
 			default:
 				return $stack->get() ;
 		}
+
+	}
+
+	public static function store($request)
+	{
+		$data = $request->toArray();
+		if(isset($data['_token']))
+			unset($data['_token']);
+		if(isset($data['_modal_id']))
+			unset($data['_modal_id']);
+
+		if($request->id)
+			$affected = Self::where('id', $request->id)->update($data);
+		else {
+			$model = Self::create($data);
+			if($model)
+				$affected = 1;
+			else
+				$affected = 0;
+		}
+
+		return $affected;
 
 	}
 }

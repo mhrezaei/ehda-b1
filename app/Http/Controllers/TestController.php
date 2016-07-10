@@ -20,6 +20,22 @@ class TestController extends Controller
      */
     public function index()
     {
+        $default = [
+             'ok' => 0 ,
+             'message' => trans('validation.invalid') ,
+             'redirect' => '' ,
+             'callback' => '' ,
+             'refresh' => 0 ,
+             'modalClose' => 0 ,
+             'updater' => '' ,
+        ];
+
+        foreach($default as $item => $value) {
+            echo "$item => $value <br>" ;
+        }
+
+
+        return ;
         //in...
         $user = Auth::user() ;
         $output = $user ;

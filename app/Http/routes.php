@@ -33,9 +33,11 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 		Route::get('/{request_tab}/' , 'DevSettingsController@index') ;
 		Route::get('/{request_tab}/new' , 'DevSettingsController@add') ;
 		Route::get('/{request_tab}/{id}' , 'DevSettingsController@item') ;
+		Route::get('/{request_tab}/{id}/edit' , 'DevSettingsController@editor') ;
 
 		Route::post('/posts-cats/save' , 'DevSettingsController@save_postsCats');
 		Route::post('/domains/save' , 'DevSettingsController@save_domains');
+		Route::post('/states/save' , 'DevSettingsController@save_states');
 	}) ;
 
 });

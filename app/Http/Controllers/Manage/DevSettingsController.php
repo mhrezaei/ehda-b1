@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Manage;
 
 use App\Models\Domain;
 use App\Models\Post_cat;
+use App\Models\State;
 use App\Providers\ValidationServiceProvider;
+use App\Traits\TahaControllerTrait;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -13,6 +15,7 @@ use Illuminate\Support\Facades\View;
 
 class DevSettingsController extends Controller
 {
+	use TahaControllerTrait ;
 	private $page = array();
 
 	public function __construct()
@@ -51,6 +54,14 @@ class DevSettingsController extends Controller
 	{
 		$model = Domain::orderBy('title')->get();
 		return $model ;
+
+		//@TODO: edition/deletion of cities and volunteers
+	}
+
+	private function index_states()
+	{
+		$model = State::get_provinces();
+		return $model ;
 	}
 
 	public function add($request_tab)
@@ -66,6 +77,28 @@ class DevSettingsController extends Controller
 			return view('errors.404');
 
 		return view($view, compact('page'));
+	}
+
+	public function editor($request_tab , $item_id)
+	{
+		//Appears in modal and doesn't need $this->page stuff
+
+		switch($request_tab) {
+			case 'states' :
+				if($item_id>0) {
+					$model = State::find($item_id) ;
+					if(!$model) return trans('validation.invalid') ;
+					return view('manage.settings.states-modalEditor' , compact('model')) ;
+				}
+				else {
+					$cities = State::get_cities();
+					return view('manage.settings.states-modalEditor' , compact('cities'));
+				}
+
+			default:
+				return view('errors.404');
+		}
+
 	}
 
 	public function item($request_tab, $item_id)
@@ -123,36 +156,8 @@ class DevSettingsController extends Controller
 	|
 	*/
 
-
-	public function save_domains(Requests\Manage\DomainSaveRequest $request)
-	{
-		//Save...
-		$is_saved = Domain::store($request);
-
-		//Return...
-		if($is_saved) {
-			return json_encode([
-					'ok' => '1',
-					'message' => trans('forms.feed.done'),
-					'refresh' => '1',
-					'callback' => '',
-			]);
-		}
-		else {
-			return json_encode([
-					'message' => trans('validation.invalid'),
-			]);
-		}
-
-	}
 	public function save_postsCats(Requests\Manage\PostCatsSaveRequest $request)
 	{
-		//Validation...
-//		$this->validate($request, [
-//			'title' => 'required',
-//			'slug' => 'required',
-//		]);
-
 		if(!Post_cat::isUnique($request,'title'))
 			return json_encode([
 					'message' => trans('manage.devSettings.posts-cats.add.err_title_unique') ,
@@ -163,22 +168,24 @@ class DevSettingsController extends Controller
 			]);
 
 		//Save...
-		$is_saved = Post_cat::store($request);
+		return $this->jsonSaveFeedback(Post_cat::store($request) , [
+				'success_redirect' => '/manage/devSettings/posts-cats' ,
+		]);
+	}
 
-		//Return...
-		if($is_saved) {
-			return json_encode([
-				'ok' => '1',
-				'message' => trans('forms.feed.done'),
-				'redirect' => url('/manage/devSettings/posts-cats'),
-				'callback' => '',
-			]);
-		}
-		else {
-			return json_encode([
-				'message' => trans('validation.invalid'),
-			]);
-		}
+
+	public function save_domains(Requests\Manage\DomainSaveRequest $request)
+	{
+		return $this->jsonAjaxSaveFeedback(Domain::store($request) ,[
+				'success_refresh' => 1,
+		]);
+	}
+
+	public function save_states(Requests\Manage\StatesSaveRequest $request)
+	{
+		return $this->jsonAjaxSaveFeedback(State::store($request) ,[
+			'success_refresh' => 1,
+		]);
 
 	}
 
