@@ -138,6 +138,13 @@ class DevSettingsController extends Controller
 				$page[2][1] = trans('manage.devSettings.states.province' , ['province'=>$model_data->first()->province()->title]) ;
 				break;
 
+			case 'domains' :
+				$domain = Domain::find($item_id) ;
+				$model_data = $domain->states()->orderBy('title')->get();
+				$view .= "states-cities";
+				$page[2][1] = trans('manage.devSettings.domains.cities-of') .' '. $domain->title ;
+				break;
+
 			default:
 				return view('templates.say' , ['array'=>"What the hell is $request_tab?"]); //@TODO: REMOVE THIS
 
@@ -157,6 +164,32 @@ class DevSettingsController extends Controller
 
 	}
 
+	public function search($request_tab , $key)
+	{
+		//Preparation...
+		$page = $this->page;
+		$page[1] = [$request_tab];
+		$view = "manage.settings." ;
+
+		switch($request_tab) {
+			case 'states' :
+				$model_data = State::where([
+					['title' , 'like' , '%'.$key.'%'] ,
+					['parent_id' , '<>' , '0']
+				])->orderBy('title')->get();
+				$view .= "states-cities";
+				$page[2] = ['search',trans('manage.devSettings.states.city-search')." $key",''];
+				break;
+
+			default:
+				return view('templates.say' , ['array'=>"What the hell is $request_tab?"]); //@TODO: REMOVE THIS
+				return view('errors.404');
+		}
+
+		//View...
+		return view($view, compact('page', 'model_data'));
+
+	}
 
 
 	/*

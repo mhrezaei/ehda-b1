@@ -66,3 +66,13 @@ function domainCities($id)
 
 }
 
+function search($form_id)
+{
+	var $input = $('#'+$form_id+ ' input[name=key]');
+	var $key   = $input.val() ;
+	var $url   = $('#'+$form_id).attr('action').replace('-key-',$key);
+
+	if(!$key) return false ;
+	window.location = $url ;
+	return false ;
+}

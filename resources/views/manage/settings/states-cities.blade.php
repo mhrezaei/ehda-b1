@@ -9,13 +9,23 @@
 	|
 	--}}
 
-	<div class="panel panel-toolbar">
-		@include('manage.frame.widgets.toolbar_button' , [
-			'target' => "modalForm('modalStateEditor' , '0' , '".$model_data->first()->province()->id."')" ,
-			'type' => 'success' ,
-			'caption' => trans('forms.button.add') ,
-			'icon' => 'plus-circle' ,
-		])
+	<div class="panel panel-toolbar row w100">
+		<div class="col-md-4"><p class="title">{{$page[2][1]}}</p></div>
+		<div class="col-md-8 tools">
+
+			@if($model_data->count()>0)
+				@include('manage.frame.widgets.toolbar_button' , [
+					'target' => "modalForm('modalStateEditor' , '0' , '".$model_data->first()->province()->id."')" ,
+					'type' => 'success' ,
+					'caption' => trans('forms.button.add') ,
+					'icon' => 'plus-circle' ,
+				])
+			@endif
+			@include('manage.frame.widgets.toolbar_search' , [
+				'target' => url('manage/devSettings/states/search/-key-') ,
+				'label' => trans('manage.devSettings.states.city-search') ,
+			])
+		</div>
 	</div>
 
 	{{--
@@ -33,7 +43,7 @@
 					<td>{{ trans('manage.devSettings.domains.city') }}</td>
 					<td>{{ trans('manage.devSettings.states.province-title') }}</td>
 					<td>{{ trans('manage.devSettings.domains.domain') }}</td>
-					<td>{{ trans('validation.attributes.capital_id') }}</td>
+					{{--<td>{{ trans('validation.attributes.capital_id') }}</td>--}}
 				</tr>
 				</thead>
 				<tbody>
@@ -52,13 +62,13 @@
 						<td>
 							{{ $model->domain->title }}
 						</td>
-						<td>
-							@if($model->capital()->id == $model->id)
-								<span class="fa fa-check text-success"></span>
-							@else
-								<span>&nbsp;</span>
-							@endif
-						</td>
+						{{--<td>--}}
+							{{--@if($model->capital()->id == $model->id)--}}
+								{{--<span class="fa fa-check text-success"></span>--}}
+							{{--@else--}}
+								{{--<span>&nbsp;</span>--}}
+							{{--@endif--}}
+						{{--</td>--}}
 					</tr>
 				@endforeach
 				</tbody>

@@ -5,14 +5,23 @@
 |
 --}}
 
-<div class="panel panel-toolbar">
-	@include('manage.frame.widgets.toolbar_button' , [
-		'target' => 'modalForm("modalStateEditor" , "0")' ,
-		'type' => 'success' ,
-		'caption' => trans('forms.button.add') ,
-		'icon' => 'plus-circle' ,
-	])
+<div class="panel panel-toolbar row w100">
+	<div class="col-md-4"><p class="title">{{ trans('manage.devSettings.states.trans') }}</p></div>
+	<div class="col-md-8 tools">
+
+		@include('manage.frame.widgets.toolbar_button' , [
+			'target' => 'modalForm("modalStateEditor" , "0")' ,
+			'type' => 'success' ,
+			'caption' => trans('forms.button.add') ,
+			'icon' => 'plus-circle' ,
+		])
+		@include('manage.frame.widgets.toolbar_search' , [
+			'target' => url('manage/devSettings/states/search/-key-') ,
+			'label' => trans('manage.devSettings.states.city-search') ,
+		])
+	</div>
 </div>
+
 
 {{--
 |--------------------------------------------------------------------------
