@@ -29,13 +29,19 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 
 	Route::group(['prefix'=>'devSettings'], function() {
 		Route::get('/' , 'DevSettingsController@index') ;
-		Route::get('/domains/cities/{$q}' , 'DevSettingsController@item_domains') ;
 		Route::get('/{request_tab}/' , 'DevSettingsController@index') ;
-		Route::get('/{request_tab}/new' , 'DevSettingsController@add') ;
+		Route::get('/{request_tab}/new' , 'DevSettingsController@add') ; //@TODO: mix it like the others
+
 		Route::get('/{request_tab}/{id}' , 'DevSettingsController@item') ;
+		Route::get('/{request_tab}/{id}/edit/{parent_id}' , 'DevSettingsController@editor') ;
+		Route::get('/{request_tab}/{id}/edit' , 'DevSettingsController@editor') ;
+
+		Route::get('/{request_tab}/search/{key}' , 'DevSettingsController@search');
 
 		Route::post('/posts-cats/save' , 'DevSettingsController@save_postsCats');
 		Route::post('/domains/save' , 'DevSettingsController@save_domains');
+		Route::post('/states/save' , 'DevSettingsController@save_states');
+		Route::post('/cities/save' , 'DevSettingsController@save_cities');
 	}) ;
 
 });

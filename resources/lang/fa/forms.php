@@ -15,6 +15,7 @@ return [
 		'save'		=> 'ذخیره',
 		'login'		=> 'ورود',
 		'add'		=> 'افزودن',
+		'search' => 'جست‌وجو' ,
 	],
 
 	//‌ COMMMON GLOBALLY-USED FIELDS ARE HERE. OTHERS, ARE IN THE CORRESPONDING TRANS FILE

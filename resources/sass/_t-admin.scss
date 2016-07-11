@@ -67,9 +67,26 @@ span.navbar-brand {
 |
 */
 .panel-toolbar {
-  //text-align: left;
-  width: 90%;
-  margin: 10px auto;
+  width: 100%;
+  margin: auto;
+
+  p.title {
+    margin: 10px;
+    font-family: Yekan;
+    font-size: 17px;
+    color: #282828;
+    padding: 10px;
+  }
+  .tools {
+    text-align: left;
+    margin: 10px auto;
+  }
+
+  .search {
+    input , button {
+      font-size: 10px;
+    };
+  }
 }
 
 /*

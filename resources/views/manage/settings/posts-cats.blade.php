@@ -44,7 +44,7 @@
 					</td>
 					<td>{{ $model->is_gallery? trans('manage.devSettings.posts-cats.content_pics') : trans('manage.devSettings.posts-cats.content_text') }}</td>
 					<td>
-						@if($model->have_comments)
+						@if($model->is_hidden)
 							<span class="fa fa-check text-success"></span>
 						@else
 							<span class="fa fa-minus"></span>

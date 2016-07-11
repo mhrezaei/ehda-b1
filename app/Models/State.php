@@ -4,22 +4,33 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Traits\TahaTrait ;
+use App\Traits\TahaModelTrait ;
 
 class State extends Model
 {
 	use SoftDeletes;
-	use TahaTrait ;
+	use TahaModelTrait ;
+
+	protected $guarded = ['id'];
+
+	public function domain()
+	{
+		return $this->belongsTo('App\Models\Domain');
+	}
+
 
 	public static function get_provinces($mood='get')
 	{
 		return self::stacker(Self::where('parent_id' , '0'),$mood);
 	}
 
-	public static function get_cities($given_province, $mood = 'get')
+	public static function get_cities($given_province=0, $mood = 'get')
 	{
 		if(is_numeric($given_province))
-			$stack = self::where('parent_id' , $given_province) ;
+			if($given_province==0)
+				$stack = self::where('parent_id','>','0') ;
+			else
+				$stack = self::where('parent_id' , $given_province) ;
 		else {
 			$province = self::where([
 				'title' => $given_province ,
@@ -65,15 +76,17 @@ class State extends Model
 	{
 		if($this->isProvince())
 			return self::find($this->capital_id) ;
-		else {
-			$province = self::find($this->parent_id) ;
-			return self::find($province->capital_id) ;
-		}
+		else
+			return $this->province()->capital() ;
 	}
 
 	public function province()
 	{
-
+		if($this->isProvince())
+			return $this ;
+		else {
+			return self::find($this->parent_id) ;
+		}
 	}
 
 }
