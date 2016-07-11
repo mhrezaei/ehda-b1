@@ -9,8 +9,8 @@
 return [
 
 	'available_modules' => [
-		'cards' => ['browse','search','add','bulk','edit','publish','report','delete','bin'],
-		'volunteers' => ['browse','search','add','edit','publish','report','delete' , 'bin'],
+		'cards' => ['browse','send','search','add','bulk','edit','publish','report','delete','bin'],
+		'volunteers' => ['browse','send','search','add','edit','publish','report','delete' , 'bin'],
 		'settings' => ['*'],
 		'stats' => ['*'],
 		'faqs' => ['browse','search','add','edit','publish','cats','delete','bin'],
@@ -26,6 +26,7 @@ return [
 
 	'available_permits' => [
 		'browse',
+		'send',
 		'search',
 		'add',
 		'bulk',

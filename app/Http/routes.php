@@ -23,9 +23,36 @@ Route::get('/', 'HomeController@index');
 Route::get('/manage/login', 'AuthController@login_panel');
 Route::post('/manage/auth', 'AuthController@login');
 Route::get('/manage/logout', 'AuthController@logout');
+
 Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage'], function () {
 	Route::get('/' , 'ManageController@index');
 	Route::get('/index' , 'ManageController@index');
+
+	/*
+	| Volunteers
+	*/
+
+	Route::group(['prefix'=>'volunteers'] , function() {
+		Route::get('/' , 'VolunteerController@browse') ;
+		Route::get('/browse' , 'VolunteerController@browse') ;
+		Route::get('/browse/{request_tab}' , 'VolunteerController@browse') ;
+
+		Route::get('/create' , 'VolunteerController@editor') ;
+		Route::get('/{volunteer_id}' , 'VolunteerController@show');
+		Route::get('/{volunteer_id}/edit' , 'VolunteerController@editor');
+		Route::post('/save' , 'VolunteerController@save');
+
+		Route::get('/search' , 'VolunteerController@search');
+		Route::post('/search' , 'VolunteerController@search_result');
+
+		Route::get('/reports' , 'VolunteerController@reports');
+		//minor things: role, password_rest, delete, bin_actions
+	});
+
+	/*
+	| Developer Settings
+	*/
+
 
 	Route::group(['prefix'=>'devSettings'], function() {
 		Route::get('/' , 'DevSettingsController@index') ;

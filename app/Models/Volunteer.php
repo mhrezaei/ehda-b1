@@ -28,14 +28,27 @@ class Volunteer extends Model implements AuthenticatableContract, CanResetPasswo
 		/*
 		| @TODO: A better definition of Developer (ex. by melli no.) would be a good idea.
 		*/
-		return true ;
-
 		if($this->id==1)
 			return true ;
 		else
 			return false ;
 	}
 
+	public function fullName($with_title = false)
+	{
+		$return = $this->name_first . " " . $this->name_last ;
+		if($with_title)
+			$return = $this->title() . " " . $return ;
 
+		return $return ;
+	}
+
+	public function title()
+	{
+		if($this->gender==1)
+			$title = trans('people.mr');
+		else
+			$title = trans('people.mrs');
+	}
 
 }
