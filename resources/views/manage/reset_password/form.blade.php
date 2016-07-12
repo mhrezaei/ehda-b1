@@ -12,7 +12,8 @@
 		@include('manage.reset_password.input' , [
 			'name' => 'username' ,
 			'icon' => 'face',
-			'cap' => trans('validation.attributes.username')
+			'cap' => trans('validation.attributes.username'),
+			'class' => 'form-required form-number'
 		])
 
 		@include('manage.login.input' , [
