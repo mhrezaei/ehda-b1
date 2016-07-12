@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth ;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -118,6 +119,12 @@ class AuthController extends Controller
 		//return view('templates.widget.email');
 		$date = Carbon::now();
 		$date = $date->diffInMinutes($date->copy()->addMinutes(10));
-		return view('templates.say' , ['array'=> $date]);
+//		return view('templates.say' , ['array'=> $date]);
+
+		Mail::send('templates.say', ['array' => $date], function ($m) {
+			$m->from('no-reply@ehda.center', 'Your Application');
+
+			$m->to('chieftaha@gmail.com', 'MHR')->subject('Your Reminder!');
+		});
 	}
 }
