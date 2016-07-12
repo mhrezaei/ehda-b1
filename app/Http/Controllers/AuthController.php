@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\VolunteerForgotPassword;
 use App\Providers\SecKeyServiceProvider;
 use App\Models\Volunteer;
 use App\Providers\SmsServiceProvider;
@@ -57,7 +58,8 @@ class AuthController extends Controller
 
 	public function reset_password()
 	{
-		return view('manage.reset_password.0');
+		$captcha = SecKeyServiceProvider::getQuestion('fa');
+		return view('manage.reset_password.0', compact('captcha'));
 	}
 
 	public function reset_password_process()
@@ -93,12 +95,7 @@ class AuthController extends Controller
 				return redirect()->back()->withErrors(trans('manage.old_password.error_new_password_equal_old_password'));
 		}
 
-		$affected = Volunteer::where('id', $volunteer['id'])
-			->update([
-				'password'=> Hash::make($request->password),
-				'password_force_change' => 0
-			]);
-		if ($affected)
+		if ($volunteer->oldPasswordChange(Hash::make($request->password)))
 		{
 			return redirect('/manage/index');
 		}
@@ -117,14 +114,10 @@ class AuthController extends Controller
 	public function sms()
 	{
 		//return view('templates.widget.email');
-		$date = Carbon::now();
-		$date = $date->diffInMinutes($date->copy()->addMinutes(10));
+//		$date = Carbon::now()->addMinutes(5);
+//		$date = $date->diffInMinutes($date->copy()->addMinutes(10));
 //		return view('templates.say' , ['array'=> $date]);
-
-		Mail::send('templates.say', ['array' => $date], function ($m) {
-			$m->from('no-reply@ehda.center', 'Your Application');
-
-			$m->to('chieftaha@gmail.com', 'MHR')->subject('Your Reminder!');
-		});
+//		Event::fire(new VolunteerForgotPassword(Volunteer::find(1)));
+		Volunteer::find(1)->makeForgotPasswordToken();
 	}
 }

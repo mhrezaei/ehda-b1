@@ -1,6 +1,7 @@
 {!! Form::open([
-	'url'	=> 'manage/auth' ,
+	'url'	=> 'manage/reset_password_process' ,
 	'method'=> 'post',
+	'class' => 'js',
 ]) !!}
 
 	<div class="header header-success text-center">
@@ -13,12 +14,14 @@
 			'icon' => 'face',
 			'cap' => trans('validation.attributes.username')
 		])
-		{{--@include('manage.reset_password.input' , [--}}
-			{{--'name' => 'password' ,--}}
-			{{--'icon' => 'lock_outline',--}}
-			{{--'cap' => trans('validation.attributes.password'),--}}
-			{{--'type' => 'password',--}}
-		{{--])--}}
+
+		@include('manage.login.input' , [
+			'name' => 'security' ,
+			'icon' => 'visibility',
+			'cap' => $captcha['question']
+		])
+
+		<input type="hidden" name="key" value="{{$captcha['key']}}">
 		
 	</div>
 

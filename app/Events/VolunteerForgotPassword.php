@@ -3,21 +3,23 @@
 namespace App\Events;
 
 use App\Events\Event;
+use App\Models\Volunteer;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 class VolunteerForgotPassword extends Event
 {
     use SerializesModels;
+    public $volunteer;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Volunteer $volunteer)
     {
-        //
+        $this->volunteer = $volunteer;
     }
 
     /**

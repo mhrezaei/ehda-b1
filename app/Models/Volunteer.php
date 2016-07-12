@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use App\Traits\PermitsTrait;
+use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -17,6 +18,8 @@ class Volunteer extends Model implements AuthenticatableContract, CanResetPasswo
 	use PermitsTrait;
 
 //	protected $fillable = [ 'email' , 'password' , 'name' , 'family' , 'gender' , 'birthday'] ;
+
+	protected $guarded = ['id'];
 
 	public function volunteer_logins()
 	{
@@ -34,6 +37,24 @@ class Volunteer extends Model implements AuthenticatableContract, CanResetPasswo
 			return true ;
 		else
 			return false ;
+	}
+
+	public function makeForgotPasswordToken()
+	{
+		$token['reset_token'] = rand(100000, 999999);
+		$token['expire_token'] = Carbon::now()->addMinutes(5);
+		$this->update([
+			'reset_token' => json_encode($token),
+		]);
+		return $token['reset_token'];
+	}
+
+	public function oldPasswordChange($password)
+	{
+		return $this->update([
+			'password'=> $password,
+			'password_force_change' => 0
+		]);
 	}
 
 
