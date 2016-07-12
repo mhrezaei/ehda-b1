@@ -16,7 +16,9 @@ function modalForm($modal_id , $item_id , $parent_id)
 		$($modal_selector + '-title').html($($form_selector+'._2').html());
 
 	//Form Load...
-	$($form_selector + 'div.modal-body').html('....').load($url);
+	$($form_selector + 'div.modal-body').html('....').load($url , function() {
+		$('.selectpicker').selectpicker();
+	});
 	$($modal_selector).modal() ;
 
 }

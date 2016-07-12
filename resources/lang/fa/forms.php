@@ -18,12 +18,11 @@ return [
 		'search' => 'جست‌وجو' ,
 	],
 
-	//‌ COMMMON GLOBALLY-USED FIELDS ARE HERE. OTHERS, ARE IN THE CORRESPONDING TRANS FILE
-//	"field" => [
-//		'title'  => 'عنوان',
-//		'slug' => 'نامک',
-//		'content' => 'محتوا',
-//	],
+	"general" => [
+		'male' => 'آقا',
+		'female' => 'خانم',
+	],
+
 
 	"logic" => [
 		'yes' => 'بله',

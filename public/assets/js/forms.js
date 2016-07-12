@@ -113,7 +113,6 @@ function forms_responde(data, statusText, xhr, $form)
       //after effects...
       if(data.refresh==1) 	forms_delaiedPageRefresh(1);
       if(data.modalClose==1) 	setTimeout(function(){$(".modal").modal('hide');},1000);
-//      if(data.login==1) 	setTimeout(function(){window.location = base_url()+"login";},1000);
       if(data.redirect)       setTimeout(function(){window.location = data.redirect;},1000);
       if(data.updater)		allForms_updater(data.updater);
       if(data.callback)		setTimeout(data.callback,1000);

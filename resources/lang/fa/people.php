@@ -3,7 +3,15 @@
 // fields are in the valuation file though.
 
 return [
-	'mr' => 'آقای' ,
-	'mrs'=> 'خانم' ,
+		"volunteers" => [
+				"manage" => [
+						'pending' => 'نیازمند بررسی',
+						'create' => 'افزودن سفیر تازه' ,
+						'edit' => 'ویرایش اطلاعات سفیر',
+				],
+
+		],
+		'mr' => 'آقای' ,
+		'mrs'=> 'خانم' ,
 ]
 ?>

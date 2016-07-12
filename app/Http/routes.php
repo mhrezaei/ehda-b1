@@ -33,19 +33,19 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 	*/
 
 	Route::group(['prefix'=>'volunteers'] , function() {
-		Route::get('/' , 'VolunteerController@browse') ;
-		Route::get('/browse' , 'VolunteerController@browse') ;
-		Route::get('/browse/{request_tab}' , 'VolunteerController@browse') ;
+		Route::get('/' , 'VolunteersController@browse') ;
+		Route::get('/browse' , 'VolunteersController@browse') ;
+		Route::get('/browse/{request_tab}' , 'VolunteersController@browse') ;
 
-		Route::get('/create' , 'VolunteerController@editor') ;
-		Route::get('/{volunteer_id}' , 'VolunteerController@show');
-		Route::get('/{volunteer_id}/edit' , 'VolunteerController@editor');
-		Route::post('/save' , 'VolunteerController@save');
+		Route::get('/create' , 'VolunteersController@editor') ;
+		Route::get('/{volunteer_id}' , 'VolunteersController@show');
+		Route::get('/{volunteer_id}/edit' , 'VolunteersController@editor');
+		Route::post('/save' , 'VolunteersController@save');
 
-		Route::get('/search' , 'VolunteerController@search');
-		Route::post('/search' , 'VolunteerController@search_result');
+		Route::get('/search' , 'VolunteersController@search');
+		Route::post('/search' , 'VolunteersController@search_result');
 
-		Route::get('/reports' , 'VolunteerController@reports');
+		Route::get('/reports' , 'VolunteersController@reports');
 		//minor things: role, password_rest, delete, bin_actions
 	});
 

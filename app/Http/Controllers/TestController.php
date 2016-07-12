@@ -13,126 +13,110 @@ use Illuminate\Support\Facades\Auth;
 
 class TestController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $default = [
-             'ok' => 0 ,
-             'message' => trans('validation.invalid') ,
-             'redirect' => '' ,
-             'callback' => '' ,
-             'refresh' => 0 ,
-             'modalClose' => 0 ,
-             'updater' => '' ,
-        ];
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function index()
+	{
+//		in...
+		$user = Auth::user();
+		$output = $user;
 
-        foreach($default as $item => $value) {
-            echo "$item => $value <br>" ;
-        }
+//		here...
+		$output = State::get_grouped() ;
 
+//		out...
+		return view('templates.say')->with(['array' => $output]);
 
-        return ;
-        //in...
-        $user = Auth::user() ;
-        $output = $user ;
+		echo Carbon::now();
+	}
 
-//        here...
-//        $user->detachDomains(['fars','tehran']) ;
-//        $user->attachDomains('all');
-        $output = $user->can('*', 'alborzd' ) ;
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function create()
+	{
+		echo 'create';
+	}
 
-        //out...
-        return view('templates.say')->with(['array' => $output]) ;
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @param  \Illuminate\Http\Request $request
+	 * @return \Illuminate\Http\Response
+	 */
+	public function store(Request $request)
+	{
+		echo 'store';
 
-        echo Carbon::now();
-    }
+		return view('templates.say', ['array' => $request]);
+	}
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        echo 'create' ;
-    }
+	public function show($id)
+	{
+		$city = State::find(245);
+		$domain = Domain::find(14);
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        echo 'store' ;
-        return view('templates.say' , ['array' => $request])  ;
-    }
+		return view('templates.say', ['array' => $domain->states()->count()]);
 
-    public function show($id)
-    {
-        $city = State::find(245) ;
-        $domain = Domain::find(14) ;
+	}
 
-        return view('templates.say' , ['array'=>$domain->states()->count()]);
+	public function set_domain_ids()
+	{
+		$provinces = State::get_provinces();
+		$affected = 0;
 
-    }
+		foreach($provinces as $province) {
+			$domain = Domain::where('title', $province->title)->first();
 
-    public function set_domain_ids()
-    {
-        $provinces = State::get_provinces();
-        $affected = 0 ;
+			$cities = $province->cities();
+			foreach($cities as $city) {
+				$city->domain_id = $domain->id;
+				$affected += $city->save();
+			}
+		}
 
-        foreach($provinces as $province) {
-            $domain = Domain::where('title',$province->title)->first();
+		return view('templates.say', ['array' => $affected]);
 
-            $cities = $province->cities() ;
-            foreach($cities as $city) {
-                $city->domain_id = $domain->id ;
-                $affected += $city->save() ;
-            }
-        }
-        
-        return view('templates.say' , ['array'=>$affected]);
-        
-    }
+	}
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        echo "edit: $id" ;
-    }
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  int $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function edit($id)
+	{
+		echo "edit: $id";
+	}
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        echo 'store '.$id ;
-        return view('templates.say' , ['array' => $request])  ;
-    }
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  \Illuminate\Http\Request $request
+	 * @param  int                      $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function update(Request $request, $id)
+	{
+		echo 'store ' . $id;
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        echo "destroy: $id" ;
-    }
+		return view('templates.say', ['array' => $request]);
+	}
+
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function destroy($id)
+	{
+		echo "destroy: $id";
+	}
 }

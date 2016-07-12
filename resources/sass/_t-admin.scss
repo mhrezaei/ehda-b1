@@ -14,6 +14,19 @@ thead {
   }
 }
 
+.bootstrap-select.btn-group .dropdown-toggle .filter-option {
+  text-align: right;
+
+}
+
+div.bootstrap-select {
+  .bs-caret {
+    position: absolute;
+    left: 30px;
+    top: 45%;  }
+
+}
+
 /*
 |--------------------------------------------------------------------------
 | Navbar & Sidebar
@@ -53,10 +66,9 @@ span.navbar-brand {
 }
 
 #side-menu {
-  li a{
+  li a {
     font-family: Yekan;
-    font-size: 12px
-  ;
+    font-size: 12px;
   }
 }
 
@@ -83,9 +95,10 @@ span.navbar-brand {
   }
 
   .search {
-    input , button {
+    input, button {
       font-size: 10px;
-    };
+    }
+  ;
   }
 }
 
@@ -96,7 +109,7 @@ span.navbar-brand {
 |
 */
 .modal-title {
-  font-weight: 500 ;
+  font-weight: 500;
   font-family: Yekan;
   font-size: 16px;
 }
