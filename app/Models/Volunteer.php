@@ -57,6 +57,14 @@ class Volunteer extends Model implements AuthenticatableContract, CanResetPasswo
 		]);
 	}
 
+	public function updateVolunteerForResetPassword()
+	{
+		return $this->update([
+			'reset_token' => null,
+			'password_force_change' => 1
+		]);
+	}
+
 
 
 }

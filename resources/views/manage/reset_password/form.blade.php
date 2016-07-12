@@ -38,16 +38,17 @@
 
 	<div class="secondForm" style="display: none;">
 		{!! Form::open([
-				'url'	=> 'manage/reset_password_process' ,
+				'url'	=> 'manage/reset_password_token_process' ,
 				'method'=> 'post',
 				'class' => 'js',
 				'id' => 'reset_password_form_token'
 			]) !!}
 		<div class="content">
+			<input type="hidden" name="national">
 			@include('manage.reset_password.input' , [
-			'name' => 'username' ,
-			'icon' => 'face',
-			'cap' => trans('validation.attributes.username'),
+			'name' => 'token' ,
+			'icon' => 'visibility',
+			'cap' => trans('validation.attributes.token'),
 			'class' => 'form-required form-number'
 		])
 		</div>

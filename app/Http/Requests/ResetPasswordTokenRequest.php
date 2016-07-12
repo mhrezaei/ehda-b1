@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
-use App\Providers\ValidationServiceProvider;
 
-class ResetPasswordRequest extends Request
+class ResetPasswordTokenRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,8 +25,8 @@ class ResetPasswordRequest extends Request
     {
         $input = $this->all();
         return [
-            'username' => 'required|numeric',
-            'security' => 'required|captcha:'.$input['key'],
+            'national' => 'required',
+            'token' => 'required|numeric',
         ];
     }
 
@@ -35,8 +34,7 @@ class ResetPasswordRequest extends Request
     {
         $value	= parent::all();
         $purified = ValidationServiceProvider::purifier($value,[
-            'security'  =>  'ed',
-            'username'  =>  'ed',
+            'token'  =>  'ed',
         ]);
         return $purified;
 
