@@ -50,7 +50,7 @@ function forms_validate(formData, jqForm, options) {
       }
 
       //result...
-      $errors = 0 ; //@TODO: REMOVE IT
+      // $errors = 0 ; //@TODO: REMOVE IT
       if($errors>0) {
             $($feed).addClass('alert-danger').html($($feed+"-error").html());
             return false ;

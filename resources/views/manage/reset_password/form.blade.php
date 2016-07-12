@@ -2,6 +2,7 @@
 	'url'	=> 'manage/reset_password_process' ,
 	'method'=> 'post',
 	'class' => 'js',
+	'id' => 'reset_password_form'
 ]) !!}
 
 	<div class="header header-success text-center">
@@ -16,7 +17,7 @@
 			'class' => 'form-required form-number'
 		])
 
-		@include('manage.login.input' , [
+		@include('manage.reset_password.input' , [
 			'name' => 'security' ,
 			'icon' => 'visibility',
 			'cap' => $captcha['question']
@@ -31,6 +32,8 @@
 			{{ trans('forms.button.recovery') }}
 		</button>
 	</div>
+
+@include('forms.feed')
 
 @if($errors->all())
 	<div class="alert alert-danger">
