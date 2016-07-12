@@ -12,6 +12,8 @@
 
 	{{-- JQuery --}}
 	{!! Html::script ('assets/libs/jquery.js') !!}
+	{!! Html::script ('assets/libs/jquery.form.min.js') !!}
+	{!! Html::script ('assets/js/forms.js') !!}
 
 	{{-- BOOTSTRAP --}}
 	{!! Html::style('assets/libs/bootstrap/css/bootstrap.min.css') !!}
