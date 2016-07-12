@@ -168,10 +168,6 @@ class AuthController extends Controller
 //		$date = Carbon::now()->addMinutes(5);
 //		$date = $date->diffInMinutes($date->copy()->addMinutes(10));
 //		return view('templates.say' , ['array'=> $date]);
-//		Event::fire(new VolunteerForgotPassword(Volunteer::find(1)));
-		//Volunteer::find(1)->makeForgotPasswordToken();
-		$vol = Volunteer::find(1);
-		$vol = json_decode($vol['reset_token']);
-		return view('templates.say' , ['array'=>$vol]);
+		Event::fire(new VolunteerForgotPassword(Volunteer::find(1)));
 	}
 }
