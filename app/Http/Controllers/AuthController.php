@@ -62,9 +62,17 @@ class AuthController extends Controller
 		return view('manage.reset_password.0', compact('captcha'));
 	}
 
-	public function reset_password_process()
+	public function reset_password_process(Requests\ResetPasswordRequest $request)
 	{
 		if(Auth::check()) return redirect('/manage/index');
+
+		//Username...
+		$volunteer = Volunteer::where('code_meli',$request->username)->first();
+		if(!$volunteer)
+			return redirect()->back()->withErrors(trans('manage.login.error_username'));
+
+		if(!$volunteer->published_at)
+			return redirect()->back()->withErrors(trans('manage.login.error_not_published'));
 	}
 
 	/**
