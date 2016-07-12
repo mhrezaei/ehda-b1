@@ -31,7 +31,7 @@ var lineChartData = {
     new Chart(cline).Line(lineChartData, {
         responsive: true
     });
-   
+
 
    var pdata = [
     {

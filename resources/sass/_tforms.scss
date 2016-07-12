@@ -1,4 +1,15 @@
-.tForms {
+div.tForms {
+
+  width: 800px;
+  max-width: 90%;
+  margin: auto;
+
+  .title {
+    margin: 40px 0 10px 0;
+    padding: 0;
+    font-weight: 700;
+    font-size: 16px;
+  }
 
   .form-group {
     padding-top: 5px;
@@ -6,17 +17,17 @@
   }
   .control-label {
     font-family: "IRANSans";
-    font-weight: 500;
+    font-weight: 400;
   }
 
   .form-control {
     font-family: "IRANSans";
-    font-weight: 500;
+    font-weight: 200;
   }
 
   .help-block {
     font-family: "IRANSans";
-    font-weight: 200;
+    font-weight: 100;
     font-size: 9px;
   }
 
@@ -30,12 +41,32 @@
   .form-feed {
     font-family: "IRANSans";
     font-weight: 400;
-    display: none;
+    //display: none;
     font-size: 11px;
     line-height: 2.0;
   }
 
+  .btn {
+    min-width: 150px;
+    font-family: Yekan;
+  }
+
+  .required-sign {
+    color: red;
+    font-size: 8px;
+  }
+
   .ltr {
     direction: ltr;
+  }
+
+  .form-note {
+    font-weight: 200;
+    font-size: 12px;
+
+    i {
+     margin: 0 10px 0 20px ;
+      font-size: 14px;
+    }
   }
 }

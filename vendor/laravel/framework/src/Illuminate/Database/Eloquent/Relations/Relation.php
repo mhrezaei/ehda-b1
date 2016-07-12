@@ -78,7 +78,7 @@ abstract class Relation
     abstract public function addEagerConstraints(array $models);
 
     /**
-     * Initialize the relation on a set of models.
+     * Initialize the relation on a set of Models.
      *
      * @param  array   $models
      * @param  string  $relation
@@ -114,7 +114,7 @@ abstract class Relation
     }
 
     /**
-     * Touch all of the related models for the relationship.
+     * Touch all of the related Models for the relationship.
      *
      * @return void
      */
@@ -190,7 +190,7 @@ abstract class Relation
     }
 
     /**
-     * Get all of the primary keys for an array of models.
+     * Get all of the primary keys for an array of Models.
      *
      * @param  array   $models
      * @param  string  $key

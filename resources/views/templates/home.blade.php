@@ -42,6 +42,6 @@
 <body>
 
 @yield('content'  )
-@yield('modals'   )
+@yield('modal')
 </body>
 </html>

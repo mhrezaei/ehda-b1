@@ -2,27 +2,41 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        //
-    }
+	/**
+	 * Bootstrap any application services.
+	 *
+	 * @return void
+	 */
+	public function boot()
+	{
 
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        //
-    }
+		Blade::directive('pd', function ($str) {
+			return "<?php echo App\Providers\AppServiceProvider::pd($str) ?>" ;
+		});
+
+	}
+
+	/**
+	 * Register any application services.
+	 *
+	 * @return void
+	 */
+	public function register()
+	{
+		//
+	}
+
+	public static function pd($str)
+	{
+		$farsi_chars = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹','۴','۵','۶'];
+		$latin_chars = ['0','1','2','3','4','5','6','7','8','9','٤','٥','٦'];
+		$new_str = str_replace($latin_chars,$farsi_chars,$str);
+
+		return $new_str ;
+	}
 }
