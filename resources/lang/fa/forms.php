@@ -21,6 +21,8 @@ return [
 	"general" => [
 		'male' => 'آقا',
 		'female' => 'خانم',
+		"single" => 'بدون همسر' ,
+		"married" => 'متأهل' ,
 	],
 
 	"education" => [

@@ -22,13 +22,12 @@ class TestController extends Controller
 	 */
 	public function index()
 	{
-		$date = "2004/12/05" ;
+		$date = "2016-07-14 02:50:13" ;
 		$carbon = new Carbon($date) ;
 		$output = $carbon->toDateTimeString()  ;
 		$jdate = jDate::forge($date);
 
 		$output = $jdate->format('Y/m/d');
-		$output = $jdate->ago();
 
 		// Return...
 		return view('templates.say')->with(['array' => $output]);

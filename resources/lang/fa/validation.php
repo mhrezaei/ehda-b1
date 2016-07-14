@@ -119,6 +119,7 @@ return [
 				"gender"=> "جنسیت",
 				"birth_date" => "تاریخ تولد",
 				"birth_city" => "محل تولد",
+				"marital_status" => "وضعیت تأهل",
 				"edu_level" => "میزان تحصیلات",
 				"edu_field" => "رشته‌ی تحصیلی" ,
 				'edu_city' => 'محل تحصیل',

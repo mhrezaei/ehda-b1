@@ -46,7 +46,13 @@
 	@include('forms.sep')
 
 	@include('forms.select-gender' , [
-		'value' => isset($model)? $model->gender : '' ,
+		'value' => isset($model)? $model->gender : '0' ,
+		'blank_value' => isset($model)? 'NO' : ' ',
+		'class' => 'form-required',
+	])
+
+	@include('forms.select-marital' , [
+		'value' => isset($model)? $model->marital_status : '0' ,
 		'blank_value' => isset($model)? 'NO' : ' ',
 		'class' => 'form-required',
 	])
@@ -61,11 +67,9 @@
 		'search_placeholder' => trans('forms.button.search') ,
 	])
 
-	@include('forms.input' , [
-		'id' => 'txtBirthDate',
+	@include('forms.datepicker' , [
 	    'name' => 'birth_date',
 	    'value' => isset($model)? $model->birth_date : '',
-	    'class' => 'datepicker' ,
 	])
 
 	@include('forms.input' , [
