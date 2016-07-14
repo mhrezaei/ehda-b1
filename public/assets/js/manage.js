@@ -22,6 +22,7 @@ function modalForm($modal_id , $item_id , $parent_id)
 	$($modal_selector).modal() ;
 
 }
+
 function domainEditor($id)
 {
 	//Preparetions...

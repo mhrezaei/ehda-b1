@@ -1,6 +1,13 @@
 <?php
-if(isset($class) && str_contains($class, 'form-required')) {
-	$required = true;
+$add_extra = false ;
+if(isset($class)) {
+	if(str_contains($class, 'form-required')) {
+		$required = true;
+	}
+	if(str_contains($class, 'datepicker')) {
+		if(!isset($id)) $id = 'date'.rand(1,1000);
+		$add_extra = true ;
+	}
 }
 ?>
 
@@ -29,3 +36,7 @@ if(isset($class) && str_contains($class, 'form-required')) {
 		</span>
 	</div>
 </div>
+
+@if($add_extra)
+	<input type="hidden" name="{{$name}}" id="{{$id}}_extra" value="{{$value or ''}}">
+@endif

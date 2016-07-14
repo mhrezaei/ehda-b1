@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use App\Traits\PermitsTrait;
+use App\Traits\TahaModelTrait;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -15,7 +16,9 @@ class Volunteer extends Model implements AuthenticatableContract, CanResetPasswo
 	use Authenticatable, CanResetPassword;
 	use SoftDeletes;
 	use PermitsTrait;
+	use TahaModelTrait ;
 
+	protected $guarded = ['id' , 'deleted_at' , 'roles' , 'domains' , 'unverified_changes' , 'settings'] ;
 //	protected $fillable = [ 'email' , 'password' , 'name' , 'family' , 'gender' , 'birthday'] ;
 
 	public function volunteer_logins()

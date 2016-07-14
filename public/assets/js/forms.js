@@ -23,6 +23,15 @@ function forms_listener()
             });
       });
 
+	$(".datepicker").each(function () {
+		$(this).removeClass('datepicker');
+		var $id = $(this).attr('id');
+		var objCal1 = new MHR.persianCalendar( $id , {
+			extraInputID: $id+"_extra",
+			extraInputFormat: "YYYY/MM/DD"
+		} );
+	});
+
 
       setTimeout("forms_listener()",5);
 }
@@ -34,6 +43,8 @@ function forms_validate(formData, jqForm, options) {
 	var $formId = jqForm.attr('id');
       var $errors = 0               ;
       var $feed   = "#" + $formId + " .form-feed";
+
+      //@TODO: check form-number
 
 
       //Form Feed...

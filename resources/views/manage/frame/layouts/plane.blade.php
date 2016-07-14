@@ -36,6 +36,10 @@
 	{!! HTML::script ('assets/libs/bootstrap-select/bootstrap-select.min.js') !!}
 	{!! HTML::script ('assets/libs/bootstrap-select/defaults-fa_IR.min.js') !!}
 
+	{{-- Datepicker --}}
+	{!! HTML::script ('assets/libs/datepicker/js-persian-cal.js') !!}
+	{!! Html::style('assets/libs/datepicker/js-persian-cal.css') !!}
+
 	{{-- Custom --}}
 	{!! Html::style('assets/css/manage.min.css') !!}
 	{!! HTML::script ('assets/js/forms.js') !!}

@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Manage;
 
 use App\Models\State;
+use App\Models\Volunteer;
 use App\Traits\TahaControllerTrait;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class VolunteersController extends Controller
@@ -33,12 +36,56 @@ class VolunteersController extends Controller
 
 		//View...
 		if($model_id==0) {
-			if(!Auth::user()->can('volunteers:create')) return view('errors.403'); //@TODO: don't forget to do this on save!
+			if(!Auth::user()->can('volunteers:create')) return view('errors.403');
 			$page[1] = ['create' , trans('people.volunteers.manage.create') , ''] ;
 
 			$random_password = Str::random(10) ;
 			return view($view , compact('page' , 'random_password' , 'states'));
 		}
+		else {
+			if(!Auth::user()->can('volunteers:edit')) return view('errors.403');
+			$page[1] = ['edit' , trans('people.volunteers.manage.edit') , ''] ;
+
+			$model = Volunteer::find($model_id);
+			if(!$model) return view('errors.410');
+			return view($view , compact('page' , 'states' , 'model'));
+		}
+
+		//@TODO: Delete User Button
+
+	}
+
+	public function save(Requests\Manage\VolunteerSaveRequest $request)
+	{
+		//Normalization...
+		$data = $request->toArray() ;
+		$user = Auth::user() ;
+
+		$carbon = new Carbon($request->birth_date);
+		$data['birth_date'] = $carbon->toDateTimeString() ; //TODO: No Age Validation?
+
+		if($request->id) {
+			$data['updated_by'] = $user->id ;
+		}
+		else {
+			$data['created_by'] = $user->id ;
+			$data['password'] = Hash::make($data['password']);
+			$data['password_force_change'] = 1 ;
+			if($user->can('volunteers.publish')) {
+				$data['published_at'] = Carbon::now()->toDateTimeString() ;
+				$data['published_by'] = $user->id ;
+			}
+		}
+
+		//TODO: unique code_melli , unique email ,
+
+		//Save and Return...
+		$saved = Volunteer::store($data);
+		return $this->jsonSaveFeedback($saved , [
+
+		]);
+
+		// return $this->jsonFeedback($data['birth_date']);
 
 	}
 }

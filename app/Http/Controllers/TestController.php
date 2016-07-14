@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mhr_state;
 use App\Models\Domain;
 use App\Models\State;
+use App\Models\Volunteer;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -20,17 +21,16 @@ class TestController extends Controller
 	 */
 	public function index()
 	{
-//		in...
-		$user = Auth::user();
-		$output = $user;
+		// in...
+		$user = Volunteer::find(2);
 
-//		here...
-		$output = State::get_grouped() ;
+		// here...
+		$user->published_at = Carbon::now()->toDateTimeString() ;
+		$user->save() ;
 
-//		out...
-		return view('templates.say')->with(['array' => $output]);
 
-		echo Carbon::now();
+		// Return...
+		return view('templates.say')->with(['array' => $user]);
 	}
 
 	/**
