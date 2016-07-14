@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
+use Morilog\Jalali\jDate;
 
 class TestController extends Controller
 {
@@ -21,16 +22,16 @@ class TestController extends Controller
 	 */
 	public function index()
 	{
-		// in...
-		$user = Volunteer::find(2);
+		$date = "2004/12/05" ;
+		$carbon = new Carbon($date) ;
+		$output = $carbon->toDateTimeString()  ;
+		$jdate = jDate::forge($date);
 
-		// here...
-		$user->published_at = Carbon::now()->toDateTimeString() ;
-		$user->save() ;
-
+		$output = $jdate->format('Y/m/d');
+		$output = $jdate->ago();
 
 		// Return...
-		return view('templates.say')->with(['array' => $user]);
+		return view('templates.say')->with(['array' => $output]);
 	}
 
 	/**
