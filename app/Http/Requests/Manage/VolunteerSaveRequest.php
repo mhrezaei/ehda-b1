@@ -42,9 +42,13 @@ class VolunteerSaveRequest extends Request
 			'birth_city' => 'required',
 			'marital_status' => 'required' ,
 			'birth_date' => 'required|date' ,
-			'tel_mobile' => 'required',
-			'tel_emergency' => 'required|different:tel_mobile',
+			'tel_mobile' => 'required|phone:mobile',
+			'tel_emergency' => 'required|different:tel_mobile|phone:mobile',
+			'home_tel' => 'phone:fixed',
+			'work_tel' => 'phone:fixed',
 		];
+
+		//@TODO: more validation may be required here, such as phone number patterns
 	}
 
 	public function all()
@@ -54,13 +58,17 @@ class VolunteerSaveRequest extends Request
 			'code_meli'  =>  'ed',
 			'gender' => 'number',
 			'birth_city' => 'number',
+			'tel_mobile' => 'ed' ,
+			'tel_emergency'=> 'ed' ,
 			'edu_level' => 'number',
 			'edu_city' => 'number',
 			'home_city' => 'number',
+			'home_tel' => 'ed' ,
 			'work_city' => 'number',
 			'introduction' => 'number' ,
 			'home_address' => 'pd' ,
 			'work_address' => 'pd' ,
+			'work_tel' => 'ed' ,
 			'motivation' => 'pd' ,
 			'alloc_time' => 'pd' ,
 		]);

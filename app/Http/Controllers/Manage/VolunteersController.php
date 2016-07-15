@@ -25,6 +25,20 @@ class VolunteersController extends Controller
 		$this->page[0] = ['volunteers'];
 	}
 
+	public function browse($request_tab = 'active')
+	{
+		//Preparation...
+		$page = $this->page ;
+		$page[1] = ["browse/".$request_tab , trans("people.volunteers.manage.$request_tab") , $request_tab] ;
+
+		//Model...
+		$model_data = Volunteer::selector($request_tab)->orderBy('created_at' , 'desc')->get();
+
+		//View...
+		return view('manage.volunteers.browse' , compact('page','model_data'));
+
+	}
+
 	public function editor($model_id=0)
 	{
 		//Preparation...

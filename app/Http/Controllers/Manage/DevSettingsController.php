@@ -28,39 +28,30 @@ class DevSettingsController extends Controller
 		//Preparetions...
 		$page = $this->page;
 		$page[1] = [$request_tab];
-		$sub_method = str_replace('-', '', 'index_' . $request_tab);
-		if(!method_exists($this, $sub_method))
-			return view('errors.404');
 
 		//Model...
-		$model_data = $this->$sub_method();
+		switch($request_tab) {
+			case 'posts-cats' :
+				$model_data = Post_cat::where('parent_id', 0)->orderBy('title')->get();
+				break;
+
+			case 'domains':
+				$model_data = Domain::orderBy('title')->get();
+				break;
+
+			case 'states' :
+				$model_data = State::get_provinces()->orderBy('title')->get();
+				break;
+
+			default :
+				return view('errors.404');
+		}
 
 		//View...
 		return view("manage.settings.dev", compact('page', 'model_data'));
 
 	}
-	private function index_postscats($parent_id = 0)
-	{
-		$model = Post_cat::where('parent_id', $parent_id)->orderBy('title')->get();
 
-		return $model;
-
-		//TODO: browse, edition and deletion of sub-cats
-	}
-
-	private function index_domains()
-	{
-		$model = Domain::orderBy('title')->get();
-		return $model ;
-
-		//@TODO: edition/deletion of cities and volunteers
-	}
-
-	private function index_states()
-	{
-		$model = State::get_provinces()->orderBy('title')->get();
-		return $model ;
-	}
 
 	public function add($request_tab)
 	{

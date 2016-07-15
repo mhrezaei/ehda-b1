@@ -54,4 +54,28 @@ class Volunteer extends Model implements AuthenticatableContract, CanResetPasswo
 			$title = trans('people.mrs');
 	}
 
+
+	/*
+	|--------------------------------------------------------------------------
+	| Static Methods
+	|--------------------------------------------------------------------------
+	| These methods will select models for the purpose of listings and showing items.
+	*/
+	public static function selector($criteria = 'active')
+	{
+		switch($criteria) {
+			case 'active':
+				return self::where('published_at','>','0') ;
+			case 'pending':
+				return self::where('published_at' , '0')->where('exam_passed_at' , '>' , '0') ;
+			case 'care' :
+				return self::where('unverified_flag' , '1');
+			case 'examining' :
+				return self::where('exam_passed_at' , '0');
+			case 'bin' :
+				return self::onlyTrashed();
+
+		}
+	}
+
 }

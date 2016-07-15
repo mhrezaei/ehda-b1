@@ -28,7 +28,7 @@
 	'module' => 'volunteers' ,
 	'icon' => 'child',
 	'sub_menus' => [
-		['browse' , 'browse' , trans('manage.permits.browse')],
+		['browse/active' , '' , trans('manage.permits.browse')],
 		['browse/pending' , 'publish' , trans('people.volunteers.manage.pending')],
 		['create' , 'create' , trans('people.volunteers.manage.create')],
 		['search' , 'search' , trans('manage.permits.search')],
