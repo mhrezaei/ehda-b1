@@ -15,7 +15,8 @@ return [
 
 		'captcha'			=> 'کد امنیتی اشتباه است.',
 		'invalid'			=> 'درخواست معتبر نیست',
-		'phone'             => 'ساختار «:attribute» درست نیست.',
+		'phone'             => ':attribute درست وارد نشده است.',
+		'code_melli'        => ":attribute درست وارد نشده است.",
 
 		"accepted"         => ":attribute باید پذیرفته شده باشد.",
 		"active_url"       => "نشانی :attribute معتبر نیست",

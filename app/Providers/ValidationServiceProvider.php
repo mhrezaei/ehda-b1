@@ -126,6 +126,9 @@ class ValidationServiceProvider extends ServiceProvider
 		$this->app['validator']->extend('phone', function ($attribute, $value, $parameters, $validator) {
 			return self::validatePhoneNo($attribute, $value, $parameters, $validator);
 		});
+		$this->app['validator']->extend('code_melli', function ($attribute, $value, $parameters, $validator) {
+			return self::validateCodeMelli($attribute, $value, $parameters, $validator);
+		});
 	}
 
 	/*
@@ -143,23 +146,36 @@ class ValidationServiceProvider extends ServiceProvider
 			return false;
 		if(substr($value, 0, 1) != '0')
 			return false;
-		if(!ctype_digit ($value))
+		if(!ctype_digit($value))
 			return false;
 
 		switch ($mood) {
 			case "mobile" :
-				if(substr($value,1,1) != '9')
-					return false ;
+				if(substr($value, 1, 1) != '9')
+					return false;
 				break;
 
 			case "fixed" :
 				break;
 		}
 
-		return true ;
+		return true;
 
 	}
 
+	private function validateCodeMelli($attribute, $value, $parameters, $validator)
+	{
+		if(!preg_match("/^\d{10}$/", $value)) {
+			return false;
+		}
+
+		$check = (int)$value[9];
+		$sum = array_sum(array_map(function ($x) use ($value) {
+				return ((int)$value[$x]) * (10 - $x);
+			}, range(0, 8))) % 11;
+
+		return ($sum < 2 && $check == $sum) || ($sum >= 2 && $check + $sum == 11);
+	}
 
 	/**
 	 * Register the application services.

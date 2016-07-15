@@ -35,7 +35,7 @@ class VolunteerSaveRequest extends Request
 		return [
 			'name_first' => "required",
 			'name_last' => "required",
-			'code_meli' => "required|size:10|unique:volunteers,code_meli,".$id,
+			'code_meli' => "required|code_melli|unique:volunteers,code_meli,".$id,
 			'email'=> 'required|email|unique:volunteers,email,'.$id,
 			'password'=> 'required_if:id,0|min:10',
 			'gender'=>'required',
