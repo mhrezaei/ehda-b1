@@ -15,15 +15,9 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         // Manage...
-//         'App\Events\VolunteerLoggedIn' => [
-//              'App\Listeners\InsertVolunteerLogin',
-//         ],
-//         'App\Events\VolunteerLoggedOut' => [
-//              'App\Listeners\UpdateVolunteerLogin',
-//         ],
-//         'App\Events\VolunteerClick' => [
-//              'App\Listeners\UpdateVolunteerLogin',
-//         ],
+        'App\Events\VolunteerPasswordManualReset' => [
+            'App\Listeners\VolunteerSmsNewPassword',
+        ]
     ];
 
     /**

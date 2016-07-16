@@ -43,16 +43,16 @@
 @include('manage.frame.widgets.grid-action' , [
 	'id' => $model->id ,
 	'actions' => [
-		['eye' , trans('manage.permits.view') , "alert(1)" , 'volunteers.view'],
-		['key' , trans('people.commands.change_password') , 'modal:manage/devSettings/volunteers/-id-/set_password' , 'volunteers.edit' ,  $model->isActive() ],
+		['eye' , trans('manage.permits.view') , "modal:manage/volunteers/-id-/view" , 'volunteers.view'],
+		['key' , trans('people.commands.change_password') , 'modal:manage/volunteers/-id-/change_password' , 'volunteers.edit' ,  $model->isActive() ],
 		['pencil' , trans('manage.permits.edit') , "url:manage/volunteers/-id-/edit" , 'volunteers.edit'],
-		['shield' , trans('manage.permits.permits') , '' , 'volunteers.permits' , $model->isActive()],
-		['flag-checkered' , trans('manage.devSettings.domains.trans') , 'alert(8)' , 'volunteers.permits' , $model->isActive()],
+		['shield' , trans('manage.permits.permits') , 'modal:manage/volunteers/-id-/permits' , 'volunteers.permits' , $model->isActive()],
+		['flag-checkered' , trans('manage.devSettings.domains.trans') , 'modal:manage/volunteers/-id-/domains' , 'volunteers.permits' , $model->isActive()],
 
-		['check' , trans('people.commands.activate') , 'alert(3)' , 'volunteers.publish' , !$model->published_at],
-		['trash-o' , trans('people.commands.soft_delete') , 'alert(4)' , 'volunteers.delete' , !$model->trashed()] ,
-		['undo' , trans('people.commands.undelete') , 'alert(5)' , 'volunteers.bin' , $model->trashed()] ,
-		['times' , trans('people.commands.hard_delete') , 'alert(6)' , 'volunteers.bin' , $model->trashed()] ,
+		['check' , trans('people.commands.activate') , 'modal:manage/volunteers/-id-/publish' , 'volunteers.publish' , !$model->published_at],
+		['trash-o' , trans('people.commands.soft_delete') , 'modal:manage/volunteers/-id-/soft_delete' , 'volunteers.delete' , !$model->trashed()] ,
+		['undo' , trans('people.commands.undelete') , 'modal:manage/volunteers/-id-/undelete' , 'volunteers.bin' , $model->trashed()] ,
+		['times' , trans('people.commands.hard_delete') , 'modal:manage/volunteers/-id-/hard_delete' , 'volunteers.bin' , $model->trashed()] ,
 
 
 	],

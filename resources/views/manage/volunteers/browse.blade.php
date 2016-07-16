@@ -52,19 +52,4 @@
 
 	@include('manage.frame.widgets.grid-end')
 
-	{{--
-	|--------------------------------------------------------------------------
-	| Ajax Called Modal
-	|--------------------------------------------------------------------------
-	|
-	--}}
-	@include('templates.modal.ajax' , [
-		'modal_id' => 'modalSetPassword' ,
-		'form_url' => 'manage/volunteers/set_password/save',
-		'hidden_vars' => [
-			url('manage/devSettings/volunteers/-id-/set_password-'),
-			trans('manage.devSettings.states.city-edit') ,
-		],
-	])
-
 @endsection

@@ -42,6 +42,9 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 		Route::get('/{volunteer_id}/edit' , 'VolunteersController@editor');
 		Route::post('/save' , 'VolunteersController@save');
 
+		Route::get('/{volunteer_id}/{modal_action}' , 'VolunteersController@modalActions');
+		Route::post('/save/change_password' , 'VolunteersController@change_password');
+
 		Route::get('/search' , 'VolunteersController@search');
 		Route::post('/search' , 'VolunteersController@search_result');
 

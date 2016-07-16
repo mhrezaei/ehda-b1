@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Manage;
 
+use App\Events\VolunteerPasswordManualReset;
 use App\Models\State;
 use App\Models\Volunteer;
 use App\Traits\TahaControllerTrait;
@@ -11,8 +12,11 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\View;
+
 
 class VolunteersController extends Controller
 {
@@ -38,6 +42,21 @@ class VolunteersController extends Controller
 		return view('manage.volunteers.browse' , compact('page','model_data'));
 
 	}
+
+	public function modalActions($volunteer_id , $view_file)
+	{
+		$model = Volunteer::find($volunteer_id) ;
+		$view = "manage.volunteers.$view_file" ;
+
+		if(!$model) return view('errors.m410');
+		if(!View::exists($view)) return view('errors.m404');
+
+		$opt['random_password'] = Str::random(10) ;
+
+
+		return view($view , compact('model' , 'opt')) ;
+	}
+
 
 	public function editor($model_id=0)
 	{
@@ -68,6 +87,14 @@ class VolunteersController extends Controller
 		//@TODO: Delete User Button
 
 	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| Save Methods
+	|--------------------------------------------------------------------------
+	| 
+	*/
+	
 
 	public function save(Requests\Manage\VolunteerSaveRequest $request)
 	{
@@ -100,6 +127,20 @@ class VolunteersController extends Controller
 		]);
 
 		// return $this->jsonFeedback($data['birth_date']);
+
+	}
+
+	public function change_password(Requests\Manage\VolunteerChangePasswordRequest $request)
+	{
+		$model = Volunteer::find($request->id) ;
+		$model->password = Hash::make($request->password) ;
+		$model->password_force_change = true ;
+		$is_saved = $model->save();
+
+		if($request->sms_notify)
+			Event::fire(new VolunteerPasswordManualReset($request->password));
+
+		return $this->jsonAjaxSaveFeedback($is_saved);
 
 	}
 }

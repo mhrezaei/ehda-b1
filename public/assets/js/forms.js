@@ -81,10 +81,10 @@ function forms_error(jqXhr, textStatus, errorThrown)
       var   $formSelector     = "" ;
       var   $feedSelector     = $formSelector+" .form-feed"   ;
 
-      if( jqXhr.status === 500 ) { //@TODO: Supposed to refresh if _token is wrong. but refreshes in all server errros
-            errorsHtml  = $($feedSelector+'-error').html()      ;
-            setTimeout(function() {window.location.reload()},1000);
-      }
+//      if( jqXhr.status === 500 ) { //@TODO: Supposed to refresh if _token is wrong. but refreshes in all server errros
+//            errorsHtml  = $($feedSelector+'-error').html()      ;
+//            setTimeout(function() {window.location.reload()},1000);
+//      }
       if( jqXhr.status === 422 ) {
             $errors = jqXhr.responseJSON;
 
