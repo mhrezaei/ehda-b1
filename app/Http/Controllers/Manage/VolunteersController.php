@@ -49,6 +49,7 @@ class VolunteersController extends Controller
 		$view = "manage.volunteers.$view_file" ;
 
 		if(!$model) return view('errors.m410');
+		if(!View::exists($view)) return view('templates.say' , ['array'=>$view]); //@TODO: REMOVE THIS LINE
 		if(!View::exists($view)) return view('errors.m404');
 
 		$opt['random_password'] = Str::random(10) ;
@@ -83,8 +84,6 @@ class VolunteersController extends Controller
 			if(!$model) return view('errors.410');
 			return view($view , compact('page' , 'states' , 'model'));
 		}
-
-		//@TODO: Delete User Button
 
 	}
 
@@ -141,6 +140,19 @@ class VolunteersController extends Controller
 			Event::fire(new VolunteerPasswordManualReset($request->password));
 
 		return $this->jsonAjaxSaveFeedback($is_saved);
+
+	}
+
+	public function soft_delete(Request $request)
+	{
+		if(!Auth::user()->can('volunteers.delete')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
+
+		$model = Volunteer::find($request->id) ;
+		$done = $model->delete();
+
+		return $this->jsonAjaxSaveFeedback($done , [
+			'success_refresh' => true ,
+		]);
 
 	}
 }
