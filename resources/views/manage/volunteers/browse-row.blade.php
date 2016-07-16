@@ -43,10 +43,10 @@
 @include('manage.frame.widgets.grid-action' , [
 	'id' => $model->id ,
 	'actions' => [
-		['eye' , trans('manage.permits.view') , 'alert(1)' , 'volunteers.view'],
-		['key' , trans('people.commands.change_password') , 'alert(2)' , 'volunteers.edit' ,  $model->isActive() ],
-		['pencil' , trans('manage.permits.edit') , url("manage/volunteers/$model->id/edit") , 'volunteers.edit'],
-		['shield' , trans('manage.permits.permits') , 'alert(7)' , 'volunteers.permits' , $model->isActive()],
+		['eye' , trans('manage.permits.view') , "alert(1)" , 'volunteers.view'],
+		['key' , trans('people.commands.change_password') , 'modal:manage/devSettings/volunteers/-id-/set_password' , 'volunteers.edit' ,  $model->isActive() ],
+		['pencil' , trans('manage.permits.edit') , "url:manage/volunteers/-id-/edit" , 'volunteers.edit'],
+		['shield' , trans('manage.permits.permits') , '' , 'volunteers.permits' , $model->isActive()],
 		['flag-checkered' , trans('manage.devSettings.domains.trans') , 'alert(8)' , 'volunteers.permits' , $model->isActive()],
 
 		['check' , trans('people.commands.activate') , 'alert(3)' , 'volunteers.publish' , !$model->published_at],

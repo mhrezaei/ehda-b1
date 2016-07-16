@@ -1,6 +1,20 @@
 /**
  * Created by jafar on 7/6/2016 AD.
  */
+function masterModal($url,$size)
+{
+	//Preparetions...
+	if(!$size) $size = 'lg' ;
+	var $modal_selector = '#masterModal-' + $size ;
+
+	//Form Load...
+	$($modal_selector + ' .modal-content').html('<div class="modal-wait">...</div>').load($url , function() {
+		$('.selectpicker').selectpicker();
+	});
+	$($modal_selector).modal() ;
+
+
+}
 function modalForm($modal_id , $item_id , $parent_id)
 {
 	//Preparetions...
