@@ -74,8 +74,8 @@
 	'form_url' => 'manage/devSettings/states/save',
 	'hidden_vars' => [
 		url('manage/devSettings/states/-id-/edit'),
-		trans('manage.devSettings.states.province-add') ,
 		trans('manage.devSettings.states.province-edit') ,
+		trans('manage.devSettings.states.province-add') ,
 	],
 ])
 

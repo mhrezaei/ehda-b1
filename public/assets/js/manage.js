@@ -11,9 +11,9 @@ function modalForm($modal_id , $item_id , $parent_id)
 
 	//Form Placement...
 	if($item_id=='0')
-		$($modal_selector + '-title').html($($form_selector+'._1').html());
-	else
 		$($modal_selector + '-title').html($($form_selector+'._2').html());
+	else
+		$($modal_selector + '-title').html($($form_selector+'._1').html());
 
 	//Form Load...
 	$($form_selector + 'div.modal-body').html('....').load($url , function() {
@@ -78,4 +78,30 @@ function search($form_id)
 	if(!$key) return false ;
 	window.location = $url ;
 	return false ;
+}
+
+function gridSelector($mood , $id)
+{
+	switch($mood) {
+		case 'tr' :
+			$('#gridSelector-'+$id).prop('checked', !$('#gridSelector-'+$id).is(":checked"));
+
+		case 'selector' :
+			if ($('#gridSelector-'+$id).is(":checked"))
+				$('#tr-'+$id).addClass('warning');
+			else
+				$('#tr-'+$id).removeClass('warning');
+			break;
+
+		case 'all' :
+			if($('#gridSelector-all').is(':checked')) {
+				$('.gridSelector').prop('checked', true);
+				$('tr.grid').addClass('warning');
+			}
+			else {
+				$('.gridSelector').prop('checked', false);
+				$('tr.grid').removeClass('warning');
+			}
+
+	}
 }

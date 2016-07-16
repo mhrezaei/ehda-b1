@@ -122,6 +122,8 @@ return [
 				"birth_date" => "تاریخ تولد",
 				"birth_city" => "محل تولد",
 				"marital_status" => "وضعیت تأهل",
+				"occupation" => "شغل و تحصیلات" ,
+				"education" => "تحصیلات" ,
 				"edu_level" => "میزان تحصیلات",
 				"edu_field" => "رشته‌ی تحصیلی" ,
 				'edu_city' => 'محل تحصیل',
@@ -144,6 +146,7 @@ return [
 				'capital_id'=> 'مرکز استان',
 				'province_id' => 'استان',
 				'domain_id' => 'دامنه',
+				'status' => 'وضعیت' ,
 		],
 
 		"http" => [

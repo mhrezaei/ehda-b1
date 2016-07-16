@@ -24,6 +24,14 @@ class State extends Model
 		return self::where('parent_id' , 0);
 	}
 
+	public function fullName()
+	{
+		if($this->isProvince())
+			return  trans('manage.devSettings.states.province')."  ".$this->title ;
+		else
+			return $this->province()->title." / ".$this->title ;
+	}
+
 	public static function get_cities($given_province=0, $mood = 'self')
 	{
 		if(is_numeric($given_province))

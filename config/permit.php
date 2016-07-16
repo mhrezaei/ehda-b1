@@ -10,7 +10,7 @@ return [
 
 	'available_modules' => [
 		'cards' => ['browse','view','send','search','create','bulk','edit','publish','report','delete','bin'],
-		'volunteers' => ['send','search' , 'view' ,'edit','publish','report','delete' , 'bin'],
+		'volunteers' => ['send','search' , 'view' ,'edit','publish','report', 'permits','delete' , 'bin'],
 		'settings' => ['*'],
 		'stats' => ['*'],
 		'faqs' => ['browse','search','create','edit','publish','cats','delete','bin'],
@@ -36,6 +36,7 @@ return [
 		'report',
 		'cats',
 		'delete',
+		'permits',
 		'bin',
 	] ,
 

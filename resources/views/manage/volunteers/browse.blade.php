@@ -33,7 +33,24 @@
 	|--------------------------------------------------------------------------
 	|
 	--}}
-	{{ $model_data->count() }}
+	@include('manage.frame.widgets.grid-start' , [
+		'selector' => true ,
+		'headings' => [
+			trans('validation.attributes.name_first') ,
+			trans('validation.attributes.home_city'),
+			trans('validation.attributes.occupation'),
+			trans('validation.attributes.status'),
+			trans('forms.button.action'),
+		],
+	])
+
+	@foreach($model_data as $model)
+		<tr id="tr-{{$model->id}}" class="grid" ondblclick="gridSelector('tr','{{$model->id}}')">
+			@include('manage.volunteers.browse-row' , ['model'=>$model])
+		</tr>
+	@endforeach
+
+	@include('manage.frame.widgets.grid-end')
 
 	{{--
 	|--------------------------------------------------------------------------
@@ -41,14 +58,13 @@
 	|--------------------------------------------------------------------------
 	|
 	--}}
-		@include('templates.modal.ajax' , [
-			'modal_id' => 'modalStateEditor' ,
-			'form_url' => 'manage/devSettings/cities/save',
-			'hidden_vars' => [
-				url('manage/devSettings/states/-id-/edit/-parent-'),
-				trans('manage.devSettings.states.city-add') ,
-				trans('manage.devSettings.states.city-edit') ,
-			],
-		])
+	@include('templates.modal.ajax' , [
+		'modal_id' => 'modalSetPassword' ,
+		'form_url' => 'manage/volunteers/set_password/save',
+		'hidden_vars' => [
+			url('manage/devSettings/volunteers/-id-/set_password-'),
+			trans('manage.devSettings.states.city-edit') ,
+		],
+	])
 
 @endsection

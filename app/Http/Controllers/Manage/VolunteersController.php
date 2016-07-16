@@ -60,7 +60,7 @@ class VolunteersController extends Controller
 			if(!Auth::user()->can('volunteers:edit')) return view('errors.403');
 			$page[1] = ['edit' , trans('people.volunteers.manage.edit') , ''] ;
 
-			$model = Volunteer::find($model_id);
+			$model = Volunteer::withTrashed()->find($model_id);
 			if(!$model) return view('errors.410');
 			return view($view , compact('page' , 'states' , 'model'));
 		}

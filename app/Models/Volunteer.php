@@ -46,6 +46,29 @@ class Volunteer extends Model implements AuthenticatableContract, CanResetPasswo
 		return $return ;
 	}
 
+	public function occupation()
+	{
+		$return = null ;
+
+		if($this->job)
+			$return .= $this->job. " / " ;
+
+		$return .= trans('forms.edu.'.$this->edu_level) ;
+
+		if($this->edu_field)
+			$return .= " / ".$this->edu_field ;
+
+		return $return ;
+	}
+
+	public function isActive()
+	{
+		if($this->published_at and !$this->trashed())
+			return true  ;
+		else
+			return false ;
+	}
+
 	public function title()
 	{
 		if($this->gender==1)
@@ -54,7 +77,11 @@ class Volunteer extends Model implements AuthenticatableContract, CanResetPasswo
 			$title = trans('people.mrs');
 	}
 
+	public function home_city()
+	{
+		return State::find($this->home_city);
 
+	}
 	/*
 	|--------------------------------------------------------------------------
 	| Static Methods
@@ -76,6 +103,7 @@ class Volunteer extends Model implements AuthenticatableContract, CanResetPasswo
 				return self::onlyTrashed();
 
 		}
+
 	}
 
 }
