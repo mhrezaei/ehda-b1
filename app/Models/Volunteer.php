@@ -94,11 +94,11 @@ class Volunteer extends Model implements AuthenticatableContract, CanResetPasswo
 			case 'active':
 				return self::where('published_at','>','0') ;
 			case 'pending':
-				return self::where('published_at' , '0')->where('exam_passed_at' , '>' , '0') ;
+				return self::where('published_at' , null)->where('exam_passed_at' , '>' , '0') ;
 			case 'care' :
 				return self::where('unverified_flag' , '1');
 			case 'examining' :
-				return self::where('exam_passed_at' , '0');
+				return self::where('published_at' , null)->where('exam_passed_at' , null);
 			case 'bin' :
 				return self::onlyTrashed();
 

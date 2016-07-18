@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Manage;
 
+use App\Events\VolunteerAccountPublished;
 use App\Events\VolunteerPasswordManualReset;
 use App\Models\State;
 use App\Models\Volunteer;
@@ -45,7 +46,9 @@ class VolunteersController extends Controller
 
 	public function modalActions($volunteer_id , $view_file)
 	{
-		$model = Volunteer::find($volunteer_id) ;
+
+		//@TODO: Do something for checking the permission, despite the fact that everything will be checked at the save method.
+		$model = Volunteer::withTrashed()->find($volunteer_id) ;
 		$view = "manage.volunteers.$view_file" ;
 
 		if(!$model) return view('errors.m410');
@@ -136,10 +139,25 @@ class VolunteersController extends Controller
 		$model->password_force_change = true ;
 		$is_saved = $model->save();
 
-		if($request->sms_notify)
-			Event::fire(new VolunteerPasswordManualReset($request->password));
+		if($is_saved and $request->sms_notify)
+			Event::fire(new VolunteerPasswordManualReset($model , $request->password));
 
 		return $this->jsonAjaxSaveFeedback($is_saved);
+
+	}
+	public function publish(Request $request)
+	{
+		$model = Volunteer::find($request->id) ;
+		$model->published_at = Carbon::now()->toDateTimeString() ;
+		$model->published_by = Auth::user()->id ;
+		$is_saved = $model->save();
+
+		if($is_saved)
+			Event::fire(new VolunteerAccountPublished($model));
+
+		return $this->jsonAjaxSaveFeedback($is_saved , [
+			'success_refresh' => true ,
+		]);
 
 	}
 
@@ -155,4 +173,33 @@ class VolunteersController extends Controller
 		]);
 
 	}
+
+	public function undelete(Request $request)
+	{
+		if(!Auth::user()->can('volunteers.bin')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
+
+		$model = Volunteer::withTrashed()->find($request->id) ;
+		$done = $model->restore();
+
+		return $this->jsonAjaxSaveFeedback($done , [
+				'success_refresh' => true ,
+		]);
+
+	}
+
+
+	public function hard_delete(Request $request)
+	{
+		if(!Auth::user()->can('volunteers.bin')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
+
+		$model = Volunteer::withTrashed()->find($request->id) ;
+		if(!$model->trashed()) return $this->jsonFeedback(trans('validation.http.Eror403'));
+		$done = $model->forceDelete();
+
+		return $this->jsonAjaxSaveFeedback($done , [
+				'success_refresh' => true ,
+		]);
+
+	}
+
 }

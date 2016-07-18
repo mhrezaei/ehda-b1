@@ -17,7 +17,14 @@ class EventServiceProvider extends ServiceProvider
         // Manage...
         'App\Events\VolunteerPasswordManualReset' => [
             'App\Listeners\VolunteerSmsNewPassword',
-        ]
+        ],
+
+        'App\Events\VolunteerAccountPublished' => [
+             'App\Listeners\VolunteerSmsPublishNotice',
+             'App\Listeners\VolunteerEmailPublishNotice',
+        ],
+
+
     ];
 
     /**

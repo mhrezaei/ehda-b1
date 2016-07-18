@@ -10,14 +10,18 @@ class VolunteerPasswordManualReset extends Event
 {
     use SerializesModels;
 
+    public $volunteer ;
+    public $new_password;
+
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($volunteer , $new_password)
     {
-        //
+        $this->volunteer = $volunteer ;
+        $this->new_password = $new_password ;
     }
 
     /**

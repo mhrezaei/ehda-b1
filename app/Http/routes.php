@@ -45,6 +45,9 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 		Route::get('/{volunteer_id}/{modal_action}' , 'VolunteersController@modalActions');
 		Route::post('/save/change_password' , 'VolunteersController@change_password');
 		Route::post('/save/soft_delete' , 'VolunteersController@soft_delete');
+		Route::post('/save/undelete' , 'VolunteersController@undelete');
+		Route::post('/save/hard_delete' , 'VolunteersController@hard_delete');
+		Route::post('/save/publish' , 'VolunteersController@publish');
 
 		Route::get('/search' , 'VolunteersController@search');
 		Route::post('/search' , 'VolunteersController@search_result');

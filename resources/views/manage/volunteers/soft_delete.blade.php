@@ -21,7 +21,7 @@
 
 		@include('forms.button' , [
 			'label' => trans('people.commands.soft_delete'),
-			'shape' => 'danger',
+			'shape' => 'warning',
 			'type' => 'submit' ,
 		])
 		@include('forms.button' , [
