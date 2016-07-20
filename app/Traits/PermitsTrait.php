@@ -16,7 +16,7 @@ trait PermitsTrait
 
 
 
-	public function getPermits()
+	private function getPermits()
 	{
 		return json_decode(Crypt::decrypt($this->roles), true);
 	}
@@ -55,12 +55,12 @@ trait PermitsTrait
 	private function savePermits($permits_array)
 	{
 		$this->roles = Crypt::encrypt(json_encode($permits_array));
-		$this->save();
+		return $this->save();
 	}
 
 	public function setPermits($command)
 	{
-		$this->attachPermits($command, true);
+		return $this->attachPermits($command, true);
 	}
 
 	public function attachPermits($command, $forget_stored = false)
@@ -92,7 +92,7 @@ trait PermitsTrait
 			}
 		}
 
-		$this->savePermits($stored_permits);
+		return $this->savePermits($stored_permits);
 	}
 
 	public function detachPermits($command)
@@ -127,7 +127,7 @@ trait PermitsTrait
 			}
 		}
 
-		$this->savePermits($stored_permits);
+		return $this->savePermits($stored_permits);
 	}
 
 
@@ -138,14 +138,14 @@ trait PermitsTrait
 	|
 	*/
 
-	public function saveDomains($domains_array)
+	private function saveDomains($domains_array)
 	{
 //		$this->domains = Crypt::encrypt(json_encode($domains_array));
 		$this->domains = json_encode($domains_array);
-		$this->save();
+		return $this->save();
 	}
 
-	public function getDomains()
+	private function getDomains()
 	{
 //		return json_decode(Crypt::decrypt($this->domains), true);
 		$return = json_decode($this->domains, true);
@@ -166,18 +166,18 @@ trait PermitsTrait
 
 		foreach($domains as $domain) {
 			if(!in_array($domain , $stored_domains)) {
-				if(Domain::where('slug',$domain)->count())
+				if(Domain::where('id',$domain)->count())
 					array_push($stored_domains , $domain) ;
 			}
 		}
 
-		$this->saveDomains($stored_domains);
+		return $this->saveDomains($stored_domains);
 
 	}
 
 	public function setDomains($domains_commands)
 	{
-		$this->attachDomains($domains_commands,true);
+		return $this->attachDomains($domains_commands,true);
 	}
 
 	public function detachDomains($domains)
@@ -191,7 +191,7 @@ trait PermitsTrait
 			}
 		}
 
-		$this->saveDomains($stored_domains) ;
+		return $this->saveDomains($stored_domains) ;
 	}
 
 	public function attachAllDomains()
@@ -200,10 +200,10 @@ trait PermitsTrait
 		$array = array() ;
 
 		foreach($domains as $domain) {
-			array_push($array,$domain->slug) ;
+			array_push($array,$domain->id) ;
 		}
 
-		$this->saveDomains($array);
+		return $this->saveDomains($array);
 	}
 
 	public function detachAllDomains()

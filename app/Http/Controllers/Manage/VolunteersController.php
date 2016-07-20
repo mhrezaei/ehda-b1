@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Manage;
 
 use App\Events\VolunteerAccountPublished;
 use App\Events\VolunteerPasswordManualReset;
+use App\Models\Domain;
 use App\Models\State;
 use App\Models\Volunteer;
 use App\Traits\TahaControllerTrait;
@@ -48,8 +49,17 @@ class VolunteersController extends Controller
 	{
 
 		//@TODO: Do something for checking the permission, despite the fact that everything will be checked at the save method.
+		//@TODO: Reject if accessed without valid AJAX request
 		$model = Volunteer::withTrashed()->find($volunteer_id) ;
 		$view = "manage.volunteers.$view_file" ;
+
+		//Particular Actions...
+		switch($view_file) {
+			case 'permits' :
+				$opt['domains'] = Domain::orderBy('title')->get() ;
+				break;
+
+		}
 
 		if(!$model) return view('errors.m410');
 		if(!View::exists($view)) return view('templates.say' , ['array'=>$view]); //@TODO: REMOVE THIS LINE
@@ -96,7 +106,7 @@ class VolunteersController extends Controller
 	|--------------------------------------------------------------------------
 	| 
 	*/
-	
+
 
 	public function save(Requests\Manage\VolunteerSaveRequest $request)
 	{
@@ -200,6 +210,42 @@ class VolunteersController extends Controller
 				'success_refresh' => true ,
 		]);
 
+	}
+
+	public function permits(Request $request)
+	{
+		$data = $request->toArray() ;
+		$allowed_domains = [] ;
+		$allowed_permits = [] ;
+		$model = Volunteer::find($request->id) ;
+
+		//Security...
+		if(!Auth::user()->can('volunteers.permits'))
+			return $this->jsonFeedback(trans('validation.http.Eror403')) ;
+
+		//Permits...
+		foreach($data as $pointer => $item) {
+			if(!str_contains($pointer,'permit') or !$data[$pointer])
+				continue;
+
+			$pointer = str_replace('permit','',$pointer) ;
+			$pointer = str_replace('_','.',$pointer) ;
+			array_push($allowed_permits,$pointer);
+		}
+		$is_saved_permits = $model->setPermits($allowed_permits) ;
+
+		//Domains...
+		$domains = Domain::all() ;
+		foreach($domains as $domain) {
+			$pointer = "domain".$domain->id ;
+			if($data[$pointer])
+				array_push($allowed_domains , $domain->id);
+		}
+
+		$is_saved_domains = $model->setDomains($allowed_domains) ;
+
+		//Return...
+		return $this->jsonAjaxSaveFeedback($is_saved_domains and $is_saved_permits);
 	}
 
 }

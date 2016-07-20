@@ -48,6 +48,7 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 		Route::post('/save/undelete' , 'VolunteersController@undelete');
 		Route::post('/save/hard_delete' , 'VolunteersController@hard_delete');
 		Route::post('/save/publish' , 'VolunteersController@publish');
+		Route::post('/save/permits' , 'VolunteersController@permits');
 
 		Route::get('/search' , 'VolunteersController@search');
 		Route::post('/search' , 'VolunteersController@search_result');

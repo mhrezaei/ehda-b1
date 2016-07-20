@@ -47,7 +47,6 @@
 		['key' , trans('people.commands.change_password') , 'modal:manage/volunteers/-id-/change_password' , 'volunteers.edit' ,  $model->isActive() ],
 		['pencil' , trans('manage.permits.edit') , "url:manage/volunteers/-id-/edit" , 'volunteers.edit'],
 		['shield' , trans('manage.permits.permits') , 'modal:manage/volunteers/-id-/permits' , 'volunteers.permits' , $model->isActive()],
-		['flag-checkered' , trans('manage.devSettings.domains.trans') , 'modal:manage/volunteers/-id-/domains' , 'volunteers.permits' , $model->isActive()],
 
 		['check' , trans('people.commands.activate') , 'modal:manage/volunteers/-id-/publish' , 'volunteers.publish' , !$model->published_at],
 		['trash-o' , trans('people.commands.soft_delete') , 'modal:manage/volunteers/-id-/soft_delete' , 'volunteers.delete' , !$model->trashed()] ,
