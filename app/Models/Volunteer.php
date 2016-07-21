@@ -1,14 +1,18 @@
 <?php
 namespace App\Models;
 
+use App\Providers\AppServiceProvider;
 use App\Traits\PermitsTrait;
 use App\Traits\TahaModelTrait;
+use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
+use Morilog\Jalali\jDate;
 
 
 class Volunteer extends Model implements AuthenticatableContract, CanResetPasswordContract
@@ -39,11 +43,19 @@ class Volunteer extends Model implements AuthenticatableContract, CanResetPasswo
 
 	public function fullName($with_title = false)
 	{
+		if(!$this) return false ;
 		$return = $this->name_first . " " . $this->name_last ;
 		if($with_title)
 			$return = $this->title() . " " . $return ;
 
 		return $return ;
+	}
+
+	public function delete()
+	{
+		$this->deleted_at = Carbon::now()->toDateTimeString();
+		$this->deleted_by = Auth::user()->id ;
+		return $this->save();
 	}
 
 	public function occupation()
@@ -81,6 +93,48 @@ class Volunteer extends Model implements AuthenticatableContract, CanResetPasswo
 	{
 		return State::find($this->home_city);
 
+	}
+
+	public function say($property)
+	{
+		switch($property) {
+			case 'created_at' :
+			case 'updated_at' :
+			case 'published_at' :
+			case 'deleted_at' :
+				return AppServiceProvider::pd(jDate::forge($this->$property)->format('j M Y _ H:m'));
+
+			case 'created_by' :
+			case 'updated_by' :
+			case 'published_by' :
+			case 'deleted_by' :
+				$model = self::find($this->$property);
+				if($model)
+					return $model->fullName() ;
+				else
+					return trans('forms.general.deleted');
+
+			case 'code_meli' :
+				return AppServiceProvider::pd($this->code_meli);
+
+			case 'birth_date' :
+				return AppServiceProvider::pd(jDate::forge($this->$property)->format('j M Y'));
+
+			case 'birth_city' :
+			case 'edu_city' :
+				return State::find($this->$property)->fullName();
+
+			case 'marital_status' :
+				switch($this->$property) {
+					case 1 :
+						return 'married';
+					case 2 :
+						return 'single' ;
+				}
+
+			default:
+				return $this->$property ;
+		}
 	}
 	/*
 	|--------------------------------------------------------------------------

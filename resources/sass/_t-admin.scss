@@ -131,3 +131,31 @@ td.dropdown {
 .modal-wait {
   margin: 20px ;
 }
+
+/*
+|--------------------------------------------------------------------------
+| Profile
+|--------------------------------------------------------------------------
+|
+*/
+.profile {
+  table {
+    width: 100%;
+    //border: 1px solid black;
+  }
+
+  td {
+    padding: 10px;
+
+    span {
+      margin-right: 20px;
+    }
+  }
+
+  td.head {
+    width: 110px;
+    text-align: left;
+    font-weight: 700;
+  }
+
+}
