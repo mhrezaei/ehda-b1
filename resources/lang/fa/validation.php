@@ -122,6 +122,8 @@ return [
 			'capital_id'=> 'مرکز استان',
 			'province_id' => 'استان',
 			'domain_id' => 'دامنه',
+			"token" => "توکن",
+			
 		],
 
 		"http" => [
