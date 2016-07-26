@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
 
 class AuthController extends Controller
 {
@@ -60,6 +61,7 @@ class AuthController extends Controller
 
 	public function reset_password()
 	{
+		if(Auth::check()) return redirect('/manage/index');
 		$captcha = SecKeyServiceProvider::getQuestion('fa');
 		return view('manage.reset_password.0', compact('captcha'));
 	}
@@ -82,6 +84,7 @@ class AuthController extends Controller
 		return $this->jsonFeedback(trans('manage.reset_password.reset_token_success_send'), [
 			'ok' => 1,
 			'callback' => "reset_password_process('$national')",
+			'refresh' => 100
 		]);
 	}
 
@@ -99,19 +102,22 @@ class AuthController extends Controller
 		if (strlen($volunteer['reset_token']) > 10)
 		{
 			$token = json_decode($volunteer['reset_token'], true);
-			$time = Carbon::parse($token->expire_token->date)->diffInSeconds(Carbon::now());
+			$time = Carbon::parse($token['expire_token']['date'])->diffInSeconds(Carbon::now());
 			if ($time > 300)
 			{
 				return $this->jsonFeedback(trans('manage.reset_password.reset_token_expire_time'));
 				$volunteer->updateVolunteerForResetPassword(0);
 			}
 
-			if ($token->reset_token != $request->token)
+			if ($token['reset_token'] != $request->token)
 				return $this->jsonFeedback(trans('manage.reset_password.reset_token_invalid'));
 
 			$volunteer->updateVolunteerForResetPassword(1);
 			Auth::loginUsingId( $volunteer->id );
-			return redirect('/manage/old_password');
+			return $this->jsonFeedback(trans('manage.reset_password.token_success_request'),[
+				'redirect' => '/manage/old_password',
+				'ok' => 1,
+			]);
 		}
 		else
 		{

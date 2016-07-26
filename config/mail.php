@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'driver' => env('MAIL_DRIVER', 'smtp'),
+    'driver' => env('MAIL_DRIVER', 'mail'), //@TODO change this to smtp after run on server
 
     /*
     |--------------------------------------------------------------------------
