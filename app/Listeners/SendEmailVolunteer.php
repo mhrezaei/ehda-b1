@@ -31,7 +31,8 @@ class SendEmailVolunteer
         Mail::send('templates.widget.reset_password_email', $token, function ($m) use ($event) {
             $m->from('no-reply@ehda.center', trans('global.siteTitle'));
 
-            $m->to($event->volunteer->email, $event->volunteer->name_first . ' ' . $event->volunteer->name_last)->subject(trans('people.event.email_reset_password_title'));
+            $m->to($event->volunteer->email, $event->volunteer->name_first . ' ' . $event->volunteer->name_last)
+                ->subject(trans('people.event.email_reset_password_title'));
         });
     }
 }

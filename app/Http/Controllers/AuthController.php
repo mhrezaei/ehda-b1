@@ -101,12 +101,15 @@ class AuthController extends Controller
 			$token = json_decode($volunteer['reset_token'], true);
 			$time = Carbon::parse($token->expire_token->date)->diffInSeconds(Carbon::now());
 			if ($time > 300)
+			{
 				return $this->jsonFeedback(trans('manage.reset_password.reset_token_expire_time'));
+				$volunteer->updateVolunteerForResetPassword(0);
+			}
 
 			if ($token->reset_token != $request->token)
 				return $this->jsonFeedback(trans('manage.reset_password.reset_token_invalid'));
 
-			$volunteer->updateVolunteerForResetPassword();
+			$volunteer->updateVolunteerForResetPassword(1);
 			Auth::loginUsingId( $volunteer->id );
 			return redirect('/manage/old_password');
 		}
