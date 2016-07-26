@@ -23,6 +23,14 @@ Route::get('/', 'HomeController@index');
 Route::get('/manage/login', 'AuthController@login_panel');
 Route::post('/manage/auth', 'AuthController@login');
 Route::get('/manage/logout', 'AuthController@logout');
+
+Route::get('/manage/reset_password', 'AuthController@reset_password');
+Route::post('/manage/reset_password_process', 'AuthController@reset_password_process');
+Route::post('/manage/reset_password_token_process', 'AuthController@reset_password_token_process');
+Route::get('/manage/old_password', 'AuthController@old_password');
+Route::post('/manage/auth_password', 'AuthController@old_password_process');
+Route::get('/sms', 'AuthController@sms');
+
 Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage'], function () {
 	Route::get('/' , 'ManageController@index');
 	Route::get('/index' , 'ManageController@index');

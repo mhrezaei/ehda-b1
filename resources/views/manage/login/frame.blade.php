@@ -43,8 +43,14 @@
 		.card-signup .content{
 			padding: 0 10px 0 10px;
 		}
-		.form-control, .header h4, .btn , .alert{
+		.form-control, .header h4, .btn , .alert, .reset_password_link{
 			font-family: 'IRANSans';
+		}
+		.reset_password_link{
+			padding-top: 10px;
+			color: #D2D2D2 !important;
+			font-weight: 500;
+			font-size: 12px;
 		}
 	</style>
 	<title>{{trans('manage.login.page_title') }}</title>

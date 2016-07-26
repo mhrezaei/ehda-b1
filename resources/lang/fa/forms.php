@@ -16,6 +16,7 @@ return [
 		'login'		=> 'ورود',
 		'add'		=> 'افزودن',
 		'search' => 'جست‌وجو' ,
+		'recovery' => 'بازآوری',
 	],
 
 	//‌ COMMMON GLOBALLY-USED FIELDS ARE HERE. OTHERS, ARE IN THE CORRESPONDING TRANS FILE
