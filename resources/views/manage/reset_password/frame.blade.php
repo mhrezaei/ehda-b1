@@ -12,6 +12,9 @@
 
 	{{-- JQuery --}}
 	{!! Html::script ('assets/libs/jquery.js') !!}
+	{!! Html::script ('assets/libs/jquery.form.min.js') !!}
+	{!! Html::script ('assets/js/forms.js') !!}
+	{!! Html::script ('assets/js/login.js') !!}
 
 	{{-- BOOTSTRAP --}}
 	{!! Html::style('assets/libs/bootstrap/css/bootstrap.min.css') !!}
@@ -53,7 +56,7 @@
 			font-size: 12px;
 		}
 	</style>
-	<title>{{trans('manage.login.page_title') }}</title>
+	<title>{{trans('manage.reset_password.page_title') }}</title>
 </head>
 
 <body class="signup-page">
