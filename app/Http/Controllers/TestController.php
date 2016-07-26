@@ -13,6 +13,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 use Morilog\Jalali\jDate;
+use App\Events\SendSms;
+use Illuminate\Support\Facades\Event;
+
 
 class TestController extends Controller
 {
@@ -23,7 +26,11 @@ class TestController extends Controller
 	 */
 	public function index()
 	{
-		$this->convertVolunteers() ;
+//		$this->convertVolunteers() ;
+		$return = Event::fire(new SendSms(['123132123'] , 'sdfsdfsdf'));
+
+		return view('templates.say' , ['array'=>$return]);
+		
 	}
 
 	/*

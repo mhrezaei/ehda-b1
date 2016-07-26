@@ -17,6 +17,7 @@ return [
 				'add'		=> 'افزودن',
 				'search' => 'جست‌وجو' ,
 				'action' => 'عملیات',
+				'bulk_action' => 'کارهای دسته‌جمعی',
 		],
 
 		"general" => [

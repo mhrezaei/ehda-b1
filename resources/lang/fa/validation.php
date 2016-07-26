@@ -131,6 +131,7 @@ return [
 				"tel_emergency" => 'تلفن اضطراری' ,
 				"home_city" => "محل سکونت",
 				"home_address" => "نشانی منزل",
+				"home_address" => "نشانی منزل",
 				"home_tel" => "تلفن منزل" ,
 				"work_city" => "محل کار",
 				"work_address" => "نشانی محل کار",
@@ -148,6 +149,7 @@ return [
 				'domain_id' => 'دامنه',
 				'status' => 'وضعیت' ,
 				'tel' => 'تلفن',
+				'message' => 'متن پیام',
 		],
 
 		"http" => [

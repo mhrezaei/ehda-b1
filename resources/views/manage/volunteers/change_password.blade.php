@@ -19,7 +19,7 @@
 
 	@include('forms.input' , [
 		'name' => 'password',
-		'value' => $opt['random_password'],
+		'value' => rand(10000000 , 99999999),
 		'class' => 'form-required ltr'
 	])
 

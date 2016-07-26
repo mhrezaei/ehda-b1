@@ -18,7 +18,10 @@ trait PermitsTrait
 
 	private function getPermits()
 	{
-		return json_decode(Crypt::decrypt($this->roles), true);
+		if(!$this->roles)
+			return null;
+		else
+			return json_decode(Crypt::decrypt($this->roles), true);
 	}
 
 	private function permitCommandCompiler($permit_command)

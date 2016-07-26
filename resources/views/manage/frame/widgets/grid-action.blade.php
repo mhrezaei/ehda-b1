@@ -5,9 +5,9 @@
 | Parameters: $id AND $actions = ['fa_icon' , 'caption' , 'link or js_command' , optional permit command , optional boolian condition]
 --}}
 
-<td class="dropdown">
-	<button id="action{{$id}}" class="btn btn-default btn-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		{{trans('forms.button.action')}}
+<div class="dropdown">
+	<button id="action{{$id}}" class="btn btn-default btn-{{$button_size or 'xs'}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		{{$button_label or trans('forms.button.action')}}
 	</button>
 	<ul class="dropdown-menu" aria-labelledby="action{{$id}}">
 		@foreach($actions as $action)
@@ -57,4 +57,4 @@
 			@endif
 		@endforeach
 	</ul>
-</td>
+</div>

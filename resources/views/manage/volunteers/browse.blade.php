@@ -13,6 +13,17 @@
 		<div class="col-md-4"><p class="title">{{$page[1][1] or ''}}</p></div>
 		<div class="col-md-8 tools">
 
+			<div>
+				@include('manage.frame.widgets.grid-action' , [
+					'id' => '0',
+					'button_size' => 'md' ,
+					'button_label' => trans('forms.button.bulk_action'),
+					'actions' => [
+							['eye' , trans('manage.permits.view') , "modal:manage/volunteers/-id-/view" , 'volunteers.view'],
+					]
+				])
+			</div>
+
 			{{--@include('manage.frame.widgets.toolbar_button' , [--}}
 				{{--'target' => "modalForm('modalStateEditor' , '0' , '')" ,--}}
 				{{--'type' => 'success' ,--}}
@@ -33,6 +44,7 @@
 	|--------------------------------------------------------------------------
 	|
 	--}}
+
 	@include('manage.frame.widgets.grid-start' , [
 		'selector' => true ,
 		'headings' => [

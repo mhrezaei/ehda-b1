@@ -40,21 +40,25 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 		Route::get('/create' , 'VolunteersController@editor') ;
 		Route::get('/{volunteer_id}' , 'VolunteersController@show');
 		Route::get('/{volunteer_id}/edit' , 'VolunteersController@editor');
-		Route::post('/save' , 'VolunteersController@save');
-
 		Route::get('/{volunteer_id}/{modal_action}' , 'VolunteersController@modalActions');
-		Route::post('/save/change_password' , 'VolunteersController@change_password');
-		Route::post('/save/soft_delete' , 'VolunteersController@soft_delete');
-		Route::post('/save/undelete' , 'VolunteersController@undelete');
-		Route::post('/save/hard_delete' , 'VolunteersController@hard_delete');
-		Route::post('/save/publish' , 'VolunteersController@publish');
-		Route::post('/save/permits' , 'VolunteersController@permits');
 
 		Route::get('/search' , 'VolunteersController@search');
 		Route::post('/search' , 'VolunteersController@search_result');
 
 		Route::get('/reports' , 'VolunteersController@reports');
-		//minor things: role, password_rest, delete, bin_actions
+
+		Route::group(['prefix'=>'save'] , function() {
+			Route::post('/' , 'VolunteersController@save');
+
+			Route::post('/change_password' , 'VolunteersController@change_password');
+			Route::post('/soft_delete' , 'VolunteersController@soft_delete');
+			Route::post('/undelete' , 'VolunteersController@undelete');
+			Route::post('/hard_delete' , 'VolunteersController@hard_delete');
+			Route::post('/publish' , 'VolunteersController@publish');
+			Route::post('/permits' , 'VolunteersController@permits');
+			Route::post('/sms' , 'VolunteersController@sms');
+			Route::post('/email' , 'VolunteersController@email');
+		});
 	});
 
 	/*

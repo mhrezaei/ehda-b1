@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Manage;
 
+use App\Events\SendEmail;
+use App\Events\SendSms;
 use App\Events\VolunteerAccountPublished;
 use App\Events\VolunteerPasswordManualReset;
 use App\Models\Domain;
@@ -246,6 +248,28 @@ class VolunteersController extends Controller
 
 		//Return...
 		return $this->jsonAjaxSaveFeedback($is_saved_domains and $is_saved_permits);
+	}
+
+	public function sms(Requests\Manage\VolunteerSendMessage $request)
+	{
+		$volunteer = Volunteer::find($request->id) ;
+		if(!$volunteer)
+			return $this->jsonFeedback();
+
+		$is_sent = Event::fire(new SendSms([$volunteer->tel_mobile] , $request->message));
+
+		return $this->jsonAjaxSaveFeedback($is_sent) ;
+	}
+
+	public function email(Requests\Manage\VolunteerSendMessage $request)
+	{
+		$volunteer = Volunteer::find($request->id) ;
+		if(!$volunteer)
+			return $this->jsonFeedback();
+
+		$is_sent = Event::fire(new SendEmail([$volunteer->email] , $request->message));
+
+		return $this->jsonAjaxSaveFeedback($is_sent) ;
 	}
 
 }
