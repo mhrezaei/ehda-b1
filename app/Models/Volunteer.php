@@ -36,6 +36,31 @@ class Volunteer extends Model implements AuthenticatableContract, CanResetPasswo
 			return false ;
 	}
 
+	public function makeForgotPasswordToken()
+	{
+		$token['reset_token'] = rand(100000, 999999);
+		$token['expire_token'] = Carbon::now()->addMinutes(5);
+
+		$this->reset_token = json_encode($token);
+		$this->save();
+
+		return $token['reset_token'];
+	}
+
+	public function oldPasswordChange($password)
+	{
+		$this->password = $password;
+		$this->password_force_change = 0;
+		return $this->save();
+	}
+
+	public function updateVolunteerForResetPassword($password_force_change = 1)
+	{
+		$this->reset_token = null;
+		$this->password_force_change = $password_force_change;
+		return $this->save();
+	}
+
 
 
 }
