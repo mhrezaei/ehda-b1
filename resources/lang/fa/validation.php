@@ -147,6 +147,7 @@ return [
 				'province_id' => 'استان',
 				'domain_id' => 'دامنه',
 				'status' => 'وضعیت' ,
+				'tel' => 'تلفن',
 		],
 
 		"http" => [

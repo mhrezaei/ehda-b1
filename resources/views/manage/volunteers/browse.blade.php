@@ -52,4 +52,8 @@
 
 	@include('manage.frame.widgets.grid-end')
 
+	<div class="paginate">
+		{!! $model_data->render() !!}
+	</div>
+
 @endsection

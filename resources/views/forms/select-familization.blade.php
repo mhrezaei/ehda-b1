@@ -6,9 +6,9 @@
 	'size' => 10 ,
 
 	'options' => [
-		['id'=>'1' , 'title'=>trans('forms.introduction.1')],
-		['id'=>'2' , 'title'=>trans('forms.introduction.2')],
-		['id'=>'3' , 'title'=>trans('forms.introduction.3')],
-		['id'=>'4' , 'title'=>trans('forms.introduction.4')],
+		['id'=>'1' , 'title'=>trans('people.familization.1')],
+		['id'=>'2' , 'title'=>trans('people.familization.2')],
+		['id'=>'3' , 'title'=>trans('people.familization.3')],
+		['id'=>'4' , 'title'=>trans('people.familization.4')],
 	]
 ])

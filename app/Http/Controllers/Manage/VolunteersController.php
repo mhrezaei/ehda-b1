@@ -38,7 +38,7 @@ class VolunteersController extends Controller
 		$page[1] = ["browse/".$request_tab , trans("people.volunteers.manage.$request_tab") , $request_tab] ;
 
 		//Model...
-		$model_data = Volunteer::selector($request_tab)->orderBy('created_at' , 'desc')->get();
+		$model_data = Volunteer::selector($request_tab)->orderBy('created_at' , 'desc')->paginate(50);
 
 		//View...
 		return view('manage.volunteers.browse' , compact('page','model_data'));

@@ -7,7 +7,7 @@
 
 
 <td>
-	{{ $model->home_city()->fullName() }}
+	{{ $model->say('home_city') }}
 </td>
 
 

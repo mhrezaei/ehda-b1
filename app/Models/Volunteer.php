@@ -95,14 +95,19 @@ class Volunteer extends Model implements AuthenticatableContract, CanResetPasswo
 
 	}
 
-	public function say($property)
+	public function say($property , $default='-')
 	{
 		switch($property) {
 			case 'created_at' :
 			case 'updated_at' :
 			case 'published_at' :
 			case 'deleted_at' :
-				return AppServiceProvider::pd(jDate::forge($this->$property)->format('j M Y _ H:m'));
+			case 'exam_passed_at' :
+				if($this->$property) {
+					return AppServiceProvider::pd(jDate::forge($this->$property)->format('j F Y _ H:m'));
+				}
+				else
+					return $default ;
 
 			case 'created_by' :
 			case 'updated_by' :
@@ -118,10 +123,18 @@ class Volunteer extends Model implements AuthenticatableContract, CanResetPasswo
 				return AppServiceProvider::pd($this->code_meli);
 
 			case 'birth_date' :
-				return AppServiceProvider::pd(jDate::forge($this->$property)->format('j M Y'));
+				return AppServiceProvider::pd(jDate::forge($this->$property)->format('j F Y'));
 
 			case 'birth_city' :
 			case 'edu_city' :
+			case 'home_city' :
+			case 'work_city' :
+				$state = State::find($this->$property);
+				if($state)
+					return $state->fullName();
+				else
+					return $default;
+
 				return State::find($this->$property)->fullName();
 
 			case 'marital_status' :

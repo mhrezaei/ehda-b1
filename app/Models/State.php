@@ -32,6 +32,11 @@ class State extends Model
 			return $this->province()->title." / ".$this->title ;
 	}
 
+	public static function findByName($state_name)
+	{
+		return self::where('title' , $state_name)->first();
+	}
+
 	public static function get_cities($given_province=0, $mood = 'self')
 	{
 		if(is_numeric($given_province))

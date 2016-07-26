@@ -63,23 +63,119 @@
 			</td>
 		</tr>
 
-		<tr>
-			<td class="head">
-				{{ trans('validation.attributes.tel_mobile') }}
-			</td>
-			<td class="body">
-				
-			</td>
-		</tr>
-		
-		
-		
+		{{--
+		|--------------------------------------------------------------------------
+		| Contact Details
+		|--------------------------------------------------------------------------
+		|
+		--}}
 
 		<tr>
 			<td colspan="2">
 				<hr>
 			</td>
 		</tr>
+
+
+		<tr>
+			<td class="head">
+				{{ trans('validation.attributes.tel_mobile') }}
+			</td>
+			<td class="body">
+				@pd($model->tel_mobile)
+				<span>
+					{{ trans('validation.attributes.tel_emergency') }}:&nbsp;
+					@pd($model->tel_emergency)
+				</span>
+			</td>
+		</tr>
+
+		<tr>
+			<td class="head">
+				{{ trans('validation.attributes.home_address') }}
+			</td>
+			<td class="body">
+				{{ $model->say('home_city').' . ' }}
+				{{ $model->say('home_address') }}
+				<span>
+					{{ trans('validation.attributes.tel') }}:&nbsp;
+					@pd($model->say('home_tel'))
+				</span>
+			</td>
+		</tr>
+		
+		<tr>
+			<td class="head">
+				{{ trans('validation.attributes.work_address') }}
+			</td>
+			<td class="body">
+				{{ $model->say('work_city').' . ' }}
+				{{ $model->say('work_address') }}
+				<span>
+					{{ trans('validation.attributes.tel') }}:&nbsp;
+					@pd($model->say('work_tel'))
+				</span>
+			</td>
+		</tr>
+
+		{{--
+		|--------------------------------------------------------------------------
+		| Misc Fields
+		|--------------------------------------------------------------------------
+		|
+		--}}
+
+
+		<tr>
+			<td colspan="2">
+				<hr>
+			</td>
+		</tr>
+		
+		<tr>
+			<td class="head">
+				{{ trans('exams.single') }}
+			</td>
+			<td class="body">
+				@if($model->exam_passed_at)
+					@pd($model->say('exam_result'))
+					<span>
+						({{$model->say('exam_passed_at')}})
+					</span>
+				@else
+					{{ trans('exams.not_passed') }}
+				@endif
+			</td>
+		</tr>
+		
+		<tr>
+			<td class="head">
+				{{ trans('validation.attributes.familization') }}
+			</td>
+			<td class="body">
+				{{ trans("people.familization.".$model->familization) }}
+			</td>
+		</tr>
+
+		<tr>
+			<td class="head">
+				{{ trans('validation.attributes.motivation') }}
+			</td>
+			<td class="body">
+				{{ $model->say('motivation') }}
+			</td>
+		</tr>
+
+		<tr>
+			<td class="head">
+				{{ trans('validation.attributes.alloc_time') }}
+			</td>
+			<td class="body">
+				@pd($model->say('alloc_time'))
+			</td>
+		</tr>
+
+		{{-- @TODO: Activitis --}}
 
 		{{--
 		|--------------------------------------------------------------------------
@@ -88,6 +184,12 @@
 		|
 		--}}
 
+		<tr>
+			<td colspan="2">
+				<hr>
+			</td>
+		</tr>
+		
 
 		<tr>
 			<td class="head">
@@ -147,5 +249,6 @@
 
 	</table>
 
+</div>
 
 @include('templates.modal.end')

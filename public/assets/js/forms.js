@@ -32,6 +32,13 @@ function forms_listener()
 		} );
 	});
 
+      $(".persian").each(function(){
+            $(this).removeClass('persian');
+            $(this).html(forms_pd($(this).html())) ;
+      });
+
+
+
 
       setTimeout("forms_listener()",5);
 }
