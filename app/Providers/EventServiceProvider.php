@@ -13,6 +13,10 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
+        'App\Events\VolunteerForgotPassword' => [
+            'App\Listeners\SendEmailVolunteer',
+            'App\Listeners\SendSmsVolunteer',
+        ],
         // Manage...
 //         'App\Events\VolunteerLoggedIn' => [
 //              'App\Listeners\InsertVolunteerLogin',
