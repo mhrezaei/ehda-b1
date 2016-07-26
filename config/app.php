@@ -207,10 +207,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
-<<<<<<< Updated upstream
-=======
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
->>>>>>> Stashed changes
 		'jDate' => Morilog\Jalali\Facades\jDate::class,
 
 	],
