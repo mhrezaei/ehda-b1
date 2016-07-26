@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use App\Traits\PermitsTrait;
+use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
