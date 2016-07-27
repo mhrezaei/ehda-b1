@@ -52,6 +52,9 @@ class VolunteersController extends Controller
 
 		//@TODO: Do something for checking the permission, despite the fact that everything will be checked at the save method.
 		//@TODO: Reject if accessed without valid AJAX request
+		if($volunteer_id==0)
+			return $this->modalBulkAction($view_file);
+
 		$model = Volunteer::withTrashed()->find($volunteer_id) ;
 		$view = "manage.volunteers.$view_file" ;
 
@@ -67,10 +70,17 @@ class VolunteersController extends Controller
 		if(!View::exists($view)) return view('templates.say' , ['array'=>$view]); //@TODO: REMOVE THIS LINE
 		if(!View::exists($view)) return view('errors.m404');
 
-		$opt['random_password'] = Str::random(10) ;
-
-
 		return view($view , compact('model' , 'opt')) ;
+	}
+
+	private function modalBulkAction($view_file)
+	{
+		$view = "manage.volunteers.$view_file-bulk" ;
+
+		if(!View::exists($view)) return view('templates.say' , ['array'=>$view]); //@TODO: REMOVE THIS LINE
+		if(!View::exists($view)) return view('errors.m404');
+
+		return view($view) ;
 	}
 
 
@@ -108,7 +118,6 @@ class VolunteersController extends Controller
 	|--------------------------------------------------------------------------
 	| 
 	*/
-
 
 	public function save(Requests\Manage\VolunteerSaveRequest $request)
 	{
@@ -159,6 +168,8 @@ class VolunteersController extends Controller
 	}
 	public function publish(Request $request)
 	{
+		if(!Auth::user()->can('volunteers.publish')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
+
 		$model = Volunteer::find($request->id) ;
 		$model->published_at = Carbon::now()->toDateTimeString() ;
 		$model->published_by = Auth::user()->id ;
@@ -171,6 +182,16 @@ class VolunteersController extends Controller
 			'success_refresh' => true ,
 		]);
 
+	}
+
+	public function bulk_publish(Request $request)
+	{
+		if(!Auth::user()->can('volunteers.publish')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
+
+		$done = Volunteer::bulkPublish($request->ids);
+		return $this->jsonAjaxSaveFeedback($done , [
+				'success_refresh' => true ,
+		]);
 	}
 
 	public function soft_delete(Request $request)
@@ -186,6 +207,16 @@ class VolunteersController extends Controller
 
 	}
 
+	public function bulk_soft_delete(Request $request)
+	{
+		if(!Auth::user()->can('volunteers.delete')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
+
+		$deleted = Volunteer::bulkDelete($request->ids);
+		return $this->jsonAjaxSaveFeedback($deleted , [
+			'success_refresh' => true ,
+		]);
+	}
+
 	public function undelete(Request $request)
 	{
 		if(!Auth::user()->can('volunteers.bin')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
@@ -199,6 +230,18 @@ class VolunteersController extends Controller
 
 	}
 
+	public function bulk_undelete(Request $request)
+	{
+		if(!Auth::user()->can('volunteers.bin')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
+		$ids = $ids = explode(',',$request->ids);
+
+		$done  = Volunteer::whereIn('id',$ids)->restore() ;
+
+		return $this->jsonAjaxSaveFeedback($done , [
+				'success_refresh' => true ,
+		]);
+	}
+
 
 	public function hard_delete(Request $request)
 	{
@@ -207,6 +250,19 @@ class VolunteersController extends Controller
 		$model = Volunteer::withTrashed()->find($request->id) ;
 		if(!$model->trashed()) return $this->jsonFeedback(trans('validation.http.Eror403'));
 		$done = $model->forceDelete();
+
+		return $this->jsonAjaxSaveFeedback($done , [
+				'success_refresh' => true ,
+		]);
+
+	}
+
+	public function bulk_hard_delete(Request $request)
+	{
+		if(!Auth::user()->can('volunteers.bin')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
+
+		$ids = $ids = explode(',',$request->ids);
+		$done  = Volunteer::whereIn('id',$ids)->whereNotNull('deleted_at')->forceDelete() ;
 
 		return $this->jsonAjaxSaveFeedback($done , [
 				'success_refresh' => true ,
@@ -261,15 +317,31 @@ class VolunteersController extends Controller
 		return $this->jsonAjaxSaveFeedback($is_sent) ;
 	}
 
+	public function bulk_sms(Requests\Manage\VolunteerSendMessage $request)
+	{
+
+		$done = true ; //@TODO: Write the event!
+
+		return $this->jsonAjaxSaveFeedback($done) ;
+	}
+
 	public function email(Requests\Manage\VolunteerSendMessage $request)
 	{
 		$volunteer = Volunteer::find($request->id) ;
 		if(!$volunteer)
 			return $this->jsonFeedback();
 
-		$is_sent = Event::fire(new SendEmail([$volunteer->email] , $request->message));
+		$is_sent = Event::fire(new SendEmail([$volunteer->email] , $request->title , $request->message));
 
 		return $this->jsonAjaxSaveFeedback($is_sent) ;
+	}
+
+	public function bulk_email(Requests\Manage\VolunteerSendMessage $request)
+	{
+
+		$done = true ; //@TODO: Write the event!
+
+		return $this->jsonAjaxSaveFeedback($done) ;
 	}
 
 }

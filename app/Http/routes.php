@@ -52,14 +52,22 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 
 			Route::post('/change_password' , 'VolunteersController@change_password');
 			Route::post('/soft_delete' , 'VolunteersController@soft_delete');
+			Route::post('/bulk_soft_delete' , 'VolunteersController@bulk_soft_delete');
 			Route::post('/undelete' , 'VolunteersController@undelete');
+			Route::post('/bulk_undelete' , 'VolunteersController@bulk_undelete');
 			Route::post('/hard_delete' , 'VolunteersController@hard_delete');
+			Route::post('/bulk_hard_delete' , 'VolunteersController@bulk_hard_delete');
 			Route::post('/publish' , 'VolunteersController@publish');
+			Route::post('/bulk_publish' , 'VolunteersController@bulk_publish');
 			Route::post('/permits' , 'VolunteersController@permits');
 			Route::post('/sms' , 'VolunteersController@sms');
+			Route::post('/bulk_sms' , 'VolunteersController@bulk_sms');
 			Route::post('/email' , 'VolunteersController@email');
+			Route::post('/bulk_email' , 'VolunteersController@bulk_email');
 		});
 	});
+
+
 
 	/*
 	| Developer Settings

@@ -6,7 +6,7 @@
 --}}
 
 <div class="dropdown">
-	<button id="action{{$id}}" class="btn btn-default btn-{{$button_size or 'xs'}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	<button id="action{{$id}}" class="btn btn-{{$button_class or 'default'}} btn-{{$button_size or 'xs'}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" {{$button_extra or ''}}>
 		{{$button_label or trans('forms.button.action')}}
 	</button>
 	<ul class="dropdown-menu" aria-labelledby="action{{$id}}">

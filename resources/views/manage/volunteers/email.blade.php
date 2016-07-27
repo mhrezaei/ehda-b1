@@ -17,9 +17,16 @@
 		'extra' => 'disabled' ,
 	])
 
+	@include('forms.input' , [
+	    'name' => 'title',
+	    'label' => trans('validation.attributes.title'),
+	    'class' => 'atl form-required',
+	])
+
 	@include('forms.textarea' , [
 		'name' => 'message',
 		'label' => trans('validation.attributes.message'),
+	    'class' => 'form-required',
 	])
 
 

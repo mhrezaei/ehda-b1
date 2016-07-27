@@ -105,6 +105,7 @@ function gridSelector($mood , $id)
 				$('#tr-'+$id).addClass('warning');
 			else
 				$('#tr-'+$id).removeClass('warning');
+			gridSelector('buttonActivator');
 			break;
 
 		case 'all' :
@@ -116,6 +117,32 @@ function gridSelector($mood , $id)
 				$('.gridSelector').prop('checked', false);
 				$('tr.grid').removeClass('warning');
 			}
+			gridSelector('buttonActivator');
+			break;
 
+		case 'count':
+			var $count = 0 ;
+			$(".gridSelector:checked").each(function () {
+				$count++ ;
+			});
+			return $count ;
+
+		case 'get' :
+			var $list = '';
+			var $count = 0 ;
+			$(".gridSelector:checked").each(function () {
+				$id = $(this).attr('data-value');
+				$list += $id+',';
+				$count++ ;
+			});
+			$('input[name=ids]').val($list);
+			$('#txtCount').val(forms_pd($count + ' مورد '));
+			break ;
+
+		case 'buttonActivator' :
+			if(gridSelector('count')>0)
+				$('#action0').addClass('btn-primary').prop('disabled', false);
+			else
+				$('#action0').removeClass('btn-primary').prop('disabled', true);
 	}
 }

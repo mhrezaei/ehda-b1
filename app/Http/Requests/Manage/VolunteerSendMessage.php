@@ -29,6 +29,7 @@ class VolunteerSendMessage extends Request
 //		$input = $this->all();
 		return [
 			'message'=> 'required',
+			'title' => 'required' ,
 		];
 
 	}

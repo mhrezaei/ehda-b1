@@ -1,5 +1,5 @@
 <td>
-	<input id="gridSelector-{{$model->id}}" class="gridSelector" type="checkbox" onchange="gridSelector('selector','{{$model->id}}')">
+	<input id="gridSelector-{{$model->id}}" data-value="{{$model->id}}" class="gridSelector" type="checkbox" onchange="gridSelector('selector','{{$model->id}}')">
 </td>
 <td>
 	{{ $model->fullName() }}

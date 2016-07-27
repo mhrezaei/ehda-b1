@@ -27,10 +27,9 @@ class TestController extends Controller
 	public function index()
 	{
 //		$this->convertVolunteers() ;
-		$return = Event::fire(new SendSms(['123132123'] , 'sdfsdfsdf'));
-
-		return view('templates.say' , ['array'=>$return]);
-		
+		for($i=1 ; $i<=200000 ; $i++) {
+			echo view('templates.say', ['array' => $i]);
+		}
 	}
 
 	/*

@@ -7,6 +7,7 @@
 
 	@include('forms.hiddens' , ['fields' => [
 		['id' , $model->id ],
+		['title','sms'],
 	]])
 
 
