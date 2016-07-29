@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c6aca5f770a3214f9806a6bf2263ba27",
-    "content-hash": "f972991e3f5b5ad099ed0bbf5b4bc44c",
+    "hash": "ff0f1b8a1ee5dccc848d6795a78bb45a",
+    "content-hash": "33de6fc71d7209251e7652ee6d671bda",
     "packages": [
         {
             "name": "barryvdh/laravel-debugbar",
@@ -936,6 +936,61 @@
                 "psr-3"
             ],
             "time": "2016-04-12 18:29:35"
+        },
+        {
+            "name": "morilog/jalali",
+            "version": "v2.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/morilog/jalali.git",
+                "reference": "9cafeaf9a08bc03062d7488ebc1ef008fe1a7160"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/morilog/jalali/zipball/9cafeaf9a08bc03062d7488ebc1ef008fe1a7160",
+                "reference": "9cafeaf9a08bc03062d7488ebc1ef008fe1a7160",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^5.0",
+                "nesbot/carbon": "^1.21",
+                "php": ">=5.5"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Morilog\\Jalali\\": "src"
+                },
+                "files": [
+                    "src/helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Milad Rey",
+                    "email": "miladr@gmail.com"
+                },
+                {
+                    "name": "Morteza Parvini",
+                    "email": "m.parvini@outlook.com"
+                }
+            ],
+            "description": "eThis Package helps developers to easily work with Jalali (Shamsi or Iranian) dates in Laravel 5 applications, based on Jalali (Shamsi) DateTime class.",
+            "keywords": [
+                "Jalali",
+                "date",
+                "datetime",
+                "laravel",
+                "morilog"
+            ],
+            "time": "2016-06-24 14:01:34"
         },
         {
             "name": "mtdowling/cron-expression",

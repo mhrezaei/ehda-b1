@@ -13,7 +13,13 @@ function forms_listener()
                   success: forms_responde,
                   error: forms_error
             });
+            $('.form-default').focus();
       });
+
+      $(".form-default").each(function() {
+            $(this).removeClass('form-default');
+            $(this).focus();
+      })
 
       // automatic direction...
       $(".atr").each(function(){
@@ -22,6 +28,22 @@ function forms_listener()
                   forms_autoDirection(this);
             });
       });
+
+	$(".datepicker").each(function () {
+		$(this).removeClass('datepicker');
+		var $id = $(this).attr('id');
+		var objCal1 = new MHR.persianCalendar( $id , {
+			extraInputID: $id+"_extra",
+			extraInputFormat: "YYYY/MM/DD"
+		} );
+	});
+
+      $(".persian").each(function(){
+            $(this).removeClass('persian');
+            $(this).html(forms_pd($(this).html())) ;
+      });
+
+
 
 
       setTimeout("forms_listener()",5);
@@ -34,6 +56,8 @@ function forms_validate(formData, jqForm, options) {
 	var $formId = jqForm.attr('id');
       var $errors = 0               ;
       var $feed   = "#" + $formId + " .form-feed";
+
+      //@TODO: check form-number
 
 
       //Form Feed...
@@ -70,10 +94,10 @@ function forms_error(jqXhr, textStatus, errorThrown)
       var   $formSelector     = "" ;
       var   $feedSelector     = $formSelector+" .form-feed"   ;
 
-      if( jqXhr.status === 500 ) { //@TODO: Supposed to refresh if _token is wrong. but refreshes in all server errros
-            errorsHtml  = $($feedSelector+'-error').html()      ;
-            setTimeout(function() {window.location.reload()},1000);
-      }
+//      if( jqXhr.status === 500 ) { //@TODO: Supposed to refresh if _token is wrong. but refreshes in all server errros
+//            errorsHtml  = $($feedSelector+'-error').html()      ;
+//            setTimeout(function() {window.location.reload()},1000);
+//      }
       if( jqXhr.status === 422 ) {
             $errors = jqXhr.responseJSON;
 
@@ -113,7 +137,6 @@ function forms_responde(data, statusText, xhr, $form)
       //after effects...
       if(data.refresh==1) 	forms_delaiedPageRefresh(1);
       if(data.modalClose==1) 	setTimeout(function(){$(".modal").modal('hide');},1000);
-//      if(data.login==1) 	setTimeout(function(){window.location = base_url()+"login";},1000);
       if(data.redirect)       setTimeout(function(){window.location = data.redirect;},1000);
       if(data.updater)		allForms_updater(data.updater);
       if(data.callback)		setTimeout(data.callback,1000);

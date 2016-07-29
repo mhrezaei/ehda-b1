@@ -28,39 +28,30 @@ class DevSettingsController extends Controller
 		//Preparetions...
 		$page = $this->page;
 		$page[1] = [$request_tab];
-		$sub_method = str_replace('-', '', 'index_' . $request_tab);
-		if(!method_exists($this, $sub_method))
-			return view('errors.404');
 
 		//Model...
-		$model_data = $this->$sub_method();
+		switch($request_tab) {
+			case 'posts-cats' :
+				$model_data = Post_cat::where('parent_id', 0)->orderBy('title')->get();
+				break;
+
+			case 'domains':
+				$model_data = Domain::orderBy('title')->get();
+				break;
+
+			case 'states' :
+				$model_data = State::get_provinces()->orderBy('title')->get();
+				break;
+
+			default :
+				return view('errors.404');
+		}
 
 		//View...
 		return view("manage.settings.dev", compact('page', 'model_data'));
 
 	}
-	private function index_postscats($parent_id = 0)
-	{
-		$model = Post_cat::where('parent_id', $parent_id)->orderBy('title')->get();
 
-		return $model;
-
-		//TODO: browse, edition and deletion of sub-cats
-	}
-
-	private function index_domains()
-	{
-		$model = Domain::orderBy('title')->get();
-		return $model ;
-
-		//@TODO: edition/deletion of cities and volunteers
-	}
-
-	private function index_states()
-	{
-		$model = State::get_provinces();
-		return $model ;
-	}
 
 	public function add($request_tab)
 	{
@@ -80,6 +71,7 @@ class DevSettingsController extends Controller
 	public function editor($request_tab , $item_id , $parent_id=0)
 	{
 		//Appears in modal and doesn't need $this->page stuff
+		
 
 		switch($request_tab) {
 			case 'states' :
@@ -87,24 +79,26 @@ class DevSettingsController extends Controller
 					$model = State::find($item_id) ;
 					if(!$model) return trans('validation.invalid') ;
 					if($model->isProvince()) {
+//						return view('templates.say' , ['array'=>$model->cities()->orderBy('title')->get()->toArray()]);
+
 						return view('manage.settings.states-modalEditor', compact('model'));
 					}
 					else {
-						$provinces = State::get_provinces('self')->orderBy('title')->get() ;
+						$provinces = State::get_provinces()->orderBy('title')->get() ;
 						$domains = Domain::orderBy('title')->get() ;
 						return view('manage.settings.states-cityEditor', compact('model' , 'provinces' , 'domains'));
 					}
 				}
 				else {
 					if($parent_id) {
-						$provinces = State::get_provinces('self')->orderBy('title')->get() ;
+						$provinces = State::get_provinces()->orderBy('title')->get() ;
 						$domains = Domain::orderBy('title')->get() ;
 						$guess_domain = State::where('parent_id',$parent_id)->first()->domain->id ;
 
 						return view('manage.settings.states-cityEditor', compact('model' , 'provinces' , 'domains' , 'parent_id' , 'guess_domain'));
 					}
 					else {
-						$cities = State::get_cities('self');
+						$cities = State::get_cities();
 						return view('manage.settings.states-modalEditor', compact('model', 'cities'));
 					}
 				}
@@ -123,7 +117,7 @@ class DevSettingsController extends Controller
 		$page[1] = [$request_tab];
 		$page[2] = ['edit',null,''];
 		$view = "manage.settings." ;
-
+		
 		switch($request_tab) {
 			case 'posts-cats' :
 				$model_data = Post_cat::find($item_id);
@@ -131,7 +125,7 @@ class DevSettingsController extends Controller
 				break;
 
 			case 'states':
-				$model_data = State::get_cities($item_id);
+				$model_data = State::get_cities($item_id)->orderBy('title')->get();
 				$view .= "states-cities";
 				$page[2][1] = trans('manage.devSettings.states.province' , ['province'=>$model_data->first()->province()->title]) ;
 				break;

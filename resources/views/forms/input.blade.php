@@ -1,6 +1,8 @@
 <?php
-if(isset($class) && str_contains($class, 'form-required')) {
-	$required = true;
+if(isset($class)) {
+	if(str_contains($class, 'form-required')) {
+		$required = true;
+	}
 }
 ?>
 
