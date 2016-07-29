@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\VolunteerForgotPassword;
+use App\Jobs\SendTestMail;
 use App\Providers\SecKeyServiceProvider;
 use App\Models\Volunteer;
 use App\Providers\SmsServiceProvider;
@@ -177,6 +178,13 @@ class AuthController extends Controller
 //		$date = Carbon::now()->addMinutes(5);
 //		$date = $date->diffInMinutes($date->copy()->addMinutes(10));
 //		return view('templates.say' , ['array'=> $date]);
-		Event::fire(new VolunteerForgotPassword(Volunteer::find(1)));
+//		Event::fire(new VolunteerForgotPassword(Volunteer::find(1)));
+		$email = '09361112030';
+
+		$job = (new SendTestMail($email));
+
+		$this->dispatch($job);
+
+		echo 'add job!';
 	}
 }
