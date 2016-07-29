@@ -1,14 +1,19 @@
 <?php
 namespace App\Models;
 
+use App\Providers\AppServiceProvider;
 use App\Traits\PermitsTrait;
 use App\Traits\TahaModelTrait;
+use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
+use Morilog\Jalali\jDate;
+
 
 
 class Volunteer extends Model implements AuthenticatableContract, CanResetPasswordContract
