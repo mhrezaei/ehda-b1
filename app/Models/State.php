@@ -19,36 +19,48 @@ class State extends Model
 	}
 
 
-	public static function get_provinces($mood='get')
+	public static function get_provinces($mood='self')
 	{
-		return self::stacker(Self::where('parent_id' , '0'),$mood);
+		return self::where('parent_id' , 0);
 	}
 
-	public static function get_cities($given_province=0, $mood = 'get')
+	public function fullName()
+	{
+		if($this->isProvince())
+			return  trans('manage.devSettings.states.province')."  ".$this->title ;
+		else
+			return $this->province()->title." / ".$this->title ;
+	}
+
+	public static function findByName($state_name)
+	{
+		return self::where('title' , $state_name)->first();
+	}
+
+	public static function get_cities($given_province=0, $mood = 'self')
 	{
 		if(is_numeric($given_province))
 			if($given_province==0)
-				$stack = self::where('parent_id','>','0') ;
+				$return = self::where('parent_id','>','0') ;
 			else
-				$stack = self::where('parent_id' , $given_province) ;
+				$return = self::where('parent_id' , $given_province) ;
 		else {
 			$province = self::where([
 				'title' => $given_province ,
 				'parent_id' => '0'
 			])->first() ;
 			if(!$province)
-				$stack = self::where('parent_id' , 0) ; //safely returns nothing!
+				$return = self::where('parent_id' , 0) ; //safely returns nothing!
 			else
-				$stack = self::where('parent_id' , $province->id) ;
+				$return = self::where('parent_id' , $province->id) ;
 		}
 
-		return self::stacker($stack , $mood) ;
+		return $return ;
 	}
 
-	public function cities($mood='get')
+	public function cities($mood='self')
 	{
-		$stack = self::where('parent_id' , $this->id) ;
-		return self::stacker($stack,$mood) ;
+		return self::where('parent_id' , $this->id) ;
 	}
 
 	public static function setCapital($province_name, $city_name)
@@ -87,6 +99,23 @@ class State extends Model
 		else {
 			return self::find($this->parent_id) ;
 		}
+	}
+
+	public static function get_combo()
+	{
+		$provinces = self::get_provinces('self')->orderBy('title')->get();
+		$output    = [] ;
+		$states = self::where('parent_id' , '>' , '0')->orderBy('parent_id')->get()->toArray();
+
+		foreach($provinces as $province) {
+			$states = self::get_cities($province->id)->orderBy('title')->get()->toArray() ;
+			foreach($states as $idx => $state) {
+				$states[$idx]['title'] = $province->title .  " / " . $state['title'] ;
+			}
+			$output = array_merge($output,$states);
+		}
+
+		return $output ;
 	}
 
 }

@@ -27,7 +27,15 @@
 @include('manage.frame.widgets.sidebar-link' , [
 	'module' => 'volunteers' ,
 	'icon' => 'child',
-	'sub_menus' => ['.browse' , '.add' , '.publish' , '.search' , '.bulk' , '.report' ]
+	'sub_menus' => [
+		['search' , 'search' , trans('manage.permits.search')],
+		['browse/active' , '' , trans('people.volunteers.manage.active')],
+		['browse/pending' , 'publish' , trans('people.volunteers.manage.pending')],
+		['browse/care' , 'edit' , trans('people.volunteers.manage.care')],
+		['browse/examining' , 'publish' , trans('people.volunteers.manage.examining')],
+		['browse/bin' , 'publish' , trans('people.volunteers.manage.bin')],
+		['report' , 'report' , trans('manage.permits.report')],
+	],
 ])
 
 @include('manage.frame.widgets.sidebar-link' , [

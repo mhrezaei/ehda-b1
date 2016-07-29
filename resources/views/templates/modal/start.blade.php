@@ -1,6 +1,11 @@
+@if(!isset($modal_id))
+	<?php $modal_id = "modal".rand(1,10000); ?>
+@endif
+@if(!isset($partial) or !$partial)
 <div id="{{$modal_id}}" class="modal fade {{$modal_class or ''}}">
 	<div class="modal-dialog modal-{{ $modal_size or 'lg' }}" >
 		<div class="modal-content">
+			@endif
 
 			@if(isset($modal_title))
 				<div class="modal-header">

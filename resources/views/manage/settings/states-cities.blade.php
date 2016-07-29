@@ -87,8 +87,8 @@
 		'form_url' => 'manage/devSettings/cities/save',
 		'hidden_vars' => [
 			url('manage/devSettings/states/-id-/edit/-parent-'),
-			trans('manage.devSettings.states.city-add') ,
 			trans('manage.devSettings.states.city-edit') ,
+			trans('manage.devSettings.states.city-add') ,
 		],
 	])
 

@@ -3,3 +3,27 @@
 @section('navbar-brand' ,view('manage.frame.use.brand',['page'=>$page]) )
 @section('sidebar' , view('manage.frame.use.sidebar'))
 @section('page_title' , trans("manage.modules.".$page[0][0]).' | '.trans('manage.global.page_title'))
+
+@section('modal')
+	<div id="masterModal-lg" class="modal fade">
+		<div class="modal-dialog modal-lg" >
+			<div class="modal-content">
+			</div>
+		</div>
+	</div>
+
+	<div id="masterModal-md" class="modal fade">
+		<div class="modal-dialog" >
+			<div class="modal-content">
+			</div>
+		</div>
+	</div>
+
+	<div id="masterModal-sm" class="modal fade">
+		<div class="modal-dialog" >
+			<div class="modal-content modal-sm">
+			</div>
+		</div>
+	</div>
+
+@endsection

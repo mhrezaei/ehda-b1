@@ -19,11 +19,14 @@ if(isset($class) && str_contains($class, 'form-required')) {
 		<select
 				id="{{$id or ''}}"
 				name="{{$name}}" value="{{$value or ''}}"
-				class="form-control {{$class or ''}}"
+				class="form-control selectpicker {{$class or ''}}"
 				placeholder="{{$placeholder or ''}}"
+				data-size= "{{$size or 5}}"
+				data-live-search = "{{$search or false}}"
+				data-live-search-placeholder= "{{$search_placeholder or trans('forms.button.search')}}..."
 				{{$extra or ''}}
 		>
-			@if(isset($blank_value))
+			@if(isset($blank_value) and $blank_value!='NO')
 				<option value="{{$blank_value}}"
 						@if(!isset($value) or $value==$blank_value)
 							selected
