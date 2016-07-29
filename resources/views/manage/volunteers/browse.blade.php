@@ -13,35 +13,34 @@
 		<div class="col-md-4"><p class="title">{{$page[1][1] or ''}}</p></div>
 		<div class="col-md-8 tools">
 
-			<div>
-				@include('manage.frame.widgets.grid-action' , [
-					'id' => '0',
-					'button_size' => 'md' ,
-					'button_class' => 'default' ,
-					'button_label' => trans('forms.button.bulk_action'),
-					'button_extra' => 'disabled' ,
-					'actions' => [
-						['envelope-o' , trans('people.commands.send_email') , 'modal:manage/volunteers/-id-/email' , 'volunteers.send' ] ,
-						['mobile' , trans('people.commands.send_sms') , 'modal:manage/volunteers/-id-/sms' , 'volunteers.send' ] ,
-						['check' , trans('people.commands.activate') , 'modal:manage/volunteers/-id-/publish' , 'volunteers.publish' , $page[1][2]!='bin' and $page[1][2]!='active'],
-						['trash-o' , trans('people.commands.soft_delete') , 'modal:manage/volunteers/-id-/soft_delete' , 'volunteers.delete' , $page[1][2]!='bin'] ,
-						['undo' , trans('people.commands.undelete') , 'modal:manage/volunteers/-id-/undelete' , 'volunteers.bin' , $page[1][2]=='bin'] ,
-						['times' , trans('people.commands.hard_delete') , 'modal:manage/volunteers/-id-/hard_delete' , 'volunteers.bin' , $page[1][2]=='bin'] ,
+			@include('manage.frame.widgets.toolbar_button' , [
+				'target' => "masterModal('".url('manage/volunteers/0/edit')."')" ,
+				'type' => 'success' ,
+				'caption' => trans('people.volunteers.manage.create') ,
+				'icon' => 'plus-circle' ,
+			])
 
-					]
-				])
-			</div>
+			@include('manage.frame.widgets.grid-action' , [
+				'id' => '0',
+				'button_size' => 'md' ,
+				'button_class' => 'default' ,
+				'button_label' => trans('forms.button.bulk_action'),
+				'button_extra' => 'disabled' ,
+				'actions' => [
+					['envelope-o' , trans('people.commands.send_email') , 'modal:manage/volunteers/-id-/email' , 'volunteers.send' ] ,
+					['mobile' , trans('people.commands.send_sms') , 'modal:manage/volunteers/-id-/sms' , 'volunteers.send' ] ,
+					['check' , trans('people.commands.activate') , 'modal:manage/volunteers/-id-/publish' , 'volunteers.publish' , $page[1][2]!='bin' and $page[1][2]!='active'],
+					['trash-o' , trans('people.commands.soft_delete') , 'modal:manage/volunteers/-id-/soft_delete' , 'volunteers.delete' , $page[1][2]!='bin'] ,
+					['undo' , trans('people.commands.undelete') , 'modal:manage/volunteers/-id-/undelete' , 'volunteers.bin' , $page[1][2]=='bin'] ,
+					['times' , trans('people.commands.hard_delete') , 'modal:manage/volunteers/-id-/hard_delete' , 'volunteers.bin' , $page[1][2]=='bin'] ,
 
-			{{--@include('manage.frame.widgets.toolbar_button' , [--}}
-				{{--'target' => "modalForm('modalStateEditor' , '0' , '')" ,--}}
-				{{--'type' => 'success' ,--}}
-				{{--'caption' => trans('forms.button.add') ,--}}
-				{{--'icon' => 'plus-circle' ,--}}
-			{{--])--}}
-			{{--@include('manage.frame.widgets.toolbar_search' , [--}}
-				{{--'target' => url('manage/devSettings/states/search/-key-') ,--}}
-				{{--'label' => trans('manage.devSettings.states.city-search') ,--}}
-			{{--])--}}
+				]
+			])
+
+			@include('manage.frame.widgets.toolbar_search_inline' , [
+				'target' => url('manage/volunteers/search/') ,
+				'label' => trans('people.commands.search') ,
+			])
 		</div>
 	</div>
 
@@ -69,6 +68,8 @@
 			@include('manage.volunteers.browse-row' , ['model'=>$model])
 		</tr>
 	@endforeach
+
+	@include('manage.volunteers.browse-null')
 
 	@include('manage.frame.widgets.grid-end')
 

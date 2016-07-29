@@ -20,7 +20,7 @@
 	@include('forms.input' , [
 		'name' => 'password',
 		'value' => rand(10000000 , 99999999),
-		'class' => 'form-required ltr'
+		'class' => 'form-required ltr form-default'
 	])
 
 	@include('forms.group-start')

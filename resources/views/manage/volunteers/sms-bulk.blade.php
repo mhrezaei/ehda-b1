@@ -20,6 +20,7 @@
 
 	@include('forms.textarea' , [
 		'name' => 'message',
+		'class' => 'form-default',
 		'label' => trans('validation.attributes.message'),
 	])
 

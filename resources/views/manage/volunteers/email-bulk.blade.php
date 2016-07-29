@@ -20,7 +20,7 @@
 	@include('forms.input' , [
 		'name' => 'title',
 		'label' => trans('validation.attributes.title'),
-		'class' => 'atl form-required',
+		'class' => 'atl form-required form-default',
 	])
 
 	@include('forms.textarea' , [

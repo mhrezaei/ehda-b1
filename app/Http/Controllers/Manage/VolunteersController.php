@@ -6,9 +6,11 @@ use App\Events\SendEmail;
 use App\Events\SendSms;
 use App\Events\VolunteerAccountPublished;
 use App\Events\VolunteerPasswordManualReset;
+use App\Http\Requests\Manage\VolunteerSearchRequest;
 use App\Models\Domain;
 use App\Models\State;
 use App\Models\Volunteer;
+use App\Providers\AppServiceProvider;
 use App\Traits\TahaControllerTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -33,17 +35,65 @@ class VolunteersController extends Controller
 		$this->page[0] = ['volunteers'];
 	}
 
+	public function search(VolunteerSearchRequest $request)
+	{
+		//Preparation...
+		$page = $this->page ;
+		$page[1] = ["search" , trans("people.volunteers.manage.search") , "search"] ;
+
+		//IF SEARCHED...
+		if(isset($request->searched)) {
+			$keyword = $request->keyword ;
+			$model_data = Volunteer::where('name_first','like',"%{$keyword}%")
+					->orWhere('name_last','like',"%{$keyword}%")
+					->orWhere('code_meli','like',"%{$keyword}%")
+					->orWhere('email','like',"%{$keyword}%")
+					->orderBy('created_at' , 'desc')->paginate(50);
+
+			return view('manage.volunteers.browse' , compact('page' , 'model_data'));
+		}
+
+		//IF JUST FORM...
+		return view("manage.volunteers.search" , compact('page'));
+
+	}
+
+
 	public function browse($request_tab = 'active')
 	{
 		//Preparation...
 		$page = $this->page ;
 		$page[1] = ["browse/".$request_tab , trans("people.volunteers.manage.$request_tab") , $request_tab] ;
 
+		//Permission...
+		switch($request_tab) {
+			case 'active' :
+				$permission = 'volunteers' ;
+				break;
+			case 'pending' :
+				$permission = 'volunteers.publish' ;
+				break;
+			case 'care' :
+				$permission = 'volunteers.edit' ;
+				break;
+			case 'examining' :
+				$permission = 'volunteers.publish' ;
+				break;
+			case 'bin':
+				$permission = 'volunteers.bin' ;
+				break;
+			default :
+				$permission = 'somethingImpossible' ;
+		}
+		if(!Auth::user()->can($permission))
+			return view('errors.403');
+
+
 		//Model...
 		$model_data = Volunteer::selector($request_tab)->orderBy('created_at' , 'desc')->paginate(50);
 
 		//View...
-		return view('manage.volunteers.browse' , compact('page','model_data'));
+		return view("manage.volunteers.browse" , compact('page','model_data'));
 
 	}
 
@@ -145,8 +195,8 @@ class VolunteersController extends Controller
 
 		//Save and Return...
 		$saved = Volunteer::store($data);
-		return $this->jsonSaveFeedback($saved , [
-
+		return $this->jsonAjaxSaveFeedback($saved , [
+			'success_refresh' => true ,
 		]);
 
 		// return $this->jsonFeedback($data['birth_date']);

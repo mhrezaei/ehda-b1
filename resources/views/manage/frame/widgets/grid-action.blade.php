@@ -5,7 +5,7 @@
 | Parameters: $id AND $actions = ['fa_icon' , 'caption' , 'link or js_command' , optional permit command , optional boolian condition]
 --}}
 
-<div class="dropdown">
+<span class="dropdown">
 	<button id="action{{$id}}" class="btn btn-{{$button_class or 'default'}} btn-{{$button_size or 'xs'}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" {{$button_extra or ''}}>
 		{{$button_label or trans('forms.button.action')}}
 	</button>
@@ -57,4 +57,4 @@
 			@endif
 		@endforeach
 	</ul>
-</div>
+</span>

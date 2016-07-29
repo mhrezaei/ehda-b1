@@ -36,16 +36,12 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 		Route::get('/' , 'VolunteersController@browse') ;
 		Route::get('/browse' , 'VolunteersController@browse') ;
 		Route::get('/browse/{request_tab}' , 'VolunteersController@browse') ;
+		Route::get('/search' , 'VolunteersController@search');
+		Route::get('/reports' , 'VolunteersController@reports');
 
-		Route::get('/create' , 'VolunteersController@editor') ;
 		Route::get('/{volunteer_id}' , 'VolunteersController@show');
 		Route::get('/{volunteer_id}/edit' , 'VolunteersController@editor');
 		Route::get('/{volunteer_id}/{modal_action}' , 'VolunteersController@modalActions');
-
-		Route::get('/search' , 'VolunteersController@search');
-		Route::post('/search' , 'VolunteersController@search_result');
-
-		Route::get('/reports' , 'VolunteersController@reports');
 
 		Route::group(['prefix'=>'save'] , function() {
 			Route::post('/' , 'VolunteersController@save');

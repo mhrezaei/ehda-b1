@@ -1,12 +1,9 @@
-@extends('manage.frame.use.0')
-
-@section('section')
-
-	@include('forms.opener',[
-		'url' => 'manage/volunteers/save' ,
-		'title' => $page[1][1],
-		'class' => 'js' ,
-	])
+@include('templates.modal.start' , [
+	'partial' => true ,
+	'form_url' => url('manage/volunteers/save/'),
+	'modal_title' => $page[1][1],
+])
+<div class='modal-body'>
 
 	@include('forms.hiddens' , ['fields' => [
 		['id' , isset($model)? $model->id : '0'],
@@ -15,7 +12,7 @@
 	@include('forms.input' , [
 		'name' => 'name_first',
 		'value' => isset($model)? $model->name_first : '',
-		'class' => 'form-required'
+		'class' => 'form-required form-default'
 	])
 	@include('forms.input' , [
 		'name' => 'name_last',
@@ -180,10 +177,15 @@
 			'type' => 'submit' ,
 		])
 
+		@include('forms.button' , [
+			'label' => trans('forms.button.cancel'),
+			'shape' => 'link',
+			'link' => '$(".modal").modal("hide")',
+		])
+
 	@include('forms.group-end')
 
 	@include('forms.feed' , [])
 
-	@include('forms.closer')
-
-@endsection
+</div>
+@include('templates.modal.end')

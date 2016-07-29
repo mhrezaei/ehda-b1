@@ -1,3 +1,4 @@
+{{-- $submenu[0=>url 1=>permission 2=>label] --}}
 @if(Auth::user()->can($module))
 
 	<?php

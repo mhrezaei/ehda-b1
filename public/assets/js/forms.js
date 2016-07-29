@@ -13,7 +13,13 @@ function forms_listener()
                   success: forms_responde,
                   error: forms_error
             });
+            $('.form-default').focus();
       });
+
+      $(".form-default").each(function() {
+            $(this).removeClass('form-default');
+            $(this).focus();
+      })
 
       // automatic direction...
       $(".atr").each(function(){

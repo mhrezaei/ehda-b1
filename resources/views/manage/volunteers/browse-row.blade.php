@@ -46,7 +46,7 @@
 		'actions' => [
 			['eye' , trans('manage.permits.view') , "modal:manage/volunteers/-id-/view" , 'volunteers.view'],
 			['key' , trans('people.commands.change_password') , 'modal:manage/volunteers/-id-/change_password' , 'volunteers.edit' ,  $model->isActive() ],
-			['pencil' , trans('manage.permits.edit') , "url:manage/volunteers/-id-/edit" , 'volunteers.edit'],
+			['pencil' , trans('manage.permits.edit') , "modal:manage/volunteers/-id-/edit" , 'volunteers.edit'],
 			['shield' , trans('manage.permits.permits') , 'modal:manage/volunteers/-id-/permits' , 'volunteers.permits' , $model->isActive()],
 
 			['envelope-o' , trans('people.commands.send_email') , 'modal:manage/volunteers/-id-/email' , 'volunteers.send' , $model->email ] ,
