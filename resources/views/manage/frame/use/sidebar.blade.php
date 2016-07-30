@@ -8,23 +8,6 @@
 ])
 
 @include('manage.frame.widgets.sidebar-link' , [
-	'module' => 'posts' ,
-	'icon' => 'file-text-o' ,
-	'sub_menus' => ['posts-static' , 'posts-news']
-])
-@include('manage.frame.widgets.sidebar-link' , [
-	'module' => 'galleries' ,
-	'icon' => 'picture-o' ,
-	'sub_menus' => ['posts-slideshows']
-])
-
-@include('manage.frame.widgets.sidebar-link' , [
-	'module' => 'cards' ,
-	'icon' => 'credit-card',
-	'sub_menus' => ['.browse' , '.publish' , '.add' , '.bulk' , '.search' , '.report' ]
-])
-
-@include('manage.frame.widgets.sidebar-link' , [
 	'module' => 'volunteers' ,
 	'icon' => 'child',
 	'sub_menus' => [
@@ -37,6 +20,25 @@
 		['report' , 'report' , trans('manage.permits.report')],
 	],
 ])
+
+
+@include('manage.frame.widgets.sidebar-link' , [
+	'module' => 'posts-news' ,
+	'icon' => 'file-text-o' ,
+])
+
+@include('manage.frame.widgets.sidebar-link' , [
+	'module' => 'galleries' ,
+	'icon' => 'picture-o' ,
+	'sub_menus' => ['posts-slideshows']
+])
+
+@include('manage.frame.widgets.sidebar-link' , [
+	'module' => 'cards' ,
+	'icon' => 'credit-card',
+	'sub_menus' => ['.browse' , '.publish' , '.add' , '.bulk' , '.search' , '.report' ]
+])
+
 
 @include('manage.frame.widgets.sidebar-link' , [
 	'module' => 'posts-celebs' ,
