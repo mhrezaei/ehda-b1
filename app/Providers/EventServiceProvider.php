@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Psy\Util\Str;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -18,15 +19,24 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\SendSmsVolunteer',
         ],
         // Manage...
-//         'App\Events\VolunteerLoggedIn' => [
-//              'App\Listeners\InsertVolunteerLogin',
-//         ],
-//         'App\Events\VolunteerLoggedOut' => [
-//              'App\Listeners\UpdateVolunteerLogin',
-//         ],
-//         'App\Events\VolunteerClick' => [
-//              'App\Listeners\UpdateVolunteerLogin',
-//         ],
+        'App\Events\VolunteerPasswordManualReset' => [
+            'App\Listeners\VolunteerSmsNewPassword',
+        ],
+
+        'App\Events\VolunteerAccountPublished' => [
+             'App\Listeners\VolunteerSmsPublishNotice',
+             'App\Listeners\VolunteerEmailPublishNotice',
+        ],
+
+        'App\Events\SendSms' => [
+             'App\Listeners\SendSmsListener',
+        ],
+
+        'App\Events\SendEmail' => [
+             'App\Listeners\SendEmailListener',
+        ],
+
+
     ];
 
     /**
@@ -38,7 +48,6 @@ class EventServiceProvider extends ServiceProvider
     public function boot(DispatcherContract $events)
     {
         parent::boot($events);
-
         //
     }
 }

@@ -5,134 +5,87 @@ namespace App\Http\Controllers;
 use App\Mhr_state;
 use App\Models\Domain;
 use App\Models\State;
+use App\Models\Volunteer;
+use App\Temp\Mhr_safiran_data;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
+use Morilog\Jalali\jDate;
+use App\Events\SendSms;
+use Illuminate\Support\Facades\Event;
+
 
 class TestController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $default = [
-             'ok' => 0 ,
-             'message' => trans('validation.invalid') ,
-             'redirect' => '' ,
-             'callback' => '' ,
-             'refresh' => 0 ,
-             'modalClose' => 0 ,
-             'updater' => '' ,
-        ];
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function index()
+	{
+//		$this->convertVolunteers() ;
+		for($i=1 ; $i<=200000 ; $i++) {
+			echo view('templates.say', ['array' => $i]);
+		}
+	}
 
-        foreach($default as $item => $value) {
-            echo "$item => $value <br>" ;
-        }
+	/*
+	|--------------------------------------------------------------------------
+	| Table Conversion Methods
+	|--------------------------------------------------------------------------
+	|
+	*/
+	
+
+	private function convertVolunteers()
+	{
+		$safiran = Mhr_safiran_data::all() ;
+
+		foreach($safiran as $safir) {
+			$exam = json_decode($safir->examResult,1);
+
+			$volunteer = new Volunteer() ;
+			$volunteer->created_at = Carbon::createFromTimestamp($safir->registerTime) ;
+			if($safir->password) {
+				$volunteer->published_at = Carbon::createFromTimestamp($safir->registerTime) ;
+			}
+			$volunteer->password = $safir->password ;
+			$volunteer->password_force_change = 2 ;
+			$volunteer->name_first = $safir->firstName ;
+			$volunteer->name_last = $safir->lastName ;
+			$volunteer->code_meli = $safir->nationalcode ;
+			$volunteer->email = $safir->email ;
+			$volunteer->gender = $safir->sex ;
+			if($safir->dateOfBirth)
+				$volunteer->birth_date = Carbon::createFromTimestamp($safir->dateOfBirth) ;
+			$volunteer->marital_status = $safir->maried ;
+			$volunteer->edu_city = State::findByName($safir->educationCity);
+			$volunteer->edu_field = $safir->education ;
+			$volunteer->job = $safir->job ;
+			$volunteer->tel_mobile = $safir->mobile ;
+			$volunteer->tel_emergency = $safir->emergencyTel ;
+			$volunteer->home_address = $safir->homeAddress ;
+			$volunteer->home_tel = $safir->homeTel ;
+			$volunteer->work_address = $safir->jobAddress ;
+			$volunteer->work_tel = $safir->jobTel ;
+			$volunteer->exam_passed_at = Carbon::createFromTimestamp($safir->lastExamTime) ;
+			$volunteer->exam_sheet = json_encode($exam['examResult'])  ;
+			if($exam['total'])
+				$volunteer->exam_result = round (100 * $exam['trueAnswer'] / ($exam['total'])) ;
+			$volunteer->familization = $safir->introduction ;
+			$volunteer->motivation = $safir->motivation ;
+			$volunteer->alloc_time = $safir->numberOfMonth ;
+			$volunteer->activities = $safir->activity ;
+
+			$volunteer->save();
+		}
 
 
-        return ;
-        //in...
-        $user = Auth::user() ;
-        $output = $user ;
+//		echo view('templates.say' , ['array'=>$old_records]);
 
-//        here...
-//        $user->detachDomains(['fars','tehran']) ;
-//        $user->attachDomains('all');
-        $output = $user->can('*', 'alborzd' ) ;
+	}
 
-        //out...
-        return view('templates.say')->with(['array' => $output]) ;
-
-        echo Carbon::now();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        echo 'create' ;
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        echo 'store' ;
-        return view('templates.say' , ['array' => $request])  ;
-    }
-
-    public function show($id)
-    {
-        $city = State::find(245) ;
-        $domain = Domain::find(14) ;
-
-        return view('templates.say' , ['array'=>$domain->states()->count()]);
-
-    }
-
-    public function set_domain_ids()
-    {
-        $provinces = State::get_provinces();
-        $affected = 0 ;
-
-        foreach($provinces as $province) {
-            $domain = Domain::where('title',$province->title)->first();
-
-            $cities = $province->cities() ;
-            foreach($cities as $city) {
-                $city->domain_id = $domain->id ;
-                $affected += $city->save() ;
-            }
-        }
-        
-        return view('templates.say' , ['array'=>$affected]);
-        
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        echo "edit: $id" ;
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        echo 'store '.$id ;
-        return view('templates.say' , ['array' => $request])  ;
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        echo "destroy: $id" ;
-    }
 }

@@ -31,9 +31,14 @@
 	{!! HTML::script ('assets/libs/sb-admin/metisMenu.js') !!}
 	{!! HTML::script ('assets/libs/sb-admin/sb-admin-2.js') !!}
 
-	{{-- Token Input --}}
-	{!! Html::style('assets/libs/selectize/selectize.bootstrap3.css') !!}
-	{!! HTML::script ('assets/libs/selectize/selectize.min.js') !!}
+	{{-- Bootstrap-select --}}
+	{!! Html::style('assets/libs/bootstrap-select/bootstrap-select.min.css') !!}
+	{!! HTML::script ('assets/libs/bootstrap-select/bootstrap-select.min.js') !!}
+	{!! HTML::script ('assets/libs/bootstrap-select/defaults-fa_IR.min.js') !!}
+
+	{{-- Datepicker --}}
+	{!! HTML::script ('assets/libs/datepicker/js-persian-cal.js') !!}
+	{!! Html::style('assets/libs/datepicker/js-persian-cal.css') !!}
 
 	{{-- Custom --}}
 	{!! Html::style('assets/css/manage.min.css') !!}
