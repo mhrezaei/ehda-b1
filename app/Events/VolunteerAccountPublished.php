@@ -3,11 +3,10 @@
 namespace App\Events;
 
 use App\Events\Event;
-use App\Models\Volunteer;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class VolunteerForgotPassword extends Event
+class VolunteerAccountPublished extends Event
 {
     use SerializesModels;
     public $volunteer;
@@ -16,7 +15,7 @@ class VolunteerForgotPassword extends Event
     {
         $this->volunteer = $volunteer;
     }
-    
+
     public function broadcastOn()
     {
         return [];

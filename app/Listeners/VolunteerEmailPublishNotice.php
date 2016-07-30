@@ -2,12 +2,11 @@
 
 namespace App\Listeners;
 
-use App\Events\VolunteerForgotPassword;
+use App\Events\VolunteerAccountPublished;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Support\Facades\Mail;
 
-class SendEmailVolunteer
+class VolunteerEmailPublishNotice
 {
     /**
      * Create the event listener.
@@ -22,17 +21,17 @@ class SendEmailVolunteer
     /**
      * Handle the event.
      *
-     * @param  VolunteerForgotPassword  $event
+     * @param  VolunteerAccountPublished  $event
      * @return void
      */
-    public function handle(VolunteerForgotPassword $event)
+    public function handle(VolunteerAccountPublished $event)
     {
-        $token = json_decode($event->volunteer->reset_token, true);
-        Mail::send('templates.email.reset_password_email', $token, function ($m) use ($event) {
+        $data['volunteer_name'] = $event->volunteer->name_first . ' ' . $event->volunteer->name_last;
+        Mail::send('templates.email.volunteer_publish_account_email', $data, function ($m) use ($event) {
             $m->from(env('MAIL_FROM'), trans('global.siteTitle'));
 
             $m->to($event->volunteer->email, $event->volunteer->name_first . ' ' . $event->volunteer->name_last)
-                ->subject(trans('people.event.email_reset_password_title'));
+                ->subject(trans('people.event.volunteer_publish_notice_email'));
         });
     }
 }

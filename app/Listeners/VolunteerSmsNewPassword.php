@@ -2,24 +2,22 @@
 
 namespace App\Listeners;
 
-use App\Events\VolunteerForgotPassword;
+use App\Events\VolunteerPasswordManualReset;
 use App\Providers\SmsServiceProvider;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\URL;
 
-class SendSmsVolunteer
+class VolunteerSmsNewPassword
 {
-
     public function __construct()
     {
         //
     }
 
-    public function handle(VolunteerForgotPassword $event)
+    public function handle(VolunteerPasswordManualReset $event)
     {
-        $token = json_decode($event->volunteer->reset_token, true);
-        $msg = trans('people.event.sms_reset_content') . ' ' . $token['reset_token'] . "\n\r" . url('');
+        $msg = trans('people.event.volunteer_new_password_sms') . ' ' . $event->newPassword . "\n\r" . url('');
         SmsServiceProvider::send($event->volunteer->tel_mobile, $msg);
         return true;
     }
