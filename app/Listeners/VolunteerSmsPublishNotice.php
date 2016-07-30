@@ -17,8 +17,7 @@ class VolunteerSmsPublishNotice
 
     public function handle(VolunteerAccountPublished $event)
     {
-        $token = json_decode($event->volunteer->reset_token, true);
-        $msg = trans('people.event.volunteer_publish_notice_sms') . ' ' . $token['reset_token'] . "\n\r" . url('');
+        $msg = trans('people.event.volunteer_publish_notice_sms') . "\n\r" . url('');
         SmsServiceProvider::send($event->volunteer->tel_mobile, $msg);
         return true;
     }
