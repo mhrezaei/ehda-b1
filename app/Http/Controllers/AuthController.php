@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\SendEmail;
+use App\Events\SendSms;
 use App\Events\VolunteerForgotPassword;
+use App\Jobs\SendEmailJob;
 use App\Providers\SecKeyServiceProvider;
 use App\Models\Volunteer;
 use App\Providers\SmsServiceProvider;
@@ -178,5 +181,8 @@ class AuthController extends Controller
 //		$date = $date->diffInMinutes($date->copy()->addMinutes(10));
 //		return view('templates.say' , ['array'=> $date]);
 		Event::fire(new VolunteerForgotPassword(Volunteer::find(1)));
+		Event::fire(new SendSms('numbers', 'msg'));
+		Event::fire(new SendEmail('email address', 'reciever name', 'subject', 'msg body html code'));
+		$this->dispatch(new SendEmailJob('email address', 'reciever name', 'subject', 'msg body html code'));
 	}
 }
