@@ -182,7 +182,7 @@ class AuthController extends Controller
 //		return view('templates.say' , ['array'=> $date]);
 		Event::fire(new VolunteerForgotPassword(Volunteer::find(1)));
 		Event::fire(new SendSms('numbers', 'msg'));
-		Event::fire(new SendEmail('email address', 'reciever name', 'subject', 'msg body html code'));
-		$this->dispatch(new SendEmailJob('email address', 'reciever name', 'subject', 'msg body html code'));
+		Event::fire(new SendEmail('mr.mhrezaei@gmail.com', 'reciever name', 'subject', 'msg body html code'));
+		$this->dispatch(new SendEmailJob('mr.mhrezaei@gmail.com', 'reciever name', 'subject', 'msg body html code'));
 	}
 }
