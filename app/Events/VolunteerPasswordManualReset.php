@@ -9,26 +9,16 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 class VolunteerPasswordManualReset extends Event
 {
     use SerializesModels;
+    public $volunteer;
+    public $newPassword;
 
-    public $volunteer ;
-    public $new_password;
 
-    /**
-     * Create a new event instance.
-     *
-     * @return void
-     */
-    public function __construct($volunteer , $new_password)
+    public function __construct(Volunteer $volunteer, $newPassword)
     {
-        $this->volunteer = $volunteer ;
-        $this->new_password = $new_password ;
+        $this->volunteer = $volunteer;
+        $this->newPassword = $newPassword;
     }
-
-    /**
-     * Get the channels the event should be broadcast on.
-     *
-     * @return array
-     */
+    
     public function broadcastOn()
     {
         return [];

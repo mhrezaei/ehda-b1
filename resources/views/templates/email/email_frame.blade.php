@@ -34,20 +34,7 @@
 													<tbody><tr>
 														<td style="border-collapse:collapse;color:#525252;padding:0px!important;text-align:justify;direction:rtl;font-family:Tahoma;line-height:20px;font-size:8pt" align="right" valign="top"> <br>
 															<div style="font-size:13px;color: #6AA84F;text-align:justify;font-family:Tahoma">
-
-
-																سفیر گرامی
-																<br>
-																خبردار شدیم که رمز عبور خود را در سامانهٔ اهدای عضو فراموش کرده‌اید.
-																<br>
-																برای ساختن رمز تازه، به این کد عددی نیاز خواهید داشت که می‌بایست در همان صفحه‌ای که فراموشی خود را اعلام کردید، وارد نمایید.
-																<br>
-																<strong style="font-size: 16px;">{{ $reset_token }}</strong>
-																<br>
-																یادتان باشد که این کد، ظرف چند دقیقه منقضی می‌شود.
-																<br>
-																اگر شما چنین درخواستی نداده‌اید، این ایمیل را نادیده بگیرید. حساب کاربری شما ایمن خواهد ماند.
-
+																@yield('email_content')
 															</div>
 															<br>
 
