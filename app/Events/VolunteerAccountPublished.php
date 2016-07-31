@@ -9,24 +9,13 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 class VolunteerAccountPublished extends Event
 {
     use SerializesModels;
+    public $volunteer;
 
-    public $volunteer ;
-
-    /**
-     * Create a new event instance.
-     *
-     * @return void
-     */
-    public function __construct($volunteer)
+    public function __construct(Volunteer $volunteer)
     {
-        $this->volunteer = $volunteer ;
+        $this->volunteer = $volunteer;
     }
 
-    /**
-     * Get the channels the event should be broadcast on.
-     *
-     * @return array
-     */
     public function broadcastOn()
     {
         return [];
