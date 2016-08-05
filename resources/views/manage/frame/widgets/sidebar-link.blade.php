@@ -4,7 +4,7 @@
 	<?php
 		if(str_contains($module,'posts-')) {
 			$slug = str_replace('posts-','',$module) ;
-			$caption = \App\Models\Post_cat::getName($slug);
+			$caption = \App\Models\Branch::getTitle($slug);
 			$target = "posts/$slug" ;
 		}
 		else {

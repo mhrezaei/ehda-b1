@@ -40,7 +40,7 @@ class Post extends Model
 
 	public function branch()
 	{
-		return Post_cat::selectBySlug($this->branch) ;
+		return Branch::selectBySlug($this->branch);
 	}
 
 	public function domains()
@@ -61,12 +61,14 @@ class Post extends Model
 	public static function selector($branch , $criteria)
 	{
 		switch($criteria) {
+			case 'all' :
+				return self::where('branch' , $branch) ;
 			case 'published':
 				return self::where('branch',$branch)->where('published_at','>','0') ;
 			case 'pending':
 				return self::where('branch',$branch)->whereNull('published_at') ;
 			case 'bin' :
-				return self::where('branch',$branch)->onlyTrashed();
+				return self::onlyTrashed()->where('branch',$branch);
 			default:
 				return null ;
 		}

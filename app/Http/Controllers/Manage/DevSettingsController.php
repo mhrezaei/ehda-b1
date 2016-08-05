@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Manage;
 
+use App\models\Branch;
 use App\Models\Domain;
 use App\Models\Post_cat;
 use App\Models\State;
@@ -23,7 +24,7 @@ class DevSettingsController extends Controller
 		$this->page[0] = ['devSettings' , trans('manage.modules.devSettings')];
 	}
 
-	public function index($request_tab = 'posts-cats')
+	public function index($request_tab = 'branches')
 	{
 		//Preparetions...
 		$page = $this->page;
@@ -34,6 +35,10 @@ class DevSettingsController extends Controller
 			case 'posts-cats' :
 				$model_data = Post_cat::where('parent_id', 0)->orderBy('title')->get();
 				break;
+
+			case 'branches' :
+				$model_data = Branch::orderBy('plural_title')->get();
+				break ;
 
 			case 'domains':
 				$model_data = Domain::orderBy('title')->get();
@@ -119,9 +124,9 @@ class DevSettingsController extends Controller
 		$view = "manage.settings." ;
 		
 		switch($request_tab) {
-			case 'posts-cats' :
-				$model_data = Post_cat::find($item_id);
-				$view .= "posts-cats_edit" ;
+			case 'branches' :
+				$model_data = Branch::find($item_id);
+				$view .= "branches_edit" ;
 				break;
 
 			case 'states':
@@ -191,17 +196,12 @@ class DevSettingsController extends Controller
 	|
 	*/
 
-	public function save_postsCats(Requests\Manage\PostCatsSaveRequest $request)
+	public function save_branches(Requests\Manage\BranchesSaveRequest $request)
 	{
-		if(!Post_cat::isUnique($request,'title'))
-			return $this->jsonFeedback(trans('validation.unique', ['attribute' => trans('validation.attributes.title')]) );
-		if(!Post_cat::isUnique($request,'slug'))
-			return $this->jsonFeedback(trans('validation.unique', ['attribute' => trans('validation.attributes.slug')]) );
-
-		//Save...
-		return $this->jsonSaveFeedback(Post_cat::store($request) , [
-				'success_redirect' => '/manage/devSettings/posts-cats' ,
+		return $this->jsonSaveFeedback(Branch::store($request) , [
+				'success_redirect' => '/manage/devSettings/branches' ,
 		]);
+
 	}
 
 

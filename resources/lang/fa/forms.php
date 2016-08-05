@@ -21,6 +21,9 @@ return [
 				'action' => 'عملیات',
 				'bulk_action' => 'کارهای دسته‌جمعی',
 				'recovery' => 'بازآوری',
+				'soft_delete' => 'انتقال به زباله‌دان',
+				"undelete" => 'بازیابی از زباله‌دان',
+				'hard_delete' => 'حذف برای همیشه' ,
 ],
 
 		"general" => [

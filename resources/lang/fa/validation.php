@@ -140,6 +140,8 @@ return [
 				"motivation" => "انگیزه‌ی همکاری",
 				"alloc_time" => "فرصت همکاری" ,
 				'title' => 'عنوان',
+				'plural_title' => 'عنوان در حالت جمع',
+				'singular_title' => 'عنوان در حالت مفرد',
 				'slug' => 'نامک',
 				'cities' => 'شهرها',
 				'create' => 'ایجاد',

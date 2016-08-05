@@ -107,6 +107,7 @@ class VolunteersController extends Controller
 
 		$model = Volunteer::withTrashed()->find($volunteer_id) ;
 		$view = "manage.volunteers.$view_file" ;
+		$opt = [] ;
 
 		//Particular Actions...
 		switch($view_file) {
@@ -247,6 +248,7 @@ class VolunteersController extends Controller
 	public function soft_delete(Request $request)
 	{
 		if(!Auth::user()->can('volunteers.delete')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
+		if($request->id == Auth::user()->id) return $this->jsonFeedback();
 
 		$model = Volunteer::find($request->id) ;
 		$done = $model->delete();
@@ -261,7 +263,7 @@ class VolunteersController extends Controller
 	{
 		if(!Auth::user()->can('volunteers.delete')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
 
-		$deleted = Volunteer::bulkDelete($request->ids);
+		$deleted = Volunteer::bulkDelete($request->ids , Auth::user()->id);
 		return $this->jsonAjaxSaveFeedback($deleted , [
 			'success_refresh' => true ,
 		]);

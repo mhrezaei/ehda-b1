@@ -23,7 +23,7 @@
 			@include('manage.frame.widgets.grid-action' , [
 				'id' => '0',
 				'button_size' => 'md' ,
-				'button_class' => 'default' ,
+				'button_class' => 'primary' ,
 				'button_label' => trans('forms.button.bulk_action'),
 				'button_extra' => 'disabled' ,
 				'actions' => [

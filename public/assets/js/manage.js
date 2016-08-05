@@ -141,8 +141,8 @@ function gridSelector($mood , $id)
 
 		case 'buttonActivator' :
 			if(gridSelector('count')>0)
-				$('#action0').addClass('btn-primary').prop('disabled', false);
+				$('#action0').prop('disabled', false);
 			else
-				$('#action0').removeClass('btn-primary').prop('disabled', true);
+				$('#action0').prop('disabled', true);
 	}
 }
