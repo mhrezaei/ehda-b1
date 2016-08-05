@@ -71,11 +71,19 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 		});
 	});
 
-
-
 	/*
-	| Developer Settings
+	| Posts
 	*/
+	Route::group(['prefix'=>'posts'] , function() {
+		Route::get('/{branch_slug}' , 'PostsController@browse') ;
+		Route::get('/{branch_slug}/{request_tab}' , 'PostsController@browse') ;
+
+	});
+
+
+		/*
+		| Developer Settings
+		*/
 
 
 	Route::group(['prefix'=>'devSettings'], function() {

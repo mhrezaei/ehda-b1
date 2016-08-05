@@ -5,6 +5,26 @@ namespace App\Traits;
 trait TahaModelTrait
 {
 
+	/*
+	|--------------------------------------------------------------------------
+	| General Select Methods
+	|--------------------------------------------------------------------------
+	|
+	*/
+	public static function selectBySlug($slug , $field='slug')
+	{
+		if(!$slug) return false ;
+		return self::where($field , $slug)->first() ;
+	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| General Save Methods
+	|--------------------------------------------------------------------------
+	|
+	*/
+	
+
 	public static function store($request)
 	{
 		if(is_array($request))
@@ -30,4 +50,6 @@ trait TahaModelTrait
 		return $affected;
 
 	}
+
+	
 }

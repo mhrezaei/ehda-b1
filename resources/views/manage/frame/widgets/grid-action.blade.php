@@ -15,6 +15,7 @@
 				//first things first...
 				$icon = $action[0] ;
 				$caption = $action[1] ;
+				$extra = null ;
 
 				//target...
 				$action[2] = str_replace('-id-' , $id , $action[2]);
@@ -32,6 +33,8 @@
 					$array = explode(':',$action[2]) ;
 					$target = url($array[1]) ;
 					$js_command = null ;
+					if(str_contains($action[2] , 'urlN'))
+						$extra .= ' target="_blank" ';
 				}
 				else {
 					$js_command = null ;
@@ -49,7 +52,7 @@
 			?>
 			@if($permit)
 				<li>
-					<a href="{{$target}}" onclick="{{$js_command}}">
+					<a href="{{$target}}" onclick="{{$js_command}}" {{$extra}}>
 						<i class="fa fa-{{$icon or 'circle'}} fa-fw"></i>
 						{{ $caption }}
 					</a>

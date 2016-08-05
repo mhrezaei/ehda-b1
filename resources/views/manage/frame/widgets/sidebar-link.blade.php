@@ -5,14 +5,16 @@
 		if(str_contains($module,'posts-')) {
 			$slug = str_replace('posts-','',$module) ;
 			$caption = \App\Models\Post_cat::getName($slug);
+			$target = "posts/$slug" ;
 		}
 		else {
+			$target = $module ;
 			$caption = trans('manage.modules.'.$module) ;
 		}
 	?>
 
 	<li {{ (Request::is('*'.$module) ? 'class="active"' : '') }}>
-		<a href="{{ url ('manage/'.$module) }}">
+		<a href="{{ url ('manage/'.$target) }}">
 			<i class="fa fa-{{ $icon or 'dot-circle-o' }} fa-fw"></i>
 			&nbsp;{{ $caption }}&nbsp;
 			@if(isset($sub_menus))

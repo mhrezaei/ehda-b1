@@ -32,7 +32,7 @@ class VolunteersController extends Controller
 	{
 		$this->middleware('can:volunteers');
 
-		$this->page[0] = ['volunteers'];
+		$this->page[0] = ['volunteers' , trans('manage.modules.volunteers')];
 	}
 
 	public function search(VolunteerSearchRequest $request)

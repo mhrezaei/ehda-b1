@@ -1,4 +1,5 @@
 @include('manage.frame.use.tabs' , [
+	'current' => $page[1][0] ,
 	'tabs' => [
 		['search' , trans('people.volunteers.manage.search') , 'volunteers.search'],
 		['browse/active' , trans('people.volunteers.manage.active') , 'volunteers'],

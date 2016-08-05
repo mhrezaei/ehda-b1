@@ -10,6 +10,13 @@ class Post_cat extends Model
 	use TahaModelTrait ;
 	protected $guarded = ['id'];
 
+	/*
+	|--------------------------------------------------------------------------
+	| Relations
+	|--------------------------------------------------------------------------
+	| All standard laravel-based realtions and custom ones are grouped here.
+	*/
+
 	public function posts()
 	{
 		return $this->hasMany('App\Models\Post');
@@ -31,5 +38,12 @@ class Post_cat extends Model
 
 		return !$found_models ;
 	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| Selectors
+	|--------------------------------------------------------------------------
+	| 
+	*/
 
 }

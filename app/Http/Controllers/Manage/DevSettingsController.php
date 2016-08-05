@@ -20,7 +20,7 @@ class DevSettingsController extends Controller
 	{
 		$this->middleware('can:dev');
 
-		$this->page[0] = ['devSettings'];
+		$this->page[0] = ['devSettings' , trans('manage.modules.devSettings')];
 	}
 
 	public function index($request_tab = 'posts-cats')
