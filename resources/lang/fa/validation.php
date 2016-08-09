@@ -146,6 +146,10 @@ return [
 				'cities' => 'شهرها',
 				'create' => 'ایجاد',
 				'publish' => 'انتشار',
+				'abstract' => 'خلاصه',
+				'text' => 'متن',
+				'category_id' => 'دسته‌بندی',
+				'keywords' => 'کلیدواژه‌ها',
 
 			"token" => "توکن",
 

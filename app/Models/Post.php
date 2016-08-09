@@ -7,6 +7,7 @@ use App\Traits\TahaModelTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Morilog\Jalali\jDate;
 
 
@@ -23,9 +24,9 @@ class Post extends Model
 	*/
 
 
-	public function post_cat()
+	public function category()
 	{
-		return $this->belongsTo('App\Models\Post_cat');
+		return $this->belongsTo('App\Models\Category');
 	}
 
 	public function post_comments()
@@ -45,6 +46,7 @@ class Post extends Model
 
 	public function domains()
 	{
+
 		$domains_array = json_decode($this->domains, true);
 		if(!($domains_array)) $domains_array = array() ;
 
@@ -66,7 +68,11 @@ class Post extends Model
 			case 'published':
 				return self::where('branch',$branch)->where('published_at','>','0') ;
 			case 'pending':
-				return self::where('branch',$branch)->whereNull('published_at') ;
+				return self::where('branch',$branch)->whereNull('published_at')->where('is_draft',false) ;
+			case 'my_posts' :
+				return self::where('branch',$branch)->where('created_by',Auth::user()->id);
+			case 'my_drafts' :
+				return self::where('branch',$branch)->where('created_by',Auth::user()->id)->where('is_draft',true)->whereNull('published_at');
 			case 'bin' :
 				return self::onlyTrashed()->where('branch',$branch);
 			default:
@@ -81,6 +87,56 @@ class Post extends Model
 	|--------------------------------------------------------------------------
 	|
 	*/
+
+	public function canPublish()
+	{
+		$online_user = Auth::user() ;
+
+		if($this->published_at)
+			return $online_user->can($this->branch.".edit") ;
+		else
+			return $online_user->can($this->branch.".publish") ;
+
+	}
+
+	public function canEdit()
+	{
+		$online_user = Auth::user() ;
+
+		//Allowed by permission...
+		if($online_user->can($this->branch.".edit")) //@TODO: Check Domains Also
+			return true ;
+
+		//Own unpublished post...
+		if($this->created_by == $online_user->id and $this->published_at == null)
+			return true ;
+
+		//Otherwise...
+		return false ;
+	}
+
+	public function canDelete()
+	{
+		$online_user = Auth::user() ;
+
+		//Allowed by Permission...
+		if($online_user->can($this->branch.".delete")) //@TODO: Check Domains Also
+			return true ;
+
+		//Own unpublished post...
+		if($this->created_by == $online_user->id and $this->published_at == null)
+			return true ;
+
+		//Otherwise...
+		return false ;
+	}
+
+	public function isScheduled()
+	{
+		if(!$this->publish_schedule)
+			return false;
+	}
+
 	public function say($property , $default='-')
 	{
 		switch($property) {

@@ -31,7 +31,7 @@ if(isset($class) && str_contains($class, 'form-required')) {
 						@if(!isset($value) or $value==$blank_value)
 							selected
 						@endif
-				></option>
+				>{{ $blank_label or '' }}</option>
 			@endif
 			@foreach($options as $option)
 				<option value="{{$option['id']}}"

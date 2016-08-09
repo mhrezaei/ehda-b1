@@ -41,6 +41,9 @@ class PostsController extends Controller
 			case 'pending' :
 				$permission = "$request_branch.publish" ;
 				break;
+			case 'my_drafts' :
+				$permission = "$request_branch.create" ;
+				break;
 			case 'bin' :
 				$permission = "$request_branch.bin" ;
 				break ;
@@ -72,6 +75,8 @@ class PostsController extends Controller
 
 	public function modalActions($post_id, $view_file)
 	{
+		if($view_file=='edit')
+			return $this->editor($post_id) ;
 		if($post_id==0)
 			return $this->modalBulkAction($view_file);
 
@@ -104,6 +109,28 @@ class PostsController extends Controller
 		return view($view) ;
 	}
 
+	public function editor($post_id)
+	{
+		//Model...
+		$model = Post::withTrashed()->find($post_id) ; 
+		if(!$model)
+			return view('errors.410');
+
+		//Permission...
+		if(!$model->canEdit())
+			return view('errors.403');
+
+		//Preparations...
+		$page = $this->page ;
+		$page[0] = ["posts/".$model->branch , $model->branch()->title() ] ;
+		$page[1] = ["posts/$post_id/edit" , trans('posts.manage.edit') ] ;
+
+		$domains = Auth::user()->domains()->orderBy('title') ;
+
+		//View...
+		return view('manage.posts.editor' , compact('page','model' , 'domains'));
+
+	}
 	/*
 	|--------------------------------------------------------------------------
 	| Save Methods

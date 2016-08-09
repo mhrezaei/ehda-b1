@@ -11,10 +11,31 @@ class Branch extends Model
 	use TahaModelTrait ;
 	use SoftDeletes ;
 
+	/*
+	|--------------------------------------------------------------------------
+	| Relations
+	|--------------------------------------------------------------------------
+	| 
+	*/
+	
+
 	public function posts($criteria='all')
 	{
 		return Post::selector($this->slug , $criteria);
 	}
+
+	public function categories()
+	{
+		return $this->hasMany('App\Models\Category');
+	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| Stators
+	|--------------------------------------------------------------------------
+	|
+	*/
+
 
 	public static function getTitle($slug , $is_singular=false)
 	{

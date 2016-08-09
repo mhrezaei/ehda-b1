@@ -158,6 +158,10 @@ trait PermitsTrait
 		return $return ;
 	}
 
+	public function domains()
+	{
+		return Domain::whereIn('id', $this->getDomains());
+	}
 
 	public function attachDomains($domains , $forget_stored=false)
 	{

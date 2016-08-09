@@ -23,7 +23,7 @@
 		'id' => $model->id ,
 		'actions' => [
 			['eye' , trans('manage.permits.view') , "urlN:manage/volunteers/-id-/view"], //@TODO: Put the correct url
-			['pencil' , trans('manage.permits.edit') , "modal:manage/volunteers/-id-/edit" , "$module.edit"],
+			['pencil' , trans('manage.permits.edit') , "url:manage/posts/-id-/edit" , '*' , $model->canEdit()],
 
 			['check' , trans('validation.attributes.publish') , 'modal:manage/posts/-id-/publish' , "$module.publish" , !$model->published_at],
 
