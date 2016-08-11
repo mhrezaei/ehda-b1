@@ -1,4 +1,4 @@
-<div class="panel panel-default w100 -publish-now">
+<div class="panel panel-default w100">
 	<div class="panel-heading">
 		{{ trans('posts.manage.featured_image') }}
 	</div>

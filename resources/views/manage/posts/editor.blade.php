@@ -73,6 +73,8 @@
 								])
 							</div>
 						@endforeach
+							<a href="javascript:void(0)" class="btn btn-xs btn-link" onclick="$('.-domain').prop('checked', true)">{{ trans('forms.general.all') }}</a>
+							<a href="javascript:void(0)" class="btn btn-xs btn-link" onclick="$('.-domain').prop('checked', false)">{{ trans('forms.general.none') }}</a>
 					</div>
 
 				@include('forms.group-end')
@@ -95,7 +97,7 @@
 				@include('manage.posts.editor-publish')
 			@endif
 
-			@include('manage.posts.editor-domain')
+			@include('manage.posts.editor-image')
 
 
 		</div>

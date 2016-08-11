@@ -141,50 +141,41 @@ trait PermitsTrait
 	|
 	*/
 
-	public function saveDomains($domains_string)
+	private function saveDomains($domains_array)
 	{
-//		$this->domains = Crypt::encrypt($domains_string));
-		$this->domains = $domains_string;
+//		$this->domains = Crypt::encrypt(json_encode($domains_array));
+		$this->domains = json_encode($domains_array);
 		return $this->save();
 	}
 
 	private function getDomains()
 	{
-//		return Crypt::decrypt($this->domains);
-		$return = $this->domains;
+//		return json_decode(Crypt::decrypt($this->domains), true);
+		$return = json_decode($this->domains, true);
+
+		if(!($return)) $return = array() ;
 
 		return $return ;
 	}
 
-	private function domainsStringToArray($string)
-	{
-		return array_values(array_filter(explode('|',$string)));
-	}
-
-	/**
-	 * @return an eloquent instance of `domains` table, where a user is permitted to act on.
-	 */
 	public function domains()
 	{
-		$domains_array = $this->domainsStringToArray($this->getDomains());
-		return Domain::whereIn('slug', $domains_array);
+		return Domain::whereIn('id', $this->getDomains());
 	}
 
 	public function attachDomains($domains , $forget_stored=false)
 	{
 		if($domains=='all') return $this->attachAllDomains() ;
 		if($forget_stored)
-			$stored_domains = '';
+			$stored_domains = array();
 		else
 			$stored_domains = $this->getDomains();
 
-		if(!is_array($domains))
-			$domains = $this->domainsStringToArray($domains);
-
-		foreach( $domains as $domain) {
-			if(!str_contains($stored_domains,$domain))
-				if(Domain::selectBySlug($domain)->count())
-					$stored_domains .= "|$domain|" ;
+		foreach($domains as $domain) {
+			if(!in_array($domain , $stored_domains)) {
+				if(Domain::where('id',$domain)->count())
+					array_push($stored_domains , $domain) ;
+			}
 		}
 
 		return $this->saveDomains($stored_domains);
@@ -201,12 +192,10 @@ trait PermitsTrait
 		if($domains=='all') return $this->detachAllDomains() ;
 		$stored_domains = $this->getDomains() ;
 
-		if(!is_array($domains))
-			$domains = $this->domainsStringToArray($domains);
-
 		foreach($domains as $domain) {
-			if(str_contains($stored_domains,"|$domain|"))
-				$stored_domains = str_replace("|$domain|",'|');
+			if(($key = array_search($domain, $stored_domains)) !== false) {
+				unset($stored_domains[$key]);
+			}
 		}
 
 		return $this->saveDomains($stored_domains) ;
@@ -215,18 +204,18 @@ trait PermitsTrait
 	public function attachAllDomains()
 	{
 		$domains = Domain::all() ;
-		$string = '|' ;
+		$array = array() ;
 
 		foreach($domains as $domain) {
-			$string .= $domain->slug."|" ;
+			array_push($array,$domain->id) ;
 		}
 
-		return $this->saveDomains($string);
+		return $this->saveDomains($array);
 	}
 
 	public function detachAllDomains()
 	{
-		$this->saveDomains('');
+		$this->saveDomains(array());
 	}
 
 	/*
@@ -245,17 +234,13 @@ trait PermitsTrait
 		return $this->can_domain($domain) AND $this->can_permit($permit);
 	}
 
-	private function can_domain($request)
+	private function can_domain($domain)
 	{
-		//Bypass...
-		if(in_array($request, config('permit.wildcards')))
-			return true;
+		if(!$domain) return true ;
 
-		if(!$request)
-			return true ;
-
-		//Check...
-		return str_contains($this->getDomains(),"|$request|");
+		$stored_domains = $this->getDomains() ;
+		
+		return in_array($domain , $stored_domains) ;
 
 	}
 

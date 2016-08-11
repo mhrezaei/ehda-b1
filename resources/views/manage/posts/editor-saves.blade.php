@@ -11,9 +11,9 @@
 		</div>
 	@endif
 	<div class="text-center m10">
-		<button type="button" class="btn btn-default btn-sm">{{ trans('posts.manage.save_as_draft') }}</button>
+		<button type="button" class="btn btn-info btn-sm">{{ trans('posts.manage.save_as_draft') }}</button>
 	</div>
 	<div class="text-center m10">
-		<button type="button" class="btn btn-info btn-sm">{{ trans('posts.manage.save_to_review') }}</button>
+		<button type="button" class="btn btn-primary btn-sm">{{ trans('posts.manage.save_to_review') }}</button>
 	</div>
 </div>

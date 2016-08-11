@@ -325,7 +325,7 @@ class VolunteersController extends Controller
 	public function permits(Request $request)
 	{
 		$data = $request->toArray() ;
-		$allowed_domains = [] ;
+		$allowed_domains = '|' ;
 		$allowed_permits = [] ;
 		$model = Volunteer::find($request->id) ;
 
@@ -349,7 +349,7 @@ class VolunteersController extends Controller
 		foreach($domains as $domain) {
 			$pointer = "domain".$domain->id ;
 			if($data[$pointer])
-				array_push($allowed_domains , $domain->id);
+				$allowed_domains .= $domain->slug.'|';
 		}
 
 		$is_saved_domains = $model->setDomains($allowed_domains) ;
