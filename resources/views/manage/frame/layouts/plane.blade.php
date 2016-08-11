@@ -8,6 +8,12 @@
 	<meta charset="utf-8"/>
 	<title>@yield('page_title')</title>
 
+	<script language="javascript">
+		function assets() {
+			return '{{ url('/assets/') }}' ;
+		}
+	</script>
+
 	{{-- JQuery --}}
 	{!! Html::script ('assets/libs/jquery.js') !!}
 	{!! Html::script ('assets/libs/jquery.form.min.js') !!}
@@ -21,6 +27,9 @@
 	{{-- fonts stuff --}}
 	{!! Html::style('assets/css/fontiran.css') !!}
 	{!! Html::style('assets/libs/font-awesome/css/font-awesome.min.css') !!}
+
+	{{-- TinyMCE--}}
+	{!! HTML::script ('assets/libs/tinymce/tinymce.min.js') !!}
 
 	{{-- sb-admin --}}
 	{!! Html::style('assets/libs/sb-admin/metisMenu.css') !!}
