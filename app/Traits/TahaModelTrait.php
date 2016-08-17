@@ -40,9 +40,12 @@ trait TahaModelTrait
 		if(isset($data['_modal_id']))
 			unset($data['_modal_id']);
 
-		if($data['id'])
+		if($data['id']) {
 			$affected = Self::where('id', $data['id'])->update($data);
+			$data['updated_by'] = Auth::user()->id ;
+		}
 		else {
+			$data['created_by'] = Auth::user()->id ;
 			$model = Self::create($data);
 			if($model)
 				$affected = 1;

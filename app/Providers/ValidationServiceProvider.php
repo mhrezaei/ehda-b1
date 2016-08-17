@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\ServiceProvider;
 use App\Providers\SecKeyServiceProvider;
 
@@ -99,6 +100,7 @@ class ValidationServiceProvider extends ServiceProvider
 				break;
 
 			case "number":
+			case "numeric" :
 				$data = $data + 0;
 				break;
 
@@ -107,6 +109,10 @@ class ValidationServiceProvider extends ServiceProvider
 					$data = true;
 				else
 					$data = false;
+				break;
+
+			case 'decrypt' :
+				$data = Crypt::decrypt($data) ;
 				break;
 		}
 

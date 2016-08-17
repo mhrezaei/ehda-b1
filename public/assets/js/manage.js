@@ -83,6 +83,14 @@ function domainCities($id)
 
 }
 
+function postSave($action)
+{
+	var $form_selector = '#frmEditor' ;
+	$('#txtAction').val($action) ;
+	tinyMCE.triggerSave();
+	$($form_selector).submit() ;
+}
+
 function search($form_id)
 {
 	var $input = $('#'+$form_id+ ' input[name=key]');

@@ -1,7 +1,8 @@
 <?php
 return [
 	'manage' => [
-		'published' =>  'فعال‌ها' ,
+		'published' =>  'منتشرشده' ,
+		'scheduled' => 'صف انتشار' ,
 		'pending' => 'منتظرتأیید',
 		'my_drafts' => 'پیش‌نویس‌های من',
 		'my_posts' => 'نوشته‌های من',
@@ -15,16 +16,19 @@ return [
 		'abstract_hint' => 'اگر خالی رها کنید، از اول نوشته به صورت خودکار برداشته می‌شود و ممکن است جمله‌ها از وسط قطع شوند!',
 		'keywords_hint' => 'کلیدواژه‌ها را با ویرگول فارسی (،) از هم جدا کنید.',
 		'save_changes' => 'ذخیره تغییرات'  ,
-		'save_as_draft' =>  'ذخیره به عنوان پیش‌نویس' ,
-		'save_to_review' => 'ذخیره نهایی',
+		'save_as_draft' =>  'ذخیره پیش‌نویس برای خودم' ,
+		'save_to_review' => 'ارسال برای نظارت',
 		'publish' => 'انتشار' ,
+		'unpublish' => 'لغو انتشار' ,
 		'publish_now' => 'انتشار فوری',
+		'update' => 'به‌روزرسانی' ,
 		'publish_schedule' => 'زمان‌بندی انتشار' ,
 		'publish_date' => 'تاریخ انتشار',
 		'save_schedule' => 'ذخیره و ارسال به صف انتشار',
 		'preview' => 'پیش‌نمایش تغییرات' ,
 		'view_original' => 'نمایش اصلی' ,
 		'featured_image' => 'نمایه',
+		'error_domain_not_selected' => 'هیچ دامنه‌ای برای این مطلب انتخاب نشده است.',
 	],
 
 	'categories' => [

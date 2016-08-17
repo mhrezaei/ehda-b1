@@ -2,11 +2,13 @@
 
 @section('section')
 	@include('forms.opener' , [
+		'id' => 'frmEditor',
 		'url' => 'manage/posts/save',
 		'files' =>true,
-		'title' => isset($model)? trans('posts.manage.edit') : trans('posts.manage.create' ,[
-			'thing' => $branch->title(1),
+		'title' => $model->id ? trans('posts.manage.edit') : trans('posts.manage.create' ,[
+			'thing' => $model->branch()->title(1),
 		]),
+		'class' => 'js'
 	])
 
 	<div class="row w100">
@@ -19,39 +21,49 @@
 
 		<div class="col-md-9">
 
+			@include('forms.feed' , [])
+
+			@include('forms.hiddens' , ['fields' => [
+				['id' , $model->id ],
+				['action' , '' , 'txtAction'] ,
+				['branch' , $encrypted_branch]
+			]])
+
+
 			@include('forms.input' , [
 			    'name' => 'title',
-			    'value' => isset($model)? $model->title : '',
+			    'value' => $model->title ,
 			    'class' => 'form-required form-default',
 			    'hint' => trans('posts.manage.title_hint') ,
 			])
 
 			@include('forms.textarea' , [
 			    'name' => 'text',
+			    'id' => 'txtText' ,
 			    'class' => 'form-required tinyEditor',
-			    'value' => isset($model)? $model->text : '',
+			    'value' => $model->text ,
 			    'rows' => 10,
 			])
 
 			
 			@include('forms.textarea' , [
 			    'name' => 'abstract',
-			    'value' => isset($model)? $model->abstract : '',
+			    'value' => $model->abstract ,
 			    'hint' => trans('posts.manage.abstract_hint'),
 			    'rows' => 4,
 			])
 
 			@include('forms.select' , [
 				'name' => 'category_id' ,
-				'value' => $model->category_id ,
-				'options' => $model->branch()->categories,
-				'blank_value' => '0',
+				'value' => $model->category_id  ,
+				'options' => $model->branch()->categories ,
+				'blank_value' => '',
 				'blank_label' => trans('posts.categories.without')
 			])
 			
 			@include('forms.textarea' , [
 			    'name' => 'keywords',
-			    'value' => $model->keywords,
+			    'value' => $model->keywords ,
 			    'hint' => trans('posts.manage.keywords_hint'),
 			    'rows' => 2,
 			])
@@ -66,16 +78,16 @@
 						@foreach($domains->get() as $domain)
 							<div class="col-md-4">
 								@include('forms.check' , [
-									'name' => $domain->slug,
+									'name' => "domain_".$domain->slug,
 									'label' => $domain->title,
-									'value' => str_contains($domain->slug , $model->domains),
+									'value' => str_contains('|'.$domain->slug.'|' , $model->domains),
 									'class' => '-domain'
 								])
 							</div>
 						@endforeach
-							<a href="javascript:void(0)" class="btn btn-xs btn-link" onclick="$('.-domain').prop('checked', true)">{{ trans('forms.general.all') }}</a>
-							<a href="javascript:void(0)" class="btn btn-xs btn-link" onclick="$('.-domain').prop('checked', false)">{{ trans('forms.general.none') }}</a>
 					</div>
+					<a href="javascript:void(0)" class="btn btn-xs btn-link" onclick="$('.-domain').prop('checked', true)">{{ trans('forms.general.all') }}</a>
+					<a href="javascript:void(0)" class="btn btn-xs btn-link" onclick="$('.-domain').prop('checked', false)">{{ trans('forms.general.none') }}</a>
 
 				@include('forms.group-end')
 			@endif
@@ -98,7 +110,6 @@
 			@endif
 
 			@include('manage.posts.editor-image')
-
 
 		</div>
 	</div>

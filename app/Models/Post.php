@@ -16,6 +16,8 @@ class Post extends Model
 	use TahaModelTrait ;
 	use SoftDeletes ;
 
+	protected $guarded = ['id' , 'featured_image'];
+
 	/*
 	|--------------------------------------------------------------------------
 	| Relations
@@ -62,11 +64,14 @@ class Post extends Model
 	*/
 	public static function selector($branch , $criteria)
 	{
+		$now = Carbon::now();
 		switch($criteria) {
 			case 'all' :
 				return self::where('branch' , $branch) ;
 			case 'published':
-				return self::where('branch',$branch)->where('published_at','>','0') ;
+				return self::where('branch',$branch)->where('published_at','<',$now) ;
+			case 'scheduled' :
+				return self::where('branch',$branch)->where('published_at','>',$now) ;
 			case 'pending':
 				return self::where('branch',$branch)->whereNull('published_at')->where('is_draft',false) ;
 			case 'my_posts' :
@@ -124,7 +129,7 @@ class Post extends Model
 			return true ;
 
 		//Own unpublished post...
-		if($this->created_by == $online_user->id and $this->published_at == null)
+		if($this->created_by == $online_user->id and $this->published_at == null and $this->is_draft)
 			return true ;
 
 		//Otherwise...
@@ -133,9 +138,22 @@ class Post extends Model
 
 	public function isScheduled()
 	{
-		if(!$this->publish_schedule)
-			return false;
+		if($this->published_at and $this->published_at > Carbon::now())
+			return true ;
+		else
+			return false ;
+
 	}
+
+	public function isPublished()
+	{
+		if($this->published_at and $this->published_at <= Carbon::now())
+			return true ;
+		else
+			return false ;
+
+	}
+
 
 	public function say($property , $default='-')
 	{

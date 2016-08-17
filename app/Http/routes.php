@@ -44,6 +44,7 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 		Route::get('/' , 'VolunteersController@browse') ;
 		Route::get('/browse' , 'VolunteersController@browse') ;
 		Route::get('/browse/{request_tab}' , 'VolunteersController@browse') ;
+		Route::get('/create/{branch}' , 'VolunteersController@create') ;
 		Route::get('/search' , 'VolunteersController@search');
 		Route::get('/reports' , 'VolunteersController@reports');
 

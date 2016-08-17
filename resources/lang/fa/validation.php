@@ -20,7 +20,7 @@ return [
 
 		"accepted"         => ":attribute باید پذیرفته شده باشد.",
 		"active_url"       => "نشانی :attribute معتبر نیست",
-		"after"            => ":attribute باید تاریخی بعد از :date باشد.",
+		"after"            => ":attribute منطقی نیست." , ":attribute باید تاریخی بعد از :date باشد.",
 		"alpha"            => ":attribute باید شامل حروف الفبا باشد.",
 		"alpha_dash"       => ":attribute باید شامل حروف الفبا و عدد و خظ تیره(-) باشد.",
 		"alpha_num"        => ":attribute باید شامل حروف الفبا و عدد باشد.",
@@ -42,7 +42,7 @@ return [
 		"email"            => "قالب :attribute معتبر نیست.",
 		"exists"           => ":attribute واردشده، معتبر نیست.",
 		"image"            => ":attribute باید تصویر باشد.",
-		"in"               => ":attribute واردشده، معتبر نیست.",
+		"in"               => ":attribute معتبر نیست.",
 		"integer"          => ":attribute باید نوع داده‌ای عددی (integer) باشد.",
 		"ip"               => ":attribute باید آی‌پی نشانی معتبر باشد.",
 		"max"              => [
@@ -109,6 +109,7 @@ return [
 	*/
 
 		'attributes' => [
+				"action" => 'عملیات' ,
 				"email"	=> "ایمیل",
 				"username" => "شناسه‌ی کاربری",
 				"security"	=> "کد امنیتی",
@@ -146,6 +147,7 @@ return [
 				'cities' => 'شهرها',
 				'create' => 'ایجاد',
 				'publish' => 'انتشار',
+				'publish_date' => 'زمان انتشار' ,
 				'abstract' => 'خلاصه',
 				'text' => 'متن',
 				'category_id' => 'دسته‌بندی',

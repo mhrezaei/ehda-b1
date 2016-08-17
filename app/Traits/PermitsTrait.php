@@ -254,9 +254,19 @@ trait PermitsTrait
 		if(!$request)
 			return true ;
 
-		//Check...
-		return str_contains($this->getDomains(),"|$request|");
+		//change into array...
+		if(str_contains($request , '|'))
+			$domains = $this->domainsStringToArray($request) ;
+		else
+			$domains = [$request] ;
 
+		//Check...
+		foreach($domains as $domain) {
+			if(!str_contains($this->getDomains(),"|$domain|"))
+				return false ;
+		}
+
+		return true ;
 	}
 
 	private function can_permit($request)
