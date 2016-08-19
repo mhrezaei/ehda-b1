@@ -1,7 +1,7 @@
 <div class="main-menu clearfix">
     <a href="/" class="col-xs-12 col-sm-4 col-md-3">
         <h1>
-            <img src="images/header-logo.png" alt="انجمن اهدای عضو ایرانیان" id="logo">
+            <img src="{{ url('assets') }}/site/images/header-logo.png" alt="انجمن اهدای عضو ایرانیان" id="logo">
             <span class="hidden">انجمن اهدای عضو ایرانیان</span>
         </h1>
     </a>

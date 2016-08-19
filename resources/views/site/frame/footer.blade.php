@@ -9,5 +9,6 @@
         </div>
     </div>
 </footer>
+{!! Html::script ('assets/site/js/main.js') !!}
 </body>
 </html>

@@ -8,5 +8,6 @@
         @include('site.home.slider_event_script')
         @include('site.home.stats')
         @include('site.home.fix_background')
+        @include('site.home.news_event_title')
     </div>
 @endsection
