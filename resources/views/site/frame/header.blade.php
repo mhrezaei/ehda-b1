@@ -2,7 +2,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>انجمن اهدای عضو ایرانیان</title>
     {!! Html::style('assets/libs/bootstrap/css/bootstrap.min.css') !!}
     {!! Html::style('assets/libs/bootstrap/css/bootstrap-rtl.min.css') !!}
     {!! Html::style('assets/site/css/fonts.css') !!}

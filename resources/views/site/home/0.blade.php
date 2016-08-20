@@ -1,5 +1,5 @@
 @extends('site.frame.frame')
-
+<title>{{ trans('global.siteTitle') }} | {{ trans('site.global.home_page') }}</title>
 @section('content')
     <div class="container-fluid">
         @include('site.home.slider')
