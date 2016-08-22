@@ -16,6 +16,7 @@ return [
         'donate_life' => 'اهدای زندگی',
         'organ_donation_btn' => 'کارت اهدای عضو',
         'home_page' => 'صفحه نخست',
+        'card_register_page' => 'ثبت نام کارت اهدای عضو',
 
     ],
 
@@ -23,6 +24,7 @@ return [
         'know' => 'دانستن',
         'ability' => 'توانستن',
         'ask' => 'خواستن',
+        'join' => 'پیوستن',
     ],
 
     "know_menu" => [
