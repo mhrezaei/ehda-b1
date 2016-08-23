@@ -925,6 +925,7 @@ function forms_date_picker(selector)
                   pdate.formatPersian = true;
                   return pdate.format(self.format);
             },
+            autoClose: true,
             navigator: {
                   enabled: true,
             },
