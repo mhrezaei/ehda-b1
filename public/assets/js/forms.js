@@ -2,6 +2,21 @@ $(document).ready(function() {
       forms_listener();
 });
 
+///////////////////////////////////////////////
+// form vlidate for:
+//    1) required    : .form-required
+//    2) number      : .form-number
+//    3) persian     : .form-persian
+//    4) english     : .form-english
+//    5) email       : .form-email
+//    6) national    : .form-national
+//    7) mobile      : .form-mobile
+//    8) phone       : .form-phone
+//    9) password    : .form-password => for check verify password field rename that to password id + 'Verify'
+//    10) datepicker : .form-datepicker => get timestamp with your input id + 'Extra'
+//    11) select     : .form-select
+///////////////////////////////////////////////
+
 function forms_listener()
 {
       // javascript forms....
@@ -29,13 +44,12 @@ function forms_listener()
             });
       });
 
-	$(".datepicker").each(function () {
-		$(this).removeClass('datepicker');
-		var $id = $(this).attr('id');
-		var objCal1 = new MHR.persianCalendar( $id , {
-			extraInputID: $id+"_extra",
-			extraInputFormat: "YYYY/MM/DD"
-		} );
+	$(".form-datepicker").each(function () {
+		$datepicker_id = $(this).attr('id');
+          if(! $('#' + $datepicker_id + 'Extra').length)
+          {
+                forms_date_picker(this);
+          }
 	});
 
       $(".persian").each(function(){
@@ -57,15 +71,106 @@ function forms_validate(formData, jqForm, options) {
       var $errors = 0               ;
       var $feed   = "#" + $formId + " .form-feed";
 
-      //@TODO: check form-number
-
 
       //Form Feed...
       $($feed).removeClass('alert-success').removeClass('alert-danger').slideDown();
 
       //Checking required fields...
       $("#" + $formId + " .form-required").each(function(){
-            $errors += forms_errorIfEmpty(this);
+            if (forms_errorIfEmpty(this))
+            {
+                  $errors++;
+            }
+            if($errors==1) $(this).focus();
+      });
+
+      //Checking numbers fields...
+      $("#" + $formId + " .form-number").each(function(){
+            if (forms_errorIfNotNumber(this))
+            {
+                  $errors++;
+            }
+            if($errors==1) $(this).focus();
+      });
+
+      //Checking persian character fields...
+      $("#" + $formId + " .form-persian").each(function(){
+            if (forms_errorIfLang(this, 'fa'))
+            {
+                  $errors++;
+            }
+            if($errors==1) $(this).focus();
+      });
+
+      //Checking english character fields...
+      $("#" + $formId + " .form-english").each(function(){
+            if(forms_errorIfLang(this, 'en'))
+            {
+                  $errors++;
+            }
+            if($errors==1) $(this).focus();
+      });
+
+      //Checking email fields...
+      $("#" + $formId + " .form-email").each(function(){
+            if(forms_errorIfNotEmail(this))
+            {
+                  $errors++;
+            }
+            if($errors==1) $(this).focus();
+      });
+
+      //Checking national code fields...
+      $("#" + $formId + " .form-national").each(function(){
+            if (forms_errorIfNotNationalCode(this))
+            {
+                  $errors++;
+            }
+            if($errors==1) $(this).focus();
+      });
+
+      //Checking mobile numbers fields...
+      $("#" + $formId + " .form-mobile").each(function(){
+            if(forms_errorIfNotMobile(this))
+            {
+                  $errors++;
+            }
+            if($errors==1) $(this).focus();
+      });
+
+      //Checking phone numbers fields...
+      $("#" + $formId + " .form-phone").each(function(){
+            if (forms_errorIfNotPhone(this))
+            {
+                  $errors++;
+            }
+            if($errors==1) $(this).focus();
+      });
+
+      //Checking password fields...
+      $("#" + $formId + " .form-password").each(function(){
+            if (forms_errorIfNotVerifyPassWord(this))
+            {
+                  $errors++;
+            }
+            if($errors==1) $(this).focus();
+      });
+
+      //Checking datepicker fields...
+      $("#" + $formId + " .form-datepicker").each(function(){
+            if (forms_errorIfNotDatePicker(this))
+            {
+                  $errors++;
+            }
+            if($errors==1) $(this).focus();
+      });
+
+      //Checking select fields...
+      $("#" + $formId + " .form-select").each(function(){
+            if (forms_errorIfNotSelect(this))
+            {
+                  $errors++;
+            }
             if($errors==1) $(this).focus();
       });
 
@@ -73,10 +178,20 @@ function forms_validate(formData, jqForm, options) {
             $errors += window[$formId + "_validate"](formData, jqForm, options);
       }
 
+      var $function = 'validate_'+$formId ;
+      if (typeof window[$function]() == 'function') {
+            $errors = $errors + window[$function]();
+      }
+
       //result...
-      $errors = 0 ; //@TODO: REMOVE IT
+      var stop = $('#' + $formId).attr('stop');
+      if(stop && stop == 1)
+      {
+            $errors = 0;
+      }
+
       if($errors>0) {
-            $($feed).addClass('alert-danger').html($($feed+"-error").html());
+            $($feed).addClass('alert-danger').html($($feed+"-error").html('4444'));
             return false ;
       }
       else {
@@ -170,19 +285,314 @@ function  forms_reset($selector , $defaultInput)
 }
 
 function forms_errorIfEmpty(selector) {
+      var max = $(selector).attr('maxlength');
+      var min = $(selector).attr('minlength');
       if (!$(selector).val() || $(selector).val() == "0") {
             forms_markError(selector, "error");
             return 1;
       }
       else {
+            if (max && min)
+            {
+                  if ($(selector).val().length > max || $(selector).val().length < min)
+                  {
+                        forms_markError(selector, "error");
+                        return 1;
+                  }
+                  else
+                  {
+                        forms_markError(selector, "success");
+                        return 0;
+                  }
+            }
+            else if (max)
+            {
+                  if ($(selector).val().length > max)
+                  {
+                        forms_markError(selector, "error");
+                        return 1;
+                  }
+                  else
+                  {
+                        forms_markError(selector, "success");
+                        return 0;
+                  }
+            }
+            else if (min)
+            {
+                  if ($(selector).val().length < min)
+                  {
+                        forms_markError(selector, "error");
+                        return 1;
+                  }
+                  else
+                  {
+                        forms_markError(selector, "success");
+                        return 0;
+                  }
+            }
+      }
+}
+
+function forms_errorIfNotEmail(selector) {
+      var email = $(selector).val();
+      var filter = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+      if(!filter.test(email))
+      {
+            forms_markError(selector, "error");
+            return 1;
+      }
+      else
+      {
             forms_markError(selector, "success");
             return 0;
       }
 }
 
-function  forms_errorIfLang(selector, lang) {
+function forms_errorIfNotNationalCode(selector) {
+      if(!forms_national_code(forms_digit_en($(selector).val())))
+      {
+            forms_markError(selector, "error");
+            return 1;
+      }
+      else
+      {
+            forms_markError(selector, "success");
+            return 0;
+      }
+}
+
+function forms_errorIfNotNumber(selector) {
+      var mixed_var = forms_digit_en($(selector).val());
+      var whitespace = " \n\r\t\f\x0b\xa0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u200b\u2028\u2029\u3000";
+      var max = $(selector).attr('maxlength');
+      var min = $(selector).attr('minlength');
+      if((typeof mixed_var === 'number' || (typeof mixed_var === 'string' && whitespace.indexOf(mixed_var.slice(-1)) === -
+              1)) && mixed_var !== '' && !isNaN(mixed_var))
+      {
+            if (max && min)
+            {
+                 if (mixed_var.length > max || mixed_var.length < min)
+                 {
+                       forms_markError(selector, "error");
+                       return 1;
+                 }
+                 else
+                 {
+                       forms_markError(selector, "success");
+                       return 0;
+                 }
+            }
+            else if (max)
+            {
+                  if (mixed_var.length > max)
+                  {
+                        forms_markError(selector, "error");
+                        return 1;
+                  }
+                  else
+                  {
+                        forms_markError(selector, "success");
+                        return 0;
+                  }
+            }
+            else if (min)
+            {
+                  if (mixed_var.length < min)
+                  {
+                        forms_markError(selector, "error");
+                        return 1;
+                  }
+                  else
+                  {
+                        forms_markError(selector, "success");
+                        return 0;
+                  }
+            }
+      }
+      else
+      {
+            forms_markError(selector, "error");
+            return 1;
+      }
+}
+
+function forms_errorIfNotMobile(selector) {
+      var mixed_var = forms_digit_en($(selector).val());
+      var whitespace = " \n\r\t\f\x0b\xa0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u200b\u2028\u2029\u3000";
+      var max = $(selector).attr('maxlength');
+      var min = $(selector).attr('minlength');
+      if((typeof mixed_var === 'number' || (typeof mixed_var === 'string' && whitespace.indexOf(mixed_var.slice(-1)) === -
+              1)) && mixed_var !== '' && !isNaN(mixed_var) && mixed_var[0] == 0 && mixed_var[1] == 9)
+      {
+            if (max && min)
+            {
+                  if (mixed_var.length > max || mixed_var.length < min)
+                  {
+                        forms_markError(selector, "error");
+                        return 1;
+                  }
+                  else
+                  {
+                        forms_markError(selector, "success");
+                        return 0;
+                  }
+            }
+            else if (max)
+            {
+                  if (mixed_var.length > max)
+                  {
+                        forms_markError(selector, "error");
+                        return 1;
+                  }
+                  else
+                  {
+                        forms_markError(selector, "success");
+                        return 0;
+                  }
+            }
+            else if (min)
+            {
+                  if (mixed_var.length < min)
+                  {
+                        forms_markError(selector, "error");
+                        return 1;
+                  }
+                  else
+                  {
+                        forms_markError(selector, "success");
+                        return 0;
+                  }
+            }
+      }
+      else
+      {
+            forms_markError(selector, "error");
+            return 1;
+      }
+}
+
+function forms_errorIfNotPhone(selector) {
+      var mixed_var = forms_digit_en($(selector).val());
+      var whitespace = " \n\r\t\f\x0b\xa0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u200b\u2028\u2029\u3000";
+      var max = $(selector).attr('maxlength');
+      var min = $(selector).attr('minlength');
+      if((typeof mixed_var === 'number' || (typeof mixed_var === 'string' && whitespace.indexOf(mixed_var.slice(-1)) === -
+              1)) && mixed_var !== '' && !isNaN(mixed_var) && mixed_var[0] == 0 && mixed_var[1] != 9)
+      {
+            if (max && min)
+            {
+                  if (mixed_var.length > max || mixed_var.length < min)
+                  {
+                        forms_markError(selector, "error");
+                        return 1;
+                  }
+                  else
+                  {
+                        forms_markError(selector, "success");
+                        return 0;
+                  }
+            }
+            else if (max)
+            {
+                  if (mixed_var.length > max)
+                  {
+                        forms_markError(selector, "error");
+                        return 1;
+                  }
+                  else
+                  {
+                        forms_markError(selector, "success");
+                        return 0;
+                  }
+            }
+            else if (min)
+            {
+                  if (mixed_var.length < min)
+                  {
+                        forms_markError(selector, "error");
+                        return 1;
+                  }
+                  else
+                  {
+                        forms_markError(selector, "success");
+                        return 0;
+                  }
+            }
+      }
+      else
+      {
+            forms_markError(selector, "error");
+            return 1;
+      }
+}
+
+function forms_errorIfNotVerifyPassWord(selector) {
+      var max = $(selector).attr('maxlength');
+      var min = $(selector).attr('minlength');
+      var id = $(selector).attr('id');
+      var verify = '#' + id + 'Verify';
+      if($(selector).val() == $(verify).val())
+      {
+            if (max && min)
+            {
+                  if ($(selector).val().length > max || $(selector).val().length < min)
+                  {
+                        forms_markError(selector, "error");
+                        forms_markError(verify, "error");
+                        return 1;
+                  }
+                  else
+                  {
+                        forms_markError(selector, "success");
+                        forms_markError(verify, "success");
+                        return 0;
+                  }
+            }
+            else if (max)
+            {
+                  if ($(selector).val().length > max)
+                  {
+                        forms_markError(selector, "error");
+                        forms_markError(verify, "error");
+                        return 1;
+                  }
+                  else
+                  {
+                        forms_markError(selector, "success");
+                        forms_markError(verify, "success");
+                        return 0;
+                  }
+            }
+            else if (min)
+            {
+                  if ($(selector).val().length < min)
+                  {
+                        forms_markError(selector, "error");
+                        forms_markError(verify, "error");
+                        return 1;
+                  }
+                  else
+                  {
+                        forms_markError(selector, "success");
+                        forms_markError(verify, "success");
+                        return 0;
+                  }
+            }
+      }
+      else
+      {
+            forms_markError(selector, "error");
+            forms_markError(verify, "error");
+            return 1;
+      }
+}
+
+function forms_errorIfLang(selector, lang) {
       var isPersian = forms_isPersian($(selector).val());
-      alert(isPersian);
+      var max = $(selector).attr('maxlength');
+      var min = $(selector).attr('minlength');
 
       if (isPersian && lang != "fa") {
             forms_markError(selector, "error");
@@ -193,18 +603,118 @@ function  forms_errorIfLang(selector, lang) {
             return 1;
       }
       else {
+            if (max && min)
+            {
+                  if ($(selector).val().length > max || $(selector).val().length < min)
+                  {
+                        forms_markError(selector, "error");
+                        return 1;
+                  }
+                  else
+                  {
+                        forms_markError(selector, "success");
+                        return 0;
+                  }
+            }
+            else if (max)
+            {
+                  if ($(selector).val().length > max)
+                  {
+                        forms_markError(selector, "error");
+                        return 1;
+                  }
+                  else
+                  {
+                        forms_markError(selector, "success");
+                        return 0;
+                  }
+            }
+            else if (min)
+            {
+                  if ($(selector).val().length < min)
+                  {
+                        forms_markError(selector, "error");
+                        return 1;
+                  }
+                  else
+                  {
+                        forms_markError(selector, "success");
+                        return 0;
+                  }
+            }
+      }
+}
+
+function forms_errorIfNotSelect(selector) {
+      var multi = $(selector).attr('multiple');
+      var value = [];
+
+      if (multi)
+      {
+            var data = $(selector).val() + '';
+            data = data.split(',');
+            for(var i = 0; i < data.length; i++)
+            {
+                  value[i] = data[i];
+            }
+      }
+      else
+      {
+            if($(selector).val() > 0)
+            {
+                  value[0] = $(selector).val();
+            }
+      }
+
+
+
+      if (!value.length)
+      {
+            forms_markError(selector, "error");
+            return 1;
+      }
+      else
+      {
             forms_markError(selector, "success");
             return 0;
+      }
+      
+}
+
+function forms_errorIfNotDatePicker(selector)
+{
+      var $elementID = $(selector).attr('id');
+      if ($('#' + $elementID + 'Extra').val() > 0)
+      {
+            forms_markError(selector, "success");
+            return 0;
+      }
+      else
+      {
+            forms_markError(selector, "error");
+            return 1;
       }
 }
 
 //======================================================================================
 function forms_isPersian(string) {
       var p = /[^\u0600-\u06FF]/;
-      if (string[0].match(p))
+      var count = 0;
+      for(var i = 0; i < string.length; i++)
+      {
+            if(string[i].match(p))
+            {
+                  count++;
+            }
+      }
+      if((count / string.length) > 0.6)
+      {
             return false;
+      }
       else
+      {
             return true;
+      }
 }
 
 function forms_markError(selector, handle) {
@@ -262,7 +772,6 @@ function forms_delaiedPageRefresh(time) {
       }, time);
 }
 
-
 function forms_pd($string) {
       if (!$string) return;//safety!
 
@@ -278,4 +787,182 @@ function forms_pd($string) {
       $string = $string.replace(/0/g, "۰");
 
       return $string;
+}
+
+function forms_digit_en(perDigit)
+{
+      var newValue="";
+      for (var i=0;i<perDigit.length;i++)
+      {
+            var ch=perDigit.charCodeAt(i);
+            if (ch>=1776 && ch<=1785) // For Persian digits.
+            {
+                  var newChar=ch-1728;
+                  newValue=newValue+String.fromCharCode(newChar);
+            }
+            else if(ch>=1632 && ch<=1641) // For Arabic & Unix digits.
+            {
+                  var newChar=ch-1584;
+                  newValue=newValue+String.fromCharCode(newChar);
+            }
+            else
+                  newValue=newValue+String.fromCharCode(ch);
+      }
+      return newValue;
+}
+
+function forms_digit_fa(enDigit)
+{
+      var newValue="";
+      for (var i=0;i<enDigit.length;i++)
+      {
+            var ch=enDigit.charCodeAt(i);
+            if (ch>=48 && ch<=57)
+            {
+                  var newChar=ch+1584;
+                  newValue=newValue+String.fromCharCode(newChar);
+            }
+            else
+            {
+                  newValue = newValue + String.fromCharCode(ch);
+            }
+      }
+      return newValue;
+}
+
+function forms_national_code(code)
+{
+
+      if(code.length == 10 && !isNaN(code))
+      {
+            var code = code.split("");
+            var err ;
+            for(var i = 0; i < code.length; i++)
+            {
+                  if(code[0] > code[i] || code[0] < code[i])
+                  {
+                        err = 1;
+                        break;
+                  }
+                  else
+                  {
+                        err = 2;
+                  }
+            }
+
+            if(err == 1)
+            {
+                  var valid = 0;
+                  var jumper = 10;
+                  for(var i = 0; i <= 8; i++)
+                  {
+                        valid += code[i] * jumper;
+                        --jumper;
+                  }
+                  valid = valid % 11;
+                  if(valid >= 0 && valid < 2)
+                  {
+                        if(valid == code['9'])
+                        {
+                              return true;
+                        }
+                        else
+                        {
+                              return false;
+                        }
+                  }
+                  else
+                  {
+                        valid = 11 - valid;
+                        if(valid == code['9'])
+                        {
+                              return true;
+                        }
+                        else
+                        {
+                              return false;
+                        }
+                  }
+            }
+            else
+            {
+                  return false;
+            }
+      }
+      else
+      {
+            return false;
+      }
+}
+
+function forms_date_picker(selector)
+{
+      var $elementID = $(selector).attr('id');
+      var $format = $(selector).attr('format');
+      var $time = $(selector).attr('time');
+
+      var extra = $('#' + $elementID).parent().html() + '<input type="hidden" id="' + $elementID + 'Extra" name="' + $elementID + 'Extra">';
+      $('#' + $elementID).parent().append().html(extra);
+
+      if (!$format)
+      {
+            $format = "YYYY/MM/DD";
+      }
+
+      if (!$time)
+      {
+            $time = false;
+      }
+
+      var dateOptions = {
+            format: $format,
+            observer: true,
+            persianDigit: true,
+            // maxDate: maxAge,
+            formatter: function (unixDate) {
+                  var self = this;
+                  var pdate = new persianDate(unixDate);
+                  pdate.formatPersian = true;
+                  return pdate.format(self.format);
+            },
+            navigator: {
+                  enabled: true,
+            },
+            dayPicker: {
+                  scrollEnabled: false,
+            },
+            monthPicker: {
+                  scrollEnabled: false,
+            },
+            yearPicker: {
+                  scrollEnabled: false,
+            },
+            altFieldFormatter: function (unixDate) {
+                  var self = this;
+                  var thisAltFormat = self.altFormat.toLowerCase();
+                  var timeUn = 0;
+                  if (thisAltFormat === "gregorian" | thisAltFormat === "g") {
+                        timeUn = new Date(unixDate);
+                  }
+                  if (thisAltFormat === "unix" | thisAltFormat === "u") {
+                        timeUn = unixDate;
+                  } else {
+                        timeUn = new persianDate(unixDate).format(self.altFormat);
+                  }
+                  $('#' + $elementID + 'Extra').val(timeUn);
+            },
+            timePicker: {
+                  enabled: $time,
+                  showSeconds: true,
+                  showMeridian: true,
+                  scrollEnabled: true
+            }
+      };
+
+      $('#' + $elementID).on('focus', function () {
+            if($(this).val() == ''){
+                  $(this).pDatepicker(dateOptions).trigger('focus');
+            }
+      });
+
 }

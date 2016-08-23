@@ -15,6 +15,7 @@
     {!! Html::script ('assets/libs/owl.carousel.min.js') !!}
     {!! Html::script ('assets/libs/circle-progress.js') !!}
     {!! Html::script ('assets/js/forms.js') !!}
+    {!! Html::script ('assets/site/js/general.js') !!}
 
 
     <script language="javascript">
