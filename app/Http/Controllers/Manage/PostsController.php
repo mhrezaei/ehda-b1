@@ -47,6 +47,9 @@ class PostsController extends Controller
 			case 'pending' :
 				$permission = "$request_branch.publish" ;
 				break;
+			case 'drafts' :
+				$permission = "$request_branch.publish" ;
+				break;
 			case 'my_drafts' :
 				$permission = "$request_branch.create" ;
 				break;
@@ -96,6 +99,12 @@ class PostsController extends Controller
 			case 'permits' :
 				$opt['domains'] = Domain::orderBy('title')->get() ;
 				break;
+			case 'delete' :
+				return $this->soft_delete($post_id);
+			case 'undelete' :
+				return $this->undelete($post_id) ;
+			case 'unpublish' :
+				return $this->unpublish($post_id) ;
 		}
 
 		if(!$model) return view('errors.m410');
@@ -172,18 +181,41 @@ class PostsController extends Controller
 	|
 	*/
 
-
-	public function soft_delete(Request $request)
+	private function unpublish($post_id)
 	{
-		$model = Post::find($request->id) ;
+		//Preparations...
+		$model = Post::find($post_id) ;
+		if(!$model) return $this->jsonFeedback() ;
+
+		if(!Auth::user()->can($model->branch.".publish",$model->domains))
+			return $this->jsonFeedback(trans('validation.http.Eror403')) ;
+
+		//Action...
+		if($model->unpublish())
+			echo ' <div class="alert alert-success">'. trans('forms.feed.done') .'</div> ';
+		else
+			echo ' <div class="alert alert-danger">'. trans('forms.feed.error') .'</div> ';
+
+	}
+
+
+	public function soft_delete($post_id)
+	{
+
+		//Preparations...
+		$model = Post::find($post_id) ;
+		if(!$model) return $this->jsonFeedback() ;
+
+		if(!Auth::user()->can($model->branch.".delete",$model->domains))
+			return $this->jsonFeedback(trans('validation.http.Eror403')) ;
 
 		if(!Auth::user()->can($model->branch.'.delete')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
 
-		$done = $model->delete();
-
-		return $this->jsonAjaxSaveFeedback($done , [
-				'success_refresh' => true ,
-		]);
+		//Action...
+		if($model->delete())
+			echo ' <div class="alert alert-success">'. trans('forms.feed.done') .'</div> ';
+		else
+			echo ' <div class="alert alert-danger">'. trans('forms.feed.error') .'</div> ';
 
 	}
 
@@ -198,16 +230,19 @@ class PostsController extends Controller
 		]);
 	}
 
-	public function undelete(Request $request)
+	public function undelete($post_id)
 	{
-		$model = Post::withTrashed()->find($request->id) ;
-		if(!Auth::user()->can($model->branch.'.bin')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
+		$model = Post::withTrashed()->find($post_id) ;
+		if(!$model) return $this->jsonFeedback() ;
 
-		$done = $model->restore();
+		if(!Auth::user()->can($model->branch.".delete",$model->domains))
+			return $this->jsonFeedback(trans('validation.http.Eror403')) ;
 
-		return $this->jsonAjaxSaveFeedback($done , [
-				'success_refresh' => true ,
-		]);
+		//Action...
+		if($model->restore())
+			echo ' <div class="alert alert-success">'. trans('forms.feed.done') .'</div> ';
+		else
+			echo ' <div class="alert alert-danger">'. trans('forms.feed.error') .'</div> ';
 
 	}
 
@@ -233,6 +268,8 @@ class PostsController extends Controller
 		$now = Carbon::now()->toDateTimeString();
 		$user = Auth::user() ;
 		$user_id = $user->id ;
+		$success_redirect = null ;
+		$delete_id = 0 ;
 
 		$publish_date = new Carbon($data['publish_date']);
 		unset($data['publish_date']);
@@ -242,18 +279,22 @@ class PostsController extends Controller
 			switch($action) {
 				case 'preview' :
 				case 'draft' :
+					$success_redirect = 'manage/posts/-ID-/edit' ;
 					$data['is_draft'] = 1 ;
 					break;
 
 				case 'save' :
+					$success_redirect = 'manage/posts/'.$request->branch.'/my_posts' ;
 					break;
 
 				case 'schedule' :
+					$success_redirect = 'manage/posts/'.$request->branch.'/my_posts' ;
 					$data['published_at'] = $publish_date->toDateTimeString() ;
 					$data['published_by'] = $user_id ;
 					break;
 
 				case 'publish' :
+					$success_redirect = 'manage/posts/'.$request->branch.'/my_posts' ;
 					$data['published_at'] = $now ;
 					$data['published_by'] = $user_id ;
 					break;
@@ -270,16 +311,23 @@ class PostsController extends Controller
 				case 'preview' :
 				case 'draft' :
 					$data['is_draft'] = 1 ;
-					$data['copy_of'] = $data['id'] ;
-					$data['id'] = 0 ;
+					if(!$model->is_draft) {
+						$success_redirect = 'manage/posts/-ID-/edit' ;
+						$data['copy_of'] = $data['id'] ;
+						$data['id'] = 0 ;
+					}
 					break;
 
 				case 'save' :
-					$data['copy_of'] = $data['id'] ;
-					$data['id'] = 0 ;
+					$success_redirect = 'manage/posts/'.$request->branch.'/my_posts' ;
+					if(!$model->is_draft) {
+						$data['copy_of'] = $data['id'] ;
+						$data['id'] = 0 ;
+					}
 					break;
 
 				case 'schedule' :
+					$success_redirect = 'manage/posts/'.$request->branch.'/my_posts' ;
 					if($model->isPublished())
 						return $this->jsonFeedback();
 					$data['published_at'] = $publish_date->toDateTimeString() ;
@@ -287,6 +335,7 @@ class PostsController extends Controller
 					break;
 
 				case 'publish' :
+					$success_redirect = 'manage/posts/'.$request->branch.'/my_posts' ;
 					$data['published_at'] = $now ;
 					$data['published_by'] = $user_id ;
 					break;
@@ -296,10 +345,14 @@ class PostsController extends Controller
 
 			//Replacing the draft with an existing record
 			if($model->copy_of) {
-				if(in_array($action, ['preview', 'draft', 'save']))
+				if(in_array($action, ['preview', 'draft', 'save'])) {
 					$data['copy_of'] = $model->copy_of;
-				else
-					$data['id'] = $model->copy_of ;
+					$data['published_by'] = $model->published_by ;
+				}
+				else {
+					$delete_id = $data['id']  ;
+ 					$data['id'] = $model->copy_of ;
+				}
 			}
 
 		}
@@ -326,9 +379,17 @@ class PostsController extends Controller
 		//Save...
 		$is_saved = Post::store($data) ;
 
+		//Deleting draft record if required...
+		if($is_saved and $delete_id>0)
+			Post::where('id',$delete_id)->forceDelete() ;
 
+		//Choosing the redirection...
+		$success_redirect = str_replace('-ID-' , $is_saved , $success_redirect );
 
-		return $this->jsonFeedback('.'.$is_saved);
+		return $this->jsonAjaxSaveFeedback($is_saved , [
+			'success_redirect' => $success_redirect ,
+		]);
+
 
 
 	}

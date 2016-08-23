@@ -69,13 +69,15 @@ class Post extends Model
 			case 'all' :
 				return self::where('branch' , $branch) ;
 			case 'published':
-				return self::where('branch',$branch)->where('published_at','<',$now) ;
+				return self::where('branch',$branch)->where('published_at','<',$now)->whereNull('copy_of') ;
 			case 'scheduled' :
 				return self::where('branch',$branch)->where('published_at','>',$now) ;
 			case 'pending':
 				return self::where('branch',$branch)->whereNull('published_at')->where('is_draft',false) ;
+			case 'drafts' :
+				return self::where('branch',$branch)->where('is_draft',true)->whereNull('published_at');
 			case 'my_posts' :
-				return self::where('branch',$branch)->where('created_by',Auth::user()->id);
+				return self::where('branch',$branch)->where('created_by',Auth::user()->id)->where('is_draft',0);
 			case 'my_drafts' :
 				return self::where('branch',$branch)->where('created_by',Auth::user()->id)->where('is_draft',true)->whereNull('published_at');
 			case 'bin' :
@@ -109,7 +111,7 @@ class Post extends Model
 		$online_user = Auth::user() ;
 
 		//Allowed by permission...
-		if($online_user->can($this->branch.".edit")) //@TODO: Check Domains Also
+		if($online_user->can($this->branch.".edit" , $this->domains))
 			return true ;
 
 		//Own unpublished post...
@@ -125,7 +127,7 @@ class Post extends Model
 		$online_user = Auth::user() ;
 
 		//Allowed by Permission...
-		if($online_user->can($this->branch.".delete")) //@TODO: Check Domains Also
+		if($online_user->can($this->branch.".delete" , $this->domains))
 			return true ;
 
 		//Own unpublished post...
@@ -134,6 +136,19 @@ class Post extends Model
 
 		//Otherwise...
 		return false ;
+	}
+
+	public function canBin()
+	{
+		$online_user = Auth::user() ;
+
+		//Allowed by Permission...
+		if($online_user->can($this->branch.".delete" , $this->domains))
+			return true ;
+
+		//Otherwise...
+		return false ;
+
 	}
 
 	public function isScheduled()
@@ -147,11 +162,51 @@ class Post extends Model
 
 	public function isPublished()
 	{
-		if($this->published_at and $this->published_at <= Carbon::now())
+		if($this->published_at and $this->published_at <= Carbon::now() and !$this->copy_of)
 			return true ;
 		else
 			return false ;
 
+	}
+
+	public function status($key = null)
+	{
+
+		//Discover...
+		if(!$this->id) {
+			$return['text'] = trans('posts.status.unsaved');
+			$return['color'] = 'danger';
+		}
+		elseif($this->trashed()) {
+			$return['text'] = trans('posts.status.trashed');
+			$return['color'] = 'danger' ;
+		}
+		elseif($this->isPublished()) {
+			$return['text'] = trans('posts.status.published');
+			$return['color'] = 'success' ;
+		}
+		elseif($this->isScheduled()) {
+			$return['text'] = trans('posts.status.scheduled');
+			$return['color'] = 'primary' ;
+		}
+		elseif($this->is_draft) {
+			$return['text'] = trans('posts.status.draft');
+			$return['color'] = 'warning' ;
+		}
+		elseif(!$this->published_at) {
+			$return['text'] = trans('posts.status.under_review');
+			$return['color'] = 'warning' ;
+		}
+		else {
+			$return['text'] = '.';
+			$return['color'] = 'danger' ;
+		}
+
+		//Return...
+		if(!$key)
+			return $return ;
+		else
+			return $return[$key] ;
 	}
 
 

@@ -14,6 +14,7 @@ return [
 		"button" => [
 				'cancel'	=> 'انصراف' ,
 				'signup'	=> 'ثبت نام',
+				'oh_no' => 'نه! اشتباه شد!' ,
 				'save'		=> 'ذخیره',
 				'login'		=> 'ورود',
 				'add'		=> 'افزودن',
@@ -40,6 +41,7 @@ return [
 				"updated_at" => "به‌روزرسانی" ,
 				"published_at" => "فعال‌سازی" ,
 				"deleted_at" => "حذف" ,
+				'ask_confirm' => 'همین را می‌خواهید؟' ,
 		],
 
 		"education" => [

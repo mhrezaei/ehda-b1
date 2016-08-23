@@ -1,6 +1,12 @@
 @extends('manage.frame.use.0')
 
 @section('section')
+
+	@include('manage.posts.editor-warnings')
+	@if($model->deleted_at)
+		@include('manage.posts.editor-undelete')
+	@endif
+
 	@include('forms.opener' , [
 		'id' => 'frmEditor',
 		'url' => 'manage/posts/save',
@@ -45,7 +51,7 @@
 			    'rows' => 10,
 			])
 
-			
+
 			@include('forms.textarea' , [
 			    'name' => 'abstract',
 			    'value' => $model->abstract ,
@@ -60,7 +66,7 @@
 				'blank_value' => '',
 				'blank_label' => trans('posts.categories.without')
 			])
-			
+
 			@include('forms.textarea' , [
 			    'name' => 'keywords',
 			    'value' => $model->keywords ,
@@ -80,7 +86,7 @@
 								@include('forms.check' , [
 									'name' => "domain_".$domain->slug,
 									'label' => $domain->title,
-									'value' => str_contains('|'.$domain->slug.'|' , $model->domains),
+									'value' => str_contains($model->domains , '|'.$domain->slug.'|'),
 									'class' => '-domain'
 								])
 							</div>
@@ -103,14 +109,12 @@
 		--}}
 
 		<div class="col-md-3">
-			@include('manage.posts.editor-saves')
 
-			@if($model->canPublish())
-				@include('manage.posts.editor-publish')
-			@endif
+			@include('manage.posts.editor-status')
+			@include('manage.posts.editor-saves')
+			@include('manage.posts.editor-schedule')
 
 			@include('manage.posts.editor-image')
-
 		</div>
 	</div>
 

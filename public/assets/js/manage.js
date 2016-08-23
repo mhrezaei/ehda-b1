@@ -91,6 +91,17 @@ function postSave($action)
 	$($form_selector).submit() ;
 }
 
+function postChange($action)
+{
+	var $form_selector = '#frmEditor' ;
+	var $id = $($form_selector+' [name=id] ').val();
+	var $url = url('manage/posts/'+$id+'/'+$action);
+
+	$($form_selector + ' .form-feed').html('<div class="modal-wait">...</div>').load($url , function() {
+		forms_delaiedPageRefresh(1);
+	}).slideDown('fast');
+}
+
 function search($form_id)
 {
 	var $input = $('#'+$form_id+ ' input[name=key]');

@@ -9,8 +9,13 @@
 	<title>@yield('page_title')</title>
 
 	<script language="javascript">
-		function assets() {
-			return '{{ url('/assets/') }}' ;
+		function assets($additive) {
+			if(!$additive) $additive = '' ;
+			return url('assets/'+$additive);
+		}
+		function url($additive) {
+			if(!$additive) $additive = '' ;
+			return '{{ url('-additive-') }}'.replace('-additive-',$additive) ;
 		}
 	</script>
 

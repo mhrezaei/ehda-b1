@@ -48,13 +48,20 @@ trait TahaModelTrait
 			$data['created_by'] = Auth::user()->id ;
 			$model = Self::create($data);
 			if($model)
-				$affected = 1;
+				$affected = $model->id;
 			else
 				$affected = 0;
 		}
 
 		return $affected;
 
+	}
+
+	public function unpublish()
+	{
+		$this->published_at = null ;
+		$this->published_by = null ;
+		return $this->save() ;
 	}
 
 	public function delete()

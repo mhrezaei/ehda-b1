@@ -14,11 +14,28 @@
   //width: 100%;
 }
 
+.noDisplay {
+  display: none;
+}
+
+.margin-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 
 // LOOPS
-@for $i from 14 to 21 {
+@for $i from 2 to 21 {
   .w#{$i*5} {
     width: 5% * $i;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@for $i from 1 to 11 {
+  .f#{$i*5} {
+    font-size: 5px * $i;
   }
 }
 
