@@ -12,9 +12,4 @@ class HomeController extends Controller
 	{
 		return view('site.home.0');
 	}
-
-	public function register()
-	{
-		return view('site.card_register.0');
-	}
 }

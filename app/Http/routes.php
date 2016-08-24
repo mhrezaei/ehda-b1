@@ -12,7 +12,8 @@
 */
 
 Route::get('/', 'HomeController@index');
-Route::get('/register', 'HomeController@register');
+Route::get('/register', 'CardController@register');
+Route::get('/organ_donation_card', 'CardController@index');
 
 /*
 |--------------------------------------------------------------------------

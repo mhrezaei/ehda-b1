@@ -17,6 +17,7 @@ return [
         'organ_donation_btn' => 'کارت اهدای عضو',
         'home_page' => 'صفحه نخست',
         'card_register_page' => 'ثبت نام کارت اهدای عضو',
+        'card_info_page' => 'تاریخچه و اهمیت کارت اهدای عضو',
 
     ],
 
