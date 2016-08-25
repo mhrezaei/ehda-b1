@@ -11,7 +11,6 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Auth;
 use Morilog\Jalali\jDate;
 
 
@@ -50,40 +49,6 @@ class Volunteer extends Model implements AuthenticatableContract, CanResetPasswo
 			$return = $this->title() . " " . $return ;
 
 		return $return ;
-	}
-
-	public function delete()
-	{
-		if($this->id == Auth::user()->id)
-			return 0 ;
-
-		$this->deleted_at = Carbon::now()->toDateTimeString();
-		$this->deleted_by = Auth::user()->id ;
-		return $this->save();
-	}
-
-	public static function bulkDelete($ids)
-	{
-		if(!is_array($ids))
-			$ids = explode(',',$ids);
-
-		return Self::whereIn('id',$ids)->where('id','<>',Auth::user()->id)->update([
-			'deleted_at' => Carbon::now()->toDateTimeString() ,
-			'deleted_by' => Auth::user()->id ,
-		]);
-
-	}
-
-	public static function bulkPublish($ids)
-	{
-		if(!is_array($ids))
-			$ids = explode(',',$ids);
-
-		return Self::whereIn('id',$ids)->whereNull('deleted_at')->whereNull('published_at')->update([
-				'published_at' => Carbon::now()->toDateTimeString() ,
-				'published_by' => Auth::user()->id ,
-		]);
-
 	}
 
 
