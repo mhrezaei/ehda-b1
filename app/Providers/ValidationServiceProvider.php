@@ -129,6 +129,9 @@ class ValidationServiceProvider extends ServiceProvider
 		$this->app['validator']->extend('code_melli', function ($attribute, $value, $parameters, $validator) {
 			return self::validateCodeMelli($attribute, $value, $parameters, $validator);
 		});
+		$this->app['validator']->extend('persian', function($attribute, $value, $parameters, $validator){
+			return self::persianChar($value, $parameters[0]);
+		});
 	}
 
 	/*
@@ -163,7 +166,7 @@ class ValidationServiceProvider extends ServiceProvider
 
 	}
 
-	private function validateCodeMelli($attribute, $value, $parameters, $validator)
+	private static function validateCodeMelli($attribute, $value, $parameters, $validator)
 	{
 		if(!preg_match("/^\d{10}$/", $value)) {
 			return false;
@@ -175,6 +178,41 @@ class ValidationServiceProvider extends ServiceProvider
 			}, range(0, 8))) % 11;
 
 		return ($sum < 2 && $check == $sum) || ($sum >= 2 && $check + $sum == 11);
+	}
+
+	private static function uniord($u)
+	{
+		$k = mb_convert_encoding($u, 'UCS-2LE', 'UTF-8');
+		$k1 = ord(substr($k, 0, 1));
+		$k2 = ord(substr($k, 1, 1));
+		return $k2 * 256 + $k1;
+	}
+
+	private static function persianChar($str, $percent = 60) {
+		if(mb_detect_encoding($str) !== 'UTF-8')
+		{
+			$str = mb_convert_encoding($str,mb_detect_encoding($str),'UTF-8');
+		}
+		preg_match_all('/.|\n/u', $str, $matches);
+		$chars = $matches[0];
+		$arabic_count = 0;
+		$latin_count = 0;
+		$total_count = 0;
+		foreach($chars as $char) {
+			$pos = self::uniord($char);
+
+			if($pos >= 1536 && $pos <= 1791) {
+				$arabic_count++;
+			} else if($pos > 123 && $pos < 123) {
+				$latin_count++;
+			}
+			$total_count++;
+		}
+		if(($arabic_count/$total_count) > ($percent / 10)) {
+			// 60% arabic chars, its probably arabic
+			return true;
+		}
+		return false;
 	}
 
 	/**

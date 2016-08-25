@@ -53,8 +53,8 @@
                 <div class="row">
                     <div class="col-xs-12 col-sm-6">
                         <div class="form-group">
-                            <label for="code_meli">{{ trans('validation.attributes.code_meli') }}: <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control form-national" id="code_meli" name="code_meli" data-toggle="tooltip" data-placement="top" placeholder="(حروف فارسی)" title="مثال: احمدی" minlength="2" error-value="{{ trans('validation.javascript_validation.code_meli') }}">
+                            <label for="code_melli">{{ trans('validation.attributes.code_meli') }}: <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control form-national" id="code_melli" name="code_melli" data-toggle="tooltip" data-placement="top" placeholder="(حروف فارسی)" title="مثال: احمدی" minlength="2" error-value="{{ trans('validation.javascript_validation.code_meli') }}">
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-6">

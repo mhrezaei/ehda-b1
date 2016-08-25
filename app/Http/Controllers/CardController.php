@@ -21,7 +21,7 @@ class CardController extends Controller
         return view('site.card_register.0');
     }
 
-    public function register_first_step()
+    public function register_first_step(Requests\CardRegisterFirstStepRequest $request)
     {
         echo '123';
     }
