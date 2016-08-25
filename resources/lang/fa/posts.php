@@ -9,6 +9,10 @@ return [
 		'under_review' => 'در انتظار بازبینی' ,
 	],
 	'manage' => [
+		'properties' => 'مشخصات' ,
+		'created_by' => 'ایجاد توسط :name' ,
+		'published_by' => 'انتشار توسط :name' ,
+		'deleted_by' => 'حذف توسط :name' ,
 		'published' =>  'منتشرشده' ,
 		'scheduled' => 'صف انتشار' ,
 		'pending' => 'منتظرتأیید',

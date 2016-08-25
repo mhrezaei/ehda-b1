@@ -7,12 +7,22 @@
 
 
 <td>
-	{{ $model->say('created') }}
-</td>
-
-
-<td>
-	{{ $model->say('published') }}
+	<div class="text-{{$model->status('color')}}">
+		{{ $model->status('text') }}
+	</div>
+	<div class="mv10 f10 text-grey">
+		{{ trans('posts.manage.created_by' , ['name'=>$model->say('created')])  }}
+	</div>
+	@if($model->published_by)
+		<div class="mv10 f10 text-grey">
+			{{ trans('posts.manage.published_by' , ['name'=>$model->say('published')])  }}
+		</div>
+	@endif
+	@if($model->trashed())
+		<div class="mv10 f10 text-grey">
+			{{ trans('posts.manage.deleted_by' , ['name'=>$model->say('deleted')])  }}
+		</div>
+	@endif
 </td>
 
 <td>-</td>
@@ -22,7 +32,7 @@
 	@include('manage.frame.widgets.grid-action' , [
 		'id' => $model->id ,
 		'actions' => [
-			['eye' , trans('manage.permits.view') , "urlN:manage/volunteers/-id-/view"], //@TODO: Put the correct url
+			['eye' , trans('manage.permits.view') , "urlN:".$model->say('link')],
 			['pencil' , trans('manage.permits.edit') , "url:manage/posts/-id-/edit" , '*' , $model->canEdit()],
 
 			['check' , trans('validation.attributes.publish') , 'modal:manage/posts/-id-/publish' , "$module.publish" , !$model->published_at],

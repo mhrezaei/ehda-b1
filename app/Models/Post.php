@@ -36,6 +36,16 @@ class Post extends Model
 		return $this->hasMany('App\Models\Post_comment');
 	}
 
+	public function metas()
+	{
+		return $this->hasMany('App\Models\Meta') ;
+	}
+
+	public function meta($key)
+	{
+		return Meta::selector($this->id , $key);
+	}
+
 	public function post_medias()
 	{
 		return $this->hasMany('App\Models\Post_media');
@@ -64,14 +74,14 @@ class Post extends Model
 	*/
 	public static function selector($branch , $criteria)
 	{
-		$now = Carbon::now();
+		$now = Carbon::now()->toDateTimeString();
 		switch($criteria) {
 			case 'all' :
 				return self::where('branch' , $branch) ;
 			case 'published':
-				return self::where('branch',$branch)->where('published_at','<',$now)->where('published_by') ;
+				return self::where('branch',$branch)->whereDate('published_at','<=',$now)->whereNotNull('published_by') ;
 			case 'scheduled' :
-				return self::where('branch',$branch)->where('published_at','>',$now)->where('published_by') ;
+				return self::where('branch',$branch)->whereDate('published_at','>',$now)->whereNotNull('published_by') ;
 			case 'pending':
 				return self::where('branch',$branch)->whereNull('published_at')->where('is_draft',false) ;
 			case 'drafts' :
@@ -223,7 +233,7 @@ class Post extends Model
 			case 'deleted' :
 				$at = $property."_at" ;
 				if($this->$at)
-					return $this->say($property."_by").": ".$this->say($property."_at") ;
+					return $this->say($property."_by").' '.trans('forms.general.in').' '.$this->say($property."_at") ;
 				else
 					return $default ;
 
@@ -232,7 +242,7 @@ class Post extends Model
 			case 'published_at' :
 			case 'deleted_at' :
 				if($this->$property) {
-					return AppServiceProvider::pd(jDate::forge($this->$property)->format('j F Y _ H:m'));
+					return AppServiceProvider::pd(jDate::forge($this->$property)->format('j F Y [H:m]'));
 				}
 				else
 					return $default ;

@@ -54,8 +54,7 @@
 		'selector' => true ,
 		'headings' => [
 			trans('validation.attributes.title') ,
-			trans('validation.attributes.create') ,
-			trans('validation.attributes.publish'),
+			trans('posts.manage.properties'),
 			trans('posts.manage.comments'),
 			trans('forms.button.action'),
 		],

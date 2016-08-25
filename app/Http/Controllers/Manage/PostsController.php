@@ -69,7 +69,6 @@ class PostsController extends Controller
 		if(!$branch)
 			return view('errors.404');
 
-
 		$page = $this->page ;
 		$page[0] = ["posts/".$request_branch , $branch->title() , $request_tab] ;
 		$page[1] = ["$request_branch/".$request_tab , trans("posts.manage.$request_tab") , "$request_branch/".$request_tab] ;
