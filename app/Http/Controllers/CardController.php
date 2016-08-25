@@ -23,6 +23,7 @@ class CardController extends Controller
 
     public function register_first_step(Requests\CardRegisterFirstStepRequest $request)
     {
+        
         print_r($request->all());
     }
 }
