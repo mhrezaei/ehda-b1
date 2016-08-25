@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Providers\SecKeyServiceProvider;
 use Illuminate\Http\Request;
 
@@ -23,7 +24,7 @@ class CardController extends Controller
 
     public function register_first_step(Requests\CardRegisterFirstStepRequest $request)
     {
-        
+        $user = User::selectBySlug();
         print_r($request->all());
     }
 }
