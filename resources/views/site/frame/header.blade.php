@@ -7,6 +7,7 @@
     {!! Html::style('assets/site/css/bootstrap.css') !!}
     {!! Html::style('assets/site/css/fonts.css') !!}
     {!! Html::style('assets/site/css/style.css') !!}
+    {!! Html::style('assets/site/css/hadi.css') !!}
 
 
     {!! Html::script ('assets/libs/jquery-3.1.0.min.js') !!}

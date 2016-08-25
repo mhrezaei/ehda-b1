@@ -21,6 +21,7 @@ return [
 				'action' => 'عملیات',
 				'bulk_action' => 'کارهای دسته‌جمعی',
 				'recovery' => 'بازآوری',
+				'send'  => 'ارسال اطلاعات',
 ],
 
 		"general" => [

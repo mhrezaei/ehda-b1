@@ -15,20 +15,32 @@ $(document).ready(function() {
 //    9) password    : .form-password => for check verify password field rename that to password id + 'Verify'
 //    10) datepicker : .form-datepicker => get timestamp with your input id + 'Extra'
 //    11) select     : .form-select
+//
+// Option => add this attr to form element
+//    1) no-validation="1"    :     submit form without javascript validation
+//    1) no-ajax="1"          :     submit form with javascript validation without ajax method
 ///////////////////////////////////////////////
 
 function forms_listener()
 {
       // javascript forms....
       $("form.js").each(function(){
-            $(this).removeClass('js');
-            $(this).ajaxForm({
-                  dataType: 'json',
-                  beforeSubmit: forms_validate,
-                  success: forms_responde,
-                  error: forms_error
-            });
-            $('.form-default').focus();
+            var $noAjax = $(this).attr('no-ajax');
+            if ($noAjax && $noAjax == 1)
+            {
+                  $(this).submit();
+            }
+            else
+            {
+                  $(this).removeClass('js');
+                  $(this).ajaxForm({
+                        dataType: 'json',
+                        beforeSubmit: forms_validate,
+                        success: forms_responde,
+                        error: forms_error
+                  });
+                  $('.form-default').focus();
+            }
       });
 
       $(".form-default").each(function() {
@@ -67,131 +79,196 @@ function forms_validate(formData, jqForm, options) {
 
       //Variables...
 //      var $formId = jqForm[0].id    ;
-	var $formId = jqForm.attr('id');
-      var $errors = 0               ;
+	  var $formId = jqForm.attr('id');
+      var $errors = 0;
+      var $errors_msg = new Array;
       var $feed   = "#" + $formId + " .form-feed";
 
 
+
       //Form Feed...
-      $($feed).removeClass('alert-success').removeClass('alert-danger').slideDown();
+      $($feed).removeClass('alert-success').removeClass('alert-danger').html( $($feed + "-wait").html() ).slideDown();
 
       //Checking required fields...
       $("#" + $formId + " .form-required").each(function(){
             if (forms_errorIfEmpty(this))
             {
+                  var $err = $(this).attr('error-value');
+                  if ($err.length)
+                  {
+                        $errors_msg.push($err);
+                  }
+                  if($errors <= 1) $(this).focus();
                   $errors++;
             }
-            if($errors==1) $(this).focus();
       });
 
       //Checking numbers fields...
       $("#" + $formId + " .form-number").each(function(){
             if (forms_errorIfNotNumber(this))
             {
+                  var $err = $(this).attr('error-value');
+                  if ($err.length)
+                  {
+                        $errors_msg.push($err);
+                  }
+                  if($errors <= 1) $(this).focus();
                   $errors++;
             }
-            if($errors==1) $(this).focus();
       });
 
       //Checking persian character fields...
       $("#" + $formId + " .form-persian").each(function(){
             if (forms_errorIfLang(this, 'fa'))
             {
+                  var $err = $(this).attr('error-value');
+                  if ($err.length)
+                  {
+                        $errors_msg.push($err);
+                  }
+                  if($errors <= 1) $(this).focus();
                   $errors++;
             }
-            if($errors==1) $(this).focus();
       });
 
       //Checking english character fields...
       $("#" + $formId + " .form-english").each(function(){
             if(forms_errorIfLang(this, 'en'))
             {
+                  var $err = $(this).attr('error-value');
+                  if ($err.length)
+                  {
+                        $errors_msg.push($err);
+                  }
+                  if($errors <= 1) $(this).focus();
                   $errors++;
             }
-            if($errors==1) $(this).focus();
       });
 
       //Checking email fields...
       $("#" + $formId + " .form-email").each(function(){
             if(forms_errorIfNotEmail(this))
             {
+                  var $err = $(this).attr('error-value');
+                  if ($err.length)
+                  {
+                        $errors_msg.push($err);
+                  }
+                  if($errors <= 1) $(this).focus();
                   $errors++;
             }
-            if($errors==1) $(this).focus();
       });
 
       //Checking national code fields...
       $("#" + $formId + " .form-national").each(function(){
             if (forms_errorIfNotNationalCode(this))
             {
+                  var $err = $(this).attr('error-value');
+                  if ($err.length)
+                  {
+                        $errors_msg.push($err);
+                  }
+                  if($errors <= 1) $(this).focus();
                   $errors++;
             }
-            if($errors==1) $(this).focus();
       });
 
       //Checking mobile numbers fields...
       $("#" + $formId + " .form-mobile").each(function(){
             if(forms_errorIfNotMobile(this))
             {
+                  var $err = $(this).attr('error-value');
+                  if ($err.length)
+                  {
+                        $errors_msg.push($err);
+                  }
+                  if($errors <= 1) $(this).focus();
                   $errors++;
             }
-            if($errors==1) $(this).focus();
       });
 
       //Checking phone numbers fields...
       $("#" + $formId + " .form-phone").each(function(){
             if (forms_errorIfNotPhone(this))
             {
+                  var $err = $(this).attr('error-value');
+                  if ($err.length)
+                  {
+                        $errors_msg.push($err);
+                  }
+                  if($errors <= 1) $(this).focus();
                   $errors++;
             }
-            if($errors==1) $(this).focus();
       });
 
       //Checking password fields...
       $("#" + $formId + " .form-password").each(function(){
             if (forms_errorIfNotVerifyPassWord(this))
             {
+                  var $err = $(this).attr('error-value');
+                  if ($err.length)
+                  {
+                        $errors_msg.push($err);
+                  }
+                  if($errors <= 1) $(this).focus();
                   $errors++;
             }
-            if($errors==1) $(this).focus();
       });
 
       //Checking datepicker fields...
       $("#" + $formId + " .form-datepicker").each(function(){
             if (forms_errorIfNotDatePicker(this))
             {
+                  var $err = $(this).attr('error-value');
+                  if ($err.length)
+                  {
+                        $errors_msg.push($err);
+                  }
+                  if($errors <= 1) $(this).focus();
                   $errors++;
             }
-            if($errors==1) $(this).focus();
       });
 
       //Checking select fields...
       $("#" + $formId + " .form-select").each(function(){
             if (forms_errorIfNotSelect(this))
             {
+                  var $err = $(this).attr('error-value');
+                  if ($err.length)
+                  {
+                        $errors_msg.push($err);
+                  }
+                  if($errors <= 1) $(this).focus();
                   $errors++;
             }
-            if($errors==1) $(this).focus();
       });
 
       if (typeof window[$formId + "_validate"] == 'function') {
             $errors += window[$formId + "_validate"](formData, jqForm, options);
       }
 
-      var $function = 'validate_'+$formId ;
-      if (typeof window[$function]() == 'function') {
-            $errors = $errors + window[$function]();
-      }
-
       //result...
-      var stop = $('#' + $formId).attr('stop');
+      var stop = $('#' + $formId).attr('no-validation');
       if(stop && stop == 1)
       {
             $errors = 0;
       }
 
       if($errors>0) {
-            $($feed).addClass('alert-danger').html($($feed+"-error").html('4444'));
+            if ($errors_msg.length)
+            {
+                  var $m = '<ul>';
+                  for(var i = 0; i < $errors_msg.length; i++)
+                  {
+                        $m += '<li>' + $errors_msg[i] + '</li>';
+                  }
+                  $m += '<ul>';
+                  $($feed).addClass('alert-danger').html($($feed+"-error").html($m));
+            }
+            else
+            {
+                  $($feed).addClass('alert-danger').html();
+            }
             return false ;
       }
       else {

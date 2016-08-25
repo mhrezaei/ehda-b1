@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Providers\SecKeyServiceProvider;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -11,11 +12,17 @@ class CardController extends Controller
 {
     public function index()
     {
-        return view('site.card_info.0');
+        $captcha = SecKeyServiceProvider::getQuestion('fa');
+        return view('site.card_info.0', compact('captcha'));
     }
 
     public function register()
     {
         return view('site.card_register.0');
+    }
+
+    public function register_first_step()
+    {
+        echo '123';
     }
 }

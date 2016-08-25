@@ -13,6 +13,7 @@
 
 Route::get('/', 'HomeController@index');
 Route::get('/register', 'CardController@register');
+Route::post('/register/first_step', 'CardController@register_first_step');
 Route::get('/organ_donation_card', 'CardController@index');
 
 /*
