@@ -263,11 +263,11 @@ function forms_validate(formData, jqForm, options) {
                         $m += '<li>' + $errors_msg[i] + '</li>';
                   }
                   $m += '<ul>';
-                  $($feed).addClass('alert-danger').html($($feed+"-error").html($m));
+                  $($feed).addClass('alert-danger').html($m);
             }
             else
             {
-                  $($feed).addClass('alert-danger').html();
+                  $($feed).addClass('alert-danger').html( $($feed + "-error").html() );
             }
             return false ;
       }

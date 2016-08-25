@@ -1,3 +1,7 @@
 .form-feed{
     font-size: 12px;
 }
+
+.stepOneForm{
+    display: none;
+}

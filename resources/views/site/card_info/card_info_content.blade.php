@@ -22,7 +22,7 @@
                     ])
                 </p>
             </div>
-            <div class="col-xs-12 col-md-8 col-md-offset-2">
+            <div class="col-xs-12 col-md-8 col-md-offset-2 stepOneForm">
                 {!! Form::open([
                             'url'	=> 'register/first_step' ,
                             'method'=> 'post',
@@ -53,14 +53,15 @@
                 <div class="row">
                     <div class="col-xs-12 col-sm-6">
                         <div class="form-group">
-                            <label for="code_melli">{{ trans('validation.attributes.code_meli') }}: <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control form-national" id="code_melli" name="code_melli" data-toggle="tooltip" data-placement="top" placeholder="(حروف فارسی)" title="مثال: احمدی" minlength="2" error-value="{{ trans('validation.javascript_validation.code_meli') }}">
+                            <label for="code_melli">{{ trans('validation.attributes.code_melli') }}: <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control form-national" id="code_melli" name="code_melli" data-toggle="tooltip" data-placement="top" placeholder="(حروف فارسی)" title="مثال: احمدی" minlength="2" error-value="{{ trans('validation.javascript_validation.code_melli') }}">
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-6">
                         <div class="form-group">
                             <label for="security">{{ $captcha['question'] }} <span class="text-danger">*</span></label>
                             <input type="text" class="form-control form-required" id="security" name="security" data-toggle="tooltip" data-placement="top" placeholder="(فقط عدد)" title="مثال: 15" minlength="1" error-value="{{ trans('validation.javascript_validation.security') }}">
+                            <input type="hidden" name="key" value="{{$captcha['key']}}">
                         </div>
                     </div>
                 </div>

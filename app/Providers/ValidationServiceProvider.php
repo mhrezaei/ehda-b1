@@ -130,7 +130,7 @@ class ValidationServiceProvider extends ServiceProvider
 			return self::validateCodeMelli($attribute, $value, $parameters, $validator);
 		});
 		$this->app['validator']->extend('persian', function($attribute, $value, $parameters, $validator){
-			return self::persianChar($value, $parameters[0]);
+			return self::persianChar($attribute, $value, $parameters, $validator);
 		});
 	}
 
@@ -188,7 +188,9 @@ class ValidationServiceProvider extends ServiceProvider
 		return $k2 * 256 + $k1;
 	}
 
-	private static function persianChar($str, $percent = 60) {
+	private static function persianChar($attribute, $value, $parameters, $validator) {
+		$str = $value;
+		$percent = $parameters[0];
 		if(mb_detect_encoding($str) !== 'UTF-8')
 		{
 			$str = mb_convert_encoding($str,mb_detect_encoding($str),'UTF-8');
@@ -208,11 +210,16 @@ class ValidationServiceProvider extends ServiceProvider
 			}
 			$total_count++;
 		}
-		if(($arabic_count/$total_count) > ($percent / 10)) {
+
+		if(($arabic_count/$total_count) > ($percent / 100))
+		{
 			// 60% arabic chars, its probably arabic
 			return true;
 		}
-		return false;
+		else
+		{
+			return false;
+		}
 	}
 
 	/**

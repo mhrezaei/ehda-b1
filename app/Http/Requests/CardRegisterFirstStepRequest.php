@@ -27,8 +27,8 @@ class CardRegisterFirstStepRequest extends Request
     {
         $input = $this->all();
         return [
-             'name_first' => 'required|persian',
-             'name_last' => 'required|persian',
+             'name_first' => 'required|persian:60',
+             'name_last' => 'required|persian:60',
              'code_melli' => 'required|code_melli',
              'security' => 'required|captcha:'.$input['key'],
         ];
@@ -39,7 +39,9 @@ class CardRegisterFirstStepRequest extends Request
         $value	= parent::all();
         $purified = ValidationServiceProvider::purifier($value,[
             'security'  =>  'ed',
-            'username'  =>  'ed',
+            'code_melli'  =>  'ed',
+            'name_first'  =>  'pd',
+            'name_last'  =>  'pd',
         ]);
         return $purified;
 
