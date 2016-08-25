@@ -20,12 +20,19 @@ class PostSaveRequest extends Request
         $input = $this->all() ;
         $module = $input['branch'] ;
 
-        if(in_array($input['action'] , ['publish','schedule']))
-            return Auth::user()->can("$module.publish") ;
-        elseif($input['id']==0)
-            return Auth::user()->can("$module.create") ;
-        else
-            return Auth::user()->can("$module.edit") ;
+        if($input['id']) {
+            if($input['is_published'])
+                return Auth::user()->can("$module.edit");
+            else
+                return Auth::user()->can("$module.publish");
+        }
+        else {
+            if($input['action']=='publish')
+                return Auth::user()->can("$module.publish");
+            else
+                return Auth::user()->can("$module.create") ;
+        }
+
     }
 
     /**
@@ -39,11 +46,11 @@ class PostSaveRequest extends Request
         $now = Carbon::now()->format('Y/m/d');
         return [
             'id' => 'numeric' ,
-            'action' => 'required|in:preview,draft,save,publish,schedule' ,
+            'action' => 'required|in:draft,save,publish' ,
             'title' => 'required' ,
             'text' => 'required' ,
             'category_id' => 'required_if:action,publish',
-            'publish_date' => 'date|after:'.$now ,
+            'publish_date' => 'date' ,
         ];
     }
 

@@ -265,94 +265,65 @@ class PostsController extends Controller
 		$data = $request->toArray() ;
 		$action = $data['action'] ;
 		unset($data['action']);
+		unset($data['is_published']);
 		$now = Carbon::now()->toDateTimeString();
 		$user = Auth::user() ;
 		$user_id = $user->id ;
 		$success_redirect = null ;
-		$delete_id = 0 ;
 
-		$publish_date = new Carbon($data['publish_date']);
+		if($data['publish_date']) {
+			$data['published_at'] = new Carbon($data['publish_date']);
+			$data['published_at'] = $data['published_at']->toDateTimeString();
+		}
+		else
+			$data['published_at'] = null ;
 		unset($data['publish_date']);
 
 		//if new record...
 		if(!$data['id']) {
 			switch($action) {
-				case 'preview' :
 				case 'draft' :
 					$success_redirect = 'manage/posts/-ID-/edit' ;
 					$data['is_draft'] = 1 ;
 					break;
 
 				case 'save' :
-					$success_redirect = 'manage/posts/'.$request->branch.'/my_posts' ;
-					break;
-
-				case 'schedule' :
-					$success_redirect = 'manage/posts/'.$request->branch.'/my_posts' ;
-					$data['published_at'] = $publish_date->toDateTimeString() ;
-					$data['published_by'] = $user_id ;
 					break;
 
 				case 'publish' :
-					$success_redirect = 'manage/posts/'.$request->branch.'/my_posts' ;
-					$data['published_at'] = $now ;
 					$data['published_by'] = $user_id ;
+					if(!$data['published_at'])
+						$data['published_at'] = $now ;
 					break;
 			}
 		}
 
 		//if modified record...
 		if($data['id']) {
-			$model = Post::withTrashed()->find($data['id']);
+			$model = Post::find($data['id']);
 			if(!$model)
 				return $this->jsonFeedback();
 
 			switch($action) {
-				case 'preview' :
 				case 'draft' :
+					if($model->isPublished())
+						return $this->jsonFeedback();
 					$data['is_draft'] = 1 ;
-					if(!$model->is_draft) {
-						$success_redirect = 'manage/posts/-ID-/edit' ;
-						$data['copy_of'] = $data['id'] ;
-						$data['id'] = 0 ;
-					}
 					break;
 
 				case 'save' :
-					$success_redirect = 'manage/posts/'.$request->branch.'/my_posts' ;
-					if(!$model->is_draft) {
-						$data['copy_of'] = $data['id'] ;
-						$data['id'] = 0 ;
-					}
-					break;
-
-				case 'schedule' :
-					$success_redirect = 'manage/posts/'.$request->branch.'/my_posts' ;
+					$data['is_draft'] = 0 ;
 					if($model->isPublished())
 						return $this->jsonFeedback();
-					$data['published_at'] = $publish_date->toDateTimeString() ;
-					$data['published_by'] = $user_id ;
 					break;
 
 				case 'publish' :
-					$success_redirect = 'manage/posts/'.$request->branch.'/my_posts' ;
-					$data['published_at'] = $now ;
-					$data['published_by'] = $user_id ;
+					if(!$model->isPublished()) {
+						$data['published_by'] = $user_id ;
+						if(!$data['published_at'])
+							$data['published_at'] = $now ;
+					}
 					break;
-
-			}
-
-
-			//Replacing the draft with an existing record
-			if($model->copy_of) {
-				if(in_array($action, ['preview', 'draft', 'save'])) {
-					$data['copy_of'] = $model->copy_of;
-					$data['published_by'] = $model->published_by ;
-				}
-				else {
-					$delete_id = $data['id']  ;
- 					$data['id'] = $model->copy_of ;
-				}
 			}
 
 		}
@@ -379,15 +350,12 @@ class PostsController extends Controller
 		//Save...
 		$is_saved = Post::store($data) ;
 
-		//Deleting draft record if required...
-		if($is_saved and $delete_id>0)
-			Post::where('id',$delete_id)->forceDelete() ;
-
 		//Choosing the redirection...
 		$success_redirect = str_replace('-ID-' , $is_saved , $success_redirect );
 
 		return $this->jsonAjaxSaveFeedback($is_saved , [
 			'success_redirect' => $success_redirect ,
+			'success_refresh' => 1 ,
 		]);
 
 

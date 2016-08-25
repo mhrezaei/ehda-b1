@@ -3,5 +3,7 @@
 		{{ trans('posts.manage.current_status') }}
 	</div>
 
-
+	<div class="text-center m10 alert alert-{{$model->status('color')}}">
+		{{ $model->status('text') }}
+	</div>
 </div>

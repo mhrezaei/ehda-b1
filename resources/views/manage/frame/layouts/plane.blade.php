@@ -11,7 +11,7 @@
 	<script language="javascript">
 		function assets($additive) {
 			if(!$additive) $additive = '' ;
-			return url('assets/'+$additive);
+			return url('assets/'+$additive); 
 		}
 		function url($additive) {
 			if(!$additive) $additive = '' ;
@@ -26,7 +26,6 @@
 	{{-- BOOTSTRAP --}}
 	{!! Html::style('assets/libs/bootstrap/css/bootstrap.min.css') !!}
 	{!! Html::style('assets/libs/bootstrap/css/bootstrap-rtl.min.css') !!}
-
 	{!! HTML::script ('assets/libs/bootstrap/js/bootstrap.min.js') !!}
 
 	{{-- fonts stuff --}}

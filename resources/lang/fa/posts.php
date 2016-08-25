@@ -1,10 +1,10 @@
 <?php
 return [
 	'status' => [
-		'unsaved' => 'ذپادرهوا' ,
+		'unsaved' => 'هنوز ذخیره‌نشده',
 		'trashed' => 'پاک‌شده',
 		'published' => 'منتشرشده',
-		'scheduled' => 'زمان‌بندی‌شده',
+		'scheduled' => 'در انتظار زمان انتشار',
 		'draft' => 'پیش‌نویس',
 		'under_review' => 'در انتظار بازبینی' ,
 	],
@@ -33,16 +33,16 @@ return [
 		'save_as_draft' =>  'ذخیره پیش‌نویس برای خودم' ,
 		'save_to_review' => 'ارسال برای بازبینی',
 		'publish' => 'انتشار' ,
-		'show_date' => 'نمایش در سایت',
-		'publish_immediately' => 'به محض انتشار' ,
+		'show_date' => 'زمان دل‌خواه نمایش در سایت',
+		'publish_immediately' => 'به طور خودکار' ,
 		'current_status' => 'وضعیت کنونی',
+		'creator' => 'ایجادکننده' ,
 
-
-		'publish_now' => 'انتشار فوری',
-		'publish_schedule' => 'زمان‌بندی انتشار' ,
-		'save_schedule' => 'ذخیره و ارسال به صف انتشار',
-		'preview' => 'پیش‌نمایش تغییرات' ,
-		'view_original' => 'نمایش اصلی' ,
+//		'publish_now' => 'انتشار فوری',
+//		'publish_schedule' => 'زمان‌بندی انتشار' ,
+//		'save_schedule' => 'ذخیره و ارسال به صف انتشار',
+//		'preview' => 'پیش‌نمایش تغییرات' ,
+//		'view_original' => 'نمایش اصلی' ,
 		'featured_image' => 'نمایه',
 		'error_domain_not_selected' => 'هیچ دامنه‌ای برای این مطلب انتخاب نشده است.',
 		'confirm_unpublish' => 'لغو انتشار، سبب می‌شود مطلب منتشرشده، از دسترس کاربران خارج شود و به بخش مطالب منتظر تأییدانتقال یابد.',

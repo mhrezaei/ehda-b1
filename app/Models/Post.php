@@ -69,17 +69,17 @@ class Post extends Model
 			case 'all' :
 				return self::where('branch' , $branch) ;
 			case 'published':
-				return self::where('branch',$branch)->where('published_at','<',$now)->whereNull('copy_of') ;
+				return self::where('branch',$branch)->where('published_at','<',$now)->where('published_by') ;
 			case 'scheduled' :
-				return self::where('branch',$branch)->where('published_at','>',$now) ;
+				return self::where('branch',$branch)->where('published_at','>',$now)->where('published_by') ;
 			case 'pending':
 				return self::where('branch',$branch)->whereNull('published_at')->where('is_draft',false) ;
 			case 'drafts' :
-				return self::where('branch',$branch)->where('is_draft',true)->whereNull('published_at');
+				return self::where('branch',$branch)->where('is_draft',true)->whereNull('published_by');
 			case 'my_posts' :
 				return self::where('branch',$branch)->where('created_by',Auth::user()->id)->where('is_draft',0);
 			case 'my_drafts' :
-				return self::where('branch',$branch)->where('created_by',Auth::user()->id)->where('is_draft',true)->whereNull('published_at');
+				return self::where('branch',$branch)->where('created_by',Auth::user()->id)->where('is_draft',true)->whereNull('published_by');
 			case 'bin' :
 				return self::onlyTrashed()->where('branch',$branch);
 			default:
@@ -125,6 +125,10 @@ class Post extends Model
 	public function canDelete()
 	{
 		$online_user = Auth::user() ;
+
+		//Not Even has an ID...
+		if(!$this->id)
+			return false ;
 
 		//Allowed by Permission...
 		if($online_user->can($this->branch.".delete" , $this->domains))
@@ -187,7 +191,7 @@ class Post extends Model
 		}
 		elseif($this->isScheduled()) {
 			$return['text'] = trans('posts.status.scheduled');
-			$return['color'] = 'primary' ;
+			$return['color'] = 'info' ;
 		}
 		elseif($this->is_draft) {
 			$return['text'] = trans('posts.status.draft');
@@ -245,6 +249,9 @@ class Post extends Model
 
 			case 'domains' :
 				return $this->domains() ;
+
+			case 'link' :
+				return url("post/".$this->id."/".$this->title) ; //TODO: Correct this
 
 			default :
 				return $this->$property ;

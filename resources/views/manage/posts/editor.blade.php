@@ -32,7 +32,8 @@
 			@include('forms.hiddens' , ['fields' => [
 				['id' , $model->id ],
 				['action' , '' , 'txtAction'] ,
-				['branch' , $encrypted_branch]
+				['branch' , $encrypted_branch] ,
+				['is_published' , $model->published_by]
 			]])
 
 
@@ -111,10 +112,14 @@
 		<div class="col-md-3">
 
 			@include('manage.posts.editor-status')
-			@include('manage.posts.editor-saves')
+			@if(!$model->trashed())
+				@include('manage.posts.editor-saves')
+			@endif
 			@include('manage.posts.editor-schedule')
 
 			@include('manage.posts.editor-image')
+			@include('manage.posts.editor-creator')
+
 		</div>
 	</div>
 

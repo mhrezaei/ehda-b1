@@ -1,6 +1,12 @@
 /**
  * Created by jafar on 7/6/2016 AD.
  */
+
+function abbas()
+{
+	alert(1);
+}
+
 function masterModal($url,$size)
 {
 	//Preparetions...
