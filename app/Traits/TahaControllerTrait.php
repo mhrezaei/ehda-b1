@@ -23,6 +23,7 @@ trait TahaControllerTrait
 				'refresh' => 0 ,
 				'modalClose' => 0 ,
 				'updater' => '' ,
+				'redirectTime' => 1000,
 		];
 
 		foreach($default as $item => $value) {
@@ -48,6 +49,7 @@ trait TahaControllerTrait
 			'success_refresh' => '0' ,
 			'success_modalClose' => '0' ,
 			'success_updater' => '' ,
+			'redirectTime' => 1000,
 
 			'danger_message' => trans('validation.invalid'),
 			'danger_redirect' => '' ,
@@ -72,6 +74,7 @@ trait TahaControllerTrait
 					'refresh' => $setting['success_refresh'],
 					'modalClose' => $setting['success_modalClose'],
 					'updater' => $setting['success_updater'],
+					'redirectTime' => 1000,
 			]);
 		else {
 			return $this->jsonFeedback([
@@ -82,6 +85,7 @@ trait TahaControllerTrait
 					'refresh' => $setting['danger_refresh'],
 					'modalClose' => $setting['danger_modalClose'],
 					'updater' => $setting['danger_updater'],
+					'redirectTime' => 1000,
 			]);
 		}
 
@@ -97,6 +101,7 @@ trait TahaControllerTrait
 				'success_refresh' => '0' ,
 				'success_modalClose' => '1' ,
 				'success_updater' => '' ,
+				'redirectTime' => 1000,
 
 				'danger_message' => trans('validation.invalid'),
 				'danger_redirect' => '' ,

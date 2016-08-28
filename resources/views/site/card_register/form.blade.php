@@ -100,10 +100,11 @@
                                 ])
                             </div>
                             <div class="col-xs-12 col-sm-6">
-                                @include('forms_site.input', [
-                                'field' => 'birth_city',
-                                'min' => 2,
-                                'class' => 'form-persian',
+                                @include('forms_site.select_city' , [
+                                'field' => 'birth_city' ,
+                                'blank_value' => '0' ,
+                                'options' => $states ,
+                                'search' => true ,
                                 'required' => 1,
                                 ])
                             </div>
@@ -160,7 +161,6 @@
                                 'options' => $states ,
                                 'search' => true ,
                                 'required' => 1,
-                                //'class' => 'form-required'
                                 ])
                             </div>
                             <div class="col-xs-12 col-sm-6">

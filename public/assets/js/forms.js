@@ -280,6 +280,7 @@ function forms_validate(formData, jqForm, options) {
       }
 
       if($errors>0) {
+            $('#' + $formId + ' button').prop('disabled', false);
             if ($errors_msg.length)
             {
                   var $m = '<ul>';
@@ -357,7 +358,7 @@ function forms_responde(data, statusText, xhr, $form)
       //after effects...
       if(data.refresh==1) 	forms_delaiedPageRefresh(1);
       if(data.modalClose==1) 	setTimeout(function(){$(".modal").modal('hide');},1000);
-      if(data.redirect)       setTimeout(function(){window.location = data.redirect;},1000);
+      if(data.redirect)       setTimeout(function(){window.location = data.redirect;},data.redirectTime);
       if(data.updater)		allForms_updater(data.updater);
       if(data.callback)		setTimeout(data.callback,1000);
 
@@ -789,7 +790,7 @@ function forms_errorIfNotSelect(selector) {
 function forms_errorIfNotDatePicker(selector)
 {
       var $elementID = $(selector).attr('id');
-      if ($('#' + $elementID + 'Extra').val() == 0 || $(selector).val().length < 6)
+      if ($('#' + $elementID + 'Extra').val().length < 6 || $(selector).val().length < 6)
       {
             forms_markError(selector, "error");
             return 1;
@@ -1009,28 +1010,37 @@ function forms_date_picker(selector)
       var extra = $('#' + $elementID).parent().html() + '<input type="hidden" id="' + $elementID + 'Extra" name="' + $elementID + '">';
       $('#' + $elementID).parent().append().html(extra);
 
-      if (!$format)
-      {
-            $format = "YYYY/MM/DD";
-      }
 
       if (!$time)
       {
+            $format = "YYYY/MM/DD";
             $time = false;
+      }
+      else
+      {
+            $format = "dddd, MMMM DD YYYY, h:mm:ss a";
+            $time = true;
       }
 
       var dateOptions = {
             format: $format,
             observer: true,
             persianDigit: true,
-            // maxDate: maxAge,
+            autoClose: true,
             formatter: function (unixDate) {
                   var self = this;
                   var pdate = new persianDate(unixDate);
                   pdate.formatPersian = true;
                   return pdate.format(self.format);
             },
-            autoClose: true,
+            altField: $('#' + $elementID + 'Extra'),
+            altFormat: "dddd, MMMM DD YYYY, h:mm:ss a",
+            altFieldFormatter: function (unixDate) {
+                  return (new Date(unixDate)).toLocaleDateString();
+            },
+            onSelect: function(){
+                  $(this).trigger('blur');
+            },
             navigator: {
                   enabled: true,
             },
@@ -1043,34 +1053,18 @@ function forms_date_picker(selector)
             yearPicker: {
                   scrollEnabled: false,
             },
-            altFieldFormatter: function (unixDate) {
-                  var self = this;
-                  var thisAltFormat = self.altFormat.toLowerCase();
-                  var timeUn = 0;
-                  if (thisAltFormat === "gregorian" | thisAltFormat === "g") {
-                        timeUn = new Date(unixDate);
-                  }
-                  if (thisAltFormat === "unix" | thisAltFormat === "u") {
-                        timeUn = unixDate;
-                  } else {
-                        timeUn = new persianDate(unixDate).format(self.altFormat);
-                  }
-                  $('#' + $elementID + 'Extra').val(timeUn);
-            },
             timePicker: {
                   enabled: $time,
                   showSeconds: true,
                   showMeridian: true,
                   scrollEnabled: true
             },
-            onSelect: function(){
-                  $(this).trigger('blur');
-            },
       };
 
       $('#' + $elementID).on('focus', function () {
             if($(this).val() == ''){
                   $(this).pDatepicker(dateOptions).trigger('focus').val('');
+                  $('#' + $elementID + 'Extra').val('');
             }
       });
 

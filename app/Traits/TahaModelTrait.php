@@ -28,24 +28,46 @@ trait TahaModelTrait
 	*/
 	
 
-	public static function store($request)
+	public static function store($request , $unset_things = [])
 	{
+		//Convert to Array...
 		if(is_array($request))
 			$data = $request ;
 		else
 			$data = $request->toArray();
 
+		//Unset Unnecessary things...
 		if(isset($data['_token']))
 			unset($data['_token']);
 		if(isset($data['_modal_id']))
 			unset($data['_modal_id']);
+		if(isset($data['key']))
+			unset($data['key']);
+		if(isset($data['security']))
+			unset($data['security']);
 
+		foreach($unset_things as $unset_thing) {
+			if(isset($data[$unset_thing]))
+				unset($data[$unset_thing]);
+		}
+
+		//Action...
 		if($data['id']) {
 			$affected = Self::where('id', $data['id'])->update($data);
-			$data['updated_by'] = Auth::user()->id ;
+			if(!isset($data['updated_by'])) {
+				if( Auth::check())
+					$data['updated_by'] = Auth::user()->id ;
+				else
+					$data['updated_by'] = 0 ;
+			}
 		}
 		else {
-			$data['created_by'] = Auth::user()->id ;
+			if(!isset($data['created_by'])) {
+				if( Auth::check())
+					$data['created_by'] = Auth::user()->id ;
+				else
+					$data['created_by'] = 0 ;
+			}
 			$model = Self::create($data);
 			if($model)
 				$affected = $model->id;
@@ -53,6 +75,7 @@ trait TahaModelTrait
 				$affected = 0;
 		}
 
+		//feedback...
 		return $affected;
 
 	}
