@@ -78,11 +78,11 @@ function forms_listener()
 function forms_validate(formData, jqForm, options) {
 
       //Variables...
-//      var $formId = jqForm[0].id    ;
 	  var $formId = jqForm.attr('id');
       var $errors = 0;
       var $errors_msg = new Array;
       var $feed   = "#" + $formId + " .form-feed";
+      $('#' + $formId + ' button').prop('disabled', true);
       //@TODO: hadi add optional validate
 
 
@@ -302,14 +302,16 @@ function forms_validate(formData, jqForm, options) {
 
 }
 
-function forms_error(jqXhr, textStatus, errorThrown)
+function forms_error(jqXhr, textStatus, errorThrown, $form)
 {
       // IMPORTANT NOTE: $formSelector contains nothing! That means forms_errror() cannot identify
       // which form it is and merely shows the errors on all available feeds!
 
       //Variables...
+      var $formId = $form.attr('id');
       var   $formSelector     = "" ;
       var   $feedSelector     = $formSelector+" .form-feed"   ;
+      $('#' + $formId + ' button').prop('disabled', false);
 
 //      if( jqXhr.status === 500 ) { //@TODO: Supposed to refresh if _token is wrong. but refreshes in all server errros
 //            errorsHtml  = $($feedSelector+'-error').html()      ;
@@ -336,6 +338,7 @@ function forms_responde(data, statusText, xhr, $form)
 {
       var formSelector = "#" + $form.attr('id');
       var $feedSelector = formSelector+" .form-feed"   ;
+      $(formSelector + ' button').prop('disabled', false);
 
       if(data.ok=='1') {
             var cl    = "alert-success"     ;
@@ -1002,11 +1005,9 @@ function forms_date_picker(selector)
       var $elementID = $(selector).attr('id');
       var $format = $(selector).attr('format');
       var $time = $(selector).attr('time');
-      var $orginal_input = $('#' + $elementID).parent().html()
-      $(selector).attr('id', $elementID + 'Extra');
-      $(selector).attr('name', $elementID + 'Extra');
-      var extra = $orginal_input + '<input type="hidden" id="' + $elementID + '" name="' + $elementID + '">';
-      $('#' + $elementID + 'Extra').parent().append().html(extra);
+
+      var extra = $('#' + $elementID).parent().html() + '<input type="hidden" id="' + $elementID + 'Extra" name="' + $elementID + '">';
+      $('#' + $elementID).parent().append().html(extra);
 
       if (!$format)
       {
@@ -1063,13 +1064,13 @@ function forms_date_picker(selector)
                   scrollEnabled: true
             },
             onSelect: function(){
-                  $($('#' + $elementID + 'Extra')).trigger('blur');
+                  $(this).trigger('blur');
             },
       };
 
-      $($('#' + $elementID + 'Extra')).on('focus', function () {
-            if($($('#' + $elementID + 'Extra')).val() == ''){
-                  $($('#' + $elementID + 'Extra')).pDatepicker(dateOptions).trigger('focus').val('');
+      $('#' + $elementID).on('focus', function () {
+            if($(this).val() == ''){
+                  $(this).pDatepicker(dateOptions).trigger('focus').val('');
             }
       });
 

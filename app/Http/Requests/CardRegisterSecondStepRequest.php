@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
+use App\Providers\ValidationServiceProvider;
+use Illuminate\Support\Facades\Session;
 
 class CardRegisterSecondStepRequest extends Request
 {
@@ -13,7 +15,14 @@ class CardRegisterSecondStepRequest extends Request
      */
     public function authorize()
     {
-        return false;
+        if (Session::get('register_first_step'))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     /**
@@ -30,8 +39,17 @@ class CardRegisterSecondStepRequest extends Request
             'gender' => 'required|numeric|min:1|max:3',
             'name_father' => 'required|persian:60',
             'code_id' => 'required|numeric',
-            'birth_date' => 'required',
-            'birth_dateExtra' => 
+            'birth_date' => 'required|numeric',
+            'birth_city' => 'required|persian:60',
+            'edu_level' => 'required|numeric|min:1|max:6',
+            'job' => 'required|persian:60',
+            'tel_mobile' => 'required|phone:mobile',
+            'home_tel' => 'required|phone:fixed',
+            'home_city' => 'required|numeric|min:1',
+            'email' => 'required|email',
+            'password' => 'required|same:password2|min:8',
+            'chRegisterAll' => 'required_without_all:chRegisterHeart,chRegisterLung,chRegisterLiver,chRegisterKidney,chRegisterPancreas,chRegisterTissues'
+
         ];
     }
 
@@ -45,6 +63,15 @@ class CardRegisterSecondStepRequest extends Request
             'name_father' => 'pd',
             'code_id' => 'ed',
             'birth_date' => 'ed',
+            'birth_city' => 'pd',
+            'edu_level' => 'ed',
+            'job' => 'pd',
+            'tel_mobile' => 'ed',
+            'home_tel' => 'ed',
+            'home_city' => 'ed',
+            'email' => 'ed',
+            'password' => 'ed',
+            'password2' => 'ed',
         ]);
         return $purified;
 

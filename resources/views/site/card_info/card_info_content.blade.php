@@ -27,8 +27,8 @@
                             'url'	=> 'register/first_step' ,
                             'method'=> 'post',
                             'class' => 'clearfix ehda-card-form js',
-                            'name' => 'registerForm',
-                            'id' => 'registerForm',
+                            'name' => 'register_form_step_one',
+                            'id' => 'register_form_step_one',
                         ]) !!}
 
                 <div class="form-group">

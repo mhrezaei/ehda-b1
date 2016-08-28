@@ -72,6 +72,35 @@ class CardController extends Controller
     public function register_second_step(Requests\CardRegisterSecondStepRequest $request)
     {
         $input = $request->toArray();
-        print_r($input);
+        unset($input['_token']);
+        $user = User::selectBySlug($input['code_melli'], 'code_melli');
+        if (! $user)
+        {
+            if (isset($input['chRegisterAll']))
+            {
+                $input['organs'] = 'Heart Lung Liver Kidney Pancreas Tissues',
+            }
+            else
+            {
+                $input['organs'] = '';
+                isset($input['chRegisterHeart']) ? $input['organs']
+            }
+        }
+        $can_login = $user and $user->isActive() ;
+        if(!$can_login)
+        {
+            Session::put('register_first_step', $input);
+            return $this->jsonFeedback(null, [
+                'redirect' => url('register'),
+                'ok' => 1,
+                'message' => trans('forms.feed.wait'),
+            ]);
+        }
+        else
+        {
+            return $this->jsonFeedback(null, [
+                'redirect' => url('relogin'),
+            ]);
+        }
     }
 }
