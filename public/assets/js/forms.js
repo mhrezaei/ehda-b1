@@ -1054,7 +1054,7 @@ function forms_date_picker(selector)
                   scrollEnabled: false,
             },
             timePicker: {
-                  enabled: true,
+                  enabled: $time,
                   showSeconds: true,
                   showMeridian: true,
                   scrollEnabled: true

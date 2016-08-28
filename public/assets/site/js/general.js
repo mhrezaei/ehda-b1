@@ -30,3 +30,12 @@ function registerForm_validate()
         return $('#chRegisterAll').attr('error-value');
     }
 }
+
+function register_step_second() {
+    var $formID = '#registerForm';
+    var $form = $($formID);
+
+    $($formID + 'input').prop('disabled', true);
+    alert(1234);
+
+}

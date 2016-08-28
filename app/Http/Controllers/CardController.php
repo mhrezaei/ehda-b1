@@ -59,7 +59,7 @@ class CardController extends Controller
         unset($input['security']);
         unset($input['key']);
         $user = User::selectBySlug($input['code_melli'], 'code_melli');
-        $can_login = $user and $user->isActive() ;
+        $can_login = $user and $user->isActive('volunteer') and $user->isActive('card') ;
         if(!$can_login)
         {
             Session::put('register_first_step', $input);
@@ -79,6 +79,25 @@ class CardController extends Controller
     }
 
     public function register_second_step(Requests\CardRegisterSecondStepRequest $request)
+    {
+        $input = $request->toArray();
+        unset($input['_token']);
+        $user = User::selectBySlug($input['code_melli'], 'code_melli');
+        if (! $user or ! $user->isActive('volunteer') or ! $user->isActive('card'))
+        {
+            return $this->jsonFeedback(trans('site.global.register_check_data_step_second'),[
+                'ok' => 1,
+                'callback' => 'register_step_second()'
+            ]);
+        }
+        else
+        {
+            return $this->jsonFeedback(null, [
+                'redirect' => url('relogin'),
+            ]);
+        }
+    }
+    public function register_third_step(Requests\CardRegisterSecondStepRequest $request)
     {
         $input = $request->toArray();
         unset($input['_token']);
@@ -122,7 +141,7 @@ class CardController extends Controller
                 'chRegisterPancreas',
                 'chRegisterTissues',
             ));
-            
+
             if ($user_id)
             {
                 Auth::loginUsingId( $user_id );
