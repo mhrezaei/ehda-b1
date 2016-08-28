@@ -280,6 +280,7 @@ function forms_validate(formData, jqForm, options) {
       }
 
       if($errors>0) {
+            $('#' + $formId + ' button').prop('disabled', false);
             if ($errors_msg.length)
             {
                   var $m = '<ul>';
@@ -1043,19 +1044,9 @@ function forms_date_picker(selector)
             yearPicker: {
                   scrollEnabled: false,
             },
+            altField:  $('#' + $elementID + 'Extra'),
             altFieldFormatter: function (unixDate) {
-                  var self = this;
-                  var thisAltFormat = self.altFormat.toLowerCase();
-                  var timeUn = 0;
-                  if (thisAltFormat === "gregorian" | thisAltFormat === "g") {
-                        timeUn = new Date(unixDate);
-                  }
-                  if (thisAltFormat === "unix" | thisAltFormat === "u") {
-                        timeUn = unixDate;
-                  } else {
-                        timeUn = new persianDate(unixDate).format(self.altFormat);
-                  }
-                  $('#' + $elementID + 'Extra').val(timeUn);
+                  return (new Date(unixDate)).toLocaleDateString();
             },
             timePicker: {
                   enabled: $time,
@@ -1071,6 +1062,7 @@ function forms_date_picker(selector)
       $('#' + $elementID).on('focus', function () {
             if($(this).val() == ''){
                   $(this).pDatepicker(dateOptions).trigger('focus').val('');
+                  $('#' + $elementID + 'Extra').val('');
             }
       });
 
