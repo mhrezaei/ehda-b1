@@ -12,6 +12,7 @@ use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
@@ -100,18 +101,48 @@ class CardController extends Controller
             }
             
             // card extra detail
-            $input['code_melli'] = Session::get('register_first_step');
+            $input['code_melli'] = Session::pull('register_first_step');
             $input['code_melli'] = $input['code_melli']['code_melli'];
             $input['card_no'] = User::generateCardNo();
             $input['card_status'] = 8;
             $input['card_registered_at'] = Carbon::now()->toDateTimeString();
             $input['password'] = Hash::make($input['password']);
-            $input['birth_date2'] = date('y/m/d', '645694982000');
-            $input['birth_date'] = Carbon::createFromTimestamp($input['birth_date'])->toDateTimeString();
+            $input['birth_date'] = Carbon::createFromFormat('m/d/Y-H:i:s', $input['birth_date'] . '-00:00:00')->toDateTimeString();
             $input['home_province'] = State::find($input['home_city']);
             $input['home_province'] = $input['home_province']->province()->id;
-            $input['password_force_change'] = 0;
-
+            $input['password_force_change'] = 1;
+            
+            $user_id = User::store($input, array(
+                'password2',
+                'chRegisterAll',
+                'chRegisterHeart',
+                'chRegisterLung',
+                'chRegisterLiver',
+                'chRegisterKidney',
+                'chRegisterPancreas',
+                'chRegisterTissues',
+            ));
+            
+            if ($user_id)
+            {
+                Auth::loginUsingId( $user_id );
+                return $this->jsonFeedback(null, [
+                    'redirect' => url('members/my_card'),
+                    'ok' => 1,
+                    'message' => trans('site.global.register_success'),
+                    'redirectTime' => 2000,
+                ]);
+            }
+            else
+            {
+                return $this->jsonFeedback(null, [
+                    'redirect' => url('organ_donation_card'),
+                    'ok' => 0,
+                    'message' => trans('site.global.register_not_complete'),
+                    'redirectTime' => 2000,
+                ]);
+            }
+            
         }
         print_r($input);
     }
