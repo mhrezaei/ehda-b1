@@ -16,3 +16,17 @@ function register_card_step_one($mode)
         alert('Error!');
     }
 }
+
+function registerForm_validate()
+{
+    if ($('#chRegisterAll').is(":checked") || $('#chRegisterHeart').is(":checked") || $('#chRegisterLung').is(":checked") ||
+        $('#chRegisterLiver').is(":checked") || $('#chRegisterKidney').is(":checked") || $('#chRegisterPancreas').is(":checked") ||
+        $('#chRegisterTissues').is(":checked"))
+    {
+        return 0;
+    }
+    else 
+    {
+        return $('#chRegisterAll').attr('error-value');
+    }
+}

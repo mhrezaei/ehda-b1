@@ -97,7 +97,7 @@ class AuthController extends Controller
 
 		$volunteer = Volunteer::where('code_meli',Crypt::decrypt($request->national))->first();
 		if(!$volunteer)
-			return $this->jsonFeedback(trans('manage.reset_password.error_username'));
+			return $this->jsonSaveFeedback(trans('manage.reset_password.error_username'));
 
 		if(!$volunteer->published_at)
 			return $this->jsonFeedback(trans('manage.login.error_not_published'));
@@ -180,9 +180,12 @@ class AuthController extends Controller
 //		$date = Carbon::now()->addMinutes(5);
 //		$date = $date->diffInMinutes($date->copy()->addMinutes(10));
 //		return view('templates.say' , ['array'=> $date]);
-		Event::fire(new VolunteerForgotPassword(Volunteer::find(1)));
-		Event::fire(new SendSms('numbers', 'msg'));
-		Event::fire(new SendEmail('mr.mhrezaei@gmail.com', 'reciever name', 'subject', 'msg body html code'));
-		$this->dispatch(new SendEmailJob('mr.mhrezaei@gmail.com', 'reciever name', 'subject', 'msg body html code'));
+//		Event::fire(new VolunteerForgotPassword(Volunteer::find(1)));
+//		Event::fire(new SendSms('numbers', 'msg'));
+//		Event::fire(new SendEmail('mr.mhrezaei@gmail.com', 'reciever name', 'subject', 'msg body html code'));
+//		$this->dispatch(new SendEmailJob('mr.mhrezaei@gmail.com', 'reciever name', 'subject', 'msg body html code'));
+
+		$time = Carbon::createFromTimestamp('-2096356178000')->toDateTimeString();
+		print_r($time);
 	}
 }

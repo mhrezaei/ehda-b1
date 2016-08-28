@@ -12,7 +12,7 @@ $(document).ready(function() {
 //    6) national    : .form-national
 //    7) mobile      : .form-mobile
 //    8) phone       : .form-phone
-//    9) password    : .form-password => for check verify password field rename that to password id + 'Verify'
+//    9) password    : .form-password => for check verify password field rename that to password id + '2'
 //    10) datepicker : .form-datepicker => get timestamp with your input id + 'Extra'
 //    11) select     : .form-select
 //
@@ -78,12 +78,12 @@ function forms_listener()
 function forms_validate(formData, jqForm, options) {
 
       //Variables...
-//      var $formId = jqForm[0].id    ;
 	  var $formId = jqForm.attr('id');
       var $errors = 0;
       var $errors_msg = new Array;
       var $feed   = "#" + $formId + " .form-feed";
-
+      $('#' + $formId + ' button').prop('disabled', true);
+      //@TODO: hadi add optional validate
 
 
       //Form Feed...
@@ -243,8 +243,33 @@ function forms_validate(formData, jqForm, options) {
             }
       });
 
+      //Checking select city fields...
+      $("#" + $formId + " .selectpicker").each(function(){
+            var city = $(this).val();
+            if (city < 1)
+            {
+                  forms_markError($(this), "error");
+                  var $err = $(this).attr('error-value');
+                  if ($err.length)
+                  {
+                        $errors_msg.push($err);
+                  }
+                  if($errors <= 1) $(this).focus();
+                  $errors++;
+            }
+            else
+            {
+                  forms_markError($(this), "success");
+            }
+      });
+
       if (typeof window[$formId + "_validate"] == 'function') {
-            $errors += window[$formId + "_validate"](formData, jqForm, options);
+            var validate = window[$formId + "_validate"](formData, jqForm, options);
+            if (validate != 0)
+            {
+                  $errors_msg.push(validate);
+                  $errors++;
+            }
       }
 
       //result...
@@ -277,14 +302,16 @@ function forms_validate(formData, jqForm, options) {
 
 }
 
-function forms_error(jqXhr, textStatus, errorThrown)
+function forms_error(jqXhr, textStatus, errorThrown, $form)
 {
       // IMPORTANT NOTE: $formSelector contains nothing! That means forms_errror() cannot identify
       // which form it is and merely shows the errors on all available feeds!
 
       //Variables...
+      var $formId = $form.attr('id');
       var   $formSelector     = "" ;
       var   $feedSelector     = $formSelector+" .form-feed"   ;
+      $('#' + $formId + ' button').prop('disabled', false);
 
 //      if( jqXhr.status === 500 ) { //@TODO: Supposed to refresh if _token is wrong. but refreshes in all server errros
 //            errorsHtml  = $($feedSelector+'-error').html()      ;
@@ -311,6 +338,7 @@ function forms_responde(data, statusText, xhr, $form)
 {
       var formSelector = "#" + $form.attr('id');
       var $feedSelector = formSelector+" .form-feed"   ;
+      $(formSelector + ' button').prop('disabled', false);
 
       if(data.ok=='1') {
             var cl    = "alert-success"     ;
@@ -609,7 +637,7 @@ function forms_errorIfNotVerifyPassWord(selector) {
       var max = $(selector).attr('maxlength');
       var min = $(selector).attr('minlength');
       var id = $(selector).attr('id');
-      var verify = '#' + id + 'Verify';
+      var verify = '#' + id + '2';
       if($(selector).val() == $(verify).val())
       {
             if (max && min)
@@ -761,15 +789,15 @@ function forms_errorIfNotSelect(selector) {
 function forms_errorIfNotDatePicker(selector)
 {
       var $elementID = $(selector).attr('id');
-      if ($('#' + $elementID + 'Extra').val() > 0)
-      {
-            forms_markError(selector, "success");
-            return 0;
-      }
-      else
+      if ($('#' + $elementID + 'Extra').val() == 0 || $(selector).val().length < 6)
       {
             forms_markError(selector, "error");
             return 1;
+      }
+      else
+      {
+            forms_markError(selector, "success");
+            return 0;
       }
 }
 
@@ -978,7 +1006,7 @@ function forms_date_picker(selector)
       var $format = $(selector).attr('format');
       var $time = $(selector).attr('time');
 
-      var extra = $('#' + $elementID).parent().html() + '<input type="hidden" id="' + $elementID + 'Extra" name="' + $elementID + 'Extra">';
+      var extra = $('#' + $elementID).parent().html() + '<input type="hidden" id="' + $elementID + 'Extra" name="' + $elementID + '">';
       $('#' + $elementID).parent().append().html(extra);
 
       if (!$format)
@@ -1034,12 +1062,15 @@ function forms_date_picker(selector)
                   showSeconds: true,
                   showMeridian: true,
                   scrollEnabled: true
-            }
+            },
+            onSelect: function(){
+                  $(this).trigger('blur');
+            },
       };
 
       $('#' + $elementID).on('focus', function () {
             if($(this).val() == ''){
-                  $(this).pDatepicker(dateOptions).trigger('focus');
+                  $(this).pDatepicker(dateOptions).trigger('focus').val('');
             }
       });
 

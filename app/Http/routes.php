@@ -14,6 +14,7 @@
 Route::get('/', 'HomeController@index');
 Route::get('/register', 'CardController@register');
 Route::post('/register/first_step', 'CardController@register_first_step');
+Route::post('/register/second_step', 'CardController@register_second_step');
 Route::get('/organ_donation_card', 'CardController@index');
 
 /*

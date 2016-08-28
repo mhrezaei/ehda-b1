@@ -18,6 +18,9 @@ return [
         'home_page' => 'صفحه نخست',
         'card_register_page' => 'ثبت نام کارت اهدای عضو',
         'card_info_page' => 'تاریخچه و اهمیت کارت اهدای عضو',
+        'organ_detail_line1' => 'مایلم',
+        'organ_detail_line2' => ' را در زمان مرگم اهدا کنم',
+        'organ_detail_line3' => ' باشد که ادامه ی زندگی اجزای وجودم ، نجات بخش زندگی دیگری باشد.',
 
     ],
 
