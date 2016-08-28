@@ -88,7 +88,7 @@ class FaGDServiceProvider extends ServiceProvider
         }elsE{
             $p_chars = array_merge($p_chars,$normal);
         }
-        $str_len=utf8_strlen($str);
+        $str_len= self::utf8_strlen($str);
         preg_match_all("/./u", $str, $ar);
         for ($i=0; $i<$str_len; $i++){
             $str1=$ar[0][$i];
