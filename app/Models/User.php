@@ -367,7 +367,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 			return $this->save() ;
 		}
 		else {
-			return $this->delete() ;
+			return parent::delete() ;
 		}
 	}
 

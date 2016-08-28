@@ -41,9 +41,18 @@ class Post extends Model
 		return $this->hasMany('App\Models\Meta') ;
 	}
 
-	public function meta($key)
+	/**
+	 * Automatic read an write to meta. Provide a value to perform write. Do not enter value to perform read.
+	 * @param        $key
+	 * @param string $value
+	 * @return bool|null
+	 */
+	public function meta($key , $value='READ')
 	{
-		return Meta::selector($this->id , $key);
+		if($value==='READ')
+			return Meta::get($this->id , $key) ;
+		else
+			return Meta::set($this->id , $key , $value) ;
 	}
 
 	public function post_medias()
@@ -72,6 +81,11 @@ class Post extends Model
 	|--------------------------------------------------------------------------
 	|
 	*/
+
+	public static function counter($branch, $criteria)
+	{
+		return self::selector($branch,$criteria)->count() ;
+	}
 	public static function selector($branch , $criteria)
 	{
 		$now = Carbon::now()->toDateTimeString();
@@ -251,7 +265,7 @@ class Post extends Model
 			case 'updated_by' :
 			case 'published_by' :
 			case 'deleted_by' :
-				$volunteer = Volunteer::find($this->$property);
+				$volunteer = User::find($this->$property);
 				if($volunteer)
 					return $volunteer->fullName() ;
 				else

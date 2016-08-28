@@ -75,6 +75,8 @@
 			    'rows' => 2,
 			])
 
+			@include('manage.posts.editor-meta')
+
 			@if($domains->count()>1)
 				@include('forms.group-start' , [
 					'label' => trans('validation.attributes.domain_id') ,
@@ -98,6 +100,8 @@
 
 				@include('forms.group-end')
 			@endif
+
+			{{-- METAS HERE --}}
 
 		</div>
 

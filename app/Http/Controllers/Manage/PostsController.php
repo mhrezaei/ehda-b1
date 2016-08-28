@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Manage;
 
 use App\models\Branch;
+use App\models\Meta;
 use App\Models\Post;
 use App\Models\Post_cat;
 use App\Traits\TahaControllerTrait;
@@ -75,9 +76,10 @@ class PostsController extends Controller
 
 		//Model...
 		$model_data = Post::selector($request_branch, $request_tab)->orderBy('created_at' , 'desc')->paginate(50);
+		$db = Post::first() ;
 
 		//View...
-		return view("manage.posts.browse" , compact('page','branch','model_data'));
+		return view("manage.posts.browse" , compact('page','branch','model_data' , 'db'));
 
 	}
 
@@ -168,9 +170,10 @@ class PostsController extends Controller
 
 		$domains = Auth::user()->domains()->orderBy('title') ;
 		$encrypted_branch = Crypt::encrypt($model->branch);
+		$allowed_meta = Meta::allowedMeta($model->branch()->allowed_meta) ;
 
 		//View...
-		return view('manage.posts.editor' , compact('page','model' , 'domains' , 'encrypted_branch'));
+		return view('manage.posts.editor' , compact('page','model' , 'domains' , 'encrypted_branch' , 'allowed_meta'));
 
 	}
 	/*
@@ -223,7 +226,7 @@ class PostsController extends Controller
 		//NOTE: Problem: Checking the permission is a little difficult here. Better to disable bulk deletting!
 		if(!Auth::user()->can('volunteers.delete')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
 
-		$deleted = Volunteer::bulkDelete($request->ids , Auth::user()->id);
+		$deleted = User::bulkDelete($request->ids , Auth::user()->id);
 		return $this->jsonAjaxSaveFeedback($deleted , [
 				'success_refresh' => true ,
 		]);
@@ -259,6 +262,10 @@ class PostsController extends Controller
 
 	}
 
+	/**
+	 * @param Requests\PostSaveRequest $request
+	 * @return string
+	 */
 	public function save(Requests\PostSaveRequest $request)
 	{
 		$data = $request->toArray() ;
@@ -345,9 +352,21 @@ class PostsController extends Controller
 		if(isset($model) and !$user->can('*',$model->domains))
 			return $this->jsonFeedback() ;
 
+		//Stripping the Meta...
+		$metas = Meta::allowedMetaByBranch($request->branch) ;
+		foreach($metas as $key => $blah) {
+			$meta[$key] = $data[$key] ;
+			unset($data[$key]) ;
+		}
 
 		//Save...
 		$is_saved = Post::store($data) ;
+
+		//Saving Meta...
+		$post = Post::find($is_saved) ;
+		foreach($meta as $key => $blah) {
+			$post->meta($key , $meta[$key]) ;
+		}
 
 		//Choosing the redirection...
 		$success_redirect = str_replace('-ID-' , $is_saved , $success_redirect );

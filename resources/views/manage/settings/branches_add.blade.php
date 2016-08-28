@@ -34,6 +34,13 @@
 	    'hint' =>	trans('validation.hint.unique').' | '.trans('validation.hint.english-only'),
 	])
 
+	@include('forms.input' , [
+		'name' =>	'allowed_meta',
+		'class' =>	'ltr',
+		'value' =>	isset($model)? $model->allowed_meta : '',
+		'hint' =>	trans('validation.hint.metaـexample'),
+	])
+
 	@include('forms.group-start')
 
 	@include('forms.check' , [
@@ -71,7 +78,7 @@
 	@include('forms.button' , [
 		'label' => trans('forms.button.cancel'),
 		'shape' => 'link',
-		'link' => '/manage/devSettings/posts-cats'
+		'link' => '/manage/devSettings/branches'
 	])
 
 	@include('forms.group-end')
