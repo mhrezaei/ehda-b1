@@ -17,27 +17,9 @@
 
 
 <td>
-	@if($model->trashed())
-		<div class="text text-danger">
-			{{ trans('people.volunteers.status.blocked') }}
-		</div>
-	@elseif(!$model->published_at and !$model->exam_passed_at)
-		<div class="text text-info">
-			{{ trans('people.volunteers.status.examining') }}
-		</div>
-	@elseif(!$model->published_at)
-		<div class="text text-warning">
-			{{ trans('people.volunteers.status.pending') }}
-		</div>
-	@elseif($model->unverified_flag)
-		<div class="text text-warning">
-			{{ trans('people.volunteers.status.care') }}
-		</div>
-	@else
-		<div class="text text-success">
-			{{ trans('people.volunteers.status.active') }}
-		</div>
-	@endif
+	<span class="text-{{ $model->volunteer_status('color') }}">
+		{{ $model->volunteer_status() }}
+	</span>
 </td>
 
 <td>

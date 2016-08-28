@@ -17,12 +17,31 @@
 
 		<tr>
 			<td class="head">
-				{{ trans('validation.attributes.code_meli') }}
+				{{ trans('validation.attributes.code_melli') }}
 			</td>
 			<td class="body">
-				{{ $model->say('code_meli') }}
+				{{ $model->say('code_melli') }}
 			</td>
 		</tr>
+
+		<tr>
+			<td class="head">
+				{{ trans('validation.attributes.code_id') }}
+			</td>
+			<td class="body">
+				{{ $model->say('code_id') }}
+			</td>
+		</tr>
+
+		<tr>
+			<td class="head">
+				{{ trans('validation.attributes.name_father') }}
+			</td>
+			<td class="body">
+				{{ $model->say('name_father') }}
+			</td>
+		</tr>
+
 
 		<tr>
 			<td class="head">
@@ -43,7 +62,7 @@
 					{{ $model->say('birth_city') }}
 				</span>
 				<span>
-					{{ trans('forms.general.'.$model->say('marital_status')) }}
+					{{ $model->say('marital') }}
 				</span>
 			</td>
 		</tr>
@@ -53,7 +72,7 @@
 				{{ trans('validation.attributes.education') }}
 			</td>
 			<td class="body">
-				{{ trans('forms.education.'.$model->edu_level) }}
+				{{ $model->say('education') }}
 				<span>
 					{{ $model->say('edu_field') }}
 				</span>
@@ -98,6 +117,10 @@
 				{{ $model->say('home_city').' . ' }}
 				{{ $model->say('home_address') }}
 				<span>
+					{{ trans('validation.attributes.postal_code') }}:&nbsp;
+					{{ $model->say('home_postal_code') }}
+				</span>
+				<span>
 					{{ trans('validation.attributes.tel') }}:&nbsp;
 					@pd($model->say('home_tel'))
 				</span>
@@ -111,6 +134,10 @@
 			<td class="body">
 				{{ $model->say('work_city').' . ' }}
 				{{ $model->say('work_address') }}
+				<span>
+					{{ trans('validation.attributes.postal_code') }}:&nbsp;
+					{{ $model->say('home_postal_code') }}
+				</span>
 				<span>
 					{{ trans('validation.attributes.tel') }}:&nbsp;
 					@pd($model->say('work_tel'))
@@ -199,7 +226,7 @@
 				{{ $model->say('created_at') }}
 				@if($model->created_by)
 					<span>
-						{{ trans('forms.general.by' , ['person'=>$model->say('created_by')]) }}
+						{{ trans('forms.general.by'). ' ' . $model->say('created_by') }}
 					</span>
 				@endif
 			</td>
@@ -212,7 +239,7 @@
 			<td class="body">
 				{{ $model->say('updated_at') }}
 				<span>
-					{{ trans('forms.general.by' , ['person'=>$model->say('updated_by')]) }}
+					{{ trans('forms.general.by').' '.$model->say('updated_by') }}
 				</span>
 			</td>
 		</tr>
@@ -226,7 +253,7 @@
 				<td class="body">
 					{{ $model->say('published_at') }}
 					<span>
-						{{ trans('forms.general.by' , ['person'=>$model->say('published_by')]) }}
+						{{ trans('forms.general.by').' '.$model->say('published_by') }}
 					</span>
 				</td>
 			</tr>

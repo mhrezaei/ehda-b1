@@ -17,7 +17,7 @@ use Morilog\Jalali\jDate;
 
 class Volunteer extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
-	use Authenticatable, CanResetPassword;
+//	use Authenticatable, CanResetPassword;
 	use SoftDeletes;
 	use PermitsTrait;
 	use TahaModelTrait ;

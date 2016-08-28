@@ -9,7 +9,7 @@ use App\Events\VolunteerPasswordManualReset;
 use App\Http\Requests\Manage\VolunteerSearchRequest;
 use App\Models\Domain;
 use App\Models\State;
-use App\Models\Volunteer;
+use App\Models\User;
 use App\Providers\AppServiceProvider;
 use App\Traits\TahaControllerTrait;
 use Carbon\Carbon;
@@ -44,9 +44,10 @@ class VolunteersController extends Controller
 		//IF SEARCHED...
 		if(isset($request->searched)) {
 			$keyword = $request->keyword ;
-			$model_data = Volunteer::where('name_first','like',"%{$keyword}%")
+			$model_data = User::where('volunteer_status' , '!=' , '0')
+					->where('name_first','like',"%{$keyword}%")
 					->orWhere('name_last','like',"%{$keyword}%")
-					->orWhere('code_meli','like',"%{$keyword}%")
+					->orWhere('code_melli','like',"%{$keyword}%")
 					->orWhere('email','like',"%{$keyword}%")
 					->orderBy('created_at' , 'desc')->paginate(50);
 
@@ -90,7 +91,7 @@ class VolunteersController extends Controller
 
 
 		//Model...
-		$model_data = Volunteer::selector($request_tab)->orderBy('created_at' , 'desc')->paginate(50);
+		$model_data = User::selector('volunteer',$request_tab)->orderBy('created_at' , 'desc')->paginate(50);
 
 		//View...
 		return view("manage.volunteers.browse" , compact('page','model_data'));
@@ -105,7 +106,7 @@ class VolunteersController extends Controller
 		if($volunteer_id==0)
 			return $this->modalBulkAction($view_file);
 
-		$model = Volunteer::withTrashed()->find($volunteer_id) ;
+		$model = User::find($volunteer_id) ;
 		$view = "manage.volunteers.$view_file" ;
 		$opt = [] ;
 
@@ -118,7 +119,6 @@ class VolunteersController extends Controller
 		}
 
 		if(!$model) return view('errors.m410');
-		if(!View::exists($view)) return view('templates.say' , ['array'=>$view]); //@TODO: REMOVE THIS LINE
 		if(!View::exists($view)) return view('errors.m404');
 
 		return view($view , compact('model' , 'opt')) ;
@@ -156,7 +156,7 @@ class VolunteersController extends Controller
 			if(!Auth::user()->can('volunteers:edit')) return view('errors.403');
 			$page[1] = ['edit' , trans('people.volunteers.manage.edit') , ''] ;
 
-			$model = Volunteer::withTrashed()->find($model_id);
+			$model = User::find($model_id);
 			if(!$model) return view('errors.410');
 			return view($view , compact('page' , 'states' , 'model'));
 		}
@@ -167,7 +167,7 @@ class VolunteersController extends Controller
 	|--------------------------------------------------------------------------
 	| Save Methods
 	|--------------------------------------------------------------------------
-	| 
+	|
 	*/
 
 	public function save(Requests\Manage\VolunteerSaveRequest $request)
@@ -179,23 +179,20 @@ class VolunteersController extends Controller
 		$carbon = new Carbon($request->birth_date);
 		$data['birth_date'] = $carbon->toDateTimeString() ; //TODO: No Age Validation?
 
-		if($request->id) {
-			$data['updated_by'] = $user->id ;
-		}
-		else {
-			$data['created_by'] = $user->id ;
+		if(!$request->id) {
 			$data['password'] = Hash::make($data['password']);
 			$data['password_force_change'] = 1 ;
 			if($user->can('volunteers.publish')) {
+				$data['volunteer_status'] = 8 ;
 				$data['published_at'] = Carbon::now()->toDateTimeString() ;
 				$data['published_by'] = $user->id ;
 			}
+			else
+				$data['volunteer_status'] = 3 ;
 		}
 
-		//TODO: unique code_melli , unique email ,
-
 		//Save and Return...
-		$saved = Volunteer::store($data);
+		$saved = User::store($data);
 		return $this->jsonAjaxSaveFeedback($saved , [
 			'success_refresh' => true ,
 		]);
@@ -206,13 +203,14 @@ class VolunteersController extends Controller
 
 	public function change_password(Requests\Manage\VolunteerChangePasswordRequest $request)
 	{
-		$model = Volunteer::find($request->id) ;
+		$model = User::find($request->id) ;
 		$model->password = Hash::make($request->password) ;
 		$model->password_force_change = true ;
 		$is_saved = $model->save();
 
 		if($is_saved and $request->sms_notify)
-			Event::fire(new VolunteerPasswordManualReset($model , $request->password));
+			;//@TODO: Call the event
+			//Event::fire(new VolunteerPasswordManualReset($model , $request->password));
 
 		return $this->jsonAjaxSaveFeedback($is_saved);
 
@@ -221,13 +219,18 @@ class VolunteersController extends Controller
 	{
 		if(!Auth::user()->can('volunteers.publish')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
 
-		$model = Volunteer::find($request->id) ;
+		$model = User::find($request->id) ;
+		if($model->volunteer_status<0)
+			return $this->jsonFeedback() ;
+
 		$model->published_at = Carbon::now()->toDateTimeString() ;
 		$model->published_by = Auth::user()->id ;
+		$model->volunteer_status = 8 ;
 		$is_saved = $model->save();
 
 		if($is_saved)
-			Event::fire(new VolunteerAccountPublished($model));
+			;//@TODO: Call the event
+//			Event::fire(new VolunteerAccountPublished($model));
 
 		return $this->jsonAjaxSaveFeedback($is_saved , [
 			'success_refresh' => true ,
@@ -239,10 +242,23 @@ class VolunteersController extends Controller
 	{
 		if(!Auth::user()->can('volunteers.publish')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
 
-		$done = Volunteer::bulkPublish($request->ids);
+		//Action...
+		$ids = $request->ids ;
+		if(!is_array($ids))
+			$ids = explode(',',$ids);
+
+		$done = User::whereIn('id',$ids)->where('volunteer_status' , '>' , '0')->where('volunteer_status' , '<' , '8')->update([
+				'published_at' => Carbon::now()->toDateTimeString() ,
+				'published_by' => Auth::user()->id ,
+				'volunteer_status' => 8 ,
+		]);
+
+		//Feedback...
 		return $this->jsonAjaxSaveFeedback($done , [
 				'success_refresh' => true ,
 		]);
+
+		//@TODO: Event
 	}
 
 	public function soft_delete(Request $request)
@@ -250,8 +266,8 @@ class VolunteersController extends Controller
 		if(!Auth::user()->can('volunteers.delete')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
 		if($request->id == Auth::user()->id) return $this->jsonFeedback();
 
-		$model = Volunteer::find($request->id) ;
-		$done = $model->delete();
+		$model = User::find($request->id) ;
+		$done = $model->volunteerDelete();
 
 		return $this->jsonAjaxSaveFeedback($done , [
 			'success_refresh' => true ,
@@ -263,8 +279,19 @@ class VolunteersController extends Controller
 	{
 		if(!Auth::user()->can('volunteers.delete')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
 
-		$deleted = Volunteer::bulkDelete($request->ids , Auth::user()->id);
-		return $this->jsonAjaxSaveFeedback($deleted , [
+		$ids = $request->ids ;
+		if(!is_array($ids))
+			$ids = explode(',',$ids);
+
+		foreach($ids as $id) {
+			if($id == Auth::user()->id)
+				continue ;
+
+			$model = User::find($request->id) ;
+			$done = $model->volunteerDelete() ;
+		}
+
+		return $this->jsonAjaxSaveFeedback($done , [
 			'success_refresh' => true ,
 		]);
 	}
@@ -273,7 +300,7 @@ class VolunteersController extends Controller
 	{
 		if(!Auth::user()->can('volunteers.bin')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
 
-		$model = Volunteer::withTrashed()->find($request->id) ;
+		$model = User::find($request->id) ;
 		$done = $model->restore();
 
 		return $this->jsonAjaxSaveFeedback($done , [
@@ -287,7 +314,7 @@ class VolunteersController extends Controller
 		if(!Auth::user()->can('volunteers.bin')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
 		$ids = $ids = explode(',',$request->ids);
 
-		$done  = Volunteer::whereIn('id',$ids)->restore() ;
+		$done  = User::whereIn('id',$ids)->restore() ;
 
 		return $this->jsonAjaxSaveFeedback($done , [
 				'success_refresh' => true ,
@@ -299,7 +326,7 @@ class VolunteersController extends Controller
 	{
 		if(!Auth::user()->can('volunteers.bin')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
 
-		$model = Volunteer::withTrashed()->find($request->id) ;
+		$model = User::find($request->id) ;
 		if(!$model->trashed()) return $this->jsonFeedback(trans('validation.http.Eror403'));
 		$done = $model->forceDelete();
 
@@ -314,7 +341,7 @@ class VolunteersController extends Controller
 		if(!Auth::user()->can('volunteers.bin')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
 
 		$ids = $ids = explode(',',$request->ids);
-		$done  = Volunteer::whereIn('id',$ids)->whereNotNull('deleted_at')->forceDelete() ;
+		$done  = User::whereIn('id',$ids)->whereNotNull('deleted_at')->forceDelete() ;
 
 		return $this->jsonAjaxSaveFeedback($done , [
 				'success_refresh' => true ,
@@ -327,7 +354,7 @@ class VolunteersController extends Controller
 		$data = $request->toArray() ;
 		$allowed_domains = '|' ;
 		$allowed_permits = [] ;
-		$model = Volunteer::find($request->id) ;
+		$model = User::find($request->id) ;
 
 		//Security...
 		if(!Auth::user()->can('volunteers.permits'))
@@ -360,7 +387,7 @@ class VolunteersController extends Controller
 
 	public function sms(Requests\Manage\VolunteerSendMessage $request)
 	{
-		$volunteer = Volunteer::find($request->id) ;
+		$volunteer = User::find($request->id) ;
 		if(!$volunteer)
 			return $this->jsonFeedback();
 
@@ -379,7 +406,7 @@ class VolunteersController extends Controller
 
 	public function email(Requests\Manage\VolunteerSendMessage $request)
 	{
-		$volunteer = Volunteer::find($request->id) ;
+		$volunteer = User::find($request->id) ;
 		if(!$volunteer)
 			return $this->jsonFeedback();
 

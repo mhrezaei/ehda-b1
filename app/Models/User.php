@@ -13,12 +13,13 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 use Morilog\Jalali\jDate;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
 	use Authenticatable, CanResetPassword;
-	use SoftDeletes;
+//	use SoftDeletes; //TODO: To be removed
 	use PermitsTrait;
 	use TahaModelTrait ;
 
@@ -51,6 +52,65 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	|
 	*/
 
+	public function trashed($type='volunteer')
+	{
+		switch($type) {
+			case 'volunteer' :
+				if($this->volunteer_status < 0)
+					return true ;
+				else
+					return false ;
+
+			case 'card':
+				if($this->card_status < 0)
+					return true ;
+				else
+					return false ;
+
+			default :
+				return false ;
+
+		}
+	}
+
+	public function volunteer_status($key = 'text')
+	{
+
+		//Discover...
+		if($this->volunteer_status < 0) {
+			$return['text'] = trans('people.volunteers.status.blocked') ;
+			$return['color'] = 'danger';
+		}
+		elseif($this->volunteer_status == 1) {
+			$return['text'] = trans('people.volunteers.status.examining') ;
+			$return['color'] = 'info' ;
+		}
+		elseif($this->volunteer_status == 2) {
+			$return['text'] = trans('people.volunteers.status.documentation') ;
+			$return['color'] = 'info' ;
+		}
+		elseif($this->volunteer_status == 3) {
+			$return['text'] = trans('people.volunteers.status.pending') ;
+			$return['color'] = 'warning' ;
+		}
+		elseif($this->volunteer_status>=8) {
+			if($this->unverified_flag) {
+				$return['text'] = trans('people.volunteers.status.care') ;
+				$return['color'] = 'warning' ;
+			} else {
+				$return['text'] = trans('people.volunteers.status.active') ;
+				$return['color'] = 'success' ;
+			}
+		}
+
+		//Return...
+		if($key=='array')
+			return $return ;
+		else
+			return $return[$key] ;
+	}
+
+
 
 	public function isDeveloper()
 	{
@@ -76,9 +136,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 			return false ;
 	}
 
-	public function isActive()
+	public function isActive($type='volunteer')
 	{
-		if(in_array($this->volunteer_status , [8,9]) or in_array($this->card_status , [8,9]))
+		$field = $type."_status" ;
+		if($this->$field >= 8)
 			return true ;
 		else
 			return false ;
@@ -115,7 +176,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		if($this->job)
 			$return .= $this->job. " / " ;
 
-		$return .= trans('forms.edu.'.$this->edu_level) ;
+		$return .= trans('people.edu_level.'.$this->edu_level) ;
 
 		if($this->edu_field)
 			$return .= " / ".$this->edu_field ;
@@ -149,6 +210,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 					return $model->fullName() ;
 				else
 					return trans('forms.general.deleted');
+
+			case 'code_meli' :
+				return $this->say('code_melli' , $default) ;
 
 			case 'code_melli' :
 			case 'card_no' :
@@ -187,7 +251,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 				return trans("people.$property.".$this->$property) ;
 
 			case 'education' :
-				return trans("forms.education.".$this->edu_level);
+				return trans("people.education.".$this->edu_level);
 
 			case 'birth_city' :
 			case 'edu_city' :
@@ -251,9 +315,62 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	|--------------------------------------------------------------------------
 	|
 	*/
-	public function selector($type, $criteria)
+	public static function selector($type, $criteria)
 	{
-		
+		if($type=='volunteer') {
+			switch($criteria) {
+				case 'examining':
+					return self::where('volunteer_status' , '=' , '1') ;
+				case 'documentation' :
+					return self::where('volunteer_status' , '=' , '2') ;
+				case 'pending' :
+					return self::where('volunteer_status' , '=' , '3') ;
+				case 'active':
+					return self::where('volunteer_status' , '>=' , '8') ;
+				case 'care' :
+					return self::where('volunteer_status' , '>' , '0')->where('unverified_flag' , '1');
+				case 'bin' :
+					return self::where('volunteer_status' , '<' , '0');
+
+			}
+		}
+
+	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| Actions
+	|--------------------------------------------------------------------------
+	|
+	*/
+
+	public function generateCardNo()
+	{
+		$record = self::orderBy('card_no', 'desc')->first() ;
+		return $record->card_no + 1 ;
+	}
+
+	public function cardDelete()
+	{
+		if($this->isVolunteer()) {
+			$this->card_status = 0 ;
+			$this->card_no = null ;
+			$this->organs = null ;
+			return $this->save() ;
+		}
+		else {
+			return $this->delete() ;
+		}
+	}
+
+	public function volunteerDelete()
+	{
+		$this->volunteer_status = -$this->volunteer_status ;
+		if(Auth::check()) {
+			$this->deleted_at = Carbon::now()->toDateTimeString() ;
+			$this->deleted_by = Auth::user()->id ;
+		}
+		return $this->save() ;
 	}
 
 }

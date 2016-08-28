@@ -1,5 +1,7 @@
 <?php
 
+Route::get('test','TestController@index') ;
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes

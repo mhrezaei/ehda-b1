@@ -14,16 +14,27 @@
 		'value' => isset($model)? $model->name_first : '',
 		'class' => 'form-required form-default'
 	])
-	@include('forms.input' , [
-		'name' => 'name_last',
-		'value' => isset($model)? $model->name_last : '',
-		'class' => 'form-required'
-	])
 
 	@include('forms.input' , [
-		'name' => 'code_meli',
-		'value' => isset($model)? $model->code_meli : '',
+	'name' => 'name_last',
+	'value' => isset($model)? $model->name_last : '',
+	'class' => 'form-required form-default'
+])
+
+	@include('forms.input' , [
+		'name' => 'code_melli',
+		'value' => isset($model)? $model->code_melli : '',
 		'class' => 'form-required',
+	])
+	@include('forms.input' , [
+		'name' => 'code_id',
+		'value' => isset($model)? $model->code_id : '',
+		'class' => 'form-required form-number' ,
+	])
+	@include('forms.input' , [
+		'name' => 'name_father',
+		'value' => isset($model)? $model->name_father : '',
+		'class' => 'form-required' ,
 	])
 	@include('forms.input' , [
 		'name' => 'email',
@@ -49,7 +60,7 @@
 	])
 
 	@include('forms.select-marital' , [
-		'value' => isset($model)? $model->marital_status : '0' ,
+		'value' => isset($model)? $model->marital : '0' ,
 		'blank_value' => isset($model)? 'NO' : ' ',
 		'class' => 'form-required',
 	])
@@ -87,7 +98,7 @@
 		'name' => 'edu_level' ,
 		'class' => '' ,
 	])
-	
+
 	@include('forms.input' , [
 	    'name' => 'edu_field',
 	    'value' => isset($model)? $model->edu_field : '',
@@ -124,13 +135,19 @@
 	    'class' => 'ltr',
 	])
 
+	@include('forms.input' , [
+		'name' => 'home_postal_code',
+		'value' => isset($model)? $model->home_postal_code : '' ,
+		'class' => 'ltr',
+	])
+
 	@include('forms.sep')
-	
+
 	@include('forms.input' , [
 	    'name' => 'job',
 	    'value' => isset($model)? $model->job : '' ,
 	])
-	
+
 
 	@include('forms.select' , [
 		'name' => 'work_city' ,
@@ -148,6 +165,12 @@
 	@include('forms.input' , [
 	    'name' => 'work_tel',
 	    'value' => isset($model)? $model->work_tel : '' ,
+	    'class' => 'ltr',
+	])
+
+	@include('forms.input' , [
+	    'name' => 'work_postal_code',
+	    'value' => isset($model)? $model->work_postal_code : '' ,
 	    'class' => 'ltr',
 	])
 
