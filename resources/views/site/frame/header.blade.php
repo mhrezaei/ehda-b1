@@ -28,6 +28,7 @@
     </script>
 </head>
 <body>
+<img src="{{ url('/assets/site/images/64.gif') }}" style="display: none;">
 <header class="clearfix container-fluid">
     @include('site.frame.top_header')
     @include('site.frame.top_header_menu')

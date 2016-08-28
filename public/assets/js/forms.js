@@ -12,7 +12,7 @@ $(document).ready(function() {
 //    6) national    : .form-national
 //    7) mobile      : .form-mobile
 //    8) phone       : .form-phone
-//    9) password    : .form-password => for check verify password field rename that to password id + 'Verify'
+//    9) password    : .form-password => for check verify password field rename that to password id + '2'
 //    10) datepicker : .form-datepicker => get timestamp with your input id + 'Extra'
 //    11) select     : .form-select
 //
@@ -83,7 +83,7 @@ function forms_validate(formData, jqForm, options) {
       var $errors = 0;
       var $errors_msg = new Array;
       var $feed   = "#" + $formId + " .form-feed";
-
+      //@TODO: hadi add optional validate
 
 
       //Form Feed...
@@ -243,8 +243,33 @@ function forms_validate(formData, jqForm, options) {
             }
       });
 
+      //Checking select city fields...
+      $("#" + $formId + " .selectpicker").each(function(){
+            var city = $(this).val();
+            if (city < 1)
+            {
+                  forms_markError($(this), "error");
+                  var $err = $(this).attr('error-value');
+                  if ($err.length)
+                  {
+                        $errors_msg.push($err);
+                  }
+                  if($errors <= 1) $(this).focus();
+                  $errors++;
+            }
+            else
+            {
+                  forms_markError($(this), "success");
+            }
+      });
+
       if (typeof window[$formId + "_validate"] == 'function') {
-            $errors += window[$formId + "_validate"](formData, jqForm, options);
+            var validate = window[$formId + "_validate"](formData, jqForm, options);
+            if (validate != 0)
+            {
+                  $errors_msg.push(validate);
+                  $errors++;
+            }
       }
 
       //result...
@@ -609,7 +634,7 @@ function forms_errorIfNotVerifyPassWord(selector) {
       var max = $(selector).attr('maxlength');
       var min = $(selector).attr('minlength');
       var id = $(selector).attr('id');
-      var verify = '#' + id + 'Verify';
+      var verify = '#' + id + '2';
       if($(selector).val() == $(verify).val())
       {
             if (max && min)
@@ -761,15 +786,15 @@ function forms_errorIfNotSelect(selector) {
 function forms_errorIfNotDatePicker(selector)
 {
       var $elementID = $(selector).attr('id');
-      if ($('#' + $elementID + 'Extra').val() > 0)
-      {
-            forms_markError(selector, "success");
-            return 0;
-      }
-      else
+      if ($('#' + $elementID + 'Extra').val() == 0 || $(selector).val().length < 6)
       {
             forms_markError(selector, "error");
             return 1;
+      }
+      else
+      {
+            forms_markError(selector, "success");
+            return 0;
       }
 }
 
@@ -977,9 +1002,11 @@ function forms_date_picker(selector)
       var $elementID = $(selector).attr('id');
       var $format = $(selector).attr('format');
       var $time = $(selector).attr('time');
-
-      var extra = $('#' + $elementID).parent().html() + '<input type="hidden" id="' + $elementID + 'Extra" name="' + $elementID + 'Extra">';
-      $('#' + $elementID).parent().append().html(extra);
+      var $orginal_input = $('#' + $elementID).parent().html()
+      $(selector).attr('id', $elementID + 'Extra');
+      $(selector).attr('name', $elementID + 'Extra');
+      var extra = $orginal_input + '<input type="hidden" id="' + $elementID + '" name="' + $elementID + '">';
+      $('#' + $elementID + 'Extra').parent().append().html(extra);
 
       if (!$format)
       {
@@ -1034,12 +1061,15 @@ function forms_date_picker(selector)
                   showSeconds: true,
                   showMeridian: true,
                   scrollEnabled: true
-            }
+            },
+            onSelect: function(){
+                  $($('#' + $elementID + 'Extra')).trigger('blur');
+            },
       };
 
-      $('#' + $elementID).on('focus', function () {
-            if($(this).val() == ''){
-                  $(this).pDatepicker(dateOptions).trigger('focus');
+      $($('#' + $elementID + 'Extra')).on('focus', function () {
+            if($($('#' + $elementID + 'Extra')).val() == ''){
+                  $($('#' + $elementID + 'Extra')).pDatepicker(dateOptions).trigger('focus').val('');
             }
       });
 

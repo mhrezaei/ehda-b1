@@ -38,6 +38,7 @@ return [
 				"updated_at" => "به‌روزرسانی" ,
 				"published_at" => "فعال‌سازی" ,
 				"deleted_at" => "حذف" ,
+				"select_default" => 'انتخاب کنید...',
 		],
 
 		"education" => [
