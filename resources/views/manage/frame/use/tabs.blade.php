@@ -1,4 +1,4 @@
-{{-- $tabs = [ 0:url 1:caption 2:permit ] --}}
+{{-- $tabs = [ 0:url 1:caption 2:permit 3:unread-number ] --}}
 <ul class="nav nav-tabs">
 	@foreach($tabs as $tab)
 		<?php
@@ -12,7 +12,14 @@
 		?>
 		@if(\Illuminate\Support\Facades\Auth::user()->can($permit))
 			<li class="{{ $active ? 'active' : '' }}">
-				<a href="{{ url($active ? '#' : "manage/".$page[0][0]."/".$url) }}">{{$caption}}</a>
+				<a href="{{ url($active ? '#' : "manage/".$page[0][0]."/".$url) }}">
+					{{$caption}}
+					@if(isset($tab[3]) and $tab[3]>0)
+						<span class="label label-warning p5">
+							@pd($tab[3])
+						</span>
+					@endif
+				</a>
 			</li>
 		@endif
 	@endforeach

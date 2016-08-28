@@ -15,10 +15,18 @@
 	{{ $model->occupation() }}
 </td>
 
+<td>
+	@if($model->isCard())
+		<span class="text-success">{{ trans('forms.logic.has') }}</span>
+	@else
+		-
+	@endif
+</td>
+
 
 <td>
-	<span class="text-{{ $model->volunteer_status('color') }}">
-		{{ $model->volunteer_status() }}
+	<span class="text-{{ $model->volunteerStatus('color') }}">
+		{{ $model->volunteerStatus() }}
 	</span>
 </td>
 
@@ -35,9 +43,9 @@
 			['mobile' , trans('people.commands.send_sms') , 'modal:manage/volunteers/-id-/sms' , 'volunteers.send' , $model->tel_mobile ] ,
 
 			['check' , trans('people.commands.activate') , 'modal:manage/volunteers/-id-/publish' , 'volunteers.publish' , !$model->published_at],
-			['trash-o' , trans('people.commands.soft_delete') , 'modal:manage/volunteers/-id-/soft_delete' , 'volunteers.delete' , !$model->trashed()] ,
-			['undo' , trans('people.commands.undelete') , 'modal:manage/volunteers/-id-/undelete' , 'volunteers.bin' , $model->trashed()] ,
-			['times' , trans('people.commands.hard_delete') , 'modal:manage/volunteers/-id-/hard_delete' , 'volunteers.bin' , $model->trashed()] ,
+			['ban' , trans('people.commands.block') , 'modal:manage/volunteers/-id-/soft_delete' , 'volunteers.delete' , !$model->trashed()] ,
+			['undo' , trans('people.commands.unblock') , 'modal:manage/volunteers/-id-/undelete' , 'volunteers.bin' , $model->trashed()] ,
+			['times' , trans('people.commands.hard_delete') , 'modal:manage/volunteers/-id-/hard_delete' , 'volunteers.developer' , $model->trashed()] ,
 
 
 		],

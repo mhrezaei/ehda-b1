@@ -10,10 +10,44 @@
 
 		{{--
 		|--------------------------------------------------------------------------
+		| Status
+		|--------------------------------------------------------------------------
+		|
+		--}}
+		<tr>
+			<td class="head">
+				{{ trans('validation.attributes.status') }}
+			</td>
+			<td class="body text-{{ $model->volunteerStatus('color') }}">
+				{{ $model->volunteerStatus() }}
+			</td>
+		</tr>
+
+		<tr>
+			<td class="head">
+				{{ trans('people.card') }}
+			</td>
+			<td class="body">
+				@if($model->isCard())
+					<span class="text-success">{{ trans('forms.logic.has') }}</span>
+				@else
+					<span class="text-grey">{{ trans('forms.logic.hasnt') }}</span>
+				@endif
+			</td>
+		</tr>
+
+
+		{{--
+		|--------------------------------------------------------------------------
 		| Personal Information
 		|--------------------------------------------------------------------------
 		|
 		--}}
+		<tr>
+			<td colspan="2">
+				<hr>
+			</td>
+		</tr>
 
 		<tr>
 			<td class="head">
@@ -223,7 +257,7 @@
 				{{ trans('forms.general.created_at') }}
 			</td>
 			<td class="body">
-				{{ $model->say('created_at') }}
+				{{ $model->say('volunteer_registered_at') }}
 				@if($model->created_by)
 					<span>
 						{{ trans('forms.general.by'). ' ' . $model->say('created_by') }}
@@ -260,7 +294,7 @@
 		@endif
 
 
-		@if($model->deleted_at)
+		@if($model->trashed())
 			<tr>
 				<td class="head">
 					{{ trans('forms.general.deleted_at') }}
@@ -268,7 +302,7 @@
 				<td class="body">
 					{{ $model->say('deleted_at') }}
 					<span>
-						{{ trans('forms.general.by' , ['person'=>$model->say('deleted_by')]) }}
+						{{ trans('forms.general.by').' '.$model->say('deleted_by') }}
 					</span>
 				</td>
 			</tr>

@@ -73,7 +73,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		}
 	}
 
-	public function volunteer_status($key = 'text')
+	public function volunteerStatus($key = 'text')
 	{
 
 		//Discover...
@@ -315,6 +315,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	|--------------------------------------------------------------------------
 	|
 	*/
+	public function counter($type, $criteria)
+	{
+		return self::selector($type,$criteria)->count();
+	}
 	public static function selector($type, $criteria)
 	{
 		if($type=='volunteer') {
@@ -344,16 +348,20 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	|
 	*/
 
-	public function generateCardNo()
+	public static function generateCardNo()
 	{
 		$record = self::orderBy('card_no', 'desc')->first() ;
-		return $record->card_no + 1 ;
+		if(!$record)
+			return 1500 ;
+		else
+			return $record->card_no + 1 ;
 	}
 
 	public function cardDelete()
 	{
 		if($this->isVolunteer()) {
 			$this->card_status = 0 ;
+			$this->card_registered_at = null ;
 			$this->card_no = null ;
 			$this->organs = null ;
 			return $this->save() ;
@@ -371,6 +379,29 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 			$this->deleted_by = Auth::user()->id ;
 		}
 		return $this->save() ;
+	}
+
+	public function volunteerUndelete()
+	{
+		$this->volunteer_status = -$this->volunteer_status ;
+		$this->deleted_at = null ;
+		$this->deleted_by = null ;
+		return $this->save() ;
+
+	}
+
+	public function volunteerHardDelete()
+	{
+		if($this->card_status) {
+			$this->volunteer_status = 0 ;
+			$this->volunteer_registered_at = null ;
+			$this->roles = null ;
+			$this->domains = null ;
+			return $this->save() ;
+		}
+		else {
+			return parent::delete() ;
+		}
 	}
 
 }
