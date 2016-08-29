@@ -60,6 +60,7 @@ trait TahaModelTrait
 				else
 					$data['updated_by'] = 0 ;
 			}
+			if($affected) $affected = $data['id'] ;
 		}
 		else {
 			if(!isset($data['created_by'])) {

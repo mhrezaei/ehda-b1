@@ -1,6 +1,12 @@
 /**
  * Created by jafar on 7/6/2016 AD.
  */
+
+function abbas()
+{
+	alert(1);
+}
+
 function masterModal($url,$size)
 {
 	//Preparetions...
@@ -83,6 +89,25 @@ function domainCities($id)
 
 }
 
+function postSave($action)
+{
+	var $form_selector = '#frmEditor' ;
+	$('#txtAction').val($action) ;
+	tinyMCE.triggerSave();
+	$($form_selector).submit() ;
+}
+
+function postChange($action)
+{
+	var $form_selector = '#frmEditor' ;
+	var $id = $($form_selector+' [name=id] ').val();
+	var $url = url('manage/posts/'+$id+'/'+$action);
+
+	$($form_selector + ' .form-feed').html('<div class="modal-wait">...</div>').load($url , function() {
+		forms_delaiedPageRefresh(1);
+	}).slideDown('fast');
+}
+
 function search($form_id)
 {
 	var $input = $('#'+$form_id+ ' input[name=key]');
@@ -141,8 +166,8 @@ function gridSelector($mood , $id)
 
 		case 'buttonActivator' :
 			if(gridSelector('count')>0)
-				$('#action0').addClass('btn-primary').prop('disabled', false);
+				$('#action0').prop('disabled', false);
 			else
-				$('#action0').removeClass('btn-primary').prop('disabled', true);
+				$('#action0').prop('disabled', true);
 	}
 }

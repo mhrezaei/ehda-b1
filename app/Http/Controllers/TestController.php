@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mhr_state;
 use App\Models\Domain;
 use App\Models\State;
+use App\Models\User;
 use App\Models\Volunteer;
 use App\Temp\Mhr_safiran_data;
 use Carbon\Carbon;
@@ -27,9 +28,7 @@ class TestController extends Controller
 	public function index()
 	{
 //		$this->convertVolunteers() ;
-		for($i=1 ; $i<=200000 ; $i++) {
-			echo view('templates.say', ['array' => $i]);
-		}
+		$this->convertVolunteers2Users() ;
 	}
 
 	/*
@@ -38,7 +37,75 @@ class TestController extends Controller
 	|--------------------------------------------------------------------------
 	|
 	*/
-	
+
+	private function convertVolunteers2Users()
+	{
+		$volunteers = Volunteer::withTrashed()->get() ;
+
+		foreach($volunteers as $volunteer) {
+
+			$user = new User() ;
+
+			if(!$volunteer->exam_passed_at)
+				$status = 1 ;
+			elseif(!$volunteer->birth_date)
+				$status = 2 ;
+			elseif(!$volunteer->password)
+				$status = 3 ;
+			else
+				$status = 8 ;
+
+			if($volunteer->trashed())
+				$status = 0 - $status ;
+
+			$user->created_at = $volunteer->created_at ;
+			$user->updated_at = $volunteer->updated_at ;
+			$user->deleted_at = $volunteer->deleted_at ;
+			$user->published_at = $volunteer->published_at ;
+			$user->created_by = $volunteer->created_by ;
+			$user->updated_by = $volunteer->updated_by ;
+			$user->deleted_by = $volunteer->deleted_by ;
+			$user->published_by = $volunteer->published_by ;
+			$user->volunteer_status = $status ;
+			$user->volunteer_registered_at = $volunteer->created_at ;
+			$user->email = $volunteer->email ;
+			$user->password = $volunteer->password ;
+			$user->code_melli = $volunteer->code_meli ;
+			$user->name_first = $volunteer->name_first ;
+			$user->name_last = $volunteer->name_last ;
+			$user->name_father = $volunteer->name_father ;
+			$user->birth_date = $volunteer->birth_date ;
+			$user->birth_city = $volunteer->birth_city ;
+			$user->gender = $volunteer->gender ;
+			$user->marital = $volunteer->marital_status ;
+			$user->tel_mobile = $volunteer->tel_mobile ;
+			$user->tel_emergency = $volunteer->tel_emergency ;
+			$user->home_address = $volunteer->home_address ;
+			$user->home_province = $volunteer->home_province ;
+			$user->work_city = $volunteer->work_city ;
+			$user->work_tel = $volunteer->work_tel ;
+			$user->work_address = $volunteer->work_address ;
+			$user->work_province = $volunteer->work_province ;
+			$user->work_city = $volunteer->work_city ;
+			$user->work_tel = $volunteer->work_tel ;
+			$user->edu_level = $volunteer->edu_level ;
+			$user->edu_city = $volunteer->edu_city ;
+			$user->edu_field = $volunteer->edu_field ;
+			$user->job = $volunteer->job ;
+			$user->password_force_change = $volunteer->password_force_change ;
+			$user->exam_passed_at = $volunteer->exam_passed_at ;
+			$user->exam_result = $volunteer->exam_result ;
+			$user->familization = $volunteer->familization ;
+			$user->motivation = $volunteer->motivation ;
+			$user->alloc_time = $volunteer->alloc_time ;
+			$user->activities = $volunteer->activities ;
+			$user->domains = $volunteer->domains ;
+			$user->roles = $volunteer->roles ;
+
+			$user->save() ;
+//			echo $user->id." - ".$user->fullName();
+		}
+	}
 
 	private function convertVolunteers()
 	{

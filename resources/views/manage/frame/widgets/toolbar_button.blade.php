@@ -16,7 +16,8 @@ else {
 
 
 <a href="{{$target}}" title="{{$caption or ''}}" onclick="{{$on_click or ''}}">
-	<button class="btn btn-{{ $type or 'default' }} btn-circle btn-sm">
-		<i class="fa fa-{{$icon or 'dot-circle-o'}}"></i>
+	<button class="btn btn-{{ $type or 'default' }}">
+		{{--<i class="fa fa-{{$icon or 'dot-circle-o'}}"></i>--}}
+		{{ $caption }}
 	</button>
 </a>

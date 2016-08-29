@@ -1,3 +1,3 @@
 @include('manage.settings.tabs' , [
-	'tabs' => ['posts-cats' , 'domains' , 'states' ] ,
+	'tabs' => ['branches' , 'domains' , 'states' ] ,
 ])

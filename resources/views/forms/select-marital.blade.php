@@ -1,5 +1,5 @@
 @include('forms.select' , [
-	'name' => isset($name)? $name : 'marital_status' ,
+	'name' => isset($name)? $name : 'marital' ,
 	'value' => isset($value)? $value : '0' ,
 	'class' => isset($class)? $class : '' ,
 	'blank_value' => isset($blank_value)? $blank_value : 'NO',

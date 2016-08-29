@@ -8,6 +8,17 @@
 	<meta charset="utf-8"/>
 	<title>@yield('page_title')</title>
 
+	<script language="javascript">
+		function assets($additive) {
+			if(!$additive) $additive = '' ;
+			return url('assets/'+$additive); 
+		}
+		function url($additive) {
+			if(!$additive) $additive = '' ;
+			return '{{ url('-additive-') }}'.replace('-additive-',$additive) ;
+		}
+	</script>
+
 	{{-- JQuery --}}
 	{!! Html::script ('assets/libs/jquery.js') !!}
 	{!! Html::script ('assets/libs/jquery.form.min.js') !!}
@@ -15,12 +26,14 @@
 	{{-- BOOTSTRAP --}}
 	{!! Html::style('assets/libs/bootstrap/css/bootstrap.min.css') !!}
 	{!! Html::style('assets/libs/bootstrap/css/bootstrap-rtl.min.css') !!}
-
 	{!! HTML::script ('assets/libs/bootstrap/js/bootstrap.min.js') !!}
 
 	{{-- fonts stuff --}}
 	{!! Html::style('assets/css/fontiran.css') !!}
 	{!! Html::style('assets/libs/font-awesome/css/font-awesome.min.css') !!}
+
+	{{-- TinyMCE--}}
+	{!! HTML::script ('assets/libs/tinymce/tinymce.min.js') !!}
 
 	{{-- sb-admin --}}
 	{!! Html::style('assets/libs/sb-admin/metisMenu.css') !!}

@@ -33,14 +33,16 @@ class VolunteerSaveRequest extends Request
 		$input = $this->all();
 		$id = $input['id'] ;
 		return [
-			'name_first' => "required",
-			'name_last' => "required",
-			'code_meli' => "required|code_melli|unique:volunteers,code_meli,".$id,
-			'email'=> 'required|email|unique:volunteers,email,'.$id,
-			'password'=> 'required_if:id,0|min:10',
+			'name_first' => "required|min:2",
+			'name_last' => "required|min:2",
+			'name_father' => 'required|min:2' ,
+			'code_melli' => "required|code_melli|unique:users,code_melli,".$id,
+			'code_id' => "required" ,
+			'email'=> 'required|email|unique:users,email,'.$id,
+			'password'=> 'required_if:id,0|min:8',
 			'gender'=>'required',
 			'birth_city' => 'required',
-			'marital_status' => 'required' ,
+			'marital' => 'required' ,
 			'birth_date' => 'required|date' ,
 			'tel_mobile' => 'required|phone:mobile',
 			'tel_emergency' => 'required|different:tel_mobile|phone:mobile',
@@ -48,14 +50,14 @@ class VolunteerSaveRequest extends Request
 			'work_tel' => 'phone:fixed',
 		];
 
-		//@TODO: more validation may be required here, such as phone number patterns
 	}
 
 	public function all()
 	{
 		$value	= parent::all();
 		$purified = ValidationServiceProvider::purifier($value,[
-			'code_meli'  =>  'ed',
+			'code_melli'  =>  'ed',
+			'code_id' => 'ed' ,
 			'gender' => 'number',
 			'birth_city' => 'number',
 			'tel_mobile' => 'ed' ,

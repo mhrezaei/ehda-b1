@@ -242,6 +242,9 @@ trait PermitsTrait
 		if($this->isDeveloper())
 			return true ;
 
+		if($this->volunteer_status<8)
+			return false ;
+
 		return $this->can_domain($domain) AND $this->can_permit($permit);
 	}
 

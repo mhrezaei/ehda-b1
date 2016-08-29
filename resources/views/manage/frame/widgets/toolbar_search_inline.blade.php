@@ -19,9 +19,9 @@
 
 	<input name="{{ $field_name or 'keyword' }}" class="form-control" placeholder="{{$label}}...">
 	<input name="searched" type="hidden" value="1">
-	<button type="submit" class="btn btn-{{$type or 'warning'}}">
-		<i class="fa fa-search"></i>
-	</button>
+	{{--<button type="submit" class="btn btn-{{$type or 'default'}}">--}}
+		{{--<i class="fa fa-search"></i>--}}
+	{{--</button>--}}
 
 	{!! Form::close() !!}
 </span>

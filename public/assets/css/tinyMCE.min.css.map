@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA,CAAE,CACA,WAAW,CAAE,UAAU,CACvB,WAAW,CAAE,GAAG,CAChB,WAAW,CAAE,GAAG,CAChB,SAAS,CAAE,IAAI,CACf,KAAK,CAAE,OAAO,CACd,UAAU,CAAE,OAAO,CAErB,MAAO,CACL,WAAW,CAAE,GAAG,CAGlB,CAAE,CACA,KAAK,CAAE,IAAI",
+"sources": ["../../../resources/sass/tinyMCE.scss"],
+"names": [],
+"file": "tinyMCE.min.css"
+}
