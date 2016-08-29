@@ -31,7 +31,7 @@
 		<?php
 			if(str_contains($module,'posts-')) {
 				$slug = str_replace('posts-','',$module) ;
-				$caption = \App\Models\Post_cat::getName($slug);
+				$caption = \App\Models\Branch::getTitle($slug);
 			}
 			else {
 				$caption = trans('manage.modules.'.$module) ;
@@ -85,7 +85,7 @@
 					<div class="checkbox">
 						<label>
 							<input type="hidden" name="domain{{$domain->id}}" value="0">
-							{!! Form::checkbox("domain".$domain->id , '1' , $model->can('any',$domain->id)? '1' : '0' , ['class' => '-domains']) !!}
+							{!! Form::checkbox("domain".$domain->id , '1' , $model->can('any',$domain->slug)? '1' : '0' , ['class' => '-domains']) !!}
 							{{ $domain->title }}
 						</label>
 					</div>

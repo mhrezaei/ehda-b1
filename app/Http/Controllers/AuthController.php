@@ -6,6 +6,7 @@ use App\Events\SendEmail;
 use App\Events\SendSms;
 use App\Events\VolunteerForgotPassword;
 use App\Jobs\SendEmailJob;
+use App\Models\User;
 use App\Providers\SecKeyServiceProvider;
 use App\Models\Volunteer;
 use App\Providers\SmsServiceProvider;
@@ -29,37 +30,37 @@ class AuthController extends Controller
 	public function login(Requests\AuthLoginRequest $request)
 	{
 		//Username...
-		$volunteer = Volunteer::where('code_meli',$request->username)->withTrashed()->first();
-		if(!$volunteer)
+		$user = User::selectBySlug($request->username , 'code_melli') ;
+		if(!$user or $user->volunteer_status==0)
 			return redirect()->back()->withErrors(trans('manage.login.error_username'));
 
 		//Password...
 		$true_pass = false ;
-		if($volunteer['password_force_change']==2) {
+		if($user['password_force_change']==2) {
 			//old verification:
-			if(md5(sha1($request->password)) == $volunteer['password'])
+			if(md5(sha1($request->password)) == $user['password'])
 				$true_pass = true ;
 		}
 		else {
 			//laravel verification:
-			$true_pass = Hash::check($request->password, $volunteer['password']);
+			$true_pass = Hash::check($request->password, $user['password']);
 		}
 		if(!$true_pass)
 			return redirect()->back()->withErrors(trans('manage.login.error_password'));
 
-		//Check published_at and deleted_at...
-		if($volunteer->trashed())
+		//Check Status...
+		if($user->volunteer_status<0)
 			return redirect()->back()->withErrors(trans('manage.login.error_deleted'));
-		if(!$volunteer->published_at)
+		elseif($user->volunteer_status<8)
 			return redirect()->back()->withErrors(trans('manage.login.error_not_published'));
 
 		//Actual Login...
-		Auth::loginUsingId( $volunteer->id );
-		if($volunteer['password_force_change'])
+		Auth::loginUsingId( $user->id );
+		if($user['password_force_change'])
 			return redirect('/manage/old_password');
 		return redirect()->back();
 
-		//@TODO: Event for login (save into `volunteers_logins`)
+		//@TODO: Event for login (save into `logins`)
 	}
 
 	public function reset_password()

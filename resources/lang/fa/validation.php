@@ -20,7 +20,7 @@ return [
 
 		"accepted"         => ":attribute باید پذیرفته شده باشد.",
 		"active_url"       => "نشانی :attribute معتبر نیست",
-		"after"            => ":attribute باید تاریخی بعد از :date باشد.",
+		"after"            => ":attribute منطقی نیست." , ":attribute باید تاریخی بعد از :date باشد.",
 		"alpha"            => ":attribute باید شامل حروف الفبا باشد.",
 		"alpha_dash"       => ":attribute باید شامل حروف الفبا و عدد و خظ تیره(-) باشد.",
 		"alpha_num"        => ":attribute باید شامل حروف الفبا و عدد باشد.",
@@ -42,7 +42,7 @@ return [
 		"email"            => "قالب :attribute معتبر نیست.",
 		"exists"           => ":attribute واردشده، معتبر نیست.",
 		"image"            => ":attribute باید تصویر باشد.",
-		"in"               => ":attribute واردشده، معتبر نیست.",
+		"in"               => ":attribute معتبر نیست.",
 		"integer"          => ":attribute باید نوع داده‌ای عددی (integer) باشد.",
 		"ip"               => ":attribute باید آی‌پی نشانی معتبر باشد.",
 		"max"              => [
@@ -214,6 +214,7 @@ return [
 	*/
 
 		'attributes' => [
+				"action" => 'عملیات' ,
 				"email"	=> "ایمیل",
 				"username" => "شناسه‌ی کاربری",
 				"security"	=> "کد امنیتی",
@@ -222,13 +223,13 @@ return [
 				"birthday"=> "تاریخ تولد",
 				"name_first"=> "نام",
 				"name_last"=> "نام خانوادگی",
-				"name_father"=> "نام پدر",
+				"name_father" => "نام پدر"  ,
 				"code_melli" => "کد ملی",
 				"code_id" => "شماره شناسنامه",
 				"gender"=> "جنسیت",
 				"birth_date" => "تاریخ تولد",
 				"birth_city" => "محل تولد",
-				"marital_status" => "وضعیت تأهل",
+				"marital" => "وضعیت تأهل",
 				"occupation" => "شغل و تحصیلات" ,
 				"education" => "تحصیلات" ,
 				"edu_level" => "میزان تحصیلات",
@@ -239,16 +240,30 @@ return [
 				"home_city" => "محل سکونت",
 				"home_address" => "نشانی منزل",
 				"home_tel" => "تلفن منزل" ,
+				"home_postal_code" => "کد پستی منزل" ,
+
 				"work_city" => "محل کار",
 				"work_address" => "نشانی محل کار",
 				"work_tel" => "تلفن محل کار" ,
+				"work_postal_code" => "کد پستی محل کار" ,
+
 				"job" => "شغل",
 				"familization" => "نحوه‌ی آشنایی" ,
 				"motivation" => "انگیزه‌ی همکاری",
 				"alloc_time" => "فرصت همکاری" ,
 				'title' => 'عنوان',
+				'plural_title' => 'عنوان در حالت جمع',
+				'singular_title' => 'عنوان در حالت مفرد',
 				'slug' => 'نامک',
 				'cities' => 'شهرها',
+				'create' => 'ایجاد',
+				'publish' => 'انتشار',
+				'publish_date' => 'زمان انتشار' ,
+				'abstract' => 'خلاصه',
+				'text' => 'متن',
+				'category_id' => 'دسته‌بندی',
+				'keywords' => 'کلیدواژه‌ها',
+				'allowed_meta' => 'متاهای مجاز' ,
 
 			"token" => "توکن",
 
@@ -258,6 +273,7 @@ return [
 				'domain_id' => 'دامنه',
 				'status' => 'وضعیت' ,
 				'tel' => 'تلفن',
+				'postal_code' => 'کد پستی',
 				'message' => 'متن پیام',
 				'items'=>'گزیدگان',
 				'keyword' => 'کلیدواژه',
@@ -273,6 +289,7 @@ return [
 				'unique' => 'یکتا',
 				'english-only' => 'فقط با کاراکترهای انگلیسی',
 				'persian-only' => 'فقط با کاراکترهای فارسی',
+				'metaـexample' => 'متاها را به صورت key:type بنویسید و با فاصله از هم جدا کنید. اگر نوع مشخص نشود، text در نظر گرفته می‌شود.',
 		],
 
 ];

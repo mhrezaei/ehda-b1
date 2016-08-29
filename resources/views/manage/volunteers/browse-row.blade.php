@@ -15,29 +15,19 @@
 	{{ $model->occupation() }}
 </td>
 
+<td>
+	@if($model->isCard())
+		<span class="text-success">{{ trans('forms.logic.has') }}</span>
+	@else
+		-
+	@endif
+</td>
+
 
 <td>
-	@if($model->trashed())
-		<div class="text text-danger">
-			{{ trans('people.volunteers.status.blocked') }}
-		</div>
-	@elseif(!$model->published_at and !$model->exam_passed_at)
-		<div class="text text-info">
-			{{ trans('people.volunteers.status.examining') }}
-		</div>
-	@elseif(!$model->published_at)
-		<div class="text text-warning">
-			{{ trans('people.volunteers.status.pending') }}
-		</div>
-	@elseif($model->unverified_flag)
-		<div class="text text-warning">
-			{{ trans('people.volunteers.status.care') }}
-		</div>
-	@else
-		<div class="text text-success">
-			{{ trans('people.volunteers.status.active') }}
-		</div>
-	@endif
+	<span class="text-{{ $model->volunteerStatus('color') }}">
+		{{ $model->volunteerStatus() }}
+	</span>
 </td>
 
 <td>
@@ -53,9 +43,9 @@
 			['mobile' , trans('people.commands.send_sms') , 'modal:manage/volunteers/-id-/sms' , 'volunteers.send' , $model->tel_mobile ] ,
 
 			['check' , trans('people.commands.activate') , 'modal:manage/volunteers/-id-/publish' , 'volunteers.publish' , !$model->published_at],
-			['trash-o' , trans('people.commands.soft_delete') , 'modal:manage/volunteers/-id-/soft_delete' , 'volunteers.delete' , !$model->trashed()] ,
-			['undo' , trans('people.commands.undelete') , 'modal:manage/volunteers/-id-/undelete' , 'volunteers.bin' , $model->trashed()] ,
-			['times' , trans('people.commands.hard_delete') , 'modal:manage/volunteers/-id-/hard_delete' , 'volunteers.bin' , $model->trashed()] ,
+			['ban' , trans('people.commands.block') , 'modal:manage/volunteers/-id-/soft_delete' , 'volunteers.delete' , !$model->trashed()] ,
+			['undo' , trans('people.commands.unblock') , 'modal:manage/volunteers/-id-/undelete' , 'volunteers.bin' , $model->trashed()] ,
+			['times' , trans('people.commands.hard_delete') , 'modal:manage/volunteers/-id-/hard_delete' , 'volunteers.developer' , $model->trashed()] ,
 
 
 		],

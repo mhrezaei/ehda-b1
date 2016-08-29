@@ -10,19 +10,72 @@
 
 		{{--
 		|--------------------------------------------------------------------------
+		| Status
+		|--------------------------------------------------------------------------
+		|
+		--}}
+		<tr>
+			<td class="head">
+				{{ trans('validation.attributes.status') }}
+			</td>
+			<td class="body text-{{ $model->volunteerStatus('color') }}">
+				{{ $model->volunteerStatus() }}
+			</td>
+		</tr>
+
+		<tr>
+			<td class="head">
+				{{ trans('people.card') }}
+			</td>
+			<td class="body">
+				@if($model->isCard())
+					<span class="text-success">{{ trans('forms.logic.has') }}</span>
+				@else
+					<span class="text-grey">{{ trans('forms.logic.hasnt') }}</span>
+				@endif
+			</td>
+		</tr>
+
+
+		{{--
+		|--------------------------------------------------------------------------
 		| Personal Information
 		|--------------------------------------------------------------------------
 		|
 		--}}
+		<tr>
+			<td colspan="2">
+				<hr>
+			</td>
+		</tr>
 
 		<tr>
 			<td class="head">
-				{{ trans('validation.attributes.code_meli') }}
+				{{ trans('validation.attributes.code_melli') }}
 			</td>
 			<td class="body">
-				{{ $model->say('code_meli') }}
+				{{ $model->say('code_melli') }}
 			</td>
 		</tr>
+
+		<tr>
+			<td class="head">
+				{{ trans('validation.attributes.code_id') }}
+			</td>
+			<td class="body">
+				{{ $model->say('code_id') }}
+			</td>
+		</tr>
+
+		<tr>
+			<td class="head">
+				{{ trans('validation.attributes.name_father') }}
+			</td>
+			<td class="body">
+				{{ $model->say('name_father') }}
+			</td>
+		</tr>
+
 
 		<tr>
 			<td class="head">
@@ -43,7 +96,7 @@
 					{{ $model->say('birth_city') }}
 				</span>
 				<span>
-					{{ trans('forms.general.'.$model->say('marital_status')) }}
+					{{ $model->say('marital') }}
 				</span>
 			</td>
 		</tr>
@@ -53,7 +106,7 @@
 				{{ trans('validation.attributes.education') }}
 			</td>
 			<td class="body">
-				{{ trans('forms.education.'.$model->edu_level) }}
+				{{ $model->say('education') }}
 				<span>
 					{{ $model->say('edu_field') }}
 				</span>
@@ -98,6 +151,10 @@
 				{{ $model->say('home_city').' . ' }}
 				{{ $model->say('home_address') }}
 				<span>
+					{{ trans('validation.attributes.postal_code') }}:&nbsp;
+					{{ $model->say('home_postal_code') }}
+				</span>
+				<span>
 					{{ trans('validation.attributes.tel') }}:&nbsp;
 					@pd($model->say('home_tel'))
 				</span>
@@ -111,6 +168,10 @@
 			<td class="body">
 				{{ $model->say('work_city').' . ' }}
 				{{ $model->say('work_address') }}
+				<span>
+					{{ trans('validation.attributes.postal_code') }}:&nbsp;
+					{{ $model->say('home_postal_code') }}
+				</span>
 				<span>
 					{{ trans('validation.attributes.tel') }}:&nbsp;
 					@pd($model->say('work_tel'))
@@ -196,10 +257,10 @@
 				{{ trans('forms.general.created_at') }}
 			</td>
 			<td class="body">
-				{{ $model->say('created_at') }}
+				{{ $model->say('volunteer_registered_at') }}
 				@if($model->created_by)
 					<span>
-						{{ trans('forms.general.by' , ['person'=>$model->say('created_by')]) }}
+						{{ trans('forms.general.by'). ' ' . $model->say('created_by') }}
 					</span>
 				@endif
 			</td>
@@ -212,7 +273,7 @@
 			<td class="body">
 				{{ $model->say('updated_at') }}
 				<span>
-					{{ trans('forms.general.by' , ['person'=>$model->say('updated_by')]) }}
+					{{ trans('forms.general.by').' '.$model->say('updated_by') }}
 				</span>
 			</td>
 		</tr>
@@ -226,14 +287,14 @@
 				<td class="body">
 					{{ $model->say('published_at') }}
 					<span>
-						{{ trans('forms.general.by' , ['person'=>$model->say('published_by')]) }}
+						{{ trans('forms.general.by').' '.$model->say('published_by') }}
 					</span>
 				</td>
 			</tr>
 		@endif
 
 
-		@if($model->deleted_at)
+		@if($model->trashed())
 			<tr>
 				<td class="head">
 					{{ trans('forms.general.deleted_at') }}
@@ -241,7 +302,7 @@
 				<td class="body">
 					{{ $model->say('deleted_at') }}
 					<span>
-						{{ trans('forms.general.by' , ['person'=>$model->say('deleted_by')]) }}
+						{{ trans('forms.general.by').' '.$model->say('deleted_by') }}
 					</span>
 				</td>
 			</tr>

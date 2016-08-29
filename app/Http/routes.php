@@ -1,5 +1,7 @@
 <?php
 
+Route::get('test','TestController@index') ;
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -55,6 +57,7 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 		Route::get('/' , 'VolunteersController@browse') ;
 		Route::get('/browse' , 'VolunteersController@browse') ;
 		Route::get('/browse/{request_tab}' , 'VolunteersController@browse') ;
+		Route::get('/create/{branch}' , 'VolunteersController@create') ;
 		Route::get('/search' , 'VolunteersController@search');
 		Route::get('/reports' , 'VolunteersController@reports');
 
@@ -82,11 +85,31 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 		});
 	});
 
-
-
 	/*
-	| Developer Settings
+	| Posts
 	*/
+	Route::group(['prefix'=>'posts'] , function() {
+		Route::get('/{branch_slug}' , 'PostsController@browse') ;
+		Route::get('/{branch_slug}/{request_tab}' , 'PostsController@browse') ;
+
+		Route::group(['prefix'=>'save'] , function() {
+			Route::post('/' , 'PostsController@save');
+
+			Route::post('/soft_delete' , 'PostsController@soft_delete');
+			Route::post('/bulk_soft_delete' , 'PostsController@bulk_soft_delete');
+			Route::post('/undelete' , 'PostsController@undelete');
+			Route::post('/bulk_undelete' , 'PostsController@bulk_undelete');
+			Route::post('/hard_delete' , 'PostsController@hard_delete');
+			Route::post('/bulk_hard_delete' , 'PostsController@bulk_hard_delete');
+			Route::post('/publish' , 'PostsController@publish');
+			Route::post('/bulk_publish' , 'PostsController@bulk_publish');
+		});
+	});
+
+
+		/*
+		| Developer Settings
+		*/
 
 
 	Route::group(['prefix'=>'devSettings'], function() {
@@ -100,7 +123,7 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 
 		Route::get('/{request_tab}/search/{key}' , 'DevSettingsController@search');
 
-		Route::post('/posts-cats/save' , 'DevSettingsController@save_postsCats');
+		Route::post('/branches/save' , 'DevSettingsController@save_branches');
 		Route::post('/domains/save' , 'DevSettingsController@save_domains');
 		Route::post('/states/save' , 'DevSettingsController@save_states');
 		Route::post('/cities/save' , 'DevSettingsController@save_cities');
