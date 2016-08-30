@@ -17,6 +17,7 @@ Route::get('/', 'HomeController@index');
 Route::get('/register', 'CardController@register');
 Route::post('/register/first_step', 'CardController@register_first_step');
 Route::post('/register/second_step', 'CardController@register_second_step');
+Route::post('/register/register_third_step', 'CardController@register_third_step');
 Route::get('/organ_donation_card', 'CardController@index');
 Route::get('/card/show_card/mini/{national_hash}', 'CardController@card_mini');
 Route::get('/card/show_card/full/{national_hash}/{mode?}', 'CardController@card_full');

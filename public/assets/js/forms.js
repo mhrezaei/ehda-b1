@@ -81,7 +81,7 @@ function forms_validate(formData, jqForm, options) {
       var $feed   = "#" + $formId + " .form-feed";
       $('#' + $formId + ' button').prop('disabled', true);
       //@TODO: hadi add optional validate
-
+      
 
       //Form Feed...
       $($feed).removeClass('alert-success').removeClass('alert-danger').html( $($feed + "-wait").html() ).slideDown();

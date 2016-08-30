@@ -97,6 +97,7 @@
                                 'field' => 'birth_date',
                                 'class' => 'form-datepicker',
                                 'required' => 1,
+                                'attr' => 'autocomplete=off',
                                 ])
                             </div>
                             <div class="col-xs-12 col-sm-6">
@@ -203,12 +204,12 @@
                     @include('forms.feed')
                         <div class="form-group text-center">
                             @include('forms.button', [
-                                'shape' => 'success',
+                                'shape' => 'success step_one_btn',
                                 'label' => trans('forms.button.send'),
                                 'type' => 'submit',
                             ])
                             @include('forms.button', [
-                                'shape' => 'warning',
+                                'shape' => 'warning step_one_btn',
                                 'label' => trans('forms.button.cancel'),
                                 'type' => 'button',
                                 'link' => url(''),
@@ -218,6 +219,9 @@
                             </button>
                         </div>
                     {!! Form::close() !!}
+
+                    @include('site.card_register.db_check_form')
+
                 </div>
             </div>
         </div>
