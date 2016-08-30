@@ -21,7 +21,7 @@ if(isset($class) && str_contains($class, 'form-required')) {
 
 		<select
 				id="{{$field or ''}}"
-				name="{{$field or ''}}" value="{{$value or ''}}"
+				name="{{$field or ''}}"
 				class="form-control selectpicker {{$class or ''}}"
 				placeholder="{{$placeholder or ''}}"
 				data-size= "{{$size or 5}}"

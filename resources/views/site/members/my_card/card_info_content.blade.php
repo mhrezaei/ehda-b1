@@ -15,6 +15,13 @@
                 </p>
                 <p class="text-center col-xs-12 col-md-8 col-md-offset-2">
                     <img src="{{ url('/card/show_card/mini/' . encrypt(Auth::user()->code_melli)) }}" alt="{{ trans('site.know_menu.organ_donation_card') }}" class="ehda-card-image">
+
+                    @include('forms.button', [
+                        'shape' => 'info',
+                        'link' => url('/card/show_card/full/' . encrypt(Auth::user()->code_melli) . '/download'),
+                        'label' => trans('forms.button.card_save'),
+                    ])
+                    <a class="btn btn-info" href="{{ url('/members/my_card/print') }}" target="_blank">{{ trans('forms.button.card_print') }}</a>
                 </p>
             </div>
         </div>

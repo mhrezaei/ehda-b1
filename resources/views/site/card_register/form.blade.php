@@ -1,6 +1,5 @@
 {!! Html::script ('assets/site/js/persian-date-0.1.8.min.js') !!}
 {!! Html::script ('assets/site/js/persian-datepicker-0.4.5.min.js') !!}
-{!! Html::script ('assets/site/js/states.js') !!}
 {!! Html::script ('assets/libs/jquery.form.min.js') !!}
 {!! Html::script ('assets/js/forms.js') !!}
 

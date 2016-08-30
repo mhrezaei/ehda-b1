@@ -33,6 +33,8 @@ Route::get('/card/show_card/full/{national_hash}/{mode?}', 'CardController@card_
 
 Route::group(['prefix' => 'members', 'middleware' => 'MembersAuth', 'namespace' => 'members'], function(){
 	Route::get('/my_card', 'MembersController@index');
+	Route::get('/my_card/print', 'MembersController@print_my_card');
+	Route::get('/my_card/edit', 'MembersController@edit_my_card');
 });
 
 /*

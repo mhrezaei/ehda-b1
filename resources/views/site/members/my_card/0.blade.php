@@ -1,5 +1,5 @@
 @extends('site.frame.frame')
-<title>{{ trans('global.siteTitle') }} | {{ trans('site.global.card_info_page') }}</title>
+<title>{{ trans('global.siteTitle') }} | {{ trans('site.global.my_card_page') }}</title>
 @section('content')
     <div class="container-fluid">
         @include('site.frame.page_title', [

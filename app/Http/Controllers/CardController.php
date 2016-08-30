@@ -330,10 +330,11 @@ class CardController extends Controller
         elseif($mode == 'download')
         {
             header('Content-Description: File Transfer');
-            header('Content-Disposition: filename=' . 'کارت_اهدای_عضو_' . $user['card_no'] . '.png');
+            header('Content-Type: image/png');
+            header('Content-Disposition: attachment; filename="' . $user['card_no'] . '.png"');
             header('Content-Transfer-Encoding: binary');
             header('Expires: 0');
-            header('Cache-Control: must-revalidate');
+            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
             header('Pragma: public');
         }
         else
