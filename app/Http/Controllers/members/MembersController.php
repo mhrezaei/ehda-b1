@@ -11,6 +11,6 @@ class MembersController extends Controller
 {
     public function index()
     {
-        echo 123;
+        return view('site.members.my_card.0');
     }
 }

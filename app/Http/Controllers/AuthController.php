@@ -177,31 +177,8 @@ class AuthController extends Controller
 
 	public function sms()
 	{
-		//return view('templates.widget.email');
-//		$date = Carbon::now()->addMinutes(5);
-//		$date = $date->diffInMinutes($date->copy()->addMinutes(10));
-//		return view('templates.say' , ['array'=> $date]);
-//		Event::fire(new VolunteerForgotPassword(Volunteer::find(1)));
-//		Event::fire(new SendSms('numbers', 'msg'));
-//		Event::fire(new SendEmail('mr.mhrezaei@gmail.com', 'reciever name', 'subject', 'msg body html code'));
-//		$this->dispatch(new SendEmailJob('mr.mhrezaei@gmail.com', 'reciever name', 'subject', 'msg body html code'));
 
-		$b = "محمد هادی رضائی کمال آباد";
-//		printf("length of string: %d \n", mb_strlen($b, 'UTF-8'));
-//		for ($i=0; $i < mb_strlen($b, 'UTF-8'); $i++){
-//			$ch = mb_substr($b, $i, 1, 'UTF-8');
-//			$chlen = strlen($ch);
-//			$hexs = '';
-//			for ($j=0; $j < $chlen; $j++)
-//				$hexs = $hexs . sprintf("%x", ord($ch[$j]));
-//			printf ("width=%d => '%s' |hex=%s\n", $chlen, $ch, $hexs );
-//		}
-//		echo '<br>' . strlen($b) . '<br>' . mb_strlen($b, 'UTF-8');
-
-//		$font = public_path('assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'php' . DIRECTORY_SEPARATOR . 'BNazanin.ttf');
-//		$aa = imagettfbbox(25, 0, $font, $b);
-
-		print_r(csrf_token());
+		
 
 	}
 }

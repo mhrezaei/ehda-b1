@@ -7,6 +7,7 @@ return [
         'ngo_address_see_on_map' 	=> 'مشاهده برروی نقشه' ,
         'ngo_phone_number' 	=> '۸۹۱۷۴۱۳۵ ۲۱ ۹۸ +' ,
         'users_login' => 'ورود کاربران',
+        'users_welcome_msg' => 'خوش آمدید!',
         'log_out' => 'خروج',
         'show_organ_donation_card' => 'نمایش کارت اهدا',
         'download_oragan_donation_card' => 'دانلود کارت اهدا',
@@ -18,12 +19,17 @@ return [
         'home_page' => 'صفحه نخست',
         'card_register_page' => 'ثبت نام کارت اهدای عضو',
         'card_info_page' => 'تاریخچه و اهمیت کارت اهدای عضو',
+        'my_card_page' => 'کارت اهدای عضو من',
         'organ_detail_line1' => 'مایلم',
         'organ_detail_line2' => ' را در زمان مرگم اهدا کنم',
         'organ_detail_line3' => ' باشد که ادامه ی زندگی اجزای وجودم ، نجات بخش زندگی دیگری باشد.',
         'register_success' => 'ثبت نام شما با موفقیت انجام شد، اکنون به صفحه کارت خود منتقل می شوید.',
         'register_not_complete' => 'ثبت نام شما انجام نشد، دوباره امتحان کنید.',
         'register_check_data_step_second' => 'همه چیز برای ثبت نام شما آماده است، لطفاً بار دیگر اطلاعات خود را بازبینی نمایید و درصورت تائید برروی دکمه امضا کلیک کنید، در غیر این صورت با استفاده از دکمه انتهای صفحه اطلاعات خود را به روز نمایید.',
+        'login_information_data' => 'اطلاعات ورود به سامانه',
+        'contact_detail' => 'اطلاعات تماس',
+        'personal_data' => 'اطلاعات فردی',
+
 
     ],
 
