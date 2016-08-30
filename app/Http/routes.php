@@ -21,6 +21,14 @@ Route::get('/organ_donation_card', 'CardController@index');
 Route::get('/card/show_card/mini/{national_hash}', 'CardController@card_mini');
 Route::get('/card/show_card/full/{national_hash}/{mode?}', 'CardController@card_full');
 
+/*
+|--------------------------------------------------------------------------
+| CARD HOLDER PANEL
+|--------------------------------------------------------------------------
+| For the holders of cards, in 'members' folder
+*/
+
+
 
 Route::group(['prefix' => 'members', 'middleware' => 'MembersAuth', 'namespace' => 'members'], function(){
 	Route::get('/my_card', 'MembersController@index');

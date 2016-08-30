@@ -34,6 +34,7 @@
 
 	{{-- TinyMCE--}}
 	{!! HTML::script ('assets/libs/tinymce/tinymce.min.js') !!}
+	{!! HTML::script ('assets/libs/tinymce/tinymce.starter.js') !!}
 
 	{{-- sb-admin --}}
 	{!! Html::style('assets/libs/sb-admin/metisMenu.css') !!}

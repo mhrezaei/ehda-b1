@@ -83,6 +83,11 @@ class Post extends Model
 	|
 	*/
 
+	public function counter($branch , $criteria)
+	{
+		return $this->selector($branch , $criteria)->count() ;
+	}
+
 	public static function selector($branch , $criteria)
 	{
 		$now = Carbon::now()->toDateTimeString();
