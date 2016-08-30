@@ -80,72 +80,139 @@ class CardController extends Controller
 
     public function register_second_step(Requests\CardRegisterSecondStepRequest $request)
     {
+        // delete old session
+        if (Session::has('register_second_step'))
+        {
+            Session::forget('register_second_step');
+        }
+
         $input = $request->toArray();
         unset($input['_token']);
-        $user = User::selectBySlug($input['code_melli'], 'code_melli');
-        if (! $user or ! $user->isActive('volunteer') or ! $user->isActive('card'))
+        $input['code_melli'] = Session::get('register_first_step');
+        $input['code_melli'] = $input['code_melli']['code_melli'];
+        // card extra detail
+        $input['card_status'] = 8;
+        $input['password'] = Hash::make($input['password']);
+        $input['birth_date'] = Carbon::createFromFormat('m/d/Y-H:i:s', $input['birth_date'] . '-00:00:00')->toDateTimeString();
+        $input['home_province'] = State::find($input['home_city']);
+        $input['home_province'] = $input['home_province']->province()->id;
+        $input['password_force_change'] = 1;
+
+        unset($input['password2']);
+
+        if (isset($input['chRegisterAll']))
         {
-            return $this->jsonFeedback(trans('site.global.register_check_data_step_second'),[
+            $input['organs'] = 'Heart Lung Liver Kidney Pancreas Tissues';
+            unset($input['chRegisterAll']);
+            unset($input['chRegisterHeart']);
+            unset($input['chRegisterLung']);
+            unset($input['chRegisterLiver']);
+            unset($input['chRegisterKidney']);
+            unset($input['chRegisterPancreas']);
+            unset($input['chRegisterTissues']);
+        }
+        else
+        {
+            $input['organs'] = '';
+            if (isset($input['chRegisterHeart']))
+            {
+                $input['organs'] .= 'Heart ';
+                unset($input['chRegisterHeart']);
+            }
+            if (isset($input['chRegisterLung']))
+            {
+                $input['organs'] .= 'Lung ';
+                unset($input['chRegisterLung']);
+            }
+            if (isset($input['chRegisterLiver']))
+            {
+                $input['organs'] .= 'Liver ';
+                unset($input['chRegisterLiver']);
+            }
+            if (isset($input['chRegisterKidney']))
+            {
+                $input['organs'] .= 'Kidney ';
+                unset($input['chRegisterKidney']);
+            }
+            if (isset($input['chRegisterPancreas']))
+            {
+                $input['organs'] .= 'Pancreas ';
+                unset($input['chRegisterPancreas']);
+            }
+            if (isset($input['chRegisterTissues']))
+            {
+                $input['organs'] .= 'Tissues ';
+                unset($input['chRegisterTissues']);
+            }
+        }
+
+        $user = User::selectBySlug($input['code_melli'], 'code_melli');
+
+        if (! $user)
+        {
+            $return = $this->jsonFeedback(trans('site.global.register_check_data_step_second'),[
                 'ok' => 1,
-                'callback' => 'register_step_second()'
+                'callback' => 'register_step_second("' . encrypt($input['code_melli']) . '")'
             ]);
         }
         else
         {
-            return $this->jsonFeedback(null, [
-                'redirect' => url('relogin'),
-            ]);
-        }
-    }
-    public function register_third_step(Requests\CardRegisterSecondStepRequest $request)
-    {
-        $input = $request->toArray();
-        unset($input['_token']);
-        $user = User::selectBySlug($input['code_melli'], 'code_melli');
-        if (! $user)
-        {
-            if (isset($input['chRegisterAll']))
+            if ($user->isActive('volunteer') or $user->isActive('card'))
             {
-                $input['organs'] = 'Heart Lung Liver Kidney Pancreas Tissues';
+                $return = $this->jsonFeedback(null, [
+                    'redirect' => url('relogin'),
+                ]);
             }
             else
             {
-                $input['organs'] = '';
-                isset($input['chRegisterHeart']) ? $input['organs'] .= 'Heart ' : $input['organs'] .= '';
-                isset($input['chRegisterLung']) ? $input['organs'] .= 'Lung ' : $input['organs'] .= '';
-                isset($input['chRegisterLiver']) ? $input['organs'] .= 'Liver ' : $input['organs'] .= '';
-                isset($input['chRegisterKidney']) ? $input['organs'] .= 'Kidney ' : $input['organs'] .= '';
-                isset($input['chRegisterPancreas']) ? $input['organs'] .= 'Pancreas ' : $input['organs'] .= '';
-                isset($input['chRegisterTissues']) ? $input['organs'] .= 'Tissues ' : $input['organs'] .= '';
+                $input['id'] = $user->id;
+                $return = $this->jsonFeedback(trans('site.global.register_check_data_step_second'),[
+                    'ok' => 1,
+                    'callback' => 'register_step_second("' . encrypt($input['code_melli']) . '")'
+                ]);
             }
-            
-            // card extra detail
-            $input['code_melli'] = Session::pull('register_first_step');
-            $input['code_melli'] = $input['code_melli']['code_melli'];
-            $input['card_no'] = User::generateCardNo();
-            $input['card_status'] = 8;
-            $input['card_registered_at'] = Carbon::now()->toDateTimeString();
-            $input['password'] = Hash::make($input['password']);
-            $input['birth_date'] = Carbon::createFromFormat('m/d/Y-H:i:s', $input['birth_date'] . '-00:00:00')->toDateTimeString();
-            $input['home_province'] = State::find($input['home_city']);
-            $input['home_province'] = $input['home_province']->province()->id;
-            $input['password_force_change'] = 1;
-            
-            $user_id = User::store($input, array(
-                'password2',
-                'chRegisterAll',
-                'chRegisterHeart',
-                'chRegisterLung',
-                'chRegisterLiver',
-                'chRegisterKidney',
-                'chRegisterPancreas',
-                'chRegisterTissues',
-            ));
+        }
+
+        Session::put('register_second_step', $input);
+
+        return $return;
+
+    }
+
+    public function register_third_step(Requests\CardRegisterThirdStepRequest $request)
+    {
+        $input = $request->toArray();
+        unset($input['_token']);
+        Session::forget('register_first_step');
+        $data = Session::pull('register_second_step');
+
+        if ($input['db-check'] != $data['code_melli'])
+        {
+            return $this->jsonFeedback(null, [
+                'redirect' => url(''),
+            ]);
+        }
+        else
+        {
+            $data['card_registered_at'] = Carbon::now()->toDateTimeString();
+            $data['card_no'] = User::generateCardNo();
+        }
+
+        $user = User::selectBySlug($data['code_melli'], 'code_melli');
+        if ($user and ($user->isActive('volunteer') or $user->isActive('card')))
+        {
+            $return = $this->jsonFeedback(null, [
+                'redirect' => url('relogin'),
+            ]);
+        }
+        else
+        {
+            $user_id = User::store($data);
 
             if ($user_id)
             {
                 Auth::loginUsingId( $user_id );
-                return $this->jsonFeedback(null, [
+                $return = $this->jsonFeedback(null, [
                     'redirect' => url('members/my_card'),
                     'ok' => 1,
                     'message' => trans('site.global.register_success'),
@@ -154,16 +221,15 @@ class CardController extends Controller
             }
             else
             {
-                return $this->jsonFeedback(null, [
+                $return = $this->jsonFeedback(null, [
                     'redirect' => url('organ_donation_card'),
                     'ok' => 0,
                     'message' => trans('site.global.register_not_complete'),
                     'redirectTime' => 2000,
                 ]);
             }
-            
         }
-        print_r($input);
+        return $return;
     }
 
     public function card_mini($national_hash)

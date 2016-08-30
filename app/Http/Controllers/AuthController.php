@@ -198,10 +198,10 @@ class AuthController extends Controller
 //		}
 //		echo '<br>' . strlen($b) . '<br>' . mb_strlen($b, 'UTF-8');
 
-		$font = public_path('assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'php' . DIRECTORY_SEPARATOR . 'BNazanin.ttf');
-		$aa = imagettfbbox(25, 0, $font, $b);
-		
-		print_r($aa);
+//		$font = public_path('assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'php' . DIRECTORY_SEPARATOR . 'BNazanin.ttf');
+//		$aa = imagettfbbox(25, 0, $font, $b);
+
+		print_r(csrf_token());
 
 	}
 }

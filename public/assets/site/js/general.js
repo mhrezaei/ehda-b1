@@ -31,11 +31,31 @@ function registerForm_validate()
     }
 }
 
-function register_step_second() {
+function register_step_second(string) {
     var $formID = '#registerForm';
     var $form = $($formID);
 
-    $($formID + 'input').prop('disabled', true);
-    alert(1234);
+    $('#db-check').val(string);
 
+    $($formID + ' input').prop('disabled', true);
+    $($formID + ' select').prop('disabled', true);
+    $($formID + ' .dropdown-toggle').prop('disabled', true);
+    $($formID + ' .step_one_btn').slideToggle();
+
+    $('#register_third_step').slideToggle();
+
+    $('.btn-db-check').on('click', function () {
+        $($formID + ' input').prop('disabled', false);
+        $($formID + ' select').prop('disabled', false);
+        $($formID + ' .dropdown-toggle').prop('disabled', false);
+        $($formID + ' .step_one_btn').slideToggle();
+        $($formID + ' .form-feed').hide();
+
+        $('#register_third_step').hide();
+    });
+}
+
+function register_third_step_validate() {
+    $("#registerForm .form-feed").hide();
+    return 0;
 }

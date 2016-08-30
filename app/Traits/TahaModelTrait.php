@@ -52,7 +52,7 @@ trait TahaModelTrait
 		}
 
 		//Action...
-		if($data['id']) {
+		if(isset($data['id'])) {
 			$affected = Self::where('id', $data['id'])->update($data);
 			if(!isset($data['updated_by'])) {
 				if( Auth::check())
