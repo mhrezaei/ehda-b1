@@ -51,7 +51,7 @@ Route::get('/logout', 'AuthController@logout');
 Route::get('/reset_password', 'AuthController@reset_password');
 Route::post('/password/reset_password_process', 'AuthController@reset_password_process');
 Route::post('/password/reset_password_token_process', 'AuthController@reset_password_token_process');
-Route::get('/old_password', 'AuthController@old_password');
+Route::get('/password/old_password', 'AuthController@old_password');
 Route::post('/password/auth_password', 'AuthController@old_password_process');
 Route::get('/sms', 'AuthController@sms');
 

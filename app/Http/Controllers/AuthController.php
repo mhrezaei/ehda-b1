@@ -39,7 +39,7 @@ class AuthController extends Controller
 			return redirect()->back()->withErrors(trans('manage.login.error_username'));
 		}
 
-		if (! $user->isActive('volunteer') or ! $user->isActive('card'))
+		if (! $user->isActive('volunteer') and ! $user->isActive('card'))
 		{
 			return redirect()->back()->withErrors(trans('manage.login.error_not_published'));
 		}
@@ -61,7 +61,7 @@ class AuthController extends Controller
 		//Actual Login...
 		Auth::loginUsingId( $user->id );
 		if($user['password_force_change'])
-			return redirect('/old_password');
+			return redirect('/password/old_password');
 
 		if ($user->isVolunteer())
 		{
@@ -117,11 +117,15 @@ class AuthController extends Controller
 		$user = User::selectBySlug($request->username , 'code_melli') ;
 		if(!$user)
 		{
-			return redirect()->back()->withErrors(trans('manage.login.error_username'));
+			return $this->jsonFeedback(trans('manage.login.error_username'), [
+				'ok' => 0,
+			]);
 		}
-		if (! $user->isActive('volunteer') or ! $user->isActive('card'))
+		if (! $user->isActive('volunteer') and ! $user->isActive('card'))
 		{
-			return redirect()->back()->withErrors(trans('manage.login.error_not_published'));
+			return $this->jsonFeedback(trans('manage.login.error_not_published'), [
+				'ok' => 0,
+			]);
 		}
 
 		$user->makeForgotPasswordToken();
@@ -151,15 +155,18 @@ class AuthController extends Controller
 				return redirect('/members/my_card');
 			}
 		}
-
-		$user = User::selectBySlug($request->username , 'code_melli') ;
+		$user = User::selectBySlug($request->national , 'code_melli') ;
 		if(!$user)
 		{
-			return redirect()->back()->withErrors(trans('manage.login.error_username'));
+			return $this->jsonFeedback(trans('manage.login.error_username'), [
+				'ok' => 0,
+			]);
 		}
-		if (! $user->isActive('volunteer') or ! $user->isActive('card'))
+		if (! $user->isActive('volunteer') and ! $user->isActive('card'))
 		{
-			return redirect()->back()->withErrors(trans('manage.login.error_not_published'));
+			return $this->jsonFeedback(trans('manage.login.error_not_published'), [
+				'ok' => 0,
+			]);
 		}
 
 		if (strlen($user['reset_token']) > 10)
@@ -178,7 +185,7 @@ class AuthController extends Controller
 			$user->updateUserForResetPassword(1);
 			Auth::loginUsingId( $user->id );
 			return $this->jsonFeedback(trans('manage.reset_password.token_success_request'),[
-				'redirect' => '/manage/old_password',
+				'redirect' => '/password/old_password',
 				'ok' => 1,
 			]);
 		}
