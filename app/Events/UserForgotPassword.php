@@ -3,20 +3,18 @@
 namespace App\Events;
 
 use App\Events\Event;
+use App\Models\User;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class VolunteerPasswordManualReset extends Event
+class UserForgotPassword extends Event
 {
     use SerializesModels;
-    public $volunteer;
-    public $newPassword;
+    public $user;
 
-
-    public function __construct(Volunteer $volunteer, $newPassword)
+    public function __construct(User $user)
     {
-        $this->volunteer = $volunteer;
-        $this->newPassword = $newPassword;
+        $this->$user = $user;
     }
     
     public function broadcastOn()

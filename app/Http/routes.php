@@ -44,9 +44,9 @@ Route::group(['prefix' => 'members', 'middleware' => 'MembersAuth', 'namespace' 
 | For Volunteers as admins of the entire sites, in 'manage' folder
 */
 
-Route::get('/manage/login', 'AuthController@login_panel');
-Route::post('/manage/auth', 'AuthController@login');
-Route::get('/manage/logout', 'AuthController@logout');
+Route::get('/login', 'AuthController@login_panel');
+Route::post('/auth', 'AuthController@login');
+Route::get('/logout', 'AuthController@logout');
 
 Route::get('/manage/reset_password', 'AuthController@reset_password');
 Route::post('/manage/reset_password_process', 'AuthController@reset_password_process');

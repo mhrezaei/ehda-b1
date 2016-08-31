@@ -14,18 +14,18 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'App\Events\VolunteerForgotPassword' => [
-            'App\Listeners\SendEmailVolunteer',
-            'App\Listeners\SendSmsVolunteer',
+        'App\Events\UserForgotPassword' => [
+            'App\Listeners\SendEmailUser',
+            'App\Listeners\SendSmsUser',
         ],
         // Manage...
-        'App\Events\VolunteerPasswordManualReset' => [
-            'App\Listeners\VolunteerSmsNewPassword',
+        'App\Events\UserPasswordManualReset' => [
+            'App\Listeners\UserSmsNewPassword',
         ],
 
-        'App\Events\VolunteerAccountPublished' => [
-             'App\Listeners\VolunteerSmsPublishNotice',
-             'App\Listeners\VolunteerEmailPublishNotice',
+        'App\Events\UserAccountPublished' => [
+             'App\Listeners\UserSmsPublishNotice',
+             'App\Listeners\UserEmailPublishNotice',
         ],
 
         'App\Events\SendSms' => [

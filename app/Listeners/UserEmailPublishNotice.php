@@ -2,11 +2,11 @@
 
 namespace App\Listeners;
 
-use App\Events\VolunteerAccountPublished;
+use App\Events\UserAccountPublished;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class VolunteerEmailPublishNotice
+class UserEmailPublishNotice
 {
     /**
      * Create the event listener.
@@ -19,18 +19,15 @@ class VolunteerEmailPublishNotice
     }
 
     /**
-     * Handle the event.
-     *
-     * @param  VolunteerAccountPublished  $event
-     * @return void
+     * @param UserAccountPublished $event
      */
-    public function handle(VolunteerAccountPublished $event)
+    public function handle(UserAccountPublished $event)
     {
-        $data['volunteer_name'] = $event->volunteer->name_first . ' ' . $event->volunteer->name_last;
+        $data['volunteer_name'] = $event->user->name_first . ' ' . $event->user->name_last;
         Mail::send('templates.email.volunteer_publish_account_email', $data, function ($m) use ($event) {
             $m->from(env('MAIL_FROM'), trans('global.siteTitle'));
 
-            $m->to($event->volunteer->email, $event->volunteer->name_first . ' ' . $event->volunteer->name_last)
+            $m->to($event->user->email, $event->user->name_first . ' ' . $event->user->name_last)
                 ->subject(trans('people.event.volunteer_publish_notice_email'));
         });
     }

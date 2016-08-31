@@ -3,20 +3,20 @@
 namespace App\Events;
 
 use App\Events\Event;
-use App\Models\Volunteer;
+use App\Models\User;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class VolunteerForgotPassword extends Event
+class UserAccountPublished extends Event
 {
     use SerializesModels;
-    public $volunteer;
+    public $user;
 
-    public function __construct(Volunteer $volunteer)
+    public function __construct(User $user)
     {
-        $this->volunteer = $volunteer;
+        $this->user = $user;
     }
-    
+
     public function broadcastOn()
     {
         return [];

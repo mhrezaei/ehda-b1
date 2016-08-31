@@ -2,23 +2,27 @@
 
 namespace App\Listeners;
 
-use App\Events\VolunteerAccountPublished;
+use App\Events\UserAccountPublished;
 use App\Providers\SmsServiceProvider;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\URL;
 
-class VolunteerSmsPublishNotice
+class UserSmsPublishNotice
 {
     public function __construct()
     {
         //
     }
 
-    public function handle(VolunteerAccountPublished $event)
+    /**
+     * @param UserAccountPublished $event
+     * @return bool
+     */
+    public function handle(UserAccountPublished $event)
     {
         $msg = trans('people.event.volunteer_publish_notice_sms') . "\n\r" . url('');
-        SmsServiceProvider::send($event->volunteer->tel_mobile, $msg);
+        SmsServiceProvider::send($event->user->tel_mobile, $msg);
         return true;
     }
 }

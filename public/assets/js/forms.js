@@ -1058,7 +1058,7 @@ function forms_date_picker(selector)
             },
       };
 
-      $('#' + $elementID).on('focus', function () {
+      $('#' + $elementID).on('click', function () {
             if($(this).val() == ''){
                   $(this).pDatepicker(dateOptions).trigger('focus').val('');
                   $('#' + $elementID + 'Extra').val('');

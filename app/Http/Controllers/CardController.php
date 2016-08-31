@@ -96,7 +96,7 @@ class CardController extends Controller
         $input['birth_date'] = Carbon::createFromFormat('m/d/Y-H:i:s', $input['birth_date'] . '-00:00:00')->toDateTimeString();
         $input['home_province'] = State::find($input['home_city']);
         $input['home_province'] = $input['home_province']->province()->id;
-        $input['password_force_change'] = 1;
+        $input['password_force_change'] = 0;
 
         unset($input['password2']);
 
