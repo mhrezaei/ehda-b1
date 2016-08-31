@@ -83,7 +83,7 @@ class Post extends Model
 	|
 	*/
 
-	public function counter($branch , $criteria)
+	public function counter($branch , $criteria = 'published')
 	{
 		return $this->selector($branch , $criteria)->count() ;
 	}
@@ -238,8 +238,7 @@ class Post extends Model
 		else
 			return $return[$key] ;
 	}
-
-
+	
 	public function say($property , $default='-')
 	{
 		switch($property) {
