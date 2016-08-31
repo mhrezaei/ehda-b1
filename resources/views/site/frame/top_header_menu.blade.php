@@ -21,7 +21,7 @@
                     <h3>{{ trans('site.know_menu.cultural') }}</h3>
                     <li><a href="/">{{ trans('site.know_menu.organ_donation_in_religion') }}</a></li>
                     <li><a href="/">{{ trans('site.know_menu.organ_donation_in_another_country') }}</a></li>
-                    <li><a href="/">{{ trans('site.know_menu.organ_donation_card') }}</a></li>
+                    <li><a href="{{ url('/organ_donation_card') }}">{{ trans('site.know_menu.organ_donation_card') }}</a></li>
                 </ul>
                 <ul class="list-unstyled pull-left text-right">
                     <h3><a href="/"> {{ trans('site.know_menu.faq') }}</a></h3>

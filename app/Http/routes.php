@@ -33,6 +33,8 @@ Route::get('/card/show_card/full/{national_hash}/{mode?}', 'CardController@card_
 
 Route::group(['prefix' => 'members', 'middleware' => 'MembersAuth', 'namespace' => 'members'], function(){
 	Route::get('/my_card', 'MembersController@index');
+	Route::get('/my_card/print', 'MembersController@print_my_card');
+	Route::get('/my_card/edit', 'MembersController@edit_my_card');
 });
 
 /*
@@ -42,15 +44,15 @@ Route::group(['prefix' => 'members', 'middleware' => 'MembersAuth', 'namespace' 
 | For Volunteers as admins of the entire sites, in 'manage' folder
 */
 
-Route::get('/manage/login', 'AuthController@login_panel');
-Route::post('/manage/auth', 'AuthController@login');
-Route::get('/manage/logout', 'AuthController@logout');
+Route::get('/login', 'AuthController@login_panel');
+Route::post('/auth', 'AuthController@login');
+Route::get('/logout', 'AuthController@logout');
 
-Route::get('/manage/reset_password', 'AuthController@reset_password');
-Route::post('/manage/reset_password_process', 'AuthController@reset_password_process');
-Route::post('/manage/reset_password_token_process', 'AuthController@reset_password_token_process');
-Route::get('/manage/old_password', 'AuthController@old_password');
-Route::post('/manage/auth_password', 'AuthController@old_password_process');
+Route::get('/reset_password', 'AuthController@reset_password');
+Route::post('/password/reset_password_process', 'AuthController@reset_password_process');
+Route::post('/password/reset_password_token_process', 'AuthController@reset_password_token_process');
+Route::get('/password/old_password', 'AuthController@old_password');
+Route::post('/password/auth_password', 'AuthController@old_password_process');
 Route::get('/sms', 'AuthController@sms');
 
 

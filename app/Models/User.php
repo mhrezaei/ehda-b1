@@ -74,6 +74,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	}
 
 
+	/**
+	 * @param string $key
+	 * @return mixed
+     */
 	public function volunteerStatus($key = 'text')
 	{
 
@@ -112,7 +116,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	}
 
 
-
+	/**
+	 * @return bool
+     */
 	public function isDeveloper()
 	{
 		if($this->id==1)
@@ -121,6 +127,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 			return false ;
 	}
 
+	/**
+	 * @return bool
+     */
 	public function isVolunteer()
 	{
 		if($this->volunteer_status != 0)
@@ -129,6 +138,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 			return false ;
 	}
 
+	/**
+	 * @return bool
+     */
 	public function isCard()
 	{
 		if($this->card_status != 0)
@@ -137,6 +149,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 			return false ;
 	}
 
+	/**
+	 * @param string $type
+	 * @return bool
+     */
 	public function isActive($type='volunteer')
 	{
 		$field = $type."_status" ;
@@ -285,6 +301,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	|--------------------------------------------------------------------------
 	|
 	*/
+	/**
+	 * @return mixed
+     */
 	public function makeForgotPasswordToken()
 	{
 		$token['reset_token'] = rand(100000, 999999);
@@ -296,6 +315,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		return $token['reset_token'];
 	}
 
+	/**
+	 * @param $password
+	 * @return bool
+     */
 	public function oldPasswordChange($password)
 	{
 		$this->password = $password;
@@ -303,7 +326,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		return $this->save();
 	}
 
-	public function updateVolunteerForResetPassword($password_force_change = 1)
+	/**
+	 * @param int $password_force_change
+	 * @return bool
+     */
+	public function updateUserForResetPassword($password_force_change = 1)
 	{
 		$this->reset_token = null;
 		$this->password_force_change = $password_force_change;

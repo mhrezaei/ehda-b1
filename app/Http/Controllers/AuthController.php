@@ -4,11 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Events\SendEmail;
 use App\Events\SendSms;
-use App\Events\VolunteerForgotPassword;
+use App\Events\UserForgotPassword;
 use App\Jobs\SendEmailJob;
 use App\Models\User;
 use App\Providers\SecKeyServiceProvider;
-use App\Models\Volunteer;
 use App\Providers\SmsServiceProvider;
 use App\Traits\TahaControllerTrait;
 use Carbon\Carbon;
@@ -27,12 +26,23 @@ class AuthController extends Controller
 	use TahaControllerTrait;
 	protected $redirectTo = '/manage' ;
 
+	/**
+	 * @param Requests\AuthLoginRequest $request
+	 * @return mixed
+     */
 	public function login(Requests\AuthLoginRequest $request)
 	{
 		//Username...
 		$user = User::selectBySlug($request->username , 'code_melli') ;
-		if(!$user or $user->volunteer_status==0)
+		if(!$user)
+		{
 			return redirect()->back()->withErrors(trans('manage.login.error_username'));
+		}
+
+		if (! $user->isActive('volunteer') and ! $user->isActive('card'))
+		{
+			return redirect()->back()->withErrors(trans('manage.login.error_not_published'));
+		}
 
 		//Password...
 		$true_pass = false ;
@@ -48,42 +58,78 @@ class AuthController extends Controller
 		if(!$true_pass)
 			return redirect()->back()->withErrors(trans('manage.login.error_password'));
 
-		//Check Status...
-		if($user->volunteer_status<0)
-			return redirect()->back()->withErrors(trans('manage.login.error_deleted'));
-		elseif($user->volunteer_status<8)
-			return redirect()->back()->withErrors(trans('manage.login.error_not_published'));
-
 		//Actual Login...
 		Auth::loginUsingId( $user->id );
 		if($user['password_force_change'])
-			return redirect('/manage/old_password');
-		return redirect()->back();
+			return redirect('/password/old_password');
+
+		if ($user->isVolunteer())
+		{
+			return redirect('/manage/index');
+		}
+		else
+		{
+			return redirect('/');
+		}
 
 		//@TODO: Event for login (save into `logins`)
 	}
 
+	/**
+	 * @return mixed
+     */
 	public function reset_password()
 	{
-		if(Auth::check()) return redirect('/manage/index');
+		if(Auth::check())
+		{
+			if(Auth::user()->isActive('volunteer'))
+			{
+				return redirect('/manage/index');
+			}
+			else
+			{
+				return redirect('/members/my_card');
+			}
+		}
 		$captcha = SecKeyServiceProvider::getQuestion('fa');
 		return view('manage.reset_password.0', compact('captcha'));
 	}
 
+	/**
+	 * @param Requests\ResetPasswordRequest $request
+	 * @return mixed
+     */
 	public function reset_password_process(Requests\ResetPasswordRequest $request)
 	{
-		if(Auth::check()) return redirect('/manage/index');
+		if(Auth::check())
+		{
+			if(Auth::user()->isActive('volunteer'))
+			{
+				return redirect('/manage/index');
+			}
+			else
+			{
+				return redirect('/members/my_card');
+			}
+		}
 
 		//Username...
-		$volunteer = Volunteer::where('code_meli',$request->username)->first();
-		if(!$volunteer)
-			return $this->jsonFeedback(trans('manage.reset_password.error_username'));
+		$user = User::selectBySlug($request->username , 'code_melli') ;
+		if(!$user)
+		{
+			return $this->jsonFeedback(trans('manage.login.error_username'), [
+				'ok' => 0,
+			]);
+		}
+		if (! $user->isActive('volunteer') and ! $user->isActive('card'))
+		{
+			return $this->jsonFeedback(trans('manage.login.error_not_published'), [
+				'ok' => 0,
+			]);
+		}
 
-		if(!$volunteer->published_at)
-			return $this->jsonFeedback(trans('manage.login.error_not_published'));
-
-		$volunteer->makeForgotPasswordToken();
-		Event::fire(new VolunteerForgotPassword($volunteer));
+		$user->makeForgotPasswordToken();
+		Event::fire(new UserForgotPassword($user));
 		$national = Crypt::encrypt($request->username);
 		return $this->jsonFeedback(trans('manage.reset_password.reset_token_success_send'), [
 			'ok' => 1,
@@ -92,34 +138,54 @@ class AuthController extends Controller
 		]);
 	}
 
+	/**
+	 * @param Requests\ResetPasswordTokenRequest $request
+	 * @return mixed
+     */
 	public function reset_password_token_process(Requests\ResetPasswordTokenRequest $request)
 	{
-		if(Auth::check()) return redirect('/manage/index');
-
-		$volunteer = Volunteer::where('code_meli',Crypt::decrypt($request->national))->first();
-		if(!$volunteer)
-			return $this->jsonSaveFeedback(trans('manage.reset_password.error_username'));
-
-		if(!$volunteer->published_at)
-			return $this->jsonFeedback(trans('manage.login.error_not_published'));
-
-		if (strlen($volunteer['reset_token']) > 10)
+		if(Auth::check())
 		{
-			$token = json_decode($volunteer['reset_token'], true);
+			if(Auth::user()->isActive('volunteer'))
+			{
+				return redirect('/manage/index');
+			}
+			else
+			{
+				return redirect('/members/my_card');
+			}
+		}
+		$user = User::selectBySlug($request->national , 'code_melli') ;
+		if(!$user)
+		{
+			return $this->jsonFeedback(trans('manage.login.error_username'), [
+				'ok' => 0,
+			]);
+		}
+		if (! $user->isActive('volunteer') and ! $user->isActive('card'))
+		{
+			return $this->jsonFeedback(trans('manage.login.error_not_published'), [
+				'ok' => 0,
+			]);
+		}
+
+		if (strlen($user['reset_token']) > 10)
+		{
+			$token = json_decode($user['reset_token'], true);
 			$time = Carbon::parse($token['expire_token']['date'])->diffInSeconds(Carbon::now());
 			if ($time > 300)
 			{
 				return $this->jsonFeedback(trans('manage.reset_password.reset_token_expire_time'));
-				$volunteer->updateVolunteerForResetPassword(0);
+				$user->updateUserForResetPassword(0);
 			}
 
 			if ($token['reset_token'] != $request->token)
 				return $this->jsonFeedback(trans('manage.reset_password.reset_token_invalid'));
 
-			$volunteer->updateVolunteerForResetPassword(1);
-			Auth::loginUsingId( $volunteer->id );
+			$user->updateUserForResetPassword(1);
+			Auth::loginUsingId( $user->id );
 			return $this->jsonFeedback(trans('manage.reset_password.token_success_request'),[
-				'redirect' => '/manage/old_password',
+				'redirect' => '/password/old_password',
 				'ok' => 1,
 			]);
 		}
@@ -136,32 +202,56 @@ class AuthController extends Controller
 	 */
 	public function login_panel()
 	{
-		if(Auth::check()) return redirect('/manage/index');
+		if(Auth::check())
+		{
+			if(Auth::user()->isActive('volunteer'))
+			{
+				return redirect('/manage/index');
+			}
+			else
+			{
+				return redirect('/members/my_card');
+			}
+		}
 		$captcha	= SecKeyServiceProvider::getQuestion('fa');
 		return view('manage.login.0', compact('captcha'));
 	}
 
+	/**
+	 * @return mixed
+     */
 	public function old_password()
 	{
 		if(!Auth::check()) return redirect()->back();
-		$volunteer = Auth::user();
-		if (! $volunteer['password_force_change']) return redirect('/manage/index');
+		$user = Auth::user();
+		if (! $user['password_force_change']) return redirect('/manage/index');
 		return view('manage.old_password.0');
 	}
 
+	/**
+	 * @param Requests\OldPasswordRequest $request
+	 * @return mixed
+     */
 	public function old_password_process(Requests\OldPasswordRequest $request)
 	{
 		if(!Auth::check()) return redirect()->back();
-		$volunteer = Auth::user();
-		if ($volunteer['password_force_change'] == 1)
+		$user = Auth::user();
+		if ($user['password_force_change'] == 1)
 		{
-			if (Hash::check($request->password, $volunteer['password']))
+			if (Hash::check($request->password, $user['password']))
 				return redirect()->back()->withErrors(trans('manage.old_password.error_new_password_equal_old_password'));
 		}
 
-		if ($volunteer->oldPasswordChange(Hash::make($request->password)))
+		if ($user->oldPasswordChange(Hash::make($request->password)))
 		{
-			return redirect('/manage/index');
+			if(Auth::user()->isActive('volunteer'))
+			{
+				return redirect('/manage/index');
+			}
+			else
+			{
+				return redirect('/members/my_card');
+			}
 		}
 		else
 		{
@@ -169,39 +259,19 @@ class AuthController extends Controller
 		}
 	}
 
+	/**
+	 * @return mixed
+     */
 	public function logout()
 	{
 		Auth::logout();
-		return redirect('/manage/index');
+		return redirect('/login');
 	}
 
 	public function sms()
 	{
-		//return view('templates.widget.email');
-//		$date = Carbon::now()->addMinutes(5);
-//		$date = $date->diffInMinutes($date->copy()->addMinutes(10));
-//		return view('templates.say' , ['array'=> $date]);
-//		Event::fire(new VolunteerForgotPassword(Volunteer::find(1)));
-//		Event::fire(new SendSms('numbers', 'msg'));
-//		Event::fire(new SendEmail('mr.mhrezaei@gmail.com', 'reciever name', 'subject', 'msg body html code'));
-//		$this->dispatch(new SendEmailJob('mr.mhrezaei@gmail.com', 'reciever name', 'subject', 'msg body html code'));
 
-		$b = "محمد هادی رضائی کمال آباد";
-//		printf("length of string: %d \n", mb_strlen($b, 'UTF-8'));
-//		for ($i=0; $i < mb_strlen($b, 'UTF-8'); $i++){
-//			$ch = mb_substr($b, $i, 1, 'UTF-8');
-//			$chlen = strlen($ch);
-//			$hexs = '';
-//			for ($j=0; $j < $chlen; $j++)
-//				$hexs = $hexs . sprintf("%x", ord($ch[$j]));
-//			printf ("width=%d => '%s' |hex=%s\n", $chlen, $ch, $hexs );
-//		}
-//		echo '<br>' . strlen($b) . '<br>' . mb_strlen($b, 'UTF-8');
-
-//		$font = public_path('assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'php' . DIRECTORY_SEPARATOR . 'BNazanin.ttf');
-//		$aa = imagettfbbox(25, 0, $font, $b);
-
-		print_r(csrf_token());
+		
 
 	}
 }

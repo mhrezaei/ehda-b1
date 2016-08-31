@@ -1,6 +1,5 @@
 {!! Html::script ('assets/site/js/persian-date-0.1.8.min.js') !!}
 {!! Html::script ('assets/site/js/persian-datepicker-0.4.5.min.js') !!}
-{!! Html::script ('assets/site/js/states.js') !!}
 {!! Html::script ('assets/libs/jquery.form.min.js') !!}
 {!! Html::script ('assets/js/forms.js') !!}
 
@@ -14,7 +13,7 @@
         <div class="container">
             <div class="col-xs-12 col-md-8 col-md-offset-2">
                 <div class="row text-center">
-                    <img src="{{ url('') }}/assets/site/images/card.png" alt="کارت اهدای عضو" class="ehda-card-image">
+                    <img src="{{ url('') }}/assets/site/images/card.png" alt="{{ trans('site.know_menu.organ_donation_card') }}" class="ehda-card-image">
                 </div>
                 <div class="row">
                         {!! Form::open([
@@ -26,7 +25,7 @@
                         ]) !!}
 
                         <div class="form-group">
-                            <div>اطلاعات فردی</div>
+                            <div>{{ trans('site.global.personal_data') }}</div>
                         </div>
 
                         <div class="row">
@@ -130,7 +129,7 @@
                         </div>
 
                         <div class="form-group">
-                            <div>اطلاعات تماس</div>
+                            <div>{{ trans('site.global.contact_detail') }}</div>
                         </div>
 
                         <div class="row">
@@ -174,7 +173,7 @@
                         </div>
 
                         <div class="form-group">
-                            <div>اطلاعات ورود به سامانه</div>
+                            <div>{{ trans('site.global.login_information_data') }}</div>
                         </div>
 
                         <div class="row">
@@ -214,9 +213,6 @@
                                 'type' => 'button',
                                 'link' => url(''),
                             ])
-                            <button type="submit" class="btn btn-link submit" data-toggle="tooltip" title="ارسال اطلاعات و انجام ثبت نام" data-placement="bottom" style="display: none;">
-                                <img src="{{ url('') }}/assets/site/images/form-submit.png" width="190" height="190">
-                            </button>
                         </div>
                     {!! Form::close() !!}
 

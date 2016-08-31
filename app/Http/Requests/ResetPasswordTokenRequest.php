@@ -36,6 +36,7 @@ class ResetPasswordTokenRequest extends Request
         $value	= parent::all();
         $purified = ValidationServiceProvider::purifier($value,[
             'token'  =>  'ed',
+            'national' => 'decrypt',
         ]);
         return $purified;
 

@@ -1,7 +1,7 @@
 @extends('templates.email.email_frame')
 
 @section('email_content')
-	سفیر گرامی
+	همراه گرامی،
 	<br>
 	خبردار شدیم که رمز عبور خود را در سامانهٔ اهدای عضو فراموش کرده‌اید.
 	<br>

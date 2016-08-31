@@ -96,7 +96,7 @@ class CardController extends Controller
         $input['birth_date'] = Carbon::createFromFormat('m/d/Y-H:i:s', $input['birth_date'] . '-00:00:00')->toDateTimeString();
         $input['home_province'] = State::find($input['home_city']);
         $input['home_province'] = $input['home_province']->province()->id;
-        $input['password_force_change'] = 1;
+        $input['password_force_change'] = 0;
 
         unset($input['password2']);
 
@@ -330,10 +330,11 @@ class CardController extends Controller
         elseif($mode == 'download')
         {
             header('Content-Description: File Transfer');
-            header('Content-Disposition: filename=' . 'کارت_اهدای_عضو_' . $user['card_no'] . '.png');
+            header('Content-Type: image/png');
+            header('Content-Disposition: attachment; filename="' . $user['card_no'] . '.png"');
             header('Content-Transfer-Encoding: binary');
             header('Expires: 0');
-            header('Cache-Control: must-revalidate');
+            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
             header('Pragma: public');
         }
         else

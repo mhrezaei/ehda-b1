@@ -1,5 +1,5 @@
 {!! Form::open([
-	'url'	=> 'manage/auth' ,
+	'url'	=> 'auth' ,
 	'method'=> 'post',
 ]) !!}
 
@@ -34,7 +34,7 @@
 			{{ trans('forms.button.login') }}
 		</button>
 		<div style="clear: both;"></div>
-		<a href="{{ url('/manage/reset_password') }}" class="btn btn-link reset_password_link">{{ trans('manage.login.reset_password_link') }}</a>
+		<a href="{{ url('/reset_password') }}" class="btn btn-link reset_password_link">{{ trans('manage.login.reset_password_link') }}</a>
 	</div>
 
 @if($errors->all())

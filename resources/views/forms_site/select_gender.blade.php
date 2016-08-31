@@ -11,13 +11,16 @@
             data-toggle="tooltip"
             data-placement="top"
             title="{{ trans('validation.attributes_example.' . $field) }}"
-            value="{{ $value or '' }}"
             error-value="{{ trans('validation.javascript_validation.' . $field) }}"
             {{ $att or '' }}>
         <option value="0">{{ trans('forms.general.select_default') }}</option>
-        @foreach(trans('people.gender') as $key => $value)
+        @foreach(trans('people.gender') as $key => $val)
             @if($key != 0)
-                <option value="{{ $key }}">{{ $value }}</option>
+                <option value="{{ $key }}"
+                @if(isset($value) and $key == $value)
+                    selected="selected"
+                @endif
+                >{{ $val }}</option>
             @endif
         @endforeach
     </select>
