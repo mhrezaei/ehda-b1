@@ -48,11 +48,11 @@ Route::get('/login', 'AuthController@login_panel');
 Route::post('/auth', 'AuthController@login');
 Route::get('/logout', 'AuthController@logout');
 
-Route::get('/manage/reset_password', 'AuthController@reset_password');
-Route::post('/manage/reset_password_process', 'AuthController@reset_password_process');
-Route::post('/manage/reset_password_token_process', 'AuthController@reset_password_token_process');
-Route::get('/manage/old_password', 'AuthController@old_password');
-Route::post('/manage/auth_password', 'AuthController@old_password_process');
+Route::get('/reset_password', 'AuthController@reset_password');
+Route::post('/password/reset_password_process', 'AuthController@reset_password_process');
+Route::post('/password/reset_password_token_process', 'AuthController@reset_password_token_process');
+Route::get('/old_password', 'AuthController@old_password');
+Route::post('/password/auth_password', 'AuthController@old_password_process');
 Route::get('/sms', 'AuthController@sms');
 
 

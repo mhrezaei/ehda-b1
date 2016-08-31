@@ -1,5 +1,5 @@
 {!! Form::open([
-	'url'	=> 'manage/auth_password' ,
+	'url'	=> 'password/auth_password' ,
 	'method'=> 'post',
 ]) !!}
 

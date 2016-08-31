@@ -4,7 +4,7 @@
 
 	<div class="firstForm">
 		{!! Form::open([
-				'url'	=> 'manage/reset_password_process' ,
+				'url'	=> 'password/reset_password_process' ,
 				'method'=> 'post',
 				'class' => 'js',
 				'id' => 'reset_password_form'
@@ -38,7 +38,7 @@
 
 	<div class="secondForm" style="display: none;">
 		{!! Form::open([
-				'url'	=> 'manage/reset_password_token_process' ,
+				'url'	=> 'password/reset_password_token_process' ,
 				'method'=> 'post',
 				'class' => 'js',
 				'id' => 'reset_password_form_token'
