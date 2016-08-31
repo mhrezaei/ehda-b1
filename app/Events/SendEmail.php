@@ -24,6 +24,7 @@ class SendEmail extends Event
         $this->reciever_name = $reciever_name;
         $this->subject = $subject;
         $this->msg_body['data'] = $msg_body;
+        // salam
     }
 
     /**
