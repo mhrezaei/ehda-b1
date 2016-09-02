@@ -51,8 +51,12 @@
 	{!! HTML::script ('assets/libs/bootstrap-select/defaults-fa_IR.min.js') !!}
 
 	{{-- Datepicker --}}
-	{!! HTML::script ('assets/libs/datepicker/js-persian-cal.js') !!}
-	{!! Html::style('assets/libs/datepicker/js-persian-cal.css') !!}
+	{!! HTML::script ('assets/site/js/persian-date-0.1.8.min.js') !!}
+	{!! HTML::script ('assets/site/js/persian-datepicker-0.4.5.min.js') !!}
+	{!! HTML::style ('assets/site/css/persian-datepicker-0.4.5.min.css') !!}
+
+	{{-- Laravel File-Manage --}}
+	{!! HTML::script ('/vendor/laravel-filemanager/js/lfm.js') !!}
 
 	{{-- Custom --}}
 	{!! Html::style('assets/css/manage.min.css') !!}

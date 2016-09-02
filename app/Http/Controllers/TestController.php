@@ -28,7 +28,9 @@ class TestController extends Controller
 	public function index()
 	{
 //		$this->convertVolunteers() ;
-		$this->convertVolunteers2Users() ;
+//		$this->convertVolunteers2Users() ;
+		return view('templates.say' , ['array'=>date('Y/m/d H:i:s' , 9993775497)]);
+		
 	}
 
 	/*

@@ -48,27 +48,5 @@ class Meta extends Model
 		}
 	}
 
-	public static function allowedMeta($string)
-	{
-		$result = [] ;
-		$array = explode(' ',$string) ;
-		foreach($array as $item) {
-			$thing = explode(':' , $item) ;
-			$key = $thing[0] ;
-			$type = isset($thing[1])? $thing[1] : 'text' ;
-			$result[$key] = $type ;
-		}
-
-		return $result ;
-	}
-
-	public static function allowedMetaByBranch($branch_slug)
-	{
-		$branch = Branch::selectBySlug($branch_slug) ;
-		if($branch)
-			return self::allowedMeta($branch->allowed_meta) ;
-		else
-			return [] ;
-	}
 
 }

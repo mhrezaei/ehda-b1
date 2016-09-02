@@ -2,11 +2,6 @@
  * Created by jafar on 7/6/2016 AD.
  */
 
-function abbas()
-{
-	alert(1);
-}
-
 function masterModal($url,$size)
 {
 	//Preparetions...
@@ -171,3 +166,33 @@ function gridSelector($mood , $id)
 				$('#action0').prop('disabled', true);
 	}
 }
+
+function postEditorFeatures($special_action = null)
+{
+
+	switch( $special_action) {
+		case 'delete_featured_image' :
+			$('#txtFeaturedImage').val('');
+			$('#imgFeaturedImage').attr('src','');
+			$('#btnFeaturedImage').addClass('btn-primary').removeClass('btn-default');
+			$('#btnDeleteFeaturedImage').hide();
+			break;
+
+		default :
+			//Domain Selector...
+			if($('#cmbDomain').val()=='global')
+				$('#chkGlobal').hide();
+			else
+				$('#chkGlobal').show();
+
+			//PublishDate Selector...
+			if($('#cmbPublishDate').val()=='auto')
+				$('#txtPublishDate').parent().hide();
+			else
+				$('#txtPublishDate').parent().show();
+			break;
+	}
+
+
+}
+

@@ -17,6 +17,8 @@ class CanMiddleware
 	 */
 	public function handle($request, Closure $next , $permit , $domain=null)
 	{
+//		return view('templates.say' , ['array'=>Auth::user()->can($permit,$domain)]);
+//
 		if(!Auth::user()->can($permit,$domain)) {
 			if($request->ajax() || $request->wantsJson()) {
 				return response('Unauthorized.', 401);

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Manage;
 use App\models\Branch;
 use App\models\Meta;
 use App\Models\Post;
-use App\Models\Post_cat;
 use App\Traits\TahaControllerTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -24,7 +23,7 @@ class PostsController extends Controller
 
 	public function __construct()
 	{
-		$this->middleware('can:volunteers');
+		//$this->middleware('can:posts-news');
 	}
 
 	public function browse($request_branch, $request_tab = 'published')
@@ -43,13 +42,19 @@ class PostsController extends Controller
 				$permission = "$request_branch.search" ;
 				break;
 			case 'published' :
-				$permission = $request_branch ;
+				$permission = "$request_branch.browse";
 				break;
+			case 'scheduled' :
+				$permission = "$request_branch.browse" ;
+				break ;
 			case 'pending' :
 				$permission = "$request_branch.publish" ;
 				break;
 			case 'drafts' :
 				$permission = "$request_branch.publish" ;
+				break;
+			case 'my_posts' :
+				$permission = "$request_branch.create" ;
 				break;
 			case 'my_drafts' :
 				$permission = "$request_branch.create" ;
@@ -62,7 +67,7 @@ class PostsController extends Controller
 		}
 
 		//Permission
-		if(!Auth::user()->can($permission))
+		if(!Auth::user()->can('posts-'.$permission))
 			return view('errors.403');
 
 		//Preparation...
@@ -136,7 +141,7 @@ class PostsController extends Controller
 			return view('errors.410');
 
 		//Permission...
-		if(!Auth::user()->can("$branch_slug.create"))
+		if(!Auth::user()->can("posts-$branch_slug.create"))
 			return view('errors.403');
 
 		//Preparetions...
@@ -170,10 +175,9 @@ class PostsController extends Controller
 
 		$domains = Auth::user()->domains()->orderBy('title') ;
 		$encrypted_branch = Crypt::encrypt($model->branch);
-		$allowed_meta = Meta::allowedMeta($model->branch()->allowed_meta) ;
 
 		//View...
-		return view('manage.posts.editor' , compact('page','model' , 'domains' , 'encrypted_branch' , 'allowed_meta'));
+		return view('manage.posts.editor' , compact('page','model' , 'domains' , 'encrypted_branch'));
 
 	}
 	/*
@@ -189,7 +193,7 @@ class PostsController extends Controller
 		$model = Post::find($post_id) ;
 		if(!$model) return $this->jsonFeedback() ;
 
-		if(!Auth::user()->can($model->branch.".publish",$model->domains))
+		if(!Auth::user()->can('posts-'.$model->branch.".publish",$model->domains))
 			return $this->jsonFeedback(trans('validation.http.Eror403')) ;
 
 		//Action...
@@ -208,10 +212,10 @@ class PostsController extends Controller
 		$model = Post::find($post_id) ;
 		if(!$model) return $this->jsonFeedback() ;
 
-		if(!Auth::user()->can($model->branch.".delete",$model->domains))
+		if(!Auth::user()->can('posts-'.$model->branch.".delete",$model->domains))
 			return $this->jsonFeedback(trans('validation.http.Eror403')) ;
 
-		if(!Auth::user()->can($model->branch.'.delete')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
+		if(!Auth::user()->can('posts-'.$model->branch.'.delete')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
 
 		//Action...
 		if($model->delete())
@@ -223,7 +227,7 @@ class PostsController extends Controller
 
 	public function bulk_soft_delete(Request $request)
 	{
-		//NOTE: Problem: Checking the permission is a little difficult here. Better to disable bulk deletting!
+		//TODO: Problem: Checking the permission is a little difficult here. Better to disable bulk deletting!
 		if(!Auth::user()->can('volunteers.delete')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
 
 		$deleted = User::bulkDelete($request->ids , Auth::user()->id);
@@ -237,7 +241,7 @@ class PostsController extends Controller
 		$model = Post::withTrashed()->find($post_id) ;
 		if(!$model) return $this->jsonFeedback() ;
 
-		if(!Auth::user()->can($model->branch.".delete",$model->domains))
+		if(!Auth::user()->can('posts-'.$model->branch.".delete",$model->domains))
 			return $this->jsonFeedback(trans('validation.http.Eror403')) ;
 
 		//Action...
@@ -251,7 +255,7 @@ class PostsController extends Controller
 	public function hard_delete(Request $request)
 	{
 		$model = Post::withTrashed()->find($request->id) ;
-		if(!Auth::user()->can($model->branch.'.bin')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
+		if(!Auth::user()->can('posts-'.$model->branch.'.bin')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
 
 		if(!$model->trashed()) return $this->jsonFeedback(trans('validation.http.Eror403'));
 		$done = $model->forceDelete();
@@ -277,13 +281,14 @@ class PostsController extends Controller
 		$user_id = $user->id ;
 		$success_redirect = null ;
 
-		if($data['publish_date']) {
-			$data['published_at'] = new Carbon($data['publish_date']);
-			$data['published_at'] = $data['published_at']->toDateTimeString();
+		//Processing Custom Publish Date...
+		if($data['publish_date_mode'] == 'custom') {
+			$data['published_at'] = $data['publish_date'];
 		}
 		else
 			$data['published_at'] = null ;
 		unset($data['publish_date']);
+		unset($data['publish_date_mode']);
 
 		//if new record...
 		if(!$data['id']) {
@@ -335,22 +340,35 @@ class PostsController extends Controller
 		}
 
 		//Reading the domains...
-		$data['domains'] = '|' ;
-		foreach($data as $index => $item) {
-			if(str_contains($index,'domain_')) {
-				unset($data[$index]);
-				if($item+0)
-					$data['domains'] .= $index . '|' ;
-			}
-		}
-		$data['domains'] = str_replace('domain_',null,$data['domains']);
+		if(1) {
+			$data['domains'] = '|' . $data['domains'] . '|' ;
+			if($data['in_global'] and $data['domains'] != '|global|')
+				$data['domains'] .= '|global|' ;
+			unset($data['in_global']) ;
 
-		if($data['domains'] == '|')
-			return $this->jsonFeedback(trans('posts.manage.error_domain_not_selected'));
-		if(!$user->can('*',$data['domains']))
-			return $this->jsonFeedback() ;
-		if(isset($model) and !$user->can('*',$model->domains))
-			return $this->jsonFeedback() ;
+			if(!$user->can('*',$data['domains']))
+				return $this->jsonFeedback() ;
+			if(isset($model) and !$user->can('*',$model->domains))
+				return $this->jsonFeedback() ;
+		}
+		if(0) {  //multi select method
+			$data['domains'] = '|' ;
+			foreach($data as $index => $item) {
+				if(str_contains($index,'domain_')) {
+					unset($data[$index]);
+					if($item+0)
+						$data['domains'] .= $index . '|' ;
+				}
+			}
+			$data['domains'] = str_replace('domain_',null,$data['domains']);
+
+			if($data['domains'] == '|')
+				return $this->jsonFeedback(trans('posts.manage.error_domain_not_selected'));
+			if(!$user->can('*',$data['domains']))
+				return $this->jsonFeedback() ;
+			if(isset($model) and !$user->can('*',$model->domains))
+				return $this->jsonFeedback() ;
+		}
 
 		//Stripping the Meta...
 		$metas = Meta::allowedMetaByBranch($request->branch) ;

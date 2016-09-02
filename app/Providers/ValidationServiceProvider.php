@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use App\Providers\SecKeyServiceProvider;
 
@@ -114,6 +117,10 @@ class ValidationServiceProvider extends ServiceProvider
 			case 'decrypt' :
 				$data = Crypt::decrypt($data) ;
 				break;
+
+			case 'date' :
+				$data = Carbon::createFromTimestamp($data/1000)->toDateTimeString();
+				break ;
 		}
 
 		$this->input[$key] = $data;
@@ -138,6 +145,9 @@ class ValidationServiceProvider extends ServiceProvider
 		$this->app['validator']->extend('persian', function($attribute, $value, $parameters, $validator){
 			return self::persianChar($attribute, $value, $parameters, $validator);
 		});
+		$this->app['validator']->extend('fileExists', function($attribute, $value, $parameters, $validator){
+			return self::fileExists($attribute, $value, $parameters, $validator);
+		});
 	}
 
 	/*
@@ -146,6 +156,16 @@ class ValidationServiceProvider extends ServiceProvider
 	|--------------------------------------------------------------------------
 	| All private static functions
 	*/
+
+	private function fileExists($attribute, $value, $parameters, $validator)
+	{
+		//@TODO: Doesn't work on remote
+		$value = str_replace(url(),null,$value);
+		if (file_exists($value))
+			return true ;
+		else
+			return false ;
+	}
 
 	private static function validatePhoneNo($attribute, $value, $parameters, $validator)
 	{

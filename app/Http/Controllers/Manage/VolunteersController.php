@@ -208,7 +208,7 @@ class VolunteersController extends Controller
 	{
 		$model = User::find($request->id) ;
 		$model->password = Hash::make($request->password) ;
-		$model->password_force_change = true ;
+		$model->password_force_change = 1 ;
 		$is_saved = $model->save();
 
 		if($is_saved and $request->sms_notify)

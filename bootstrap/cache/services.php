@@ -31,6 +31,8 @@
     27 => 'Collective\\Html\\HtmlServiceProvider',
     28 => 'Barryvdh\\Debugbar\\ServiceProvider',
     29 => 'Morilog\\Jalali\\JalaliServiceProvider',
+    30 => 'Unisharp\\Laravelfilemanager\\LaravelFilemanagerServiceProvider',
+    31 => 'Intervention\\Image\\ImageServiceProvider',
   ),
   'eager' => 
   array (
@@ -51,6 +53,8 @@
     14 => 'App\\Providers\\AnnotationsServiceProvider',
     15 => 'Barryvdh\\Debugbar\\ServiceProvider',
     16 => 'Morilog\\Jalali\\JalaliServiceProvider',
+    17 => 'Unisharp\\Laravelfilemanager\\LaravelFilemanagerServiceProvider',
+    18 => 'Intervention\\Image\\ImageServiceProvider',
   ),
   'deferred' => 
   array (

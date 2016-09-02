@@ -16,7 +16,7 @@ trait PermitsTrait
 
 
 
-	private function getPermits()
+	public function getPermits()
 	{
 		if(!$this->roles)
 			return null;
@@ -167,6 +167,7 @@ trait PermitsTrait
 	public function domains()
 	{
 		$domains_array = $this->domainsStringToArray($this->getDomains());
+
 		return Domain::whereIn('slug', $domains_array);
 	}
 
@@ -214,14 +215,7 @@ trait PermitsTrait
 
 	public function attachAllDomains()
 	{
-		$domains = Domain::all() ;
-		$string = '|' ;
-
-		foreach($domains as $domain) {
-			$string .= $domain->slug."|" ;
-		}
-
-		return $this->saveDomains($string);
+		return $this->saveDomains($this->getAllAvailableDomains());
 	}
 
 	public function detachAllDomains()
@@ -229,6 +223,17 @@ trait PermitsTrait
 		$this->saveDomains('');
 	}
 
+	private function getAllAvailableDomains()
+	{
+		$domains = Domain::all() ;
+		$string = '|' ;
+
+		foreach($domains as $domain) {
+			$string .= $domain->slug."|" ;
+		}
+
+		return $string ;
+	}
 	/*
 	|--------------------------------------------------------------------------
 	| Seek for Permissions / Domains
@@ -256,6 +261,9 @@ trait PermitsTrait
 
 		if(!$request)
 			return true ;
+
+		if(str_contains($request , 'global'))
+			$request = $this->getAllAvailableDomains() ;
 
 		//change into array...
 		if(str_contains($request , '|'))

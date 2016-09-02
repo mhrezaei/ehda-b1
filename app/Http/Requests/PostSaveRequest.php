@@ -22,15 +22,15 @@ class PostSaveRequest extends Request
 
         if($input['id']) {
             if($input['is_published'])
-                return Auth::user()->can("$module.edit");
+                return Auth::user()->can("posts-$module.edit");
             else
-                return Auth::user()->can("$module.publish");
+                return Auth::user()->can("posts-$module.publish");
         }
         else {
             if($input['action']=='publish')
-                return Auth::user()->can("$module.publish");
+                return Auth::user()->can("posts-$module.publish");
             else
-                return Auth::user()->can("$module.create") ;
+                return Auth::user()->can("posts-$module.create") ;
         }
 
     }
@@ -51,6 +51,7 @@ class PostSaveRequest extends Request
             'text' => 'required' ,
             'category_id' => 'required_if:action,publish',
             'publish_date' => 'date' ,
+            'featured_image' => 'url' ,
         ];
     }
 
@@ -61,6 +62,7 @@ class PostSaveRequest extends Request
             'id'  =>  'ed|numeric',
             'action'  =>  'lower',
             'branch' => 'decrypt' ,
+            'publish_date' => 'date' ,
         ]);
         return $purified;
 

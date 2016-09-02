@@ -19,7 +19,6 @@ use Morilog\Jalali\jDate;
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
 	use Authenticatable, CanResetPassword;
-//	use SoftDeletes; //TODO: To be removed
 	use PermitsTrait;
 	use TahaModelTrait ;
 

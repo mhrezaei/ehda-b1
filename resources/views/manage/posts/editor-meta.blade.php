@@ -1,4 +1,4 @@
-@foreach($allowed_meta as $key => $type)
+@foreach($model->branch()->allowedMeta() as $key => $type)
 	@if($type=='area')
 		@include('forms.textarea' , [
 			'name' => $key,

@@ -15,6 +15,17 @@
   font-weight: 500;
 }
 
+.form-control:read-only {
+  background-color: inherit;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+div.mce-fullscreen {
+  z-index: 1050;
+}
 /*
 |--------------------------------------------------------------------------
 | General Things
