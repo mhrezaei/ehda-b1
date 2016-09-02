@@ -16,7 +16,7 @@ class Post extends Model
 	use TahaModelTrait ;
 	use SoftDeletes ;
 
-	protected $guarded = ['id' , 'featured_image'];
+	protected $guarded = ['id' ];
 
 	/*
 	|--------------------------------------------------------------------------

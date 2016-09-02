@@ -22,13 +22,6 @@ $(document).ready(function () {
 ///////////////////////////////////////////////
 
 function forms_listener() {
-	// Javascript casual commands...
-	$("input.js").each(function() {
-		$(this).removeClass('js');
-//		window[$(this).val()]
-		setTimeout($(this).val(), parseInt($(this).attr('data-delay')));
-	})
-
 	// javascript forms....
 	$("form.js").each(function () {
 		var $noAjax = $(this).attr('no-ajax');
@@ -93,7 +86,7 @@ function forms_validate(formData, jqForm, options) {
 	$("#" + $formId + " .form-required").each(function () {
 		if (forms_errorIfEmpty(this)) {
 			var $err = $(this).attr('error-value');
-			if ($err.length) {
+			if ($err && $err.length) {
 				$errors_msg.push($err);
 			}
 			if ($errors <= 1) $(this).focus();
@@ -105,7 +98,7 @@ function forms_validate(formData, jqForm, options) {
 	$("#" + $formId + " .form-number").each(function () {
 		if (forms_errorIfNotNumber(this)) {
 			var $err = $(this).attr('error-value');
-			if ($err.length) {
+			if ($err && $err.length) {
 				$errors_msg.push($err);
 			}
 			if ($errors <= 1) $(this).focus();
@@ -117,7 +110,7 @@ function forms_validate(formData, jqForm, options) {
 	$("#" + $formId + " .form-persian").each(function () {
 		if (forms_errorIfLang(this, 'fa')) {
 			var $err = $(this).attr('error-value');
-			if ($err.length) {
+			if ($err && $err.length) {
 				$errors_msg.push($err);
 			}
 			if ($errors <= 1) $(this).focus();
@@ -129,7 +122,7 @@ function forms_validate(formData, jqForm, options) {
 	$("#" + $formId + " .form-english").each(function () {
 		if (forms_errorIfLang(this, 'en')) {
 			var $err = $(this).attr('error-value');
-			if ($err.length) {
+			if ($err && $err.length) {
 				$errors_msg.push($err);
 			}
 			if ($errors <= 1) $(this).focus();
@@ -141,7 +134,7 @@ function forms_validate(formData, jqForm, options) {
 	$("#" + $formId + " .form-email").each(function () {
 		if (forms_errorIfNotEmail(this)) {
 			var $err = $(this).attr('error-value');
-			if ($err.length) {
+			if ($err && $err.length) {
 				$errors_msg.push($err);
 			}
 			if ($errors <= 1) $(this).focus();
@@ -153,7 +146,7 @@ function forms_validate(formData, jqForm, options) {
 	$("#" + $formId + " .form-national").each(function () {
 		if (forms_errorIfNotNationalCode(this)) {
 			var $err = $(this).attr('error-value');
-			if ($err.length) {
+			if ($err && $err.length) {
 				$errors_msg.push($err);
 			}
 			if ($errors <= 1) $(this).focus();
@@ -165,7 +158,7 @@ function forms_validate(formData, jqForm, options) {
 	$("#" + $formId + " .form-mobile").each(function () {
 		if (forms_errorIfNotMobile(this)) {
 			var $err = $(this).attr('error-value');
-			if ($err.length) {
+			if ($err && $err.length) {
 				$errors_msg.push($err);
 			}
 			if ($errors <= 1) $(this).focus();
@@ -177,7 +170,7 @@ function forms_validate(formData, jqForm, options) {
 	$("#" + $formId + " .form-phone").each(function () {
 		if (forms_errorIfNotPhone(this)) {
 			var $err = $(this).attr('error-value');
-			if ($err.length) {
+			if ($err && $err.length) {
 				$errors_msg.push($err);
 			}
 			if ($errors <= 1) $(this).focus();
@@ -189,7 +182,7 @@ function forms_validate(formData, jqForm, options) {
 	$("#" + $formId + " .form-password").each(function () {
 		if (forms_errorIfNotVerifyPassWord(this)) {
 			var $err = $(this).attr('error-value');
-			if ($err.length) {
+			if ($err && $err.length) {
 				$errors_msg.push($err);
 			}
 			if ($errors <= 1) $(this).focus();
@@ -201,7 +194,7 @@ function forms_validate(formData, jqForm, options) {
 	$("#" + $formId + " .form-datepicker").each(function () {
 		if (forms_errorIfNotDatePicker(this)) {
 			var $err = $(this).attr('error-value');
-			if ($err.length) {
+			if ($err && $err.length) {
 				$errors_msg.push($err);
 			}
 			if ($errors <= 1) $(this).focus();
@@ -213,7 +206,7 @@ function forms_validate(formData, jqForm, options) {
 	$("#" + $formId + " .form-select").each(function () {
 		if (forms_errorIfNotSelect(this)) {
 			var $err = $(this).attr('error-value');
-			if ($err.length) {
+			if ($err && $err.length) {
 				$errors_msg.push($err);
 			}
 			if ($errors <= 1) $(this).focus();
@@ -227,7 +220,7 @@ function forms_validate(formData, jqForm, options) {
 		if (city < 1) {
 			forms_markError($(this), "error");
 			var $err = $(this).attr('error-value');
-			if ($err.length) {
+			if ($err && $err.length) {
 				$errors_msg.push($err);
 			}
 			if ($errors <= 1) $(this).focus();

@@ -10,7 +10,7 @@
 @include('manage.frame.widgets.sidebar-link' , [
 	'module' => 'volunteers' ,
 	'icon' => 'child',
-	'sub_menus' => [
+	'sub_menus_' => [
 		['search' , 'search' , trans('manage.permits.search')],
 		['browse/active' , '' , trans('people.volunteers.manage.active')],
 		['browse/pending' , 'publish' , trans('people.volunteers.manage.pending')],
@@ -26,12 +26,11 @@
 	'module' => 'posts-news' ,
 	'icon' => 'file-text-o' ,
 ])
-
 @include('manage.frame.widgets.sidebar-link' , [
-	'module' => 'galleries' ,
+	'module' => 'posts-gallery' ,
 	'icon' => 'picture-o' ,
-	'sub_menus' => ['posts-slideshows']
 ])
+
 
 @include('manage.frame.widgets.sidebar-link' , [
 	'module' => 'cards' ,
