@@ -36,6 +36,22 @@ class Branch extends Model
 	|
 	*/
 
+	public function allowedMeta()
+	{
+		$string = str_replace(' ' , null , $this->allowed_meta) ;
+		$result = [] ;
+
+		$array = explode(',',$string) ;
+		foreach($array as $item) {
+			$thing = explode(':' , $item) ;
+			$key = $thing[0] ;
+			$type = isset($thing[1])? $thing[1] : 'text' ;
+			if(!$key) continue ;
+			$result[$key] = $type ;
+		}
+
+		return $result ;
+	}
 
 	public static function getTitle($slug , $is_singular=false)
 	{

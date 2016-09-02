@@ -4,7 +4,11 @@
 	</div>
 
 	<div class="m10 text-center">
-		{{ $model->say('created_by') }}
+		@if($model->id)
+			{{ $model->say('created_by') }}
+		@else
+			{{ Auth::user()->fullName() }}
+		@endif
 	</div>
 
 </div>

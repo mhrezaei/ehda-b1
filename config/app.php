@@ -160,6 +160,8 @@ return [
 	    Collective\Html\HtmlServiceProvider::class,
 	    Barryvdh\Debugbar\ServiceProvider::class,
 	    Morilog\Jalali\JalaliServiceProvider::class,
+	    Unisharp\Laravelfilemanager\LaravelFilemanagerServiceProvider::class,
+	    Intervention\Image\ImageServiceProvider::class,
     ],
 
     /*
@@ -209,6 +211,7 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'jDate' => Morilog\Jalali\Facades\jDate::class,
+        'Image' => Intervention\Image\Facades\Image::class,
     ],
 
 ];

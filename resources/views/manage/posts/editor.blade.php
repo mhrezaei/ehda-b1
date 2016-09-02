@@ -10,7 +10,7 @@
 	@include('forms.opener' , [
 		'id' => 'frmEditor',
 		'url' => 'manage/posts/save',
-		'files' =>true,
+		'files' =>false,
 		'title' => $model->id ? trans('posts.manage.edit') : trans('posts.manage.create' ,[
 			'thing' => $model->branch()->title(1),
 		]),
@@ -76,32 +76,7 @@
 			])
 
 			@include('manage.posts.editor-meta')
-
-			@if($domains->count()>1)
-				@include('forms.group-start' , [
-					'label' => trans('validation.attributes.domain_id') ,
-					'class' => 'form-required'
-				])
-
-					<div class="row">
-						@foreach($domains->get() as $domain)
-							<div class="col-md-4">
-								@include('forms.check' , [
-									'name' => "domain_".$domain->slug,
-									'label' => $domain->title,
-									'value' => str_contains($model->domains , '|'.$domain->slug.'|'),
-									'class' => '-domain'
-								])
-							</div>
-						@endforeach
-					</div>
-					<a href="javascript:void(0)" class="btn btn-xs btn-link" onclick="$('.-domain').prop('checked', true)">{{ trans('forms.general.all') }}</a>
-					<a href="javascript:void(0)" class="btn btn-xs btn-link" onclick="$('.-domain').prop('checked', false)">{{ trans('forms.general.none') }}</a>
-
-				@include('forms.group-end')
-			@endif
-
-			{{-- METAS HERE --}}
+			{{--@include('manage.posts.editor-multidomains')--}}
 
 		</div>
 
@@ -116,12 +91,10 @@
 		<div class="col-md-3">
 
 			@include('manage.posts.editor-status')
-			@if(!$model->trashed())
-				@include('manage.posts.editor-saves')
-			@endif
-			@include('manage.posts.editor-schedule')
-
+			@include('manage.posts.editor-saves')
 			@include('manage.posts.editor-image')
+			@include('manage.posts.editor-domains')
+			@include('manage.posts.editor-schedule')
 			@include('manage.posts.editor-creator')
 
 		</div>
