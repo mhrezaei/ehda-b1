@@ -80,7 +80,9 @@
 			])
 
 			@include('manage.posts.editor-meta')
-			@include('manage.posts.editor-album')
+			@if($model->branch()->is_gallery)
+				@include('manage.posts.editor-album')
+			@endif
 			{{--@include('manage.posts.editor-multidomains')--}}
 
 
