@@ -192,7 +192,42 @@ function postEditorFeatures($special_action = null)
 				$('#txtPublishDate').parent().show();
 			break;
 	}
+}
 
+function postPhotoAdded()
+{
+	let $src = $('#txtAddPhoto').val() ;
+	let $new_div = $('#divNewPhoto').html();
+	let $counter_label = $('#spnPhotoCount') ;
+	let $counter_input = $('#txtLastKey') ;
+	let $new_key =   parseInt($counter_input.val()) + 1;
+	let $new_selector = '#divPhoto-'+$new_key.toString() ;
+	let $new_counter = parseInt(forms_digit_en($counter_label.html())) + 1;
+
+	$counter_input.val($new_key);
+	$counter_label.html(forms_digit_fa($new_counter.toString()));
+
+	$new_div = $new_div.replace('NEW' , $new_key) ;
+	$new_div = $new_div.replace('NEW' , $new_key) ;
+	$new_div = $new_div.replace('NEW' , $new_key) ;
+	$new_div = $new_div.replace('NEW' , $new_key) ;
+
+	$('#divPhotos').append($new_div);
+	$($new_selector + ' input.-src').val($src) ;
+	$($new_selector + ' input.-label').focus() ;
+	$($new_selector + ' img').attr('src', $src) ;
+	$($new_selector).slideDown() ;
+
+}
+
+function postPhotoRemoved($selector)
+{
+
+	$selector.parent().parent().slideUp().html('') ;
+
+	let $counter_label = $('#spnPhotoCount') ;
+	let $new_counter = parseInt(forms_digit_en($counter_label.html())) -1;
+	$counter_label.html(forms_digit_fa($new_counter.toString()));
 
 }
 

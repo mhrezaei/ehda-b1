@@ -11,7 +11,9 @@
 		'id' => 'frmEditor',
 		'url' => 'manage/posts/save',
 		'files' =>false,
-		'title' => $model->id ? trans('posts.manage.edit') : trans('posts.manage.create' ,[
+		'title' => $model->id ? trans('posts.manage.edit',[
+			'thing' => $model->branch()->title(1),
+		]) : trans('posts.manage.create' ,[
 			'thing' => $model->branch()->title(1),
 		]),
 		'class' => 'js'
@@ -44,19 +46,20 @@
 			    'hint' => trans('posts.manage.title_hint') ,
 			])
 
-			@include('forms.textarea' , [
-			    'name' => 'text',
-			    'id' => 'txtText' ,
-			    'class' => 'form-required tinyEditor',
-			    'value' => $model->text ,
-			    'rows' => 10,
-			])
-
+			@if(!$model->branch()->is_gallery)
+				@include('forms.textarea' , [
+					'name' => 'text',
+					'id' => 'txtText' ,
+					'class' => 'form-required tinyEditor',
+					'value' => $model->text ,
+					'rows' => 20,
+				])
+			@endif
 
 			@include('forms.textarea' , [
 			    'name' => 'abstract',
 			    'value' => $model->abstract ,
-			    'hint' => trans('posts.manage.abstract_hint'),
+			    'hint' => trans('posts.manage.abstract_hint'.($model->branch()->is_gallery? '_for_galleries' : '')),
 			    'rows' => 4,
 			])
 
@@ -65,6 +68,7 @@
 				'value' => $model->category_id  ,
 				'options' => $model->branch()->categories ,
 				'blank_value' => '',
+//				'class' => 'form-required',
 				'blank_label' => trans('posts.categories.without')
 			])
 
@@ -76,7 +80,9 @@
 			])
 
 			@include('manage.posts.editor-meta')
+			@include('manage.posts.editor-album')
 			{{--@include('manage.posts.editor-multidomains')--}}
+
 
 		</div>
 

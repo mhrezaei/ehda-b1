@@ -10,10 +10,12 @@
 
         let input_id = this.data('input');
         let preview_id = this.data('preview');
+        let callback = this.data('callback');
 
         this.on('click', function(e) {
             localStorage.setItem('target_input', input_id);
             localStorage.setItem('target_preview', preview_id);
+            localStorage.setItem('callback', callback);
             window.open(url() + '/laravel-filemanager?type=' + type, 'FileManager', 'width=900,height=600');
             return false;
         });
@@ -30,4 +32,6 @@ function SetUrl(url){
   //set or change the preview image src
   let target_preview = $('#' + localStorage.getItem('target_preview'));
   target_preview.attr('src',url);
+
+      setTimeout(localStorage.getItem('callback') , 1)
 }

@@ -16,8 +16,16 @@ trait TahaModelTrait
 	*/
 	public static function selectBySlug($slug , $field='slug')
 	{
+		//Deprecated!
+		return self::findBySlug($slug , $field) ;
+
+	}
+
+	public static function findBySlug($slug, $field = 'slug')
+	{
 		if(!$slug) return false ;
 		return self::where($field , $slug)->first() ;
+
 	}
 
 	/*
@@ -65,6 +73,7 @@ trait TahaModelTrait
 				else
 					$data['created_by'] = 0 ;
 			}
+
 			$model = Self::create($data);
 			if($model)
 				$affected = $model->id;

@@ -78,7 +78,6 @@ function forms_validate(formData, jqForm, options) {
 	$('#' + $formId + ' button').prop('disabled', true);
 	//@TODO: hadi add optional validate
 
-
 	//Form Feed...
 	$($feed).removeClass('alert-success').removeClass('alert-danger').html($($feed + "-wait").html()).slideDown();
 
@@ -204,32 +203,35 @@ function forms_validate(formData, jqForm, options) {
 
 	//Checking select fields...
 	$("#" + $formId + " .form-select").each(function () {
-		if (forms_errorIfNotSelect(this)) {
-			var $err = $(this).attr('error-value');
-			if ($err && $err.length) {
-				$errors_msg.push($err);
+		if($(this).hasClass('form-required')) {
+			if (forms_errorIfNotSelect(this)) {
+				var $err = $(this).attr('error-value');
+				if ($err && $err.length) {
+					$errors_msg.push($err);
+				}
+				if ($errors <= 1) $(this).focus();
+				$errors++;
 			}
-			if ($errors <= 1) $(this).focus();
-			$errors++;
 		}
 	});
 
 	//Checking select city fields...
-	$("#" + $formId + " .selectpicker").each(function () {
-		var city = $(this).val();
-		if (city < 1) {
-			forms_markError($(this), "error");
-			var $err = $(this).attr('error-value');
-			if ($err && $err.length) {
-				$errors_msg.push($err);
-			}
-			if ($errors <= 1) $(this).focus();
-			$errors++;
-		}
-		else {
-			forms_markError($(this), "success");
-		}
-	});
+//	$("#" + $formId + " .selectpicker").each(function () {
+//		var city = $(this).val();
+//		if (city < 1) {
+//			forms_markError($(this), "error");
+//			var $err = $(this).attr('error-value');
+//			if ($err && $err.length) {
+//				$errors_msg.push($err);
+//			}
+//			if ($errors <= 1) $(this).focus();
+//			$errors++;
+//		}
+//		else {
+//			forms_markError($(this), "success");
+//		}
+//	});
+	//TODO: HADI Jan, please debug this. if has effect on other selectors, other than state selectors too!
 
 	if (typeof window[$formId + "_validate"] == 'function') {
 		var validate = window[$formId + "_validate"](formData, jqForm, options);

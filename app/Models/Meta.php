@@ -17,6 +17,7 @@ class Meta extends Model
 	public static function get($post_id, $key)
 	{
 		$model = Self::where('post_id', $post_id)->where('key', $key)->first();
+
 		if($model)
 			return $model->value;
 		else
