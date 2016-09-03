@@ -41,17 +41,17 @@
                         </div>
                         <div class="collapse navbar-collapse">
                           <ul class="nav navbar-nav navbar-right" id="nav-buttons">
-                            {{--<li>--}}
-                              {{--<a href="#" id="to-previous">--}}
-                                {{--<i class="fa fa-arrow-left"></i> {{ Lang::get('laravel-filemanager::lfm.nav-back') }}--}}
-                              {{--</a>--}}
-                            {{--</li>--}}
-                            {{--<li><a style='cursor:default;'>|</a></li>--}}
-                            {{--<li>--}}
-                              {{--<a href="#" id="add-folder">--}}
-                                {{--<i class="fa fa-plus"></i> {{ Lang::get('laravel-filemanager::lfm.nav-new') }}--}}
-                              {{--</a>--}}
-                            {{--</li>--}}
+                            <li>
+                              <a href="#" id="to-previous">
+                                <i class="fa fa-arrow-left"></i> {{ Lang::get('laravel-filemanager::lfm.nav-back') }}
+                              </a>
+                            </li>
+                            <li><a style='cursor:default;'>|</a></li>
+                            <li>
+                              <a href="#" id="add-folder">
+                                <i class="fa fa-plus"></i> {{ Lang::get('laravel-filemanager::lfm.nav-new') }}
+                              </a>
+                            </li>
                             <li>
                               <a href="#" id="upload" data-toggle="modal" data-target="#uploadModal">
                                 <i class="fa fa-upload"></i> {{ Lang::get('laravel-filemanager::lfm.nav-upload') }}

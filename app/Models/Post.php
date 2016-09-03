@@ -16,7 +16,10 @@ class Post extends Model
 	use TahaModelTrait ;
 	use SoftDeletes ;
 
-	protected $guarded = ['id' , 'featured_image'];
+	protected $guarded = ['id' ];
+	public $photos = [] ;
+	public $photos_count = 0 ;
+
 
 	/*
 	|--------------------------------------------------------------------------
@@ -74,6 +77,38 @@ class Post extends Model
 
 
 		//@TODO: COMPLETE THIS
+	}
+
+	public function loadPhotos()
+	{
+		$string = $this->meta('post_photos');
+
+		if(!$string)
+			return ;
+
+		$this->photos = json_decode($string , true) ;
+		$this->photos_count = sizeof($this->photos);
+	}
+
+	public function savePhotos($data)
+	{
+		$resultant_array = [] ;
+		unset($data['_photo_src_NEW']);
+
+		foreach($data as $field => $value) {
+			if(str_contains($field,'_photo_src_')) {
+				$label_field = str_replace('src' , 'label' , $field);
+				array_push($resultant_array , [
+					'src' => $value ,
+					'label' => $data[$label_field] ,
+				]);
+			}
+		}
+
+		if(sizeof($resultant_array))
+			return $this->meta('post_photos' , json_encode($resultant_array)) ;
+		else
+			return true ;
 	}
 
 	/*

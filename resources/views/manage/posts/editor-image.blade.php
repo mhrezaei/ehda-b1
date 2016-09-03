@@ -4,7 +4,7 @@
 	</div>
 
 	<div class="m10 text-center" style="">
-		<btn id="btnFeaturedImage" data-input="txtFeaturedImage" data-preview="imgFeaturedImage" class="btn btn-{{ $model->featured_image? 'default' : 'primary' }}">
+		<btn id="btnFeaturedImage" data-input="txtFeaturedImage" data-preview="imgFeaturedImage" data-callback="alert(2)" class="btn btn-{{ $model->featured_image? 'default' : 'primary' }}">
 			{{ trans('forms.button.browse_image') }}
 		</btn>
 		<input id="txtFeaturedImage" type="hidden" name="featured_image" value="{{ $model->featured_image }}">

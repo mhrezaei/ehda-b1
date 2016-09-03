@@ -10,6 +10,8 @@ class Branch extends Model
 {
 	use TahaModelTrait ;
 	use SoftDeletes ;
+	protected $guarded = ['id'];
+
 
 	/*
 	|--------------------------------------------------------------------------

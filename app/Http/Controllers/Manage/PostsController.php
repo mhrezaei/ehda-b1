@@ -160,7 +160,9 @@ class PostsController extends Controller
 	public function editor($post_id)
 	{
 		//Model...
-		$model = Post::withTrashed()->find($post_id) ; 
+		$model = Post::withTrashed()->find($post_id) ;
+		$model->loadPhotos() ;
+
 		if(!$model)
 			return view('errors.410');
 
@@ -171,7 +173,7 @@ class PostsController extends Controller
 		//Preparations...
 		$page = $this->page ;
 		$page[0] = ["posts/".$model->branch , $model->branch()->title() ] ;
-		$page[1] = ["posts/$post_id/edit" , trans('posts.manage.edit') ] ;
+		$page[1] = ["posts/$post_id/edit" , trans('posts.manage.edit' , ['thing'=>$model->branch()->singular_title]) ] ;
 
 		$domains = Auth::user()->domains()->orderBy('title') ;
 		$encrypted_branch = Crypt::encrypt($model->branch);
@@ -371,7 +373,9 @@ class PostsController extends Controller
 		}
 
 		//Stripping the Meta...
-		$metas = Meta::allowedMetaByBranch($request->branch) ;
+		$branch = Branch::findBySlug($request->branch);
+		$metas = $branch->allowedMeta() ;
+		$meta = [] ;
 		foreach($metas as $key => $blah) {
 			$meta[$key] = $data[$key] ;
 			unset($data[$key]) ;
@@ -385,6 +389,10 @@ class PostsController extends Controller
 		foreach($meta as $key => $blah) {
 			$post->meta($key , $meta[$key]) ;
 		}
+
+		//Saving attached photos...
+
+		$post->savePhotos($data) ;
 
 		//Choosing the redirection...
 		$success_redirect = str_replace('-ID-' , $is_saved , $success_redirect );

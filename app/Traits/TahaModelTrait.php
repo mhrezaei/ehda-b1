@@ -16,8 +16,16 @@ trait TahaModelTrait
 	*/
 	public static function selectBySlug($slug , $field='slug')
 	{
+		//Deprecated!
+		return self::findBySlug($slug , $field) ;
+
+	}
+
+	public static function findBySlug($slug, $field = 'slug')
+	{
 		if(!$slug) return false ;
 		return self::where($field , $slug)->first() ;
+
 	}
 
 	/*
@@ -37,22 +45,18 @@ trait TahaModelTrait
 			$data = $request->toArray();
 
 		//Unset Unnecessary things...
-		if(isset($data['_token']))
-			unset($data['_token']);
-		if(isset($data['_modal_id']))
-			unset($data['_modal_id']);
-		if(isset($data['key']))
-			unset($data['key']);
-		if(isset($data['security']))
-			unset($data['security']);
-
+		$unset_things = array_merge($unset_things , ['key' , 'security']);
 		foreach($unset_things as $unset_thing) {
 			if(isset($data[$unset_thing]))
 				unset($data[$unset_thing]);
 		}
+		foreach($data as $key => $item) {
+			if($key[0] == '_')
+				unset($data[$key]);
+		}
 
 		//Action...
-		if(isset($data['id'])) {
+		if(isset($data['id']) and $data['id'] > 0) {
 			$affected = Self::where('id', $data['id'])->update($data);
 			if(!isset($data['updated_by'])) {
 				if( Auth::check())
@@ -69,6 +73,7 @@ trait TahaModelTrait
 				else
 					$data['created_by'] = 0 ;
 			}
+
 			$model = Self::create($data);
 			if($model)
 				$affected = $model->id;

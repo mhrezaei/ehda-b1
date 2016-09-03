@@ -260,7 +260,7 @@ return [
 				'create' => 'ایجاد',
 				'publish' => 'انتشار',
 				'publish_date' => 'زمان انتشار' ,
-				'abstract' => 'خلاصه',
+				'abstract' => 'چکیده',
 				'text' => 'متن',
 				'category_id' => 'دسته‌بندی',
 				'keywords' => 'کلیدواژه‌ها',
