@@ -173,7 +173,7 @@ class PostsController extends Controller
 		//Preparations...
 		$page = $this->page ;
 		$page[0] = ["posts/".$model->branch , $model->branch()->title() ] ;
-		$page[1] = ["posts/$post_id/edit" , trans('posts.manage.edit') ] ;
+		$page[1] = ["posts/$post_id/edit" , trans('posts.manage.edit' , ['thing'=>$model->branch()->singular_title]) ] ;
 
 		$domains = Auth::user()->domains()->orderBy('title') ;
 		$encrypted_branch = Crypt::encrypt($model->branch);
