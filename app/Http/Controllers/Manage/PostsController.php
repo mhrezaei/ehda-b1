@@ -26,6 +26,78 @@ class PostsController extends Controller
 		//$this->middleware('can:posts-news');
 	}
 
+	public function searchPanel($request_branch)
+	{
+		//Security...
+		if(!Auth::user()->can("posts-$request_branch.browse"))
+			return view('errors.403');
+
+		//Model...
+		$db = Post::first() ;
+		$branch = Branch::selectBySlug($request_branch);
+
+		//Page Construction...
+		$page = $this->page ;
+		$page[0] = ["posts/".$request_branch , $branch->title() , 'search'] ;
+		$page[1] = ["$request_branch/search" , trans("forms.button.search") , "$request_branch/search"] ;
+
+		//View...
+		return view("manage.posts.search" , compact('page' , 'db' , 'branch'));
+
+	}
+
+	public function searchResult(Requests\Manage\PostSearchRequest $request , $request_branch)
+	{
+		//Security...
+		if(!Auth::user()->can("posts-$request_branch.browse"))
+			return view('errors.403');
+
+		//Model...
+		$db = Post::first() ;
+		$branch = Branch::selectBySlug($request_branch);
+		$keyword = $request->keyword ;
+		$model_data = Post::selector($request_branch , Auth::user()->domains , 'all')
+				->whereRaw(Post::searchRawQuery($keyword))
+				->paginate(50);
+
+		//Page Construction...
+		$page = $this->page ;
+		$page[0] = ["posts/".$request_branch , $branch->title() , 'search'] ;
+		$page[1] = ["$request_branch/search" , trans("forms.button.search") , "$request_branch/search"] ;
+
+		//View...
+		return view("manage.posts.browse" , compact('page','branch','model_data' , 'db' , 'keyword'));
+
+	}
+
+	public function search(Requests\Manage\PostSearchRequest $request)
+	{
+		return view('templates.say' , ['array'=>$request->toArray()]);
+
+		//Preparation...
+		$page = $this->page ;
+		$page[1] = ["search" , trans("people.volunteers.manage.search") , "search"] ;
+		$db = User::first() ;
+
+		//IF SEARCHED...
+		if(isset($request->searched)) {
+			$keyword = $request->keyword ;
+			$model_data = User::where('volunteer_status' , '!=' , '0')
+					->where('name_first','like',"%{$keyword}%")
+					->orWhere('name_last','like',"%{$keyword}%")
+					->orWhere('code_melli','like',"%{$keyword}%")
+					->orWhere('email','like',"%{$keyword}%")
+					->orderBy('created_at' , 'desc')->paginate(50);
+
+			return view('manage.volunteers.browse' , compact('page' , 'model_data' , 'db'));
+		}
+
+		//IF JUST FORM...
+		return view("manage.volunteers.search" , compact('page' , 'db'));
+
+	}
+
+
 	public function browse($request_branch, $request_tab = 'published')
 	{
 		//Redirect if $request_branch is a number!
@@ -80,7 +152,7 @@ class PostsController extends Controller
 		$page[1] = ["$request_branch/".$request_tab , trans("posts.manage.$request_tab") , "$request_branch/".$request_tab] ;
 
 		//Model...
-		$model_data = Post::selector($request_branch, $request_tab)->orderBy('created_at' , 'desc')->paginate(50);
+		$model_data = Post::selector($request_branch, Auth::user()->domains , $request_tab)->orderBy('created_at' , 'desc')->paginate(50);
 		$db = Post::first() ;
 
 		//View...
@@ -120,6 +192,8 @@ class PostsController extends Controller
 		return view($view , compact('model' , 'opt')) ;
 
 	}
+
+
 
 	private function modalBulkAction($view_file)
 	{

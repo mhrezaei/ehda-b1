@@ -52,7 +52,7 @@ class VolunteersController extends Controller
 					->orWhere('email','like',"%{$keyword}%")
 					->orderBy('created_at' , 'desc')->paginate(50);
 
-			return view('manage.volunteers.browse' , compact('page' , 'model_data' , 'db'));
+			return view('manage.volunteers.browse' , compact('page' , 'model_data' , 'db' , 'keyword'));
 		}
 
 		//IF JUST FORM...

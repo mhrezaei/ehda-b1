@@ -156,7 +156,7 @@ trait PermitsTrait
 		return $return ;
 	}
 
-	private function domainsStringToArray($string)
+	public static function domainsStringToArray($string)
 	{
 		return array_values(array_filter(explode('|',$string)));
 	}

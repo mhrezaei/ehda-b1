@@ -40,6 +40,7 @@
 			@include('manage.frame.widgets.toolbar_search_inline' , [
 				'target' => url('manage/volunteers/search/') ,
 				'label' => trans('people.commands.search') ,
+				'value' => isset($keyword)? $keyword : '' ,
 			])
 		</div>
 	</div>

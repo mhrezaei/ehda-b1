@@ -36,8 +36,9 @@
 			{{--])--}}
 
 			@include('manage.frame.widgets.toolbar_search_inline' , [
-				'target' => url('manage/posts/search/') ,
+				'target' => url('manage/posts/'.$branch->slug.'/searched/') ,
 				'label' => trans('posts.manage.search' , ['thing'=>$branch->title(1)]) ,
+				'value' => isset($keyword)? $keyword : '' ,
 			])
 		</div>
 	</div>

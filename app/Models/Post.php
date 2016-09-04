@@ -11,6 +11,12 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Morilog\Jalali\jDate;
 
+/*
+| Help for Hadi:
+| To list records: Post::selector($branch_slug or 'all' , $domain_slug or 'global)
+| To search a keyword: Post::selector(☝☝☝)->whereRaw(Post::searchRawQuery($keyword))
+*/
+
 
 class Post extends Model
 {
@@ -106,28 +112,54 @@ class Post extends Model
 		return $this->selector($branch , $criteria)->count() ;
 	}
 
-	public static function selector($branch , $criteria)
+	public static function searchRawQuery($keyword, $fields = ['title', 'keywords', 'abstract'])
+	{
+		$query = "0 " ;
+		foreach($fields as $field) {
+			$query .= " or `$field` like '%$keyword%' "  ;
+		}
+
+		return "($query)" ;
+	}
+
+	public static function selector($branch , $domains='global' , $criteria='published')
 	{
 		$now = Carbon::now()->toDateTimeString();
+
+		//Process Domain...
+		$domain_array = User::domainsStringToArray($domains);
+		$query = "0 " ;
+		foreach($domain_array as $domain) {
+			$query .= " or `domains` like '%|$domain|%' " ;
+		}
+		$table = self::whereRaw("($query)") ;
+
+		//Process Branches...
+		if($branch == 'all' )
+			$table = $table->where('branch' , $branch) ;
+		else
+			$table = $table->where( "branch" , 'not like' , '%dev%' );
+
+		//Process Criteria...
 		switch($criteria) {
 			case 'all' :
-				return self::where('branch' , $branch) ;
+				return $table ;
 			case 'published':
-				return self::where('branch',$branch)->whereDate('published_at','<=',$now)->whereNotNull('published_by') ;
+				return $table->whereDate('published_at','<=',$now)->whereNotNull('published_by') ;
 			case 'scheduled' :
-				return self::where('branch',$branch)->whereDate('published_at','>',$now)->whereNotNull('published_by') ;
+				return $table->whereDate('published_at','>',$now)->whereNotNull('published_by') ;
 			case 'pending':
-				return self::where('branch',$branch)->whereNull('published_at')->where('is_draft',false) ;
+				return $table->whereNull('published_at')->where('is_draft',false) ;
 			case 'drafts' :
-				return self::where('branch',$branch)->where('is_draft',true)->whereNull('published_by');
+				return $table->where('is_draft',true)->whereNull('published_by');
 			case 'my_posts' :
-				return self::where('branch',$branch)->where('created_by',Auth::user()->id)->where('is_draft',0);
+				return $table->where('created_by',Auth::user()->id)->where('is_draft',0);
 			case 'my_drafts' :
-				return self::where('branch',$branch)->where('created_by',Auth::user()->id)->where('is_draft',true)->whereNull('published_by');
+				return $table->where('created_by',Auth::user()->id)->where('is_draft',true)->whereNull('published_by');
 			case 'bin' :
-				return self::onlyTrashed()->where('branch',$branch);
+				return $table->onlyTrashed();
 			default:
-				return null ;
+				return $table->where('id' , '0') ;
 		}
 	}
 

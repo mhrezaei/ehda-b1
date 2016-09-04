@@ -18,10 +18,10 @@ return [
 		'donates' => ['browse','view','search','report'],
 		'submits' => ['browse', 'view' , 'search' , 'report','cats','delete','bin'],
 		'exams' => ['browse','search','create','edit','publish','report','cats','delete','bin'],
-		'posts-static' => ['browse','view','search','create','edit','publish','report','delete','bin'],
-		'posts-news' => ['browse','view','search','create','edit','publish','report','delete','bin'],
-		'posts-celebs' => ['browse','view','search','create','edit','publish','report','delete','bin'],
-		'posts-gallery' => ['browse','view','search','create','edit','publish','report','delete','bin'],
+		'posts-static' => ['browse','view','create','edit','publish','report','delete','bin'],
+		'posts-news' => ['browse','view','create','edit','publish','report','delete','bin'],
+		'posts-celebs' => ['browse','view','create','edit','publish','report','delete','bin'],
+		'posts-gallery' => ['browse','view','create','edit','publish','report','delete','bin'],
 	] ,
 
 	'available_permits' => [
