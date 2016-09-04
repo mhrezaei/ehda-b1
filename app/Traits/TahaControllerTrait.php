@@ -6,6 +6,29 @@ trait TahaControllerTrait
 {
 	/*
 	|--------------------------------------------------------------------------
+	| Simple Return
+	|--------------------------------------------------------------------------
+	| Just for the ease of access
+	*/
+	private function feedback($is_ok = false , $message = null)
+	{
+		if(!$is_ok) {
+			if(!$message)
+				$message = trans('forms.feed.error') ;
+			echo ' <div class="alert alert-danger">'. $message .'</div> ';
+			die() ;
+		}
+		else {
+			if(!$message)
+				$message = trans('forms.feed.done') ;
+			echo ' <div class="alert alert-success">'. $message .'</div> ';
+			die() ;
+
+		}
+	}
+
+	/*
+	|--------------------------------------------------------------------------
 	| Shortcuts to Json Feeds
 	|--------------------------------------------------------------------------
 	|

@@ -6,7 +6,7 @@
 		<div class="m10">
 			{{ trans('posts.manage.warn_deleted_post') }}
 		</div>
-		@if($model->canBin())
+		@if($model->canBin() or $model->canDelete())
 			<div class="m10">
 				{{ trans('posts.manage.warn_deleted_post_hint') }}
 			</div>

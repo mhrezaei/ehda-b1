@@ -263,6 +263,45 @@ class PostsController extends Controller
 	|
 	*/
 
+	private function unpublish($post_id)
+	{
+		//Preparations...
+		$model = Post::find($post_id) ;
+		if(!$model) return $this->jsonFeedback() ;
+
+		if(!Auth::user()->can('posts-'.$model->branch.".publish",$model->domains))
+			return $this->jsonFeedback(trans('validation.http.Eror403')) ;
+
+		//Action...
+		if($model->unpublish())
+			echo ' <div class="alert alert-success">'. trans('forms.feed.done') .'</div> ';
+		else
+			echo ' <div class="alert alert-danger">'. trans('forms.feed.error') .'</div> ';
+
+	}
+
+
+	/**
+	 * @param $post_id
+	 */
+	public function soft_delete($post_id)
+	{
+
+		//Preparations...
+		$model = Post::find($post_id) ;
+		if(!$model)
+			$this->feedback() ;
+
+		if(!$model->canDelete())
+			$this->feedback(false , trans('validation.http.Eror403'));
+
+		//Action...
+		$is_ok = $model->delete() ;
+		$this->feedback($is_ok);
+
+
+	}
+
 
 	public function hard_delete(Request $request)
 	{
@@ -356,7 +395,7 @@ class PostsController extends Controller
 		//Reading the domains...
 		if(1) {
 			$data['domains'] = '|' . $data['domains'] . '|' ;
-			if($data['in_global'] and $data['domains'] != '|global|')
+			if(isset($data['in_global']) and $data['in_global'] and $data['domains'] != '|global|')
 				$data['domains'] .= '|global|' ;
 			unset($data['in_global']) ;
 
@@ -417,6 +456,21 @@ class PostsController extends Controller
 
 
 	}
+
+	public function undelete($post_id)
+	{
+		$model = Post::withTrashed()->find($post_id) ;
+		if(!$model) return $this->jsonFeedback() ;
+
+		if(!$model->canDelete())
+			$this->feedback(false , trans('validation.http.Eror403'));
+
+		//Action...
+		$ok = $model->restore() ;
+		$this->feedback($ok);
+
+	}
+
 
 
 }
