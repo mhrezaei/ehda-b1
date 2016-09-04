@@ -13,9 +13,13 @@ trait TahaMetaTrait
 {
 
 
+	/**
+	 * @return an Eloquent table of all metas designated to the object
+	 */
 	public function metas()
 	{
-		return $this->hasMany('App\Models\Meta') ;
+		return Meta::where('model_name' , $this->className())->where('record_id', $this->id) ;
+
 	}
 
 
