@@ -21,7 +21,7 @@ return [
 		'posts-static' => ['browse','view','search','create','edit','publish','report','delete','bin'],
 		'posts-news' => ['browse','view','search','create','edit','publish','report','delete','bin'],
 		'posts-celebs' => ['browse','view','search','create','edit','publish','report','delete','bin'],
-		'posts-slideshows' => ['browse','view','search','create','edit','publish','report','delete','bin'],
+		'posts-gallery' => ['browse','view','search','create','edit','publish','report','delete','bin'],
 	] ,
 
 	'available_permits' => [

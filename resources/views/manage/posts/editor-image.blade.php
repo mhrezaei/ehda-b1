@@ -4,20 +4,20 @@
 	</div>
 
 	<div class="m10 text-center" style="">
-		<btn id="btnFeaturedImage" data-input="txtFeaturedImage" data-preview="imgFeaturedImage" data-callback="alert(2)" class="btn btn-{{ $model->featured_image? 'default' : 'primary' }}">
+		<btn id="btnFeaturedImage" data-input="txtFeaturedImage" data-preview="imgFeaturedImage" data-callback="postEditorFeatures('featured_image_inserted')" class="btn btn-{{ $model->featured_image? 'default' : 'primary' }}">
 			{{ trans('forms.button.browse_image') }}
 		</btn>
 		<input id="txtFeaturedImage" type="hidden" name="featured_image" value="{{ $model->featured_image }}">
-		<div class="text-center">
-			<img id="imgFeaturedImage" src="{{ $model->featured_image }}" style="margin-top:15px;max-height:100px;" ondblclick="postEditorFeatures('delete_featured_image')">
-		</div>
-		@if($model->featured_image)
+		<div id="divFeaturedImage" class="{{ $model->featured_image? '' : 'noDisplay' }}">
+			<div class="text-center">
+				<img id="imgFeaturedImage" src="{{ $model->featured_image }}" style="margin-top:15px;max-height:100px;" ondblclick="postEditorFeatures('delete_featured_image')">
+			</div>
 			<btn id="btnDeleteFeaturedImage" class="btn btn-link btn-xs">
-				<span class="text-danger clickable" onclick="postEditorFeatures('delete_featured_image')">
-					{{ trans('posts.manage.delete_featured_image') }}
-				</span>
+			<span class="text-danger clickable" onclick="postEditorFeatures('featured_image_deleted')">
+				{{ trans('posts.manage.delete_featured_image') }}
+			</span>
 			</btn>
-		@endif
+		</div>
 	</div>
 </div>
 

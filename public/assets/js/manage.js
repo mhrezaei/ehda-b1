@@ -171,11 +171,16 @@ function postEditorFeatures($special_action = null)
 {
 
 	switch( $special_action) {
-		case 'delete_featured_image' :
+		case 'featured_image_inserted' :
+			$('#divFeaturedImage').slideDown() ;
+			$('#btnFeaturedImage').addClass('btn-default').removeClass('btn-primary');
+			break;
+
+		case 'featured_image_deleted' :
+			$('#divFeaturedImage').slideUp('fast') ;
 			$('#txtFeaturedImage').val('');
 			$('#imgFeaturedImage').attr('src','');
 			$('#btnFeaturedImage').addClass('btn-primary').removeClass('btn-default');
-			$('#btnDeleteFeaturedImage').hide();
 			break;
 
 		default :
@@ -193,6 +198,7 @@ function postEditorFeatures($special_action = null)
 			break;
 	}
 }
+
 
 function postPhotoAdded()
 {
