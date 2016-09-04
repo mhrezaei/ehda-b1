@@ -8,11 +8,6 @@ class Meta extends Model
 {
 	//
 
-	public function post()
-	{
-		$this->belongsTo('App\Models\Post');
-	}
-
 
 	public static function get($model_name , $record_id, $key)
 	{
