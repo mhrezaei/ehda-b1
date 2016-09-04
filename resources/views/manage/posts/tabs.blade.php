@@ -8,6 +8,6 @@
 		['my_posts' , trans('posts.manage.my_posts') , 'posts-'.$branch->slug.'.create'],
 		['my_drafts' , trans('posts.manage.my_drafts') , 'posts-'.$branch->slug.'.create',$db->counter($branch->slug , 'my_drafts') , 'info'],
 		['bin' , trans('posts.manage.bin') , 'posts-'.$branch->slug.'.bin'],
-		['search' , trans('people.volunteers.manage.search') , 'posts-'.$branch->slug.'.search'],
+		['search' , trans('people.volunteers.manage.search') , 'posts-'.$branch->slug],
 	] ,
 ])

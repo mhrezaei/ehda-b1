@@ -101,19 +101,13 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 	*/
 	Route::group(['prefix'=>'posts'] , function() {
 		Route::get('/{branch_slug}' , 'PostsController@browse') ;
+		Route::get('{branch_slug}/searched' , 'PostsController@searchResult');
+		Route::get('{branch_slug}/search' , 'PostsController@searchPanel');
 		Route::get('/{branch_slug}/{request_tab}' , 'PostsController@browse') ;
 
 		Route::group(['prefix'=>'save'] , function() {
 			Route::post('/' , 'PostsController@save');
-
-			Route::post('/soft_delete' , 'PostsController@soft_delete');
-			Route::post('/bulk_soft_delete' , 'PostsController@bulk_soft_delete');
-			Route::post('/undelete' , 'PostsController@undelete');
-			Route::post('/bulk_undelete' , 'PostsController@bulk_undelete');
 			Route::post('/hard_delete' , 'PostsController@hard_delete');
-			Route::post('/bulk_hard_delete' , 'PostsController@bulk_hard_delete');
-			Route::post('/publish' , 'PostsController@publish');
-			Route::post('/bulk_publish' , 'PostsController@bulk_publish');
 		});
 	});
 

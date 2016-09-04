@@ -10,7 +10,7 @@
 			else
 				$active = false ;
 		?>
-		@if(\Illuminate\Support\Facades\Auth::user()->can($permit))
+		@if(Auth::user()->can($permit))
 			<li class="{{ $active ? 'active' : '' }}">
 				<a href="{{ url($active ? '#' : "manage/".$page[0][0]."/".$url) }}">
 					{{$caption}}

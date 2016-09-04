@@ -5,6 +5,7 @@ namespace App\models;
 use App\Traits\TahaModelTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Crypt;
 
 class Branch extends Model
 {
@@ -71,5 +72,10 @@ class Branch extends Model
 			return $this->singular_title ;
 		else
 			return $this->plural_title ;
+	}
+
+	public function encrypted()
+	{
+		return Crypt::encrypt($this->slug);
 	}
 }

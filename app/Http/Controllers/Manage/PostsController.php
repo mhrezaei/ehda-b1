@@ -26,6 +26,78 @@ class PostsController extends Controller
 		//$this->middleware('can:posts-news');
 	}
 
+	public function searchPanel($request_branch)
+	{
+		//Security...
+		if(!Auth::user()->can("posts-$request_branch.browse"))
+			return view('errors.403');
+
+		//Model...
+		$db = Post::first() ;
+		$branch = Branch::selectBySlug($request_branch);
+
+		//Page Construction...
+		$page = $this->page ;
+		$page[0] = ["posts/".$request_branch , $branch->title() , 'search'] ;
+		$page[1] = ["$request_branch/search" , trans("forms.button.search") , "$request_branch/search"] ;
+
+		//View...
+		return view("manage.posts.search" , compact('page' , 'db' , 'branch'));
+
+	}
+
+	public function searchResult(Requests\Manage\PostSearchRequest $request , $request_branch)
+	{
+		//Security...
+		if(!Auth::user()->can("posts-$request_branch.browse"))
+			return view('errors.403');
+
+		//Model...
+		$db = Post::first() ;
+		$branch = Branch::selectBySlug($request_branch);
+		$keyword = $request->keyword ;
+		$model_data = Post::selector($request_branch , Auth::user()->domains , 'all')
+				->whereRaw(Post::searchRawQuery($keyword))
+				->paginate(50);
+
+		//Page Construction...
+		$page = $this->page ;
+		$page[0] = ["posts/".$request_branch , $branch->title() , 'search'] ;
+		$page[1] = ["$request_branch/search" , trans("forms.button.search") , "$request_branch/search"] ;
+
+		//View...
+		return view("manage.posts.browse" , compact('page','branch','model_data' , 'db' , 'keyword'));
+
+	}
+
+	public function search(Requests\Manage\PostSearchRequest $request)
+	{
+		return view('templates.say' , ['array'=>$request->toArray()]);
+
+		//Preparation...
+		$page = $this->page ;
+		$page[1] = ["search" , trans("people.volunteers.manage.search") , "search"] ;
+		$db = User::first() ;
+
+		//IF SEARCHED...
+		if(isset($request->searched)) {
+			$keyword = $request->keyword ;
+			$model_data = User::where('volunteer_status' , '!=' , '0')
+					->where('name_first','like',"%{$keyword}%")
+					->orWhere('name_last','like',"%{$keyword}%")
+					->orWhere('code_melli','like',"%{$keyword}%")
+					->orWhere('email','like',"%{$keyword}%")
+					->orderBy('created_at' , 'desc')->paginate(50);
+
+			return view('manage.volunteers.browse' , compact('page' , 'model_data' , 'db'));
+		}
+
+		//IF JUST FORM...
+		return view("manage.volunteers.search" , compact('page' , 'db'));
+
+	}
+
+
 	public function browse($request_branch, $request_tab = 'published')
 	{
 		//Redirect if $request_branch is a number!
@@ -80,7 +152,7 @@ class PostsController extends Controller
 		$page[1] = ["$request_branch/".$request_tab , trans("posts.manage.$request_tab") , "$request_branch/".$request_tab] ;
 
 		//Model...
-		$model_data = Post::selector($request_branch, $request_tab)->orderBy('created_at' , 'desc')->paginate(50);
+		$model_data = Post::selector($request_branch, Auth::user()->domains , $request_tab)->orderBy('created_at' , 'desc')->paginate(50);
 		$db = Post::first() ;
 
 		//View...
@@ -120,6 +192,8 @@ class PostsController extends Controller
 		return view($view , compact('model' , 'opt')) ;
 
 	}
+
+
 
 	private function modalBulkAction($view_file)
 	{
@@ -207,63 +281,40 @@ class PostsController extends Controller
 	}
 
 
+	/**
+	 * @param $post_id
+	 */
 	public function soft_delete($post_id)
 	{
 
 		//Preparations...
 		$model = Post::find($post_id) ;
-		if(!$model) return $this->jsonFeedback() ;
+		if(!$model)
+			$this->feedback() ;
 
-		if(!Auth::user()->can('posts-'.$model->branch.".delete",$model->domains))
-			return $this->jsonFeedback(trans('validation.http.Eror403')) ;
-
-		if(!Auth::user()->can('posts-'.$model->branch.'.delete')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
-
-		//Action...
-		if($model->delete())
-			echo ' <div class="alert alert-success">'. trans('forms.feed.done') .'</div> ';
-		else
-			echo ' <div class="alert alert-danger">'. trans('forms.feed.error') .'</div> ';
-
-	}
-
-	public function bulk_soft_delete(Request $request)
-	{
-		//TODO: Problem: Checking the permission is a little difficult here. Better to disable bulk deletting!
-		if(!Auth::user()->can('volunteers.delete')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
-
-		$deleted = User::bulkDelete($request->ids , Auth::user()->id);
-		return $this->jsonAjaxSaveFeedback($deleted , [
-				'success_refresh' => true ,
-		]);
-	}
-
-	public function undelete($post_id)
-	{
-		$model = Post::withTrashed()->find($post_id) ;
-		if(!$model) return $this->jsonFeedback() ;
-
-		if(!Auth::user()->can('posts-'.$model->branch.".delete",$model->domains))
-			return $this->jsonFeedback(trans('validation.http.Eror403')) ;
+		if(!$model->canDelete())
+			$this->feedback(false , trans('validation.http.Eror403'));
 
 		//Action...
-		if($model->restore())
-			echo ' <div class="alert alert-success">'. trans('forms.feed.done') .'</div> ';
-		else
-			echo ' <div class="alert alert-danger">'. trans('forms.feed.error') .'</div> ';
+		$is_ok = $model->delete() ;
+		$this->feedback($is_ok);
+
 
 	}
+
 
 	public function hard_delete(Request $request)
 	{
 		$model = Post::withTrashed()->find($request->id) ;
-		if(!Auth::user()->can('posts-'.$model->branch.'.bin')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
+		if(!Auth::user()->isDeveloper() ) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
 
 		if(!$model->trashed()) return $this->jsonFeedback(trans('validation.http.Eror403'));
+
+
 		$done = $model->forceDelete();
 
 		return $this->jsonAjaxSaveFeedback($done , [
-				'success_refresh' => true ,
+//				'success_refresh' => true ,
 		]);
 
 	}
@@ -344,7 +395,7 @@ class PostsController extends Controller
 		//Reading the domains...
 		if(1) {
 			$data['domains'] = '|' . $data['domains'] . '|' ;
-			if($data['in_global'] and $data['domains'] != '|global|')
+			if(isset($data['in_global']) and $data['in_global'] and $data['domains'] != '|global|')
 				$data['domains'] .= '|global|' ;
 			unset($data['in_global']) ;
 
@@ -405,6 +456,21 @@ class PostsController extends Controller
 
 
 	}
+
+	public function undelete($post_id)
+	{
+		$model = Post::withTrashed()->find($post_id) ;
+		if(!$model) return $this->jsonFeedback() ;
+
+		if(!$model->canDelete())
+			$this->feedback(false , trans('validation.http.Eror403'));
+
+		//Action...
+		$ok = $model->restore() ;
+		$this->feedback($ok);
+
+	}
+
 
 
 }

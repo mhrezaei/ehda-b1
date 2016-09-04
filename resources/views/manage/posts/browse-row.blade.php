@@ -25,7 +25,14 @@
 	@endif
 </td>
 
-<td>-</td>
+<td>
+	{{ $model->say('domains') }}
+	@if($model->is_global_reflect )
+		<div class="mv10 f10 text-success">
+			{{trans('posts.manage.also_in_global')}}
+		</div>
+	@endif
+</td>
 
 
 <td>
@@ -34,12 +41,7 @@
 		'actions' => [
 			['eye' , trans('manage.permits.view') , "urlN:".$model->say('link')],
 			['pencil' , trans('manage.permits.edit') , "url:manage/posts/-id-/edit" , '*' , $model->canEdit()],
-
-			['check' , trans('validation.attributes.publish') , 'modal:manage/posts/-id-/publish' , "$module.publish" , !$model->published_at],
-
-			['trash-o' , trans('forms.button.soft_delete') , 'modal:manage/posts/-id-/soft_delete' , "$module.delete" , !$model->trashed()] ,
-			['undo' , trans('forms.button.undelete') , 'modal:manage/posts/-id-/undelete' , "$module.bin" , $model->trashed()] ,
-			['times' , trans('forms.button.hard_delete') , 'modal:manage/posts/-id-/hard_delete' , "$module.bin" , $model->trashed()] ,
+			['times' , trans('forms.button.hard_delete') , 'modal:manage/posts/-id-/hard_delete' , "$module.bin" , Auth::user()->isDeveloper()] ,
 
 
 		],
