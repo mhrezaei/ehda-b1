@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Providers\AppServiceProvider;
+use App\Traits\TahaMetaTrait;
 use App\Traits\TahaModelTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -15,6 +16,7 @@ class Post extends Model
 {
 	use TahaModelTrait ;
 	use SoftDeletes ;
+	use TahaMetaTrait ;
 
 	protected $guarded = ['id' ];
 	public $photos = [] ;
@@ -37,26 +39,6 @@ class Post extends Model
 	public function post_comments()
 	{
 		return $this->hasMany('App\Models\Post_comment');
-	}
-
-	public function metas()
-	{
-		return $this->hasMany('App\Models\Meta') ;
-	}
-
-
-	/**
-	 * Automatic read an write to meta. Provide a value to perform write. Do not enter value to perform read.
-	 * @param        $key
-	 * @param string $value
-	 * @return bool|null
-	 */
-	public function meta($key , $value='READ')
-	{
-		if($value==='READ')
-			return Meta::get($this->id , $key) ;
-		else
-			return Meta::set($this->id , $key , $value) ;
 	}
 
 	public function post_medias()
@@ -236,7 +218,6 @@ class Post extends Model
 
 	public function status($key = null)
 	{
-
 		//Discover...
 		if(!$this->id) {
 			$return['text'] = trans('posts.status.unsaved');
