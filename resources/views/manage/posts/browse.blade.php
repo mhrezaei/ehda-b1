@@ -55,7 +55,7 @@
 		'headings' => [
 			trans('validation.attributes.title') ,
 			trans('posts.manage.properties'),
-			trans('posts.manage.comments'),
+			trans('posts.manage.visibility'),
 			trans('forms.button.action'),
 		],
 	])

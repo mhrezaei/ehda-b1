@@ -21,6 +21,7 @@ class Post extends Model
 	protected $guarded = ['id' ];
 	public $photos = [] ;
 	public $photos_count = 0 ;
+	public $is_global_reflect = false ;
 
 
 	/*
@@ -290,7 +291,17 @@ class Post extends Model
 					return trans('forms.general.deleted');
 
 			case 'domains' :
-				return $this->domains() ;
+				$slug = trim(str_replace('|' , null , str_replace('global' , null , $this->domains)));
+				$domain = Domain::selectBySlug($slug) ;
+				if($domain) {
+					if(str_contains($this->domains , 'global'))
+						$this->is_global_reflect = true ;
+					return $domain->title;
+				}
+				elseif(trim(str_replace('|' , null ,$this->domains)) == 'global')
+					return trans('posts.manage.global') ;
+				else
+					return $default ;
 
 			case 'link' :
 				return url("post/".$this->id."/".$this->title) ; //TODO: Correct this

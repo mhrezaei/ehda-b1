@@ -46,6 +46,15 @@
 			    'hint' => trans('posts.manage.title_hint') ,
 			])
 
+			@if(Auth::user()->isDeveloper())
+				@include('forms.input' , [
+					'name' => 'slug',
+					'value' => $model->slug ,
+					'class' => 'ltr',
+					'hint' => trans('posts.manage.slug_hint') ,
+				])
+			@endif
+
 			@if(!$model->branch()->is_gallery)
 				@include('forms.textarea' , [
 					'name' => 'text',

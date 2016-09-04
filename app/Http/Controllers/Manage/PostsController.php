@@ -189,81 +189,19 @@ class PostsController extends Controller
 	|
 	*/
 
-	private function unpublish($post_id)
-	{
-		//Preparations...
-		$model = Post::find($post_id) ;
-		if(!$model) return $this->jsonFeedback() ;
-
-		if(!Auth::user()->can('posts-'.$model->branch.".publish",$model->domains))
-			return $this->jsonFeedback(trans('validation.http.Eror403')) ;
-
-		//Action...
-		if($model->unpublish())
-			echo ' <div class="alert alert-success">'. trans('forms.feed.done') .'</div> ';
-		else
-			echo ' <div class="alert alert-danger">'. trans('forms.feed.error') .'</div> ';
-
-	}
-
-
-	public function soft_delete($post_id)
-	{
-
-		//Preparations...
-		$model = Post::find($post_id) ;
-		if(!$model) return $this->jsonFeedback() ;
-
-		if(!Auth::user()->can('posts-'.$model->branch.".delete",$model->domains))
-			return $this->jsonFeedback(trans('validation.http.Eror403')) ;
-
-		if(!Auth::user()->can('posts-'.$model->branch.'.delete')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
-
-		//Action...
-		if($model->delete())
-			echo ' <div class="alert alert-success">'. trans('forms.feed.done') .'</div> ';
-		else
-			echo ' <div class="alert alert-danger">'. trans('forms.feed.error') .'</div> ';
-
-	}
-
-	public function bulk_soft_delete(Request $request)
-	{
-		//TODO: Problem: Checking the permission is a little difficult here. Better to disable bulk deletting!
-		if(!Auth::user()->can('volunteers.delete')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
-
-		$deleted = User::bulkDelete($request->ids , Auth::user()->id);
-		return $this->jsonAjaxSaveFeedback($deleted , [
-				'success_refresh' => true ,
-		]);
-	}
-
-	public function undelete($post_id)
-	{
-		$model = Post::withTrashed()->find($post_id) ;
-		if(!$model) return $this->jsonFeedback() ;
-
-		if(!Auth::user()->can('posts-'.$model->branch.".delete",$model->domains))
-			return $this->jsonFeedback(trans('validation.http.Eror403')) ;
-
-		//Action...
-		if($model->restore())
-			echo ' <div class="alert alert-success">'. trans('forms.feed.done') .'</div> ';
-		else
-			echo ' <div class="alert alert-danger">'. trans('forms.feed.error') .'</div> ';
-
-	}
 
 	public function hard_delete(Request $request)
 	{
 		$model = Post::withTrashed()->find($request->id) ;
-		if(!Auth::user()->can('posts-'.$model->branch.'.bin')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
+		if(!Auth::user()->isDeveloper() ) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
 
 		if(!$model->trashed()) return $this->jsonFeedback(trans('validation.http.Eror403'));
+
+
 		$done = $model->forceDelete();
 
 		return $this->jsonAjaxSaveFeedback($done , [
-				'success_refresh' => true ,
+//				'success_refresh' => true ,
 		]);
 
 	}
