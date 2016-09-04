@@ -10,6 +10,20 @@ trait TahaModelTrait
 
 	/*
 	|--------------------------------------------------------------------------
+	| Enrichment Methods
+	|--------------------------------------------------------------------------
+	|
+	*/
+	public function className()
+	{
+		$full_name = self::class ;
+		$name_array = explode("\\" , $full_name) ;
+		$short_name = $name_array[ sizeof($name_array)-1 ] ;
+		return $short_name ;
+	}
+
+	/*
+	|--------------------------------------------------------------------------
 	| General Select Methods
 	|--------------------------------------------------------------------------
 	|

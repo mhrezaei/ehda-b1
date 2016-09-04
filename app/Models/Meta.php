@@ -14,9 +14,9 @@ class Meta extends Model
 	}
 
 
-	public static function get($post_id, $key)
+	public static function get($model_name , $record_id, $key)
 	{
-		$model = Self::where('post_id', $post_id)->where('key', $key)->first();
+		$model = Self::where('model_name', $model_name)->where('record_id', $record_id)->where('key', $key)->first();
 
 		if($model)
 			return $model->value;
@@ -24,25 +24,26 @@ class Meta extends Model
 			return null ;
 	}
 
-	public static function set($post_id , $key , $value)
+	public static function set($model_name , $record_id , $key , $value)
 	{
 		//safety...
-		if(!$post_id)
+		if(!$model_name or !$record_id)
 			return false ;
 
 		//If no value: delete
 		if(!$value)
-			return self::where('post_id' , $post_id)->where('key' , $key)->delete() ;
+			return self::where('model_name' , $model_name)->where('record_id' , $record_id)->where('key' , $key)->delete() ;
 
 		//automatic insert or update
-		$meta = self::where('post_id' , $post_id)->where('key' , $key)->first() ;
+		$meta = self::where('model_name' , $model_name)->where('record_id' , $record_id)->where('key' , $key)->first() ;
 		if($meta) {
 			$meta->value = $value ;
 			return $meta->save() ;
 		}
 		else {
 			$meta = new self ;
-			$meta->post_id = $post_id ;
+			$meta->model_name = $model_name ;
+			$meta->record_id = $record_id ;
 			$meta->key = $key ;
 			$meta->value = $value ;
 			return $meta->save() ;
