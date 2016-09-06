@@ -266,6 +266,7 @@ return [
 				'keywords' => 'کلیدواژه‌ها',
 				'allowed_meta' => 'متاهای مجاز' ,
 				'featured_image' => 'نمایه',
+				'card_no' => 'شماره کارت' ,
 
 			"token" => "توکن",
 

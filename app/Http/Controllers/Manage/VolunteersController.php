@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Manage;
 
 use App\Events\SendEmail;
 use App\Events\SendSms;
-use App\Events\VolunteerAccountPublished;
-use App\Events\VolunteerPasswordManualReset;
+use App\Events\UserAccountPublished;
+use App\Events\UserPasswordManualReset;
 use App\Http\Requests\Manage\VolunteerSearchRequest;
 use App\Models\Domain;
 use App\Models\State;

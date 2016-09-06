@@ -8,6 +8,7 @@ use App\Models\State;
 use App\Models\User;
 use App\Models\Volunteer;
 use App\Temp\Mhr_safiran_data;
+use App\Temp\Mhr_users_old;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -29,7 +30,9 @@ class TestController extends Controller
 	{
 //		$this->convertVolunteers() ;
 //		$this->convertVolunteers2Users() ;
-		return view('templates.say' , ['array'=>date('Y/m/d H:i:s' , 9993775497)]);
+//		return view('templates.say' , ['array'=>date('Y/m/d H:i:s' , 9993775497)]);
+		return view('templates.say' , ['array'=>Auth::user()]);
+
 		
 	}
 
@@ -39,6 +42,90 @@ class TestController extends Controller
 	|--------------------------------------------------------------------------
 	|
 	*/
+
+	private function makeDomainsFromHomeCities()
+	{
+		$users = User::where('card_status' , '!=' , '0')->whereNull('from_domain')->get() ;
+
+		foreach($users as $user) {
+			$city = State::find($user->home_city) ;
+			if($city) {
+				$user->from_domain = $city->domain->slug ;
+				$user->update() ;
+				echo view('templates.say' , ['array'=>[$user->id,$city->domain->slug]]);
+			}
+		}
+	}
+
+	private function convertCardsFromMhr()
+	{
+		$cards = Mhr_users_old::whereBetween('id' , ['15000' , '17000'])->whereNull('res1')->get() ;
+
+		foreach($cards as $card) {
+			$user = new User() ;
+
+			//Put away existance Code_mellis
+			$v = User::findBySlug($card->nationalCode , 'code_melli') ;
+			if($v)
+				continue ;
+
+			$birth_city = State::findByName($card->placeOfBirth) ;
+			if($birth_city)
+				$birth_city = $birth_city->id ;
+			else
+				$birth_city = 0  ;
+
+			//Copying...
+			$user->created_at = Carbon::createFromTimestamp($card->registerTime)->toDateTimeString() ;
+			$user->updated_at = $user->created_at ;
+			$user->deleted_at = null ;
+			$user->published_at = null ;
+			$user->created_by = 0 ;
+			$user->updated_by = 0 ;
+			$user->deleted_by = 0 ;
+			$user->published_by = 0 ;
+			$user->card_status = 8 ;
+			$user->card_registered_at = $user->created_at ;
+			$user->email = $card->email ;
+			$user->password = $card->passWord ;
+			$user->code_melli = $card->nationalCode ;
+			$user->code_id = $card->identifier ;
+			$user->name_first = $card->firstName ;
+			$user->name_last = $card->lastName ;
+			$user->name_father = $card->firstFatherName ;
+			$user->birth_date = Carbon::createFromTimestamp($card->dateOfBirth)->toDateTimeString() ;
+			$user->birth_city = $birth_city;
+			$user->gender = $card->sex ;
+			$user->marital = 0 ;
+			$user->tel_mobile = $card->mobile ;
+			$user->tel_emergency = null ;
+			$user->home_address = $card->address ;
+			$user->home_province = $card->state ;
+			$user->home_city = $card->city ;
+			$user->home_tel = $card->homePhone ;
+			$user->home_postal_code = $card->postalCode ;
+			$user->work_province = null ;
+			$user->work_city = null ;
+			$user->work_tel = $card->workPhone ;
+			$user->work_address = null ;
+			$user->edu_level = $card->education ;
+			$user->edu_city = null ;
+			$user->edu_field = null ;
+			$user->job = $card->job ;
+			$user->password_force_change = 2 ;
+			$user->organs = $card->organs ;
+			$user->news_letter = $card->newsLetter ;
+
+			$ok = $user->save() ;
+			if($ok) {
+				$card->res1 = 1 ;
+				$card->update();
+				echo view('templates.say' , ['array'=>$card->id]);
+
+			}
+
+		}
+	}
 
 	private function convertVolunteers2Users()
 	{

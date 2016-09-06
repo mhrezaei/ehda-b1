@@ -9,7 +9,7 @@
 return [
 
 	'available_modules' => [
-		'cards' => ['browse','view','send','search','create','bulk','edit','publish','report','delete','bin'],
+		'cards' => ['browse','view','send','search','create','bulk','edit','print','report','delete','bin'],
 		'volunteers' => ['send','search' , 'view' ,'edit','publish','report', 'permits','delete' , 'bin'],
 		'settings' => ['*'],
 		'stats' => ['*'],
@@ -26,6 +26,7 @@ return [
 
 	'available_permits' => [
 		'browse' , // np need for volunteers but vital for cards.
+		'print' , // np need for volunteers but vital for cards.
 		'view',
 		'send',
 		'search',

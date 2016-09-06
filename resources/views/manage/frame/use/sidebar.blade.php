@@ -8,6 +8,20 @@
 ])
 
 @include('manage.frame.widgets.sidebar-link' , [
+	'module' => 'cards' ,
+	'icon' => 'credit-card',
+	'sub_menus' => [
+		['browse/all' , 'browse' , trans('people.cards.manage.all')],
+		['browse/complete' , 'browse' , trans('people.cards.manage.complete')],
+		['browse/incomplete' , 'browse' , trans('people.cards.manage.incomplete')],
+		['browse/under_print' , 'print' , trans('people.cards.manage.under_print')],
+		['browse/newsletter_member' , 'send' , trans('people.cards.manage.newsletter_member')],
+		['search' , 'search' , trans('manage.permits.search')],
+	]
+])
+
+
+@include('manage.frame.widgets.sidebar-link' , [
 	'module' => 'volunteers' ,
 	'icon' => 'child',
 	'sub_menus_' => [
@@ -32,11 +46,6 @@
 ])
 
 
-@include('manage.frame.widgets.sidebar-link' , [
-	'module' => 'cards' ,
-	'icon' => 'credit-card',
-	'sub_menus' => ['.browse' , '.publish' , '.add' , '.bulk' , '.search' , '.report' ]
-])
 
 
 @include('manage.frame.widgets.sidebar-link' , [

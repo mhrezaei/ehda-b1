@@ -29,6 +29,35 @@ div.mce-fullscreen {
 .phpdebugbar {
   direction: ltr;
 }
+
+/*
+|--------------------------------------------------------------------------
+| Bootstrap Corrections
+|--------------------------------------------------------------------------
+|
+*/
+
+.badge {
+  font-weight: 200;
+  font-size: 10px;
+}
+
+.badge-warning {
+  background-color: #d58512;
+}
+
+.badge-success {
+  background-color: #449D44;
+}
+
+.badge-info {
+  background-color: #269abc;
+}
+
+.badge-inverse {
+  background-color: #333333;
+}
+
 /*
 |--------------------------------------------------------------------------
 | General Things
@@ -65,7 +94,13 @@ div.mce-fullscreen {
   }
 }
 
-@for $i from 1 to 11 {
+@for $i from 5 to 19 {
+  .f#{$i} {
+    font-size: 1px * $i;
+  }
+}
+
+@for $i from 4 to 11 {
   .f#{$i*5} {
     font-size: 5px * $i;
   }

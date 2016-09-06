@@ -97,6 +97,43 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 	});
 
 	/*
+| cards
+*/
+
+	Route::group(['prefix'=>'cards'] , function() {
+		Route::get('/' , 'CardsController@browse') ; //@TODO: INTACT!
+		Route::get('/browse' , 'CardsController@browse') ; //@TODO: INTACT!
+		Route::get('/browse/{request_tab}' , 'CardsController@browse') ;//@TODO: INTACT!
+		Route::get('/create/{branch}' , 'CardsController@create') ;//@TODO: INTACT!
+		Route::get('/search' , 'CardsController@search');//@TODO: INTACT!
+		Route::get('/reports' , 'CardsController@reports');//@TODO: INTACT!
+
+		Route::get('/{volunteer_id}' , 'CardsController@show');//@TODO: INTACT!
+		Route::get('/{volunteer_id}/edit' , 'CardsController@editor');//@TODO: INTACT!
+		Route::get('/{volunteer_id}/{modal_action}' , 'CardsController@modalActions');//@TODO: INTACT!
+
+		Route::group(['prefix'=>'save'] , function() {
+			Route::post('/' , 'CardsController@save');//@TODO: INTACT!
+
+			Route::post('/change_password' , 'CardsController@change_password');//@TODO: INTACT!
+			Route::post('/soft_delete' , 'CardsController@soft_delete');//@TODO: INTACT!
+			Route::post('/bulk_soft_delete' , 'CardsController@bulk_soft_delete');//@TODO: INTACT!
+			Route::post('/undelete' , 'CardsController@undelete');//@TODO: INTACT!
+			Route::post('/bulk_undelete' , 'CardsController@bulk_undelete');//@TODO: INTACT!
+			Route::post('/hard_delete' , 'CardsController@hard_delete');//@TODO: INTACT!
+			Route::post('/bulk_hard_delete' , 'CardsController@bulk_hard_delete');//@TODO: INTACT!
+			Route::post('/publish' , 'CardsController@publish');//@TODO: INTACT!
+			Route::post('/bulk_publish' , 'CardsController@bulk_publish');//@TODO: INTACT!
+			Route::post('/permits' , 'CardsController@permits');//@TODO: INTACT!
+			Route::post('/sms' , 'CardsController@sms');//@TODO: INTACT!
+			Route::post('/bulk_sms' , 'CardsController@bulk_sms');//@TODO: INTACT!
+			Route::post('/email' , 'CardsController@email');//@TODO: INTACT!
+			Route::post('/bulk_email' , 'CardsController@bulk_email');//@TODO: INTACT!
+		});
+	});
+
+
+	/*
 	| Posts
 	*/
 	Route::group(['prefix'=>'posts'] , function() {

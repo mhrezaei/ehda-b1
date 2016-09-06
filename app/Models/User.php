@@ -23,6 +23,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	use TahaModelTrait ;
 
 	protected $guarded = ['id' , 'deleted_at' , 'roles' , 'domains' , 'unverified_changes' , 'unverified_flag' , 'settings'] ;
+	protected static $cardsMandatoryFields = ['code_melli' , 'code_id' , 'name_first' , 'name_last' , 'name_father' , 'birth_date' , 'birth_city' , 'gender' , 'home_province' , 'home_city' , 'organs' , 'from_domain' ] ;
+	protected $cardsOptionalFields = ['email' , 'marital' , 'tel_mobile' , 'home_address' , 'home_tel' , 'home_postal_code' , 'work_address' , 'work_province' , 'work_city' , 'work_tel' , 'work_postal_code' , 'edu_level', 'edu_city' , 'edu_field' , 'job' , 'news_letter' , 'print_status' ] ;
 
 	/*
 	|--------------------------------------------------------------------------
@@ -42,7 +44,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	public function setting($key)
 	{
-		//TODO: Fill it up.
+		//reserved for volunteer settings. It could be a better idea to use Meta instead of this crab!
 	}
 	/*
 	|--------------------------------------------------------------------------
@@ -50,6 +52,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	|--------------------------------------------------------------------------
 	|
 	*/
+
+	public function isCardIncomplete()
+	{
+		foreach(self::$cardsMandatoryFields as $field) {
+			if(!$this->$field or $this->$field == 0)
+				return true ;
+		}
+
+		return false ;
+	}
 
 	public function trashed($type='volunteer')
 	{
@@ -70,9 +82,33 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 				return false ;
 
 		}
+
+
 	}
 
 
+	public function cardStatus($key='text')
+	{
+		if($this->card_status < 0) {
+			$return['text'] = trans('people.cards.status.deleted') ;
+			$return['color'] = 'danger';
+		}
+		elseif($this->isCardIncomplete()) {
+			$return['text'] = trans('people.cards.manage.incomplete') ;
+			$return['color'] = 'warning';
+		}
+		else {
+			$return['text'] = trans('people.cards.manage.complete') ;
+			$return['color'] = 'success';
+		}
+
+		//Return...
+		if($key=='array')
+			return $return ;
+		else
+			return $return[$key] ;
+
+	}
 	/**
 	 * @param string $key
 	 * @return mixed
@@ -106,6 +142,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 				$return['color'] = 'success' ;
 			}
 		}
+		else
+			$return = null ;
 
 		//Return...
 		if($key=='array')
@@ -349,7 +387,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	}
 	public static function selector($type, $criteria)
 	{
-		if($type=='volunteer') {
+		if($type=='volunteer' or $type=='volunteers') {
 			switch($criteria) {
 				case 'examining':
 					return self::where('volunteer_status' , '=' , '1') ;
@@ -363,10 +401,38 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 					return self::where('volunteer_status' , '>' , '0')->where('unverified_flag' , '1');
 				case 'bin' :
 					return self::where('volunteer_status' , '<' , '0');
-
+			}
+		}
+		elseif($type=='card' or $type=='cards') {
+			switch($criteria) {
+				case 'active':
+				case 'all' :
+					return self::where('card_status' , '>=' , '8') ;
+				case 'bin' :
+					return self::where('card_status' , '<' , '0');
+				case 'complete' :
+					return self::where('card_status' , '>=' , '8')->whereRaw( " NOT ".self::incompleteRawQuery()) ; //@TODO
+				case 'incomplete' :
+					return self::where('card_status' , '>=' , '8')->whereRaw(self::incompleteRawQuery()) ; //@TODO
+				case 'under_print' :
+					return self::where('card_status' , '>=' , '8')->whereBetween('card_print_status' , [1,9]);
+				case 'newsletter_member' :
+					return self::where('card_status' , '>=' , '8')->where('news_letter' , 1);
 			}
 		}
 
+		return self::whereNull('id');
+
+	}
+
+	private static function incompleteRawQuery()
+	{
+		$query = " false " ;
+		foreach(self::$cardsMandatoryFields as $field) {
+			$query .= " or NOT `$field` or `$field` = '0' " ;
+		}
+
+		return " ( $query ) " ;
 	}
 
 	/*
@@ -375,6 +441,18 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	|--------------------------------------------------------------------------
 	|
 	*/
+
+	public static function findVolunteer($code_melli , $min_status=-9 , $max_status=9)
+	{
+		return self::where('code_melli' , $code_melli)->whereBetween('volunteer_status' , [$min_status , $max_status])->where('volunteer_status' , '<>' , 0)->first() ;
+	}
+
+
+	public static function findCard($code_melli , $min_status=-9 , $max_status=9)
+	{
+		return self::where('code_melli' , $code_melli)->whereBetween('card_status' , [$min_status , $max_status])->where('card_status' , '<>' , 0)->first() ;
+	}
+
 
 	public static function generateCardNo()
 	{
