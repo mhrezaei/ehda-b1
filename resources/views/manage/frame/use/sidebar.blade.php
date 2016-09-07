@@ -11,6 +11,7 @@
 	'module' => 'cards' ,
 	'icon' => 'credit-card',
 	'sub_menus' => [
+		['create' , 'create' , trans('people.cards.manage.create')],
 		['browse/all' , 'browse' , trans('people.cards.manage.all')],
 		['browse/complete' , 'browse' , trans('people.cards.manage.complete')],
 		['browse/incomplete' , 'browse' , trans('people.cards.manage.incomplete')],

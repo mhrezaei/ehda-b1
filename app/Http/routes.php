@@ -101,21 +101,22 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 */
 
 	Route::group(['prefix'=>'cards'] , function() {
-		Route::get('/' , 'CardsController@browse') ; //@TODO: INTACT!
-		Route::get('/browse' , 'CardsController@browse') ; //@TODO: INTACT!
-		Route::get('/browse/{request_tab}' , 'CardsController@browse') ;//@TODO: INTACT!
+		Route::get('/' , 'CardsController@browse') ;
+		Route::get('/browse' , 'CardsController@browse') ;
+		Route::get('/browse/{request_tab}' , 'CardsController@browse') ;
 		Route::get('/create/{branch}' , 'CardsController@create') ;//@TODO: INTACT!
 		Route::get('/search' , 'CardsController@search');//@TODO: INTACT!
 		Route::get('/reports' , 'CardsController@reports');//@TODO: INTACT!
 
+		Route::get('/create' , 'CardsController@create');
 		Route::get('/{volunteer_id}' , 'CardsController@show');//@TODO: INTACT!
-		Route::get('/{volunteer_id}/edit' , 'CardsController@editor');//@TODO: INTACT!
-		Route::get('/{volunteer_id}/{modal_action}' , 'CardsController@modalActions');//@TODO: INTACT!
+		Route::get('/{volunteer_id}/edit' , 'CardsController@editor');
+		Route::get('/{volunteer_id}/{modal_action}' , 'CardsController@modalActions');
 
 		Route::group(['prefix'=>'save'] , function() {
-			Route::post('/' , 'CardsController@save');//@TODO: INTACT!
+			Route::post('/' , 'CardsController@save');
 
-			Route::post('/change_password' , 'CardsController@change_password');//@TODO: INTACT!
+			Route::post('/change_password' , 'CardsController@change_password');
 			Route::post('/soft_delete' , 'CardsController@soft_delete');//@TODO: INTACT!
 			Route::post('/bulk_soft_delete' , 'CardsController@bulk_soft_delete');//@TODO: INTACT!
 			Route::post('/undelete' , 'CardsController@undelete');//@TODO: INTACT!

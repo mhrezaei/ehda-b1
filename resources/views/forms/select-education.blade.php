@@ -6,11 +6,11 @@
 	'size' => 10 ,
 
 	'options' => [
-		['id'=>'1' , 'title'=>trans('forms.education.1')],
-		['id'=>'2' , 'title'=>trans('forms.education.2')],
-		['id'=>'3' , 'title'=>trans('forms.education.3')],
-		['id'=>'4' , 'title'=>trans('forms.education.4')],
-		['id'=>'5' , 'title'=>trans('forms.education.5')],
-		['id'=>'6' , 'title'=>trans('forms.education.6')],
+		['id'=>'1' , 'title'=>trans('people.education.1')],
+		['id'=>'2' , 'title'=>trans('people.education.2')],
+		['id'=>'3' , 'title'=>trans('people.education.3')],
+		['id'=>'4' , 'title'=>trans('people.education.4')],
+		['id'=>'5' , 'title'=>trans('people.education.5')],
+		['id'=>'6' , 'title'=>trans('people.education.6')],
 	]
 ])

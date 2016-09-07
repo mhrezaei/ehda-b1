@@ -15,7 +15,7 @@
 
 			@if(Auth::user()->can('cards.create'))
 				@include('manage.frame.widgets.toolbar_button' , [
-					'target' => url('manage/cards/0/edit') ,
+					'target' => url('manage/cards/create') ,
 					'type' => 'success' ,
 					'caption' => trans('people.cards.manage.create') ,
 					'icon' => 'plus-circle' ,

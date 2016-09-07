@@ -23,8 +23,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	use TahaModelTrait ;
 
 	protected $guarded = ['id' , 'deleted_at' , 'roles' , 'domains' , 'unverified_changes' , 'unverified_flag' , 'settings'] ;
-	protected static $cardsMandatoryFields = ['code_melli' , 'code_id' , 'name_first' , 'name_last' , 'name_father' , 'birth_date' , 'birth_city' , 'gender' , 'home_province' , 'home_city' , 'organs' , 'from_domain' ] ;
-	protected $cardsOptionalFields = ['email' , 'marital' , 'tel_mobile' , 'home_address' , 'home_tel' , 'home_postal_code' , 'work_address' , 'work_province' , 'work_city' , 'work_tel' , 'work_postal_code' , 'edu_level', 'edu_city' , 'edu_field' , 'job' , 'news_letter' , 'print_status' ] ;
+	protected static $cards_mandatory_fields = ['code_melli' , 'code_id' , 'name_first' , 'name_last' , 'name_father' , 'birth_date' , 'birth_city' , 'gender' , 'home_province' , 'home_city' , 'organs' , 'from_domain' ] ;
+	protected static $cards_optional_fields = ['email' , 'marital' , 'tel_mobile' , 'home_address' , 'home_tel' , 'home_postal_code' , 'work_address' , 'work_province' , 'work_city' , 'work_tel' , 'work_postal_code' , 'edu_level', 'edu_city' , 'edu_field' , 'job' , 'newsletter' , 'print_status' ] ;
+	public static $donatable_organs = ['heart','lung','liver','kidney','pancreas','tissues'] ;
 
 	/*
 	|--------------------------------------------------------------------------
@@ -55,8 +56,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	public function isCardIncomplete()
 	{
-		foreach(self::$cardsMandatoryFields as $field) {
-			if(!$this->$field or $this->$field == 0)
+		foreach(self::$cards_mandatory_fields as $field) {
+			if(!$this->$field or $this->$field == '0')
 				return true ;
 		}
 
@@ -381,7 +382,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	|
 	*/
 
-	public function counter($type, $criteria)
+	public static function counter($type, $criteria)
 	{
 		return self::selector($type,$criteria)->count();
 	}
@@ -417,7 +418,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 				case 'under_print' :
 					return self::where('card_status' , '>=' , '8')->whereBetween('card_print_status' , [1,9]);
 				case 'newsletter_member' :
-					return self::where('card_status' , '>=' , '8')->where('news_letter' , 1);
+					return self::where('card_status' , '>=' , '8')->where('newsletter' , 1)->whereNotNull('email');
 			}
 		}
 
@@ -428,8 +429,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	private static function incompleteRawQuery()
 	{
 		$query = " false " ;
-		foreach(self::$cardsMandatoryFields as $field) {
-			$query .= " or NOT `$field` or `$field` = '0' " ;
+		foreach(self::$cards_mandatory_fields as $field) {
+			$query .= " or `$field` = null or `$field` = '0' " ;
 		}
 
 		return " ( $query ) " ;

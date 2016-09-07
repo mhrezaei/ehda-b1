@@ -61,7 +61,7 @@ class CardsController extends Controller
 	}
 
 
-	public function browse($request_tab = 'active') //@TODO: INTACT!
+	public function browse($request_tab = 'active')
 	{
 		//Prepar ation...
 		$page = $this->page ;
@@ -94,7 +94,7 @@ class CardsController extends Controller
 
 	}
 
-	public function modalActions($card_id , $view_file) //@TODO: INTACT!
+	public function modalActions($card_id , $view_file)
 	{
 
 		//@TODO: Do something for checking the permission, despite the fact that everything will be checked at the save method.
@@ -130,32 +130,49 @@ class CardsController extends Controller
 		return view($view) ;
 	}
 
-
-	public function editor($model_id=0) //@TODO: INTACT!
+	public function create()
 	{
-		//Preparation...
-		$page = $this->page ;
-		$view = 'manage.cards.editor' ;
+		//Permission...
+		if(!Auth::user()->can('cards.create'))
+			return view('errors.410');
 
-		//Models...
+		//Preparetions...
+		$page = $this->page ;
+		$page[1] = ["cards/create" , trans('people.cards.manage.create') , ''];
+
+		//Model...
+		$model = new User() ;
 		$states = State::get_combo() ;
 
+		foreach(User::$donatable_organs as $donatable_organ) {
+			$model->organs .= ' '.trans("people.organs.$donatable_organ");
+		}
+		$model->newsletter = 1 ;
+
+		//View..
+		return view('manage.cards.editor' , compact('page','model','states'));
+
+	}
+
+	public function editor($model_id=0)
+	{
+
+		//Permission...
+		if(!Auth::user()->can('cards.edit'))
+			return view('errors.410');
+
+		//Preparetions...
+		$page = $this->page ;
+		$page[1] = ["cards/$model_id/edit" , trans('people.cards.manage.edit') , ''];
+
+		//Model...
+		$states = State::get_combo() ;
+		$model = User::find($model_id) ;
+		if(!$model or !$model->isCard())
+		return view('errors.404');
+
 		//View...
-		if($model_id==0) {
-			if(!Auth::user()->can('cards:create')) return view('errors.403');
-			$page[1] = ['create' , trans('people.cards.manage.create') , ''] ;
-
-			$random_password = Str::random(10) ;
-			return view($view , compact('page' , 'random_password' , 'states'));
-		}
-		else {
-			if(!Auth::user()->can('cards:edit')) return view('errors.403');
-			$page[1] = ['edit' , trans('people.cards.manage.edit') , ''] ;
-
-			$model = User::find($model_id);
-			if(!$model) return view('errors.410');
-			return view($view , compact('page' , 'states' , 'model'));
-		}
+		return view('manage.cards.editor' , compact('page' , 'model' , 'states'));
 
 	}
 
@@ -166,26 +183,33 @@ class CardsController extends Controller
 	|
 	*/
 
-	public function save(Requests\Manage\CardSaveRequest $request) //@TODO: INTACT!
+	public function save(Requests\Manage\CardSaveRequest $request)
 	{
-		//Normalization...
+		//Preparations...
 		$data = $request->toArray() ;
 		$user = Auth::user() ;
 
-		$carbon = new Carbon($request->birth_date);
-		$data['birth_date'] = $carbon->toDateTimeString() ; //TODO: No Age Validation?
+		//Processing donatable organs...
+		$data['organs'] = null ;
+		foreach(User::$donatable_organs as $donatable_organ) {
+			if($data['_'.$donatable_organ])
+				$data['organs'] .= ' '.trans("people.organs.$donatable_organ").' ' ;
+		}
+		if(!trim($data['organs']))
+			return $this->jsonFeedback(trans('validation.javascript_validation.organs'));
 
-		if(!$request->id) {
-			$data['password'] = Hash::make($data['password']);
+		//Processing dates...
+		$carbon = new Carbon($request->birth_date);
+		$data['birth_date'] = $carbon->toDateTimeString() ;
+
+		//Processing passwords and a few more things...
+		if(!$data['id']) {
+			$data['password'] = Hash::make(strrev($data['code_melli']));
 			$data['password_force_change'] = 1 ;
 			$data['card_registered_at'] = Carbon::now()->toDateTimeString() ;
-			if($user->can('cards.publish')) {
-				$data['card_status'] = 8 ;
-				$data['published_at'] = Carbon::now()->toDateTimeString() ;
-				$data['published_by'] = $user->id ;
-			}
-			else
-				$data['card_status'] = 3 ;
+			$data['card_status'] = 8 ;
+			if($data['_submit'] == 'print')
+				$data['card_print_status'] = 1 ;
 		}
 
 		//Save and Return...
@@ -194,11 +218,9 @@ class CardsController extends Controller
 			'success_refresh' => true ,
 		]);
 
-		// return $this->jsonFeedback($data['birth_date']);
-
 	}
 
-	public function change_password(Requests\Manage\CardChangePasswordRequest $request) //@TODO: INTACT!
+	public function change_password(Requests\Manage\CardChangePasswordRequest $request)
 	{
 		$model = User::find($request->id) ;
 		$model->password = Hash::make($request->password) ;
