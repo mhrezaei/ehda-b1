@@ -224,10 +224,9 @@ class PostsController extends Controller
 		$page[1] = ["posts/create/$branch_slug" , trans('posts.manage.create' , ['thing' => $model->branch()->title(1)])];
 
 		$domains = Auth::user()->domains()->orderBy('title');
-		$encrypted_branch = Crypt::encrypt($branch_slug);
 
 		//View...
-		return view('manage.posts.editor' , compact('page', 'model' , 'domains' , 'encrypted_branch'));
+		return view('manage.posts.editor' , compact('page', 'model' , 'domains'));
 
 	}
 
@@ -250,10 +249,9 @@ class PostsController extends Controller
 		$page[1] = ["posts/$post_id/edit" , trans('posts.manage.edit' , ['thing'=>$model->branch()->singular_title]) ] ;
 
 		$domains = Auth::user()->domains()->orderBy('title') ;
-		$encrypted_branch = Crypt::encrypt($model->branch);
 
 		//View...
-		return view('manage.posts.editor' , compact('page','model' , 'domains' , 'encrypted_branch'));
+		return view('manage.posts.editor' , compact('page','model' , 'domains'));
 
 	}
 	/*
@@ -432,6 +430,17 @@ class PostsController extends Controller
 			unset($data[$key]) ;
 		}
 
+		//Stripping unauthorized fields...
+		if(!$branch->hasFeature('image'))
+			unset($data['featured_image']) ;
+		if(!$branch->hasFeature('text'))
+			unset($data['text']);
+		if(!$branch->hasFeature('abstract'))
+			unset($data['abstract']);
+		if(!$branch->hasFeature('category'))
+			unset($data['category_id']);
+
+
 		//Save...
 		$is_saved = Post::store($data) ;
 
@@ -441,9 +450,12 @@ class PostsController extends Controller
 			$post->meta($key , $meta[$key]) ;
 		}
 
-		//Saving attached photos...
+		//Making RSS...
+		//@TODO: Post RSS
 
-		$post->savePhotos($data) ;
+		//Saving attached photos...
+		if($post->branch()->hasFeature('gallery'))
+			$post->savePhotos($data) ;
 
 		//Choosing the redirection...
 		$success_redirect = str_replace('-ID-' , $is_saved , $success_redirect );
