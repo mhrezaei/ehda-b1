@@ -1,4 +1,4 @@
-<div id="{{$id or ''}}" class="checkbox">
+<div id="{{$id or ''}}" class="checkbox {{$div_class or ''}}">
     <label title="{{ $title or '' }}">
 		<input type="hidden" name="{{$name}}" value="0">
 		{!! Form::checkbox($name , '1' , $value , [

@@ -65,6 +65,13 @@ function forms_listener() {
 		$(this).html(forms_pd($(this).html()));
 	});
 
+	$(".datepicker").each(function() {
+		$(this).removeClass('datepicker');
+		var folan = new MHR.persianCalendar( $(this).attr('id'),
+				{ extraInputID: $(this).attr('id')+"_extra", extraInputFormat: "YYYY/MM/DD" }
+		);
+	})
+
 	setTimeout("forms_listener()", 5);
 }
 

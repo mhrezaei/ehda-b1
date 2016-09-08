@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Manage;
 
 use App\Events\SendEmail;
 use App\Events\SendSms;
-use App\Events\VolunteerAccountPublished;
-use App\Events\VolunteerPasswordManualReset;
+use App\Events\UserAccountPublished;
+use App\Events\UserPasswordManualReset;
 use App\Http\Requests\Manage\VolunteerSearchRequest;
 use App\Models\Domain;
 use App\Models\State;
@@ -43,16 +43,10 @@ class VolunteersController extends Controller
 		$db = User::first() ;
 
 		//IF SEARCHED...
+		$keyword = $request->keyword ;
 		if(isset($request->searched)) {
-			$keyword = $request->keyword ;
-			$model_data = User::where('volunteer_status' , '!=' , '0')
-					->where('name_first','like',"%{$keyword}%")
-					->orWhere('name_last','like',"%{$keyword}%")
-					->orWhere('code_melli','like',"%{$keyword}%")
-					->orWhere('email','like',"%{$keyword}%")
-					->orderBy('created_at' , 'desc')->paginate(50);
-
-			return view('manage.volunteers.browse' , compact('page' , 'model_data' , 'db' , 'keyword'));
+			$model_data = User::where('volunteer_status' , '!=' , '0')->whereRaw(User::searchRawQuery($keyword,User::$cards_search_fields))->orderBy('volunteer_registered_at' , 'desc')->paginate(50);
+			return view('manage.cards.browse' , compact('page' , 'model_data' , 'db' , 'keyword'));
 		}
 
 		//IF JUST FORM...

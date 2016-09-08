@@ -1,5 +1,7 @@
 <button
 		type="{{ $type or 'button' }}"
+		name="_{{ $type or 'button' }}"
+		value="{{ $value or '' }}"
 		class="btn btn-{{$shape or 'default'}}"
 		@if(isset($link) and (str_contains($link , '(') or str_contains($link , ')')))
 			onclick="{{$link}}"

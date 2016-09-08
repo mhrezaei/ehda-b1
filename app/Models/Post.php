@@ -28,6 +28,7 @@ class Post extends Model
 	public $photos = [] ;
 	public $photos_count = 0 ;
 	public $is_global_reflect = false ;
+	protected static $search_fields = ['title', 'keywords', 'abstract'] ;
 
 
 	/*
@@ -112,8 +113,9 @@ class Post extends Model
 		return $this->selector($branch , $criteria)->count() ;
 	}
 
-	public static function searchRawQuery($keyword, $fields = ['title', 'keywords', 'abstract'])
+	public static function searchRawQuery($keyword, $fields = null)
 	{
+		if(!$fields) $fields = self::$search_fields ;
 		$query = "0 " ;
 		foreach($fields as $field) {
 			$query .= " or `$field` like '%$keyword%' "  ;
