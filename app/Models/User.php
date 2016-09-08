@@ -14,6 +14,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Morilog\Jalali\jDate;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
@@ -96,10 +97,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		}
 		elseif($this->isCardIncomplete()) {
 			$return['text'] = trans('people.cards.manage.incomplete') ;
-			$return['color'] = 'warning';
+			$return['color'] = 'danger';
 		}
 		else {
-			$return['text'] = trans('people.cards.manage.complete') ;
+			$return['text'] = trans('people.cards.manage.active') ;
 			$return['color'] = 'success';
 		}
 
@@ -268,6 +269,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 			case 'code_meli' :
 				return $this->say('code_melli' , $default) ;
+
+			case 'encrypted_code_melli' :
+				return Crypt::encrypt($this->code_melli) ;
 
 			case 'code_melli' :
 			case 'card_no' :

@@ -1,10 +1,31 @@
 @include('templates.modal.start' , [
 	'partial' => true ,
 	'form_url' => url('manage/volunteers/save/permits'),
-	'modal_title' => $model->fullName(),
+	'modal_title' => trans('people.commands.view_info'),
 ])
 
 <div class='modal-body profile'>
+
+	<div style="position:absolute;top: 10px;left: 10px">
+		<a href="{{url('/card/show_card/mini/'.$model->say('encrypted_code_melli'))}}" target="_blank">
+			<img src="{{url('/card/show_card/mini/'.$model->say('encrypted_code_melli'))}}" style="height: 450px">
+		</a>
+	</div>
+
+	<h2 class="mv20">
+		{{ $model->fullName() }}
+		@if($model->isVolunteer())
+			<a href="{{Auth::user()->can('volunteers.search')? url('manage/volunteers/search?keyword='.$model->code_melli.'&searched=1') : 'javascript:void(0)'}}" class="badge badge-success mh10 f7" target="_blank">
+				{{ trans('people.volunteer') }}
+			</a>
+		@endif
+		@if($model->newsletter)
+			<div class="badge badge-info f7">
+				{{ trans('people.cards.manage.newsletter_member') }}
+			</div>
+		@endif
+
+	</h2>
 
 	<table>
 
@@ -18,21 +39,26 @@
 			<td class="head">
 				{{ trans('validation.attributes.status') }}
 			</td>
-			<td class="body text-{{ $model->volunteerStatus('color') }}">
-				{{ $model->volunteerStatus() }}
+			<td class="body text-{{ $model->cardStatus('color') }}">
+				{{ $model->cardStatus() }}
 			</td>
 		</tr>
 
 		<tr>
 			<td class="head">
-				{{ trans('people.card') }}
+				{{ trans('validation.attributes.card_no') }}
 			</td>
 			<td class="body">
-				@if($model->isCard())
-					<span class="text-success">{{ trans('forms.logic.has') }}</span>
-				@else
-					<span class="text-grey">{{ trans('forms.logic.hasnt') }}</span>
-				@endif
+				{{ $model->say('card_no') }}
+			</td>
+		</tr>
+
+		<tr>
+			<td class="head">
+				{{ trans('people.commands.print_status') }}
+			</td>
+			<td class="body text-{{trans('people.card_print_status_color.'.$model->card_print_status)}}">
+				{{ trans('people.card_print_status.'.$model->card_print_status) }}
 			</td>
 		</tr>
 
@@ -136,10 +162,6 @@
 			</td>
 			<td class="body">
 				@pd($model->tel_mobile)
-				<span>
-					{{ trans('validation.attributes.tel_emergency') }}:&nbsp;
-					@pd($model->tel_emergency)
-				</span>
 			</td>
 		</tr>
 
@@ -160,24 +182,6 @@
 				</span>
 			</td>
 		</tr>
-		
-		<tr>
-			<td class="head">
-				{{ trans('validation.attributes.work_address') }}
-			</td>
-			<td class="body">
-				{{ $model->say('work_city').' . ' }}
-				{{ $model->say('work_address') }}
-				<span>
-					{{ trans('validation.attributes.postal_code') }}:&nbsp;
-					{{ $model->say('home_postal_code') }}
-				</span>
-				<span>
-					{{ trans('validation.attributes.tel') }}:&nbsp;
-					@pd($model->say('work_tel'))
-				</span>
-			</td>
-		</tr>
 
 		{{--
 		|--------------------------------------------------------------------------
@@ -195,48 +199,12 @@
 		
 		<tr>
 			<td class="head">
-				{{ trans('exams.single') }}
+				{{ trans('validation.attributes.organs') }}
 			</td>
 			<td class="body">
-				@if($model->exam_passed_at)
-					@pd($model->say('exam_result'))
-					<span>
-						({{$model->say('exam_passed_at')}})
-					</span>
-				@else
-					{{ trans('exams.not_passed') }}
-				@endif
+				{{ $model->say('organs') }}
 			</td>
 		</tr>
-		
-		<tr>
-			<td class="head">
-				{{ trans('validation.attributes.familization') }}
-			</td>
-			<td class="body">
-				{{ trans("people.familization.".$model->familization) }}
-			</td>
-		</tr>
-
-		<tr>
-			<td class="head">
-				{{ trans('validation.attributes.motivation') }}
-			</td>
-			<td class="body">
-				{{ $model->say('motivation') }}
-			</td>
-		</tr>
-
-		<tr>
-			<td class="head">
-				{{ trans('validation.attributes.alloc_time') }}
-			</td>
-			<td class="body">
-				@pd($model->say('alloc_time'))
-			</td>
-		</tr>
-
-		{{-- @TODO: Activitis --}}
 
 		{{--
 		|--------------------------------------------------------------------------
@@ -257,7 +225,7 @@
 				{{ trans('forms.general.created_at') }}
 			</td>
 			<td class="body">
-				{{ $model->say('volunteer_registered_at') }}
+				{{ $model->say('card_registered_at') }}
 				@if($model->created_by)
 					<span>
 						{{ trans('forms.general.by'). ' ' . $model->say('created_by') }}
@@ -272,39 +240,23 @@
 			</td>
 			<td class="body">
 				{{ $model->say('updated_at') }}
-				<span>
-					{{ trans('forms.general.by').' '.$model->say('updated_by') }}
-				</span>
+				{{--<span>--}}
+					{{--{{ trans('forms.general.by').' '.$model->say('updated_by') }}--}}
+				{{--</span>--}}
 			</td>
 		</tr>
 
-
-		@if($model->published_at)
-			<tr>
-				<td class="head">
-					{{ trans('forms.general.published_at') }}
-				</td>
-				<td class="body">
-					{{ $model->say('published_at') }}
-					<span>
-						{{ trans('forms.general.by').' '.$model->say('published_by') }}
-					</span>
-				</td>
-			</tr>
-		@endif
-
-
-		@if($model->trashed())
+		@if($model->trashed('card'))
 			<tr>
 				<td class="head">
 					{{ trans('forms.general.deleted_at') }}
 				</td>
-				<td class="body">
-					{{ $model->say('deleted_at') }}
-					<span>
-						{{ trans('forms.general.by').' '.$model->say('deleted_by') }}
-					</span>
-				</td>
+				{{--<td class="body">--}}
+					{{--{{ $model->say('deleted_at') }}--}}
+					{{--<span>--}}
+						{{--{{ trans('forms.general.by').' '.$model->say('deleted_by') }}--}}
+					{{--</span>--}}
+				{{--</td>--}}
 			</tr>
 		@endif
 

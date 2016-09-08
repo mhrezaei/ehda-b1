@@ -5,7 +5,6 @@
 	<div>
 		{{ $model->fullName() }}
 		@if($model->isVolunteer())
-
 			<a href="{{Auth::user()->can('volunteers.search')? url('manage/volunteers/search?keyword='.$model->code_melli.'&searched=1') : 'javascript:void(0)'}}" class="badge badge-success mh10 f7">
 				{{ trans('people.volunteer') }}
 			</a>
@@ -32,12 +31,12 @@
 		{{ $model->cardStatus() }}
 	</div>
 	@if($model->card_print_status)
-		<div class="f10 mv5">
+		<div class="f10 mv5 text-{{ trans('people.card_print_status_color.'.$model->card_print_status) }}">
 			{{ trans('people.cards.manage.pvc_card') }}:&nbsp;
 			{{ trans('people.card_print_status.'.$model->card_print_status) }}
 		</div>
 	@endif
-	@if($model->news_letter)
+	@if($model->newsletter)
 		<div class="badge badge-info f7">
 			{{ trans('people.cards.manage.newsletter_member') }}
 		</div>
@@ -48,7 +47,9 @@
 	@include('manage.frame.widgets.grid-action' , [
 		'id' => $model->id ,
 		'actions' => [
-			['eye' , trans('manage.permits.view') , "modal:manage/cards/-id-/view" , 'cards.view'],
+			['credit-card' , trans('people.commands.view_card') , "modal:manage/cards/-id-/card" , 'cards.*'],
+			['eye' , trans('people.commands.view_info') , "modal:manage/cards/-id-/view" , 'cards.view'],
+
 			['key' , trans('people.commands.change_password') , 'modal:manage/cards/-id-/change_password' , 'cards.edit' ,  $model->isActive('card') ],
 			['pencil' , trans('manage.permits.edit') , "url:manage/cards/-id-/edit" , 'cards.edit'],
 

@@ -26,7 +26,10 @@ return [
 				'send_email' => 'ارسال ایمیل',
 				'search' => 'جست‌وجوی اشخاص',
 				'block' => 'مسدودسازی' ,
-				'unblock' => 'رفع مسدودی'
+				'unblock' => 'رفع مسدودی' ,
+				'view_card' => 'نمایش کارت' ,
+				'view_info' => 'نمایش جزئیات' ,
+				'print_status' => 'کارت چاپی',
 		],
 		"form" => [
 				"notify-with-email" => 'به کاربر از طریق ایمیل اطلاع‌رسانی شود.' ,
@@ -76,11 +79,11 @@ return [
 
 						'all' => 'همه‌ی کارت‌ها' ,
 						'complete' => 'کارت‌های کامل' ,
+						'active' => 'فعال' ,
 						'incomplete' => 'نقص اطلاعات' ,
 						'under_print' => 'در فرآیند چاپ' ,
 						'newsletter_member' => 'عضو خبرنامه' ,
 
-						'active' => 'کارت‌های فعال', //deprecated
 						'bin' => 'مسدودشده‌ها', //deprecated
 						'search' => 'جست‌وجو',
 						'advanced_search' => 'جست‌وجوی پیشرفته',
@@ -144,11 +147,19 @@ return [
 		],
 
 		"card_print_status" => [
-			'0' => '' ,
+			'0' => 'درخواست نشده!' ,
 			'1' => 'ثبت درخواست' ,
 			'2' => 'ارسال به چاپگر' ,
 			'3' => 'ارسال به شخص' ,
 			'9' => 'تحویل شد' ,
 		] ,
+
+		"card_print_status_color" => [
+			'0' => 'grey' ,
+			'1' => 'info' ,
+			'2' => 'info' ,
+			'3' => 'info' ,
+			'9' => 'success' ,
+		]
 ]
 ?>

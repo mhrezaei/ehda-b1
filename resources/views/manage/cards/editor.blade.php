@@ -10,9 +10,11 @@
 		'no_validation' => 1 ,
 	])
 
-	@include('forms.note' , [
-		'text' => trans('people.cards.manage.preset_password') ,
-	])
+	@if(!$model->id)
+		@include('forms.note' , [
+			'text' => trans('people.cards.manage.preset_password') ,
+		])
+	@endif
 
 
 	@include('forms.hiddens' , ['fields' => [
