@@ -35,7 +35,7 @@ class CardsController extends Controller
 		$this->page[0] = ['cards' , trans('manage.modules.cards')];
 	}
 
-	public function search(CardSearchRequest $request) //@TODO: INTACT!
+	public function search(CardSearchRequest $request)
 	{
 		//Preparation...
 		$page = $this->page ;
@@ -50,6 +50,7 @@ class CardsController extends Controller
 					->orWhere('name_last','like',"%{$keyword}%")
 					->orWhere('code_melli','like',"%{$keyword}%")
 					->orWhere('email','like',"%{$keyword}%")
+					->orWhere('card_no','like',"%{$keyword}%")
 					->orderBy('created_at' , 'desc')->paginate(50);
 
 			return view('manage.cards.browse' , compact('page' , 'model_data' , 'db' , 'keyword'));

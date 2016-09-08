@@ -19,7 +19,7 @@
 	<div class="panel panel-default m20">
 
 		@include('forms.opener',[
-			'url' => 'manage/volunteers/search' ,
+			'url' => 'manage/cards/search' ,
 			'class' => 'js-' ,
 			'method' => 'get',
 		])
