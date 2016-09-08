@@ -104,7 +104,7 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 		Route::get('/' , 'CardsController@browse') ;
 		Route::get('/browse' , 'CardsController@browse') ;
 		Route::get('/browse/{request_tab}' , 'CardsController@browse') ;
-		Route::get('/search' , 'CardsController@search');//@TODO: INTACT!
+		Route::get('/search' , 'CardsController@search');
 		Route::get('/reports' , 'CardsController@reports');//@TODO: INTACT!
 
 		Route::get('/create' , 'CardsController@create');

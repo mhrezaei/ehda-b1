@@ -14,10 +14,8 @@
 			<tr>
 				<td>{{ trans('validation.attributes.title') }}</td>
 				<td>{{ trans('validation.attributes.slug') }}</td>
-				<td>{{ trans('manage.devSettings.branches.have_rss') }}</td>
-				<td>{{ trans('manage.devSettings.branches.have_comments') }}</td>
-				<td>{{ trans('validation.attributes.content') }}</td>
-				<td>{{ trans('manage.devSettings.branches.is_hidden') }}</td>
+				<td>{{ trans('validation.attributes.template') }}</td>
+				<td>{{ trans('manage.devSettings.branches.features') }}</td>
 			</tr>
 			</thead>
 			<tbody>
@@ -29,28 +27,8 @@
 						</a>
 					</td>
 					<td>{{ $model->slug }}</td>
-					<td>
-						@if($model->have_rss)
-							<span class="fa fa-check text-success"></span>
-						@else
-							<span class="fa fa-times text-warning"></span>
-						@endif
-					</td>
-					<td>
-						@if($model->have_comments)
-							<span class="fa fa-check text-success"></span>
-						@else
-							<span class="fa fa-times text-warning"></span>
-						@endif
-					</td>
-					<td>{{ $model->is_gallery? trans('manage.devSettings.branches.content_pics') : trans('manage.devSettings.branches.content_text') }}</td>
-					<td>
-						@if($model->is_hidden)
-							<span class="fa fa-check text-success"></span>
-						@else
-							<span class="fa fa-minus"></span>
-						@endif
-					</td>
+					<td>{{ $model->template }}</td>
+					<td>{{ $model->features }}</td>
 				</tr>
 			@endforeach
 			</tbody>

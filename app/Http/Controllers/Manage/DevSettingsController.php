@@ -66,11 +66,18 @@ class DevSettingsController extends Controller
 		$page[2] = ['add'];
 		$view = "manage.settings." . $request_tab . "_add";
 
+		//Model...
+		switch($request_tab) {
+			case 'branches' :
+				$model = new Branch() ;
+				break;
+		}
+
 		//View...
 		if(!View::exists($view))
 			return view('errors.404');
 
-		return view($view, compact('page'));
+		return view($view, compact('page' , 'model'));
 	}
 
 	public function editor($request_tab , $item_id , $parent_id=0)
