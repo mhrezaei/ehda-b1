@@ -44,16 +44,8 @@ class CardsController extends Controller
 
 		//IF SEARCHED...
 		if(isset($request->searched)) {
-			$keyword = $request->keyword ;
-			$model_data = User::where('card_status' , '!=' , '0')
-					->where('name_first','like',"%{$keyword}%")
-					->orWhere('name_last','like',"%{$keyword}%")
-					->orWhere('code_melli','like',"%{$keyword}%")
-					->orWhere('email','like',"%{$keyword}%")
-					->orWhere('card_no','like',"%{$keyword}%")
-					->orderBy('created_at' , 'desc')->paginate(50);
-
-			return view('manage.cards.browse' , compact('page' , 'model_data' , 'db' , 'keyword'));
+			$model_data = User::where('card_status' , '!=' , '0')->whereRaw(User::searchRawQuery($request->keyword,User::$cards_search_fields))->orderBy('card_registered_at' , 'desc')->paginate(50);
+				return view('manage.cards.browse' , compact('page' , 'model_data' , 'db' , 'keyword'));
 		}
 
 		//IF JUST FORM...

@@ -13,7 +13,7 @@
 	'sub_menus' => [
 		['create' , 'create' , trans('people.cards.manage.create')],
 		['browse/all' , 'browse' , trans('people.cards.manage.all')],
-		['browse/complete' , 'browse' , trans('people.cards.manage.complete')],
+//		['browse/complete' , 'browse' , trans('people.cards.manage.complete')],
 		['browse/incomplete' , 'browse' , trans('people.cards.manage.incomplete')],
 		['browse/under_print' , 'print' , trans('people.cards.manage.under_print')],
 		['browse/newsletter_member' , 'send' , trans('people.cards.manage.newsletter_member')],

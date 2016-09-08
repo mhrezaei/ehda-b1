@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Morilog\Jalali\jDate;
 
-//@TODO: print process, advanced search, reports, overhead tabs
+//@TODO: print process, advanced search, reports
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
@@ -29,6 +29,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	protected static $cards_mandatory_fields = ['code_melli' , 'code_id' , 'name_first' , 'name_last' , 'name_father' , 'birth_date' , 'birth_city' , 'gender' , 'home_province' , 'home_city' , 'organs' , 'from_domain' ] ;
 	protected static $cards_optional_fields = ['email' , 'marital' , 'tel_mobile' , 'home_address' , 'home_tel' , 'home_postal_code' , 'work_address' , 'work_province' , 'work_city' , 'work_tel' , 'work_postal_code' , 'edu_level', 'edu_city' , 'edu_field' , 'job' , 'newsletter' , 'print_status' ] ;
 	public static $donatable_organs = ['heart','lung','liver','kidney','pancreas','tissues'] ;
+	public static $cards_search_fields = ['name_first' , 'name_last' , 'code_melli' , 'email' , 'card_no'] ;
+	public static $volunteers_search_fields = ['name_first' , 'name_last' , 'code_melli' , 'email'] ;
+
+
 
 	/*
 	|--------------------------------------------------------------------------
@@ -56,6 +60,20 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	|--------------------------------------------------------------------------
 	|
 	*/
+
+	public static function searchRawQuery($keyword, $fields = null)
+	{
+		if(!$fields)
+			$fields = self::$cards_search_fields ;
+
+		$concat_string = " " ;
+		foreach($fields as $field) {
+			$concat_string .= " , `$field` " ;
+		}
+
+		return " LOCATE('$keyword' , CONCAT_WS(' ' $concat_string)) " ;
+	}
+
 
 	public function isCardIncomplete()
 	{
