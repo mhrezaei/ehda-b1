@@ -120,7 +120,7 @@ class CardsController extends Controller
 		return view($view , compact('model' , 'opt')) ;
 	}
 
-	private function modalBulkAction($view_file) //@TODO: INTACT!
+	private function modalBulkAction($view_file)
 	{
 		$view = "manage.cards.$view_file-bulk" ;
 
@@ -234,53 +234,8 @@ class CardsController extends Controller
 		return $this->jsonAjaxSaveFeedback($is_saved);
 
 	}
-	public function publish(Request $request) //@TODO: INTACT!
-	{
-		if(!Auth::user()->can('cards.publish')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
 
-		$model = User::find($request->id) ;
-		if($model->card_status<0)
-			return $this->jsonFeedback() ;
-
-		$model->published_at = Carbon::now()->toDateTimeString() ;
-		$model->published_by = Auth::user()->id ;
-		$model->card_status = 8 ;
-		$is_saved = $model->save();
-
-		if($is_saved)
-			;//@TODO: Call the event
-//			Event::fire(new CardAccountPublished($model));
-
-		return $this->jsonAjaxSaveFeedback($is_saved , [
-			'success_refresh' => true ,
-		]);
-
-	}
-
-	public function bulk_publish(Request $request) //@TODO: INTACT!
-	{
-		if(!Auth::user()->can('cards.publish')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
-
-		//Action...
-		$ids = $request->ids ;
-		if(!is_array($ids))
-			$ids = explode(',',$ids);
-
-		$done = User::whereIn('id',$ids)->where('card_status' , '>' , '0')->where('card_status' , '<' , '8')->update([
-				'published_at' => Carbon::now()->toDateTimeString() ,
-				'published_by' => Auth::user()->id ,
-				'card_status' => 8 ,
-		]);
-
-		//Feedback...
-		return $this->jsonAjaxSaveFeedback($done , [
-				'success_refresh' => true ,
-		]);
-
-		//@TODO: Event
-	}
-
-	public function soft_delete(Request $request) //@TODO: INTACT!
+	public function delete(Request $request)
 	{
 		if(!Auth::user()->can('cards.delete')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
 		if($request->id == Auth::user()->id) return $this->jsonFeedback();
@@ -294,7 +249,7 @@ class CardsController extends Controller
 
 	}
 
-	public function bulk_soft_delete(Request $request) //@TODO: INTACT!
+	public function bulk_delete(Request $request)
 	{
 		if(!Auth::user()->can('cards.delete')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
 
@@ -310,116 +265,18 @@ class CardsController extends Controller
 		]);
 	}
 
-	public function undelete(Request $request) //@TODO: INTACT!
-	{
-		if(!Auth::user()->can('cards.bin')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
-
-		$model = User::find($request->id) ;
-		$done = $model->cardUndelete() ;
-
-		return $this->jsonAjaxSaveFeedback($done , [
-				'success_refresh' => true ,
-		]);
-
-	}
-
-	public function bulk_undelete(Request $request) //@TODO: INTACT!
-	{
-		if(!Auth::user()->can('cards.bin'))
-			return $this->jsonFeedback(trans('validation.http.Eror403'));
-
-		$ids = explode(',', $request->ids);
-		foreach($ids as $id) {
-			$model = User::find($id);
-			if($model and $id != Auth::user()->id)
-				$done = $model->cardUndelete();
-		}
-
-		return $this->jsonAjaxSaveFeedback($done, ['success_refresh' => true,]);
-	}
-
-	public function hard_delete(Request $request) //@TODO: INTACT!
-	{
-		if(!Auth::user()->isDeveloper()) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
-
-		$model = User::find($request->id) ;
-		if(!$model or $model->card_status>0)
-			return $this->jsonFeedback(trans('validation.http.Eror403'));
-
-		$done = $model->cardHardDelete() ;
-
-		return $this->jsonAjaxSaveFeedback($done , [
-				'success_refresh' => true ,
-		]);
-
-	}
-
-	public function bulk_hard_delete(Request $request) //@TODO: INTACT!
-	{
-		if(!Auth::user()->isDeveloper()) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
-
-		$ids = explode(',', $request->ids);
-		foreach($ids as $id) {
-			$model = User::find($id);
-			if($model and $model->card_status<0 and $id != Auth::user()->id)
-				$done = $model->cardHardDelete();
-		}
-
-		return $this->jsonAjaxSaveFeedback($done, [
-				'success_refresh' => true,
-		]);
-
-
-	}
-
-	public function permits(Request $request) //@TODO: INTACT!
-	{
-		$data = $request->toArray() ;
-		$allowed_domains = '|' ;
-		$allowed_permits = [] ;
-		$model = User::find($request->id) ;
-
-		//Security...
-		if(!Auth::user()->can('cards.permits'))
-			return $this->jsonFeedback(trans('validation.http.Eror403')) ;
-
-		//Permits...
-		foreach($data as $pointer => $item) {
-			if(!str_contains($pointer,'permit') or !$data[$pointer])
-				continue;
-
-			$pointer = str_replace('permit','',$pointer) ;
-			$pointer = str_replace('_','.',$pointer) ;
-			array_push($allowed_permits,$pointer);
-		}
-		$is_saved_permits = $model->setPermits($allowed_permits) ;
-
-		//Domains...
-		$domains = Domain::all() ;
-		foreach($domains as $domain) {
-			$pointer = "domain".$domain->id ;
-			if($data[$pointer])
-				$allowed_domains .= $domain->slug.'|';
-		}
-
-		$is_saved_domains = $model->setDomains($allowed_domains) ;
-
-		//Return...
-		return $this->jsonAjaxSaveFeedback($is_saved_domains and $is_saved_permits);
-	}
-
-	public function sms(Requests\Manage\CardSendMessage $request) //@TODO: INTACT!
+	public function sms(Requests\Manage\CardSendMessageRequest $request)
 	{
 		$card = User::find($request->id) ;
 		if(!$card)
 			return $this->jsonFeedback();
 
-		$is_sent = Event::fire(new SendSms([$card->tel_mobile] , $request->message));
+		$is_sent = 1; //Event::fire(new SendSms([$card->tel_mobile] , $request->message)); @TODO: Make it work!
 
 		return $this->jsonAjaxSaveFeedback($is_sent) ;
 	}
 
-	public function bulk_sms(Requests\Manage\CardSendMessage $request) //@TODO: INTACT!
+	public function bulk_sms(Requests\Manage\CardSendMessageRequest $request)
 	{
 
 		$done = true ; //@TODO: Write the event!
@@ -427,18 +284,18 @@ class CardsController extends Controller
 		return $this->jsonAjaxSaveFeedback($done) ;
 	}
 
-	public function email(Requests\Manage\CardSendMessage $request) //@TODO: INTACT!
+	public function email(Requests\Manage\CardSendMessageRequest $request)
 	{
 		$card = User::find($request->id) ;
 		if(!$card)
 			return $this->jsonFeedback();
 
-		$is_sent = Event::fire(new SendEmail([$card->email] , $request->title , $request->message));
+		$is_sent = 1;//  Event::fire(new SendEmail([$card->email] , $request->title , $request->message)); @TODO: Make it work!
 
 		return $this->jsonAjaxSaveFeedback($is_sent) ;
 	}
 
-	public function bulk_email(Requests\Manage\CardSendMessage $request) //@TODO: INTACT!
+	public function bulk_email(Requests\Manage\CardSendMessageRequest $request)
 	{
 
 		$done = true ; //@TODO: Write the event!

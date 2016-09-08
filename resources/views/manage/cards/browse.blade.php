@@ -33,9 +33,7 @@
 						['envelope-o' , trans('people.commands.send_email') , 'modal:manage/cards/-id-/email' , 'cards.send' ] ,
 						['mobile' , trans('people.commands.send_sms') , 'modal:manage/cards/-id-/sms' , 'cards.send' ] ,
 						['print' , trans('forms.button.card_print') , 'modal:manage/cards/-id-/print' , 'cards.print' ] ,
-						['trash-o' , trans('forms.button.soft_delete') , 'modal:manage/cards/-id-/soft_delete' , 'cards.delete' , $page[1][2]!='bin'] ,
-						['undo' , trans('forms.button.undelete') , 'modal:manage/cards/-id-/undelete' , 'cards.bin' , $page[1][2]=='bin'] ,
-						['times' , trans('people.commands.hard_delete') , 'modal:manage/cards/-id-/hard_delete' , 'cards.developer' , $page[1][2]=='bin'] ,
+						['times' , trans('forms.button.hard_delete') , 'modal:manage/cards/-id-/delete' , 'cards.delete' , $page[1][2]!='bin'] ,
 
 					]
 				])

@@ -57,11 +57,7 @@
 			['envelope-o' , trans('people.commands.send_email') , 'modal:manage/cards/-id-/email' , 'cards.send' , $model->email ] ,
 			['mobile' , trans('people.commands.send_sms') , 'modal:manage/cards/-id-/sms' , 'cards.send' , $model->tel_mobile ] ,
 
-			['trash-o' , trans('forms.button.soft_delete') , 'modal:manage/cards/-id-/soft_delete' , 'cards.delete' , !$model->trashed('card')] ,
-			['undo' , trans('people.commands.unblock') , 'modal:manage/cards/-id-/undelete' , 'cards.bin' , $model->trashed('card')] ,
-			['times' , trans('people.commands.hard_delete') , 'modal:manage/cards/-id-/hard_delete' , 'cards.developer' , $model->trashed('card')] ,
-
-
+			['times' , trans('forms.button.hard_delete') , 'modal:manage/cards/-id-/delete' , 'cards.delete' , !$model->trashed('card')] ,
 		],
 	])
 </td>

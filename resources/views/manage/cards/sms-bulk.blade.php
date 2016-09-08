@@ -1,6 +1,6 @@
 @include('templates.modal.start' , [
 	'partial' => true ,
-	'form_url' => url('manage/volunteers/save/bulk_sms'),
+	'form_url' => url('manage/cards/save/bulk_sms'),
 	'modal_title' => trans('people.commands.send_sms'),
 ])
 <div class='modal-body'>

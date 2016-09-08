@@ -1,6 +1,6 @@
 @include('templates.modal.start' , [
 	'partial' => true ,
-	'form_url' => url('manage/volunteers/save/change_password'),
+	'form_url' => url('manage/cards/save/change_password'),
 	'modal_title' => trans('people.commands.change_password'),
 ])
 <div class='modal-body'>
