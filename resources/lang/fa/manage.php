@@ -13,6 +13,10 @@ return [
 				'reset_password_link' => 'رمز عبورم را فراموش کردم!',
 		],
 
+		"account" => [
+			'settings' => 'تنظیمات حساب' ,
+		],
+
 		"old_password" => [
 				'page_title' => 'به روز رسانی رمز عبور',
 				'head_title' => 'تغییر رمز عبور',
@@ -35,6 +39,7 @@ return [
 		"global" => [
 				'page_title' => 'انجمن اهدای عضو ایرانیان',
 				'grid_count' => 'در حال نمایش :rows سطر از مجموع :total سطر موجود اطلاعات'  ,
+				'create_in' =>  'افزودن به :thing' ,
 		],
 
 		"permits" => [

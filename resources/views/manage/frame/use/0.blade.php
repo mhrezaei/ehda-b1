@@ -1,10 +1,15 @@
 @extends('manage.frame.home')
 
 @section('navbar-brand' ,view('manage.frame.use.brand',['page'=>$page]) )
+@section('navbar-menus' ,view('manage.frame.use.topbar'))
 @section('sidebar' , view('manage.frame.use.sidebar'))
-{{--@section('page_title' , trans("manage.modules.".$page[0][0]).' | '.trans('manage.global.page_title'))--}}
-@section('page_title' ,trans('manage.global.page_title'))
-{{-- @TODO: Solve the problem of page title --}}
+
+@section('page_title')
+	@if(isset($page[0][1]))
+		{{$page[0][1]}}:&nbsp;
+	@endif
+	{{ trans('manage.global.page_title') }}
+@endsection
 
 @section('modal')
 	<div id="masterModal-lg" class="modal fade">
