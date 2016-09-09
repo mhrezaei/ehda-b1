@@ -6,7 +6,7 @@
 @include('manage.frame.widgets.topbar' , [
 	'icon' => 'user' ,
 	'items' => [
-		['manage/account' , trans('manage.account.settings') , 'sliders'] ,
+		['manage/account' , trans('manage.account.account_settings') , 'sliders'] ,
 //		['-'] ,
 		['/logout' , trans('manage.modules.logout') , 'sign-out'] ,
 	]

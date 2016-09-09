@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Morilog\Jalali\jDate;
+use Illuminate\Support\Facades\Hash;
+
 
 //@TODO: print process, advanced search, reports
 
@@ -383,7 +385,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
 	public function oldPasswordChange($password)
 	{
-		$this->password = $password;
+		$this->password = Hash::make($password);
 		$this->password_force_change = 0;
 		return $this->save();
 	}

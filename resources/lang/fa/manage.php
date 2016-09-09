@@ -14,7 +14,11 @@ return [
 		],
 
 		"account" => [
-			'settings' => 'تنظیمات حساب' ,
+			'account_settings' => 'تنظیمات حساب' ,
+			'change_password' => 'تغییر رمز ورود' ,
+			'profile' => 'پرونده' ,
+			'card' => 'کارت اهدای عضو' ,
+			'delete' => 'حذف حساب کاربری' ,
 		],
 
 		"old_password" => [

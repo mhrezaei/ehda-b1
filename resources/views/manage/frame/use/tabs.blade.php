@@ -4,7 +4,7 @@
 		<?php
 			$url = $tab[0] ;
 			$caption = $tab[1] ? $tab[1] : trans('manage/'.$page[0][0].".$tab.trans") ;
-			$permit = $tab[2] ? $tab[2] : 'any' ;
+			$permit = isset($tab[2]) ? $tab[2] : 'any' ;
 			if($url==$current)
 				$active = true ;
 			else

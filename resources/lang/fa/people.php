@@ -13,6 +13,7 @@ return [
 				'volunteer_publish_notice_email' => 'فعال سازی حساب کاربری',
 				'volunteer_publish_notice_sms' => 'حساب کاربری شما فعال گردید.',
 				'volunteer_new_password_sms' => 'رمز عبور شما در سامانه عبارتست از: ',
+				'current_password_incorrect' => 'رمز عبور فعلی را اشتباه وارد کرده‌اید.' ,
 		],
 
 		"commands" => [

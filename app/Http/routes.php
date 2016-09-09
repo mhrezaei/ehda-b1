@@ -141,6 +141,14 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 		});
 	});
 
+	Route::group(['prefix'=>'account'] , function() {
+		Route::get('/' , 'AccountController@index') ;
+		Route::get('/{request_tab}' , 'AccountController@index') ;
+
+		Route::group(['prefix'=>'save'] , function() {
+			Route::post('/password' , 'AccountController@savePassword');
+		});
+	});
 
 		/*
 		| Developer Settings

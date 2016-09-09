@@ -220,6 +220,8 @@ return [
 				"email"	=> "ایمیل",
 				"username" => "شناسه‌ی کاربری",
 				"security"	=> "کد امنیتی",
+				"current_password" => "رمز عبور فعلی" ,
+				"new_password" => "رمز عبور تازه" ,
 				"password"=> "رمز عبور",
 				"password2"=> "تکرار رمز",
 				"birthday"=> "تاریخ تولد",
