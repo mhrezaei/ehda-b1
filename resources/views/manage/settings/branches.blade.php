@@ -23,6 +23,7 @@
 				<tr>
 					<td>
 						<a href="{{ url("manage/devSettings/branches/$model->id") }}">
+							<i class="fa fa-{{$model->icon}}"></i>
 							{{ $model->title() }}
 						</a>
 					</td>

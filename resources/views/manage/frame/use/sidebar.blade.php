@@ -36,31 +36,14 @@
 	],
 ])
 
+@foreach( \App\models\Branch::all() as $branch)
+	@include('manage.frame.widgets.sidebar-link' , [
+		'caption' => $branch->plural_title ,
+		'module' => 'posts-'.$branch->slug,
+		'icon' => $branch->icon  ,
+	])
+@endforeach()
 
-@include('manage.frame.widgets.sidebar-link' , [
-	'module' => 'posts-news' ,
-	'icon' => 'file-text-o' ,
-])
-@include('manage.frame.widgets.sidebar-link' , [
-	'module' => 'posts-gallery' ,
-	'icon' => 'picture-o' ,
-])
-
-
-
-
-@include('manage.frame.widgets.sidebar-link' , [
-	'module' => 'posts-celebs' ,
-	'icon' => 'street-view',
-])
-@include('manage.frame.widgets.sidebar-link' , [
-	'module' => 'angels' ,
-	'icon' => 'gratipay',
-])
-@include('manage.frame.widgets.sidebar-link' , [
-	'module' => 'faqs' ,
-	'icon' => 'info-circle',
-])
 @include('manage.frame.widgets.sidebar-link' , [
 	'module' => 'donates' ,
 	'icon' => 'money',

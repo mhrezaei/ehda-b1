@@ -32,6 +32,7 @@ else {
 ])
 @include('forms.hidden' , [
 	'name' => $name ,
-	'id' => $id."_extra22" ,
+	'id' => $id."_extra" ,
 	'value' => $value ,
+	'class' => '' ,
 ])

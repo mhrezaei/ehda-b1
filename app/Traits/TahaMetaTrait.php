@@ -29,12 +29,14 @@ trait TahaMetaTrait
 	 * @param string $value
 	 * @return bool|null
 	 */
-	public function meta($key , $value='READ')
+	public function meta($key , $value='READ' , $type='text')
 	{
+		//If read...
 		if($value==='READ')
 			return Meta::get($this->className() , $this->id , $key) ;
-		else
-			return Meta::set($this->className() , $this->id , $key , $value) ;
+
+		//If writes
+		return Meta::set($this->className() , $this->id , $key , $value) ;
 	}
 
 }

@@ -12,8 +12,8 @@ class Branch extends Model
 	use TahaModelTrait ;
 	use SoftDeletes ;
 	protected $guarded = ['id'];
-	public static $available_features = ['image' , 'text' , 'abstract' , 'rss' , 'comment' , 'gallery' , 'category'] ;
-	public static $available_templates = ['album' , 'post' , 'slideshow' , 'developers'] ;
+	public static $available_features = ['image' , 'text' , 'abstract' , 'rss' , 'comment' , 'gallery' , 'category' , 'searchable' , 'preview'] ;
+	public static $available_templates = ['album' , 'post' , 'slideshow' , 'developers' , 'custom'] ;
 	public static $available_meta_types = ['text' , 'textarea' , 'date'];
 
 
@@ -91,4 +91,24 @@ class Branch extends Model
 	{
 		return Crypt::encrypt($this->slug);
 	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| Selectors
+	|--------------------------------------------------------------------------
+	|
+	*/
+
+	public static function branchesWithFeature($feature)
+	{
+		$models = Self::whereRaw( "LOCATE('$feature' , `features`)" )->get() ;
+
+		$result = null ;
+		foreach($models as $model) {
+			$result .= ' '.$model->slug.' ';
+		}
+
+		return $result ;
+	}
+
 }

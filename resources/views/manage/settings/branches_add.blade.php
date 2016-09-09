@@ -35,6 +35,13 @@
 	])
 
 	@include('forms.input' , [
+	    'name' =>	'icon',
+	    'class' =>	'form-required ltr',
+		'value' =>	$model->icon ,
+	    'hint' =>	trans('manage.devSettings.branches.icon_hint'),
+	])
+
+	@include('forms.input' , [
 	    'name' =>	'template',
 	    'class' =>	'ltr form-required',
 		'value' =>	$model->template,

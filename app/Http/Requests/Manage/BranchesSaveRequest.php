@@ -34,6 +34,7 @@ class BranchesSaveRequest extends Request
              'singular_title' => 'required',
              'slug' => 'required|unique:branches,slug,'.$id,
              'template'=>'required|in:'.implode(',',Branch::$available_templates) ,
+             'icon' => 'required'
         ];
 
     }
@@ -46,6 +47,7 @@ class BranchesSaveRequest extends Request
              'template' => 'lower' ,
              'features' => 'lower' ,
              'allowed_meta' => 'lower' ,
+             'icon' => 'lower' ,
         ]);
         return $purified;
 

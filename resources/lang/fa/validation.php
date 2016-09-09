@@ -243,6 +243,8 @@ return [
 				"home_address" => "نشانی منزل",
 				"home_tel" => "تلفن منزل" ,
 				"home_postal_code" => "کد پستی منزل" ,
+				"icon" => "نمایه",
+				"donation_date" => "تاریخ اهدای عضو" ,
 
 				"work_city" => "محل کار",
 				"work_address" => "نشانی محل کار",

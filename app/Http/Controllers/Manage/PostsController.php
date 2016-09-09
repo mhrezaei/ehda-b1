@@ -56,7 +56,7 @@ class PostsController extends Controller
 		$db = Post::first() ;
 		$branch = Branch::selectBySlug($request_branch);
 		$keyword = $request->keyword ;
-		$model_data = Post::selector($request_branch , Auth::user()->domains , 'all')
+		$model_data = Post::selector('all' , Auth::user()->allowedDomains() , 'all')
 				->whereRaw(Post::searchRawQuery($keyword))
 				->paginate(50);
 
@@ -70,7 +70,7 @@ class PostsController extends Controller
 
 	}
 
-	public function search(Requests\Manage\PostSearchRequest $request)
+	public function _search(Requests\Manage\PostSearchRequest $request)
 	{
 		return view('templates.say' , ['array'=>$request->toArray()]);
 
@@ -152,7 +152,7 @@ class PostsController extends Controller
 		$page[1] = ["$request_branch/".$request_tab , trans("posts.manage.$request_tab") , "$request_branch/".$request_tab] ;
 
 		//Model...
-		$model_data = Post::selector($request_branch, Auth::user()->domains , $request_tab)->orderBy('created_at' , 'desc')->paginate(50);
+		$model_data = Post::selector($request_branch, Auth::user()->allowedDomains() , $request_tab)->orderBy('created_at' , 'desc')->paginate(50);
 		$db = Post::first() ;
 
 		//View...
@@ -425,8 +425,9 @@ class PostsController extends Controller
 		$branch = Branch::findBySlug($request->branch);
 		$metas = $branch->allowedMeta() ;
 		$meta = [] ;
-		foreach($metas as $key => $blah) {
-			$meta[$key] = $data[$key] ;
+		foreach($metas as $key => $type) {
+			$meta[$key]['value'] = $data[$key] ;
+			$meta[$key]['type'] = $type ;
 			unset($data[$key]) ;
 		}
 
@@ -446,8 +447,8 @@ class PostsController extends Controller
 
 		//Saving Meta...
 		$post = Post::find($is_saved) ;
-		foreach($meta as $key => $blah) {
-			$post->meta($key , $meta[$key]) ;
+		foreach($meta as $key => $array) {
+			$post->meta($key , $array['value'] , $array['type']) ;
 		}
 
 		//Making RSS...
@@ -462,7 +463,7 @@ class PostsController extends Controller
 
 		return $this->jsonAjaxSaveFeedback($is_saved , [
 			'success_redirect' => $success_redirect ,
-			'success_refresh' => 1 ,
+			'success_refresh' => 0 ,
 		]);
 
 
