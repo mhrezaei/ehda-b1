@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\manage;
 
 use App\Models\State;
+use App\Models\User;
 use App\Traits\TahaControllerTrait;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -41,6 +43,7 @@ class AccountController extends Controller
 				break;
 
 			case 'card' :
+				$model = Auth::user() ;
 				break ;
 
 			case 'delete' :
@@ -119,5 +122,36 @@ class AccountController extends Controller
 			'success_message' => trans('manage.account.profile_save_note') ,
 			'success_refresh' => 1 ,
 		]);
+	}
+
+	public function card(Request $request)
+	{
+		//Preparations...
+		$data = $request->toArray() ;
+		$user = Auth::user() ;
+
+
+		//Processing donatable organs...
+		$user->organs = null ;
+		foreach(User::$donatable_organs as $donatable_organ) {
+			if($data['_'.$donatable_organ])
+				$user->organs .= ' '.trans("people.organs.$donatable_organ").' ' ;
+		}
+		if(!trim($user->organs))
+			return $this->jsonFeedback(trans('validation.javascript_validation.organs'));
+
+		//Saving...
+		if(!$user->isCard()) {
+			$user->card_registered_at = Carbon::now()->toDateTimeString() ;
+			$user->card_status = 8 ;
+		}
+		$user->newsletter = $request->newsletter ;
+		$saved = $user->save() ;
+
+		//Returning...
+		return $this->jsonSaveFeedback($saved , [
+				'success_refresh' => true ,
+		]);
+
 	}
 }

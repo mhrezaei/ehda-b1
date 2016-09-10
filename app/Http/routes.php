@@ -149,6 +149,7 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 		Route::group(['prefix'=>'save'] , function() {
 			Route::post('/password' , 'AccountController@savePassword');
 			Route::post('/profile' , 'AccountController@saveProfile');
+			Route::post('/card' , 'AccountController@card');
 		});
 	});
 

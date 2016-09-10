@@ -27,6 +27,8 @@ return [
 			'profile_reject_note' => 'درخواست تغییرات تأیید نشد! می‌توانید درخواست خود را ویرایش و مجدداً ارسال نمایید.'  ,
 			'profile_revert_note' => 'تغییرات پاک شدند.' ,
 			'in_profile' => 'در پرونده: :v' ,
+
+			'card_delete_button' => 'حذف کارت اهدای عضو' ,
 		],
 
 		"old_password" => [
