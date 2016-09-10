@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\manage;
 
+use App\Models\State;
 use App\Traits\TahaControllerTrait;
 use Illuminate\Http\Request;
 
@@ -20,7 +21,7 @@ class AccountController extends Controller
 		$this->page[0] = ['account' , trans('manage.account.account_settings')] ;
 	}
 
-	public function index($request_tab='change_password')
+	public function index($request_tab='profile')
 	{
 		//Preparations...
 		$page = $this->page ;
@@ -34,6 +35,9 @@ class AccountController extends Controller
 				break;
 
 			case 'profile' :
+				$model = Auth::user() ;
+				$model->changes = json_decode($model->unverified_changes) ;
+				$states = State::get_combo() ;
 				break;
 
 			case 'card' :
@@ -47,7 +51,7 @@ class AccountController extends Controller
 		}
 
 		//View...
-		return view("manage.account.$request_tab" , compact('page'));
+		return view("manage.account.$request_tab" , compact('page' , 'model' , 'states'));
 	}
 
 	/*
@@ -71,8 +75,49 @@ class AccountController extends Controller
 			return $this->jsonFeedback( trans('people.event.current_password_incorrect') , ['redirect' => $redirect] );
 		}
 
-		return $this->jsonAjaxSaveFeedback( Auth::user()->oldPasswordChange($request->password) , [
+		return $this->jsonAjaxSaveFeedback( Auth::user()->oldPasswordChange($request->new_password) , [
 			'success_redirect' => 'manage/index'
 		] ) ;
+	}
+
+	public function saveProfile(Requests\Manage\AccountProfileRequest $request)
+	{
+		$model = Auth::user() ;
+		$model->meta('edit_reject_notice' , null);
+
+		// IF REVERT BACK...
+		if($request->_submit == 'revert') {
+			$model->unverified_changes = null;
+			$model->unverified_flag = 0 ;
+			$ok = $model->save() ;
+			return $this->jsonAjaxSaveFeedback($ok , [
+					'success_message' => trans('manage.account.profile_revert_note') ,
+					'success_refresh' => 1 ,
+			]);
+
+		}
+
+		// IF SAVE ...
+		$raw_data = $request->toArray() ;
+		$new_data = [] ;
+		foreach($raw_data as $field => $value) {
+			if(isset($model->$field) and $model->$field != $value) {
+				$new_data[$field] = $value ;
+			}
+		}
+		if(sizeof($new_data)) {
+			$model->unverified_changes = json_encode($new_data);
+			$model->unverified_flag = 1 ;
+		}
+		else {
+			$model->unverified_changes = null;
+			$model->unverified_flag = 0 ;
+		}
+		$ok = $model->save() ;
+
+		return $this->jsonAjaxSaveFeedback($ok , [
+			'success_message' => trans('manage.account.profile_save_note') ,
+			'success_refresh' => 1 ,
+		]);
 	}
 }

@@ -5,6 +5,7 @@ namespace App\Models;
 //use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Providers\AppServiceProvider;
 use App\Traits\PermitsTrait;
+use App\Traits\TahaMetaTrait;
 use App\Traits\TahaModelTrait;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
@@ -26,6 +27,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	use Authenticatable, CanResetPassword;
 	use PermitsTrait;
 	use TahaModelTrait ;
+	use TahaMetaTrait ;
 
 	protected $guarded = ['id' , 'deleted_at' , 'roles' , 'domains' , 'unverified_changes' , 'unverified_flag' , 'settings'] ;
 	protected static $cards_mandatory_fields = ['code_melli' , 'code_id' , 'name_first' , 'name_last' , 'name_father' , 'birth_date' , 'birth_city' , 'gender' , 'home_province' , 'home_city' , 'organs' , 'from_domain' ] ;
@@ -158,7 +160,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 			$return['color'] = 'warning' ;
 		}
 		elseif($this->volunteer_status>=8) {
-			if($this->unverified_flag) {
+			if($this->unverified_flag > 0) {
 				$return['text'] = trans('people.volunteers.status.care') ;
 				$return['color'] = 'warning' ;
 			} else {

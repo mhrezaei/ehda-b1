@@ -274,6 +274,7 @@ return [
 				'card_no' => 'شماره کارت' ,
 				'organs' => 'اعضای قابل اهدا',
 				'newsletter' => 'خبرنامه' ,
+				'reject_reason' => 'دلیل رد تقاضا' ,
 
 			"token" => "توکن",
 

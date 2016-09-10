@@ -93,6 +93,7 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 			Route::post('/bulk_sms' , 'VolunteersController@bulk_sms');
 			Route::post('/email' , 'VolunteersController@email');
 			Route::post('/bulk_email' , 'VolunteersController@bulk_email');
+			Route::post('/care_review' , 'VolunteersController@care_review');
 		});
 	});
 
@@ -147,6 +148,7 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 
 		Route::group(['prefix'=>'save'] , function() {
 			Route::post('/password' , 'AccountController@savePassword');
+			Route::post('/profile' , 'AccountController@saveProfile');
 		});
 	});
 

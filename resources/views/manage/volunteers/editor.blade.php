@@ -96,6 +96,7 @@
 
 	@include('forms.select-education' , [
 		'name' => 'edu_level' ,
+	    'value' => isset($model)? $model->edu_level : '',
 		'class' => '' ,
 	])
 
