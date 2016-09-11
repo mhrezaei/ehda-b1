@@ -1,7 +1,7 @@
 @extends('manage.frame.use.0')
 
 @section('section')
-	@include('manage.volunteers.tabs')
+	@include('manage.cards.tabs')
 
 	{{--
 	|--------------------------------------------------------------------------

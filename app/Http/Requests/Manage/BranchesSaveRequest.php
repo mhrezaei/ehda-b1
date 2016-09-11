@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Manage;
 
 use App\Http\Requests\Request;
+use App\models\Branch;
 use App\Providers\ValidationServiceProvider;
 use Illuminate\Support\Facades\Auth;
 
@@ -32,6 +33,8 @@ class BranchesSaveRequest extends Request
              'plural_title' => 'required|unique:branches,plural_title,'.$id,
              'singular_title' => 'required',
              'slug' => 'required|unique:branches,slug,'.$id,
+             'template'=>'required|in:'.implode(',',Branch::$available_templates) ,
+             'icon' => 'required'
         ];
 
     }
@@ -40,11 +43,11 @@ class BranchesSaveRequest extends Request
     {
         $value	= parent::all();
         $purified = ValidationServiceProvider::purifier($value,[
-	        'slug'  =>  'lower',
-	        'have_rss' => 'bool' ,
-	        'have_comments' => 'bool' ,
-	        'is_gallery' => 'bool' ,
-	        'is_hidden' => 'bool' ,
+             'slug'  =>  'lower',
+             'template' => 'lower' ,
+             'features' => 'lower' ,
+             'allowed_meta' => 'lower' ,
+             'icon' => 'lower' ,
         ]);
         return $purified;
 

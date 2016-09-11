@@ -5,6 +5,7 @@ namespace App\models;
 use App\Traits\TahaModelTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 
 class Branch extends Model
@@ -12,6 +13,9 @@ class Branch extends Model
 	use TahaModelTrait ;
 	use SoftDeletes ;
 	protected $guarded = ['id'];
+	public static $available_features = ['image' , 'text' , 'abstract' , 'rss' , 'comment' , 'gallery' , 'category' , 'searchable' , 'preview'] ;
+	public static $available_templates = ['album' , 'post' , 'slideshow' , 'developers' , 'custom'] ;
+	public static $available_meta_types = ['text' , 'textarea' , 'date'];
 
 
 	/*
@@ -38,6 +42,16 @@ class Branch extends Model
 	|--------------------------------------------------------------------------
 	|
 	*/
+
+	public function encrypted_slug()
+	{
+		return Crypt::encrypt($this->slug) ;
+	}
+
+	public function hasFeature($feature)
+	{
+		return str_contains($this->features , $feature) ;
+	}
 
 	public function allowedMeta()
 	{
@@ -78,4 +92,25 @@ class Branch extends Model
 	{
 		return Crypt::encrypt($this->slug);
 	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| Selectors
+	|--------------------------------------------------------------------------
+	|
+	*/
+
+	public static function branchesWithFeature($feature)
+	{
+		$models = Self::whereRaw( "LOCATE('$feature' , `features`)" )->get() ;
+
+		$result = null ;
+		foreach($models as $model) {
+			$result .= ' '.$model->slug.' ';
+		}
+
+		return $result ;
+	}
+
+
 }

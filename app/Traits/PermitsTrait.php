@@ -234,6 +234,15 @@ trait PermitsTrait
 
 		return $string ;
 	}
+
+	public function allowedDomains()
+	{
+		$return = $this->domains ;
+		if($this->can('*','global'))
+			$return .= "|global|" ;
+
+		return $return ;
+	}
 	/*
 	|--------------------------------------------------------------------------
 	| Seek for Permissions / Domains

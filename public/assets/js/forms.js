@@ -88,6 +88,10 @@ function forms_validate(formData, jqForm, options) {
 	//Form Feed...
 	$($feed).removeClass('alert-success').removeClass('alert-danger').html($($feed + "-wait").html()).slideDown();
 
+	//Bypass...
+	if($('#' + $formId).attr('no-validation'))
+		return true ;
+
 	//Checking required fields...
 	$("#" + $formId + " .form-required").each(function () {
 		if (forms_errorIfEmpty(this)) {

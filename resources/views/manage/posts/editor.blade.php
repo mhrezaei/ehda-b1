@@ -34,7 +34,7 @@
 			@include('forms.hiddens' , ['fields' => [
 				['id' , $model->id ],
 				['action' , '' , 'txtAction'] ,
-				['branch' , $encrypted_branch] ,
+				['branch' , $model->branch()->encrypted_slug()] ,
 				['is_published' , $model->published_by]
 			]])
 
@@ -55,7 +55,7 @@
 				])
 			@endif
 
-			@if(!$model->branch()->is_gallery)
+			@if($model->branch()->hasFeature('text'))
 				@include('forms.textarea' , [
 					'name' => 'text',
 					'id' => 'txtText' ,
@@ -65,21 +65,25 @@
 				])
 			@endif
 
-			@include('forms.textarea' , [
-			    'name' => 'abstract',
-			    'value' => $model->abstract ,
-			    'hint' => trans('posts.manage.abstract_hint'.($model->branch()->is_gallery? '_for_galleries' : '')),
-			    'rows' => 4,
-			])
+			@if($model->branch()->hasFeature('abstract'))
+				@include('forms.textarea' , [
+					'name' => 'abstract',
+					'value' => $model->abstract ,
+					'hint' => trans('posts.manage.abstract_hint'.(!$model->branch()->hasFeature('text')? '_for_galleries' : '')),
+					'rows' => 4,
+				])
+			@endif
 
-			@include('forms.select' , [
-				'name' => 'category_id' ,
-				'value' => $model->category_id  ,
-				'options' => $model->branch()->categories ,
-				'blank_value' => '',
-//				'class' => 'form-required',
-				'blank_label' => trans('posts.categories.without')
-			])
+			@if($model->branch()->hasFeature('category'))
+				@include('forms.select' , [
+					'name' => 'category_id' ,
+					'value' => $model->category_id  ,
+					'options' => $model->branch()->categories ,
+					'blank_value' => '',
+	//				'class' => 'form-required',
+					'blank_label' => trans('posts.categories.without')
+				])
+			@endif
 
 			@include('forms.textarea' , [
 			    'name' => 'keywords',
@@ -89,7 +93,7 @@
 			])
 
 			@include('manage.posts.editor-meta')
-			@if($model->branch()->is_gallery)
+			@if($model->branch()->hasFeature('gallery'))
 				@include('manage.posts.editor-album')
 			@endif
 			{{--@include('manage.posts.editor-multidomains')--}}

@@ -112,12 +112,17 @@ class VolunteersController extends Controller
 				$opt['domains'] = Domain::orderBy('title')->get() ;
 				break;
 
+			case 'care_review' :
+				$model->changes = json_decode($model->unverified_changes) ;
+				$states = State::get_combo() ;
+				break;
+
 		}
 
 		if(!$model) return view('errors.m410');
 		if(!View::exists($view)) return view('errors.m404');
 
-		return view($view , compact('model' , 'opt')) ;
+		return view($view , compact('model' , 'opt' , 'states')) ;
 	}
 
 	private function modalBulkAction($view_file)
@@ -418,10 +423,39 @@ class VolunteersController extends Controller
 
 	public function bulk_email(Requests\Manage\VolunteerSendMessage $request)
 	{
-
 		$done = true ; //@TODO: Write the event!
 
 		return $this->jsonAjaxSaveFeedback($done) ;
 	}
 
+	public function care_review(Requests\Manage\VolunteerCareRequest $request)
+	{
+		$model = User::find($request->id);
+		if(!$model or !$model->isVolunteer())
+			return $this->jsonFeedback(trans('validation.http.Eror404'));
+
+		//If Reject...
+		if($request->_submit == 'reject') {
+			$model->unverified_flag = -1 ;
+			$model->meta('edit_reject_notice' , $request->reject_reason);
+			$ok = $model->save();
+
+			return $this->jsonAjaxSaveFeedback($ok , [
+				'success_refresh' => 1 ,
+			]);
+		}
+
+		//If Normal Save...
+		$data = $request->toArray() ;
+		$data['unverified_flag'] = 0 ;
+		$data['unverified_changes'] = null ;
+		$ok = User::store($data , ['reject_reason']) ;
+		if($ok)
+			$model->meta('edit_reject_notice' , null);
+
+		return $this->jsonAjaxSaveFeedback($ok , [
+				'success_refresh' => 1 ,
+		]);
+
+	}
 }
