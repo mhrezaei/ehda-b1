@@ -29,6 +29,7 @@ return [
 			'in_profile' => 'در پرونده: :v' ,
 
 			'card_delete_button' => 'حذف کارت اهدای عضو' ,
+			'volunteer_delete_button' => 'حذف حساب سفیر اهدای عضو' ,
 		],
 
 		"old_password" => [

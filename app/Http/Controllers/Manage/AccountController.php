@@ -47,6 +47,7 @@ class AccountController extends Controller
 				break ;
 
 			case 'delete' :
+				$model = Auth::user() ;
 				break;
 
 			default:
@@ -144,6 +145,7 @@ class AccountController extends Controller
 		if(!$user->isCard()) {
 			$user->card_registered_at = Carbon::now()->toDateTimeString() ;
 			$user->card_status = 8 ;
+			$user->card_no = User::generateCardNo() ;
 		}
 		$user->newsletter = $request->newsletter ;
 		$saved = $user->save() ;
@@ -151,6 +153,25 @@ class AccountController extends Controller
 		//Returning...
 		return $this->jsonSaveFeedback($saved , [
 				'success_refresh' => true ,
+		]);
+
+	}
+
+	public function card_delete()
+	{
+		return $this->jsonSaveFeedback( Auth::user()->cardDelete() , [
+			'success_refresh' => 1 ,
+		]);
+	}
+
+	public function volunteer_delete(Request $request)
+	{
+		$user = Auth::user() ;
+		Auth::logout();
+		$request->session()->flush() ;
+
+		return $this->jsonSaveFeedback( $user->volunteerDelete() , [
+				'success_refresh' => 1 ,
 		]);
 
 	}

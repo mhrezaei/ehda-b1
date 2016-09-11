@@ -150,6 +150,8 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 			Route::post('/password' , 'AccountController@savePassword');
 			Route::post('/profile' , 'AccountController@saveProfile');
 			Route::post('/card' , 'AccountController@card');
+			Route::post('/card_delete' , 'AccountController@card_delete');
+			Route::post('/volunteer_delete' , 'AccountController@volunteer_delete');
 		});
 	});
 

@@ -202,6 +202,7 @@ class CardsController extends Controller
 			$data['password_force_change'] = 1 ;
 			$data['card_registered_at'] = Carbon::now()->toDateTimeString() ;
 			$data['card_status'] = 8 ;
+			$data['card_no'] = User::generateCardNo() ; 
 			if($data['_submit'] == 'print')
 				$data['card_print_status'] = 1 ;
 		}
