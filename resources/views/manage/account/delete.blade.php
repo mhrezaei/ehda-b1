@@ -51,7 +51,7 @@
 							</button>
 						</div>
 						<div class="col-md-6 text-center">
-							<button class="btn btn-default" onclick="$('#divAlertCard').slideToggle()">
+							<button type="button" class="btn btn-default" onclick="$('#divAlertCard').slideToggle()">
 								{{ trans('forms.button.cancel') }}
 							</button>
 						</div>
@@ -103,7 +103,7 @@
 						</button>
 					</div>
 					<div class="col-md-6 text-center">
-						<button class="btn btn-default" onclick="$('#divAlertVolunteer').slideToggle()">
+						<button type="button" class="btn btn-default" onclick="$('#divAlertVolunteer').slideToggle()">
 							{{ trans('forms.button.cancel') }}
 						</button>
 					</div>

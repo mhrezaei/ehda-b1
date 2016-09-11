@@ -1,4 +1,4 @@
-<li class="dropdown">
+<li id="{{$id or ''}}" class="dropdown">
 	<a class="dropdown-toggle" data-toggle="dropdown" href="#">
 		<i class="fa fa-{{$icon or 'navicon'}} fa-fw"></i> <i class="fa fa-caret-down"></i>
 	</a>

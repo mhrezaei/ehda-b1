@@ -1,6 +1,7 @@
 @include('manage.frame.widgets.topbar' , [
+	'id' => 'topBarCreate' ,
 	'icon' => 'plus-circle' ,
-	'items' => \App\Http\Controllers\Manage\ManageController::topbarCreateMenu() ,
+	'items' => $topbar_create_menu = \App\Http\Controllers\Manage\ManageController::topbarCreateMenu() ,
 ])
 
 @include('manage.frame.widgets.topbar' , [
@@ -12,3 +13,8 @@
 	]
 ])
 
+@if(!sizeof($topbar_create_menu))
+	<script>
+		$('#topBarCreate').hide() ; 
+	</script>
+@endif

@@ -49,18 +49,20 @@ class ManageController extends Controller
 		if(Auth::user()->can('cards.create') or Auth::user()->can('volunteers.create'))
 			array_push($array ,['-'] );
 
-		array_push($array , [
-				"manage/cards/create" ,
-				trans('people.cards.manage.create') ,
-				'credit-card' ,
-				Auth::user()->can('cards.create')
-		]);
-		array_push($array , [
-				"manage/volunteers/create" ,
-				trans('people.volunteers.manage.create') ,
-				'child' ,
-				Auth::user()->can('volunteers.create')
-		]);
+		if(Auth::user()->can('cards.create')) {
+			array_push($array, [
+					"manage/cards/create",
+					trans('people.cards.manage.create'),
+					'credit-card',
+			]);
+		}
+		if(Auth::user()->can('volunteers.create')) {
+			array_push($array , [
+					"manage/volunteers/create" ,
+					trans('people.volunteers.manage.create') ,
+					'child' ,
+			]);
+		}
 
 		return $array ;
 
