@@ -497,7 +497,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		if($this->isVolunteer()) {
 			$this->card_status = 0 ;
 			$this->card_registered_at = null ;
-			$this->card_no = null ;
+//			$this->card_no = null ;
 			$this->organs = null ;
 			return $this->save() ;
 		}

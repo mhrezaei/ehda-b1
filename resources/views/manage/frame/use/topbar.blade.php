@@ -15,6 +15,6 @@
 
 @if(!sizeof($topbar_create_menu))
 	<script>
-		$('#topBarCreate').hide() ; 
+		$('#topBarCreate').hide() ;
 	</script>
 @endif
