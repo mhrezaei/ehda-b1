@@ -8,7 +8,7 @@
 				<li><a href="{{ url('/card/show_card/full/' . encrypt(Auth::user()->code_melli) . '/download') }}">{{ trans('site.global.download_oragan_donation_card') }}</a></li>
 				<li><a href="{{ url('/members/my_card/print') }}">{{ trans('forms.button.card_print') }}</a></li>
 				<li><a href="{{ url('/members/my_card/edit') }}">{{ trans('site.global.users_edit_data') }}</a></li>
-				<li><a href="{{ url('/log_out') }}">{{ trans('site.global.log_out') }}</a></li>
+				<li><a href="{{ url('/logout') }}">{{ trans('site.global.log_out') }}</a></li>
 			</ul>
 		</li>
 		@else

@@ -93,11 +93,12 @@ class CardController extends Controller
         // card extra detail
         $input['card_status'] = 8;
         $input['password'] = Hash::make($input['password']);
-        $input['birth_date'] = Carbon::createFromTimestamp($input['birth_date'])->toDateTimeString();
+        $input['birth_date'] = Carbon::createFromTimestamp($input['birth_date'])->toDateString() . '  00:00:00';
         $input['home_province'] = State::find($input['home_city']);
         $input['home_province'] = $input['home_province']->province()->id;
         $input['password_force_change'] = 0;
         unset($input['password2']);
+
 
         if (isset($input['chRegisterAll']))
         {

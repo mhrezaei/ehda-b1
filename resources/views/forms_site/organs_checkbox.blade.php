@@ -44,3 +44,31 @@
         {{ trans('site.global.organ_detail_line3') }}
     </p>
 </div>
+<script>
+    $(document).ready(function () {
+        var count = 0;
+        @if(strpos(Auth::user()->organs, 'Heart') !== false)
+            $('#chRegisterHeart').click(); count++;
+        @endif
+        @if(strpos(Auth::user()->organs, 'Lung') !== false)
+            $('#chRegisterLung').click(); count++;
+        @endif
+        @if(strpos(Auth::user()->organs, 'Liver') !== false)
+            $('#chRegisterLiver').click(); count++;
+        @endif
+        @if(strpos(Auth::user()->organs, 'Kidney') !== false)
+            $('#chRegisterKidney').click(); count++;
+        @endif
+        @if(strpos(Auth::user()->organs, 'Pancreas') !== false)
+            $('#chRegisterPancreas').click(); count++;
+        @endif
+        @if(strpos(Auth::user()->organs, 'Tissues') !== false)
+            $('#chRegisterTissues').click(); count++;
+        @endif
+
+        if (count == 6)
+        {
+            $('#chRegisterAll').click();
+        }
+    });
+</script>

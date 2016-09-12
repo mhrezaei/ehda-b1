@@ -7,7 +7,6 @@
 {!! HTML::script ('assets/libs/bootstrap-select/bootstrap-select.min.js') !!}
 {!! HTML::script ('assets/libs/bootstrap-select/defaults-fa_IR.min.js') !!}
 
-
 <div class="row">
     <div class="col-xs-12">
         <div class="container">
@@ -16,13 +15,13 @@
                     <img src="{{ url('') }}/assets/site/images/card.png" alt="{{ trans('site.know_menu.organ_donation_card') }}" class="ehda-card-image">
                 </div>
                 <div class="row">
-                        {!! Form::open([
-                            'url'	=> '/member/my_card/edit_process' ,
-                            'method'=> 'post',
-                            'class' => 'clearfix ehda-card-form js',
-                            'name' => 'editForm',
-                            'id' => 'editForm',
-                        ]) !!}
+                    {!! Form::open([
+                        'url'	=> '/members/my_card/edit_process' ,
+                        'method'=> 'post',
+                        'class' => 'clearfix ehda-card-form js',
+                        'name' => 'editForm',
+                        'id' => 'editForm',
+                    ]) !!}
 
                         <div class="form-group">
                             <div>{{ trans('site.global.personal_data') }}</div>
@@ -33,7 +32,7 @@
                                 @include('forms_site.input', [
                                 'field' => 'name_first',
                                 'min' => 2,
-                                'class' => 'form-persian',
+                                'class' => 'form-persian form-required',
                                 'required' => 1,
                                 'value' => Auth::user()->name_first,
                                 ])
@@ -42,7 +41,7 @@
                                 @include('forms_site.input', [
                                 'field' => 'name_last',
                                 'min' => 2,
-                                'class' => 'form-persian',
+                                'class' => 'form-persian form-required',
                                 'required' => 1,
                                 'value' => Auth::user()->name_last,
                                 ])
@@ -53,7 +52,7 @@
                             <div class="col-xs-12 col-sm-6">
                                 @include('forms_site.select_gender', [
                                     'field' => 'gender',
-                                    'class' => 'form-select',
+                                    'class' => 'form-select form-required',
                                     'required' => 1,
                                     'value' => Auth::user()->gender,
                                     ])
@@ -62,7 +61,7 @@
                                 @include('forms_site.input', [
                                 'field' => 'name_father',
                                 'min' => 2,
-                                'class' => 'form-persian',
+                                'class' => 'form-persian form-required',
                                 'required' => 1,
                                 'value' => Auth::user()->name_father,
                                 ])
@@ -75,7 +74,7 @@
                                 'field' => 'code_id',
                                 'min' => 1,
                                 'max' => 10,
-                                'class' => 'form-number',
+                                'class' => 'form-number form-required',
                                 'required' => 1,
                                 'value' => Auth::user()->code_id,
                                 ])
@@ -85,7 +84,7 @@
                                 'field' => 'code_melli',
                                 'min' => 10,
                                 'max' => 10,
-                                'class' => 'form-national',
+                                'class' => 'form-national form-required',
                                 'required' => 1,
                                 'value' => Auth::user()->code_melli,
                                 'attr' => 'readonly'
@@ -97,7 +96,7 @@
                             <div class="col-xs-12 col-sm-6">
                                 @include('forms_site.input', [
                                 'field' => 'birth_date',
-                                'class' => 'form-datepicker',
+                                'class' => 'form-datepicker form-required',
                                 'required' => 1,
                                 'attr' => 'autocomplete=off',
                                 'value' => jDate::forge(Auth::user()->birth_date)->format('Y/m/d')
@@ -110,6 +109,7 @@
                                 'options' => $states ,
                                 'search' => true ,
                                 'required' => 1,
+                                'class' => 'form-selectpicker form-required',
                                 'value' => Auth::user()->birth_city,
                                 ])
                             </div>
@@ -119,15 +119,16 @@
                             <div class="col-xs-12 col-sm-6">
                                 @include('forms_site.select_edu_level', [
                                     'field' => 'edu_level',
-                                    'class' => 'form-select',
+                                    'class' => 'form-select form-required',
                                     'required' => 1,
+                                    'value' => Auth::user()->edu_level,
                                     ])
                             </div>
                             <div class="col-xs-12 col-sm-6">
                                 @include('forms_site.input', [
                                 'field' => 'job',
                                 'min' => 2,
-                                'class' => 'form-persian',
+                                'class' => 'form-persian form-required',
                                 'required' => 1,
                                 'value' => Auth::user()->job,
                                  ])
@@ -144,7 +145,7 @@
                                 'field' => 'tel_mobile',
                                 'min' => 11,
                                 'max' => 11,
-                                'class' => 'form-mobile',
+                                'class' => 'form-mobile form-required',
                                 'required' => 1,
                                 'value' => Auth::user()->tel_mobile,
                                 ])
@@ -154,7 +155,7 @@
                                 'field' => 'home_tel',
                                 'min' => 11,
                                 'max' => 11,
-                                'class' => 'form-phone',
+                                'class' => 'form-phone form-required',
                                 'required' => 1,
                                 'value' => Auth::user()->home_tel,
                                 ])
@@ -169,14 +170,14 @@
                                 'options' => $states ,
                                 'search' => true ,
                                 'required' => 1,
+                                'class' => 'form-selectpicker form-required',
                                 'value' => Auth::user()->home_city,
-
                                 ])
                             </div>
                             <div class="col-xs-12 col-sm-6">
                                 @include('forms_site.input', [
                                 'field' => 'email',
-                                'class' => 'form-email',
+                                'class' => 'form-email form-required',
                                 'required' => 1,
                                 'value' => Auth::user()->email,
                                 ])
@@ -192,17 +193,15 @@
                                 @include('forms_site.input', [
                                 'field' => 'password',
                                 'class' => 'form-password',
-                                'required' => 1,
                                 'type' => 'password',
                                 'min' => 8,
                                 'max' => 64,
                                 ])
+                                <span style="color: dimgray; font-size: 10px; line-height: 0px;">درصورت تکمیل جایگزین رمز قبلی میگردد.</span>
                             </div>
                             <div class="col-xs-12 col-sm-6">
                                 @include('forms_site.input', [
                                 'field' => 'password2',
-                                'class' => '',
-                                'required' => 1,
                                 'type' => 'password',
                                 'min' => 8,
                                 'max' => 64,
@@ -215,19 +214,17 @@
                         <div class="form-group text-center">
                             @include('forms.button', [
                                 'shape' => 'success step_one_btn',
-                                'label' => trans('forms.button.send'),
+                                'label' => trans('forms.button.save'),
                                 'type' => 'submit',
                             ])
                             @include('forms.button', [
                                 'shape' => 'warning step_one_btn',
                                 'label' => trans('forms.button.cancel'),
                                 'type' => 'button',
-                                'link' => url(''),
+                                'link' => url('/members/my_card'),
                             ])
                         </div>
                     {!! Form::close() !!}
-
-                    @include('site.card_register.db_check_form')
 
                 </div>
             </div>
