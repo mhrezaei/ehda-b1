@@ -35,6 +35,7 @@ Route::group(['prefix' => 'members', 'middleware' => 'MembersAuth', 'namespace' 
 	Route::get('/my_card', 'MembersController@index');
 	Route::get('/my_card/print', 'MembersController@print_my_card');
 	Route::get('/my_card/edit', 'MembersController@edit_my_card');
+	Route::post('/my_card/edit_process', 'MembersController@edit_card_process');
 });
 
 /*

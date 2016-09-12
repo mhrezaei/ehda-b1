@@ -781,11 +781,6 @@ function forms_errorIfNotDatePicker(selector) {
 		return 1;
 	}
 	else {
-		var val = $('#' + $elementID + 'Extra').val();
-		if (val.length > 10)
-		{
-			$('#' + $elementID + 'Extra').val(val / 1000);
-		}
 		forms_markError(selector, "success");
 		return 0;
 	}
@@ -1006,12 +1001,12 @@ function forms_date_picker(selector) {
 				var self = this;
 				var thisAltFormat = self.altFormat.toLowerCase();
 				if (thisAltFormat === "gregorian" | thisAltFormat === "g") {
-					return new Date(unixDate);
+					return new Date(unixDate) / 1000;
 				}
 				if (thisAltFormat === "unix" | thisAltFormat === "u") {
-					return unixDate;
+					return unixDate / 1000;
 				} else {
-					return new persianDate(unixDate).format(self.altFormat);
+					return new persianDate(unixDate).format(self.altFormat) / 1000;
 				}
 			},
 			onShow: function (self) {},
@@ -1103,10 +1098,15 @@ function forms_date_picker(selector) {
 			maxDate: false
 		});
 
-	if ($val.length > 6)
-	{
+	if ($val.length > 6) {
 		$val = $val.split('/');
-		$( '#' + $elementID ).pDatepicker("setDate",[$val[0],$val[1],parseInt($val[2]),$val[3],$val[4], $val[5]] );
+		if ($time) {
+			$('#' + $elementID).pDatepicker("setDate", [$val[0], $val[1], parseInt($val[2]), $val[3], $val[4], $val[5]]);
+		}
+		else
+		{
+			$( '#' + $elementID ).pDatepicker("setDate",[$val[0],$val[1],parseInt($val[2]),0,0,0] );
+		}
 	}
 	if($val.length < 1 )
 	{
