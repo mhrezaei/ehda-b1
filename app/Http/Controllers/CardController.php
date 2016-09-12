@@ -98,6 +98,7 @@ class CardController extends Controller
         $input['home_province'] = $input['home_province']->province()->id;
         $input['password_force_change'] = 0;
         unset($input['password2']);
+        // hi
 
         if (isset($input['chRegisterAll']))
         {
