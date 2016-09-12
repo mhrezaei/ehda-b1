@@ -81,6 +81,7 @@ function forms_validate(formData, jqForm, options) {
 	var $formId = jqForm.attr('id');
 	var $errors = 0;
 	var $errors_msg = new Array;
+	var $errors_el = new Array;
 	var $feed = "#" + $formId + " .form-feed";
 	$('#' + $formId + ' button').prop('disabled', true);
 	//@TODO: hadi add optional validate
@@ -88,157 +89,453 @@ function forms_validate(formData, jqForm, options) {
 	//Form Feed...
 	$($feed).removeClass('alert-success').removeClass('alert-danger').html($($feed + "-wait").html()).slideDown();
 
-	//Checking required fields...
-	$("#" + $formId + " .form-required").each(function () {
-		if (forms_errorIfEmpty(this)) {
-			var $err = $(this).attr('error-value');
-			if ($err && $err.length) {
-				$errors_msg.push($err);
-			}
-			if ($errors <= 1) $(this).focus();
-			$errors++;
-		}
-	});
+	$('#' + $formId + ' :input').each(function () {
+		var $val = $(this).val();
+		var $name = $(this).attr('name');
+		var $err = $(this).attr('error-value');
+		var $err_el = $.inArray($name, $errors_el);
 
-	//Checking numbers fields...
-	$("#" + $formId + " .form-number").each(function () {
-		if (forms_errorIfNotNumber(this)) {
-			var $err = $(this).attr('error-value');
-			if ($err && $err.length) {
-				$errors_msg.push($err);
-			}
-			if ($errors <= 1) $(this).focus();
-			$errors++;
-		}
-	});
+		var $required = $(this).hasClass('form-required');
+		var $number = $(this).hasClass('form-number');
+		var $persian = $(this).hasClass('form-persian');
+		var $english = $(this).hasClass('form-english');
+		var $email = $(this).hasClass('form-email');
+		var $national = $(this).hasClass('form-national');
+		var $mobile = $(this).hasClass('form-mobile');
+		var $phone = $(this).hasClass('form-phone');
+		var $password = $(this).hasClass('form-password');
+		var $datepicker = $(this).hasClass('form-datepicker');
+		var $select = $(this).hasClass('form-select');
+		var $selectpicker = $(this).hasClass('form-selectpicker');
 
-	//Checking persian character fields...
-	$("#" + $formId + " .form-persian").each(function () {
-		if (forms_errorIfLang(this, 'fa')) {
-			var $err = $(this).attr('error-value');
-			if ($err && $err.length) {
-				$errors_msg.push($err);
-			}
-			if ($errors <= 1) $(this).focus();
-			$errors++;
-		}
-	});
-
-	//Checking english character fields...
-	$("#" + $formId + " .form-english").each(function () {
-		if (forms_errorIfLang(this, 'en')) {
-			var $err = $(this).attr('error-value');
-			if ($err && $err.length) {
-				$errors_msg.push($err);
-			}
-			if ($errors <= 1) $(this).focus();
-			$errors++;
-		}
-	});
-
-	//Checking email fields...
-	$("#" + $formId + " .form-email").each(function () {
-		if (forms_errorIfNotEmail(this)) {
-			var $err = $(this).attr('error-value');
-			if ($err && $err.length) {
-				$errors_msg.push($err);
-			}
-			if ($errors <= 1) $(this).focus();
-			$errors++;
-		}
-	});
-
-	//Checking national code fields...
-	$("#" + $formId + " .form-national").each(function () {
-		if (forms_errorIfNotNationalCode(this)) {
-			var $err = $(this).attr('error-value');
-			if ($err && $err.length) {
-				$errors_msg.push($err);
-			}
-			if ($errors <= 1) $(this).focus();
-			$errors++;
-		}
-	});
-
-	//Checking mobile numbers fields...
-	$("#" + $formId + " .form-mobile").each(function () {
-		if (forms_errorIfNotMobile(this)) {
-			var $err = $(this).attr('error-value');
-			if ($err && $err.length) {
-				$errors_msg.push($err);
-			}
-			if ($errors <= 1) $(this).focus();
-			$errors++;
-		}
-	});
-
-	//Checking phone numbers fields...
-	$("#" + $formId + " .form-phone").each(function () {
-		if (forms_errorIfNotPhone(this)) {
-			var $err = $(this).attr('error-value');
-			if ($err && $err.length) {
-				$errors_msg.push($err);
-			}
-			if ($errors <= 1) $(this).focus();
-			$errors++;
-		}
-	});
-
-	//Checking password fields...
-	$("#" + $formId + " .form-password").each(function () {
-		if (forms_errorIfNotVerifyPassWord(this)) {
-			var $err = $(this).attr('error-value');
-			if ($err && $err.length) {
-				$errors_msg.push($err);
-			}
-			if ($errors <= 1) $(this).focus();
-			$errors++;
-		}
-	});
-
-	//Checking datepicker fields...
-	$("#" + $formId + " .form-datepicker").each(function () {
-		if (forms_errorIfNotDatePicker(this)) {
-			var $err = $(this).attr('error-value');
-			if ($err && $err.length) {
-				$errors_msg.push($err);
-			}
-			if ($errors <= 1) $(this).focus();
-			$errors++;
-		}
-	});
-
-	//Checking select fields...
-	$("#" + $formId + " .form-select").each(function () {
-		if($(this).hasClass('form-required')) {
-			if (forms_errorIfNotSelect(this)) {
-				var $err = $(this).attr('error-value');
-				if ($err && $err.length) {
+		if ($required && $err_el < 0)
+		{
+			if (forms_errorIfEmpty(this))
+			{
+				if ($err && $err.length)
+				{
 					$errors_msg.push($err);
 				}
-				if ($errors <= 1) $(this).focus();
+				if ($errors < 1) $(this).focus();
 				$errors++;
+				$errors_el.push($name);
+				$err_el = $.inArray($name, $errors_el);
+			}
+		}
+
+		if ($number && $err_el < 0)
+		{
+			if ($(this).val().length > 0)
+			{
+				if (forms_errorIfNotNumber(this))
+				{
+					if ($err && $err.length)
+					{
+						$errors_msg.push($err);
+					}
+					if ($errors < 1) $(this).focus();
+					$errors++;
+					$errors_el.push($name);
+					$err_el = $.inArray($name, $errors_el);
+				}
+			}
+		}
+
+		if ($persian && $err_el < 0)
+		{
+			if ($(this).val().length > 0)
+			{
+				if (forms_errorIfLang(this, 'fa'))
+				{
+					if ($err && $err.length)
+					{
+						$errors_msg.push($err);
+					}
+					if ($errors < 1) $(this).focus();
+					$errors++;
+					$errors_el.push($name);
+					$err_el = $.inArray($name, $errors_el);
+				}
+			}
+		}
+
+		if ($english && $err_el < 0)
+		{
+			if ($(this).val().length > 0)
+			{
+				if (forms_errorIfLang(this, 'en'))
+				{
+					if ($err && $err.length)
+					{
+						$errors_msg.push($err);
+					}
+					if ($errors < 1) $(this).focus();
+					$errors++;
+					$errors_el.push($name);
+					$err_el = $.inArray($name, $errors_el);
+				}
+			}
+		}
+
+		if ($email && $err_el < 0)
+		{
+			if ($(this).val().length > 0)
+			{
+				if (forms_errorIfNotEmail(this))
+				{
+					if ($err && $err.length)
+					{
+						$errors_msg.push($err);
+					}
+					if ($errors < 1) $(this).focus();
+					$errors++;
+					$errors_el.push($name);
+					$err_el = $.inArray($name, $errors_el);
+				}
+			}
+		}
+
+		if ($national && $err_el < 0)
+		{
+			if ($(this).val().length > 0)
+			{
+				if (forms_errorIfNotNationalCode(this))
+				{
+					if ($err && $err.length)
+					{
+						$errors_msg.push($err);
+					}
+					if ($errors < 1) $(this).focus();
+					$errors++;
+					$errors_el.push($name);
+					$err_el = $.inArray($name, $errors_el);
+				}
+			}
+		}
+
+		if ($mobile && $err_el < 0)
+		{
+			if ($(this).val().length > 0)
+			{
+				if (forms_errorIfNotMobile(this))
+				{
+					if ($err && $err.length)
+					{
+						$errors_msg.push($err);
+					}
+					if ($errors < 1) $(this).focus();
+					$errors++;
+					$errors_el.push($name);
+					$err_el = $.inArray($name, $errors_el);
+				}
+			}
+		}
+
+		if ($phone && $err_el < 0)
+		{
+			if ($(this).val().length > 0)
+			{
+				if (forms_errorIfNotPhone(this))
+				{
+					if ($err && $err.length)
+					{
+						$errors_msg.push($err);
+					}
+					if ($errors < 1) $(this).focus();
+					$errors++;
+					$errors_el.push($name);
+					$err_el = $.inArray($name, $errors_el);
+				}
+			}
+		}
+
+		if ($password && $err_el < 0)
+		{
+			if ($(this).val().length > 0)
+			{
+				if (forms_errorIfNotVerifyPassWord(this))
+				{
+					if ($err && $err.length)
+					{
+						$errors_msg.push($err);
+					}
+					if ($errors < 1) $(this).focus();
+					$errors++;
+					$errors_el.push($name);
+					$err_el = $.inArray($name, $errors_el);
+				}
+			}
+		}
+
+		if ($datepicker && $err_el < 0)
+		{
+			if ($(this).val().length > 0)
+			{
+				if (forms_errorIfNotDatePicker(this))
+				{
+					if ($err && $err.length)
+					{
+						$errors_msg.push($err);
+					}
+					if ($errors < 1) $(this).focus();
+					$errors++;
+					$errors_el.push($name);
+					$err_el = $.inArray($name, $errors_el);
+				}
+			}
+		}
+
+		if ($select && $err_el < 0)
+		{
+			if ($(this).hasClass('form-required'))
+			{
+				if (forms_errorIfNotSelect(this))
+				{
+					if ($err && $err.length)
+					{
+						$errors_msg.push($err);
+					}
+					if ($errors < 1) $(this).focus();
+					$errors++;
+					$errors_el.push($name);
+					$err_el = $.inArray($name, $errors_el);
+				}
+			}
+		}
+
+		if ($selectpicker && $err_el < 0)
+		{
+			if ($val < 1)
+			{
+				forms_markError($(this), "error");
+				if ($err && $err.length)
+				{
+					$errors_msg.push($err);
+				}
+				if ($errors < 1) $(this).focus();
+				$errors++;
+				$errors_el.push($name);
+				$err_el = $.inArray($name, $errors_el);
+			}
+			else
+			{
+				forms_markError($(this), "success");
 			}
 		}
 	});
 
+	// alert($errors_el);
+
+	//Checking required fields...
+	// $("#" + $formId + " .form-required").each(function () {
+	// 	var name = $(this).attr('name');
+	// 	if ($.inArray(name, $errors_el) < 0)
+	// 	{
+	//
+	// 	}
+	// });
+
+	//Checking numbers fields...
+	// $("#" + $formId + " .form-number").each(function () {
+	// 	var name = $(this).attr('name');
+	// 	if ($.inArray(name, $errors_el) < 0) {
+	// 		if ($(this).val().length > 0){
+	// 			if (forms_errorIfNotNumber(this)) {
+	// 				var $err = $(this).attr('error-value');
+	// 				if ($err && $err.length) {
+	// 					$errors_msg.push($err);
+	// 				}
+	// 				if ($errors <= 1) $(this).focus();
+	// 				$errors++;
+	// 				$errors_el.push(name);
+	// 			}
+	// 		}
+	// 	}
+	// });
+
+	//Checking persian character fields...
+	// $("#" + $formId + " .form-persian").each(function () {
+	// 	var name = $(this).attr('name');
+	// 	if ($.inArray(name, $errors_el) < 0) {
+	// 		if ($(this).val().length > 0) {
+	// 			if (forms_errorIfLang(this, 'fa')) {
+	// 				var $err = $(this).attr('error-value');
+	// 				if ($err && $err.length) {
+	// 					$errors_msg.push($err);
+	// 				}
+	// 				if ($errors <= 1) $(this).focus();
+	// 				$errors++;
+	// 				$errors_el.push(name);
+	// 			}
+	// 		}
+	// 	}
+	// });
+
+	//Checking english character fields...
+	// $("#" + $formId + " .form-english").each(function () {
+	// 	var name = $(this).attr('name');
+	// 	if ($.inArray(name, $errors_el) < 0) {
+	// 		if ($(this).val().length > 0) {
+	// 			if (forms_errorIfLang(this, 'en')) {
+	// 				var $err = $(this).attr('error-value');
+	// 				if ($err && $err.length) {
+	// 					$errors_msg.push($err);
+	// 				}
+	// 				if ($errors <= 1) $(this).focus();
+	// 				$errors++;
+	// 				$errors_el.push(name);
+	// 			}
+	// 		}
+	// 	}
+	// });
+
+	//Checking email fields...
+	// $("#" + $formId + " .form-email").each(function () {
+	// 	var name = $(this).attr('name');
+	// 	if ($.inArray(name, $errors_el) < 0) {
+	// 		if ($(this).val().length > 0) {
+	// 			if (forms_errorIfNotEmail(this)) {
+	// 				var $err = $(this).attr('error-value');
+	// 				if ($err && $err.length) {
+	// 					$errors_msg.push($err);
+	// 				}
+	// 				if ($errors <= 1) $(this).focus();
+	// 				$errors++;
+	// 				$errors_el.push(name);
+	// 			}
+	// 		}
+	// 	}
+	// });
+
+	//Checking national code fields...
+	// $("#" + $formId + " .form-national").each(function () {
+	// 	var name = $(this).attr('name');
+	// 	if ($.inArray(name, $errors_el) < 0) {
+	// 		if ($(this).val().length > 0) {
+	// 			if (forms_errorIfNotNationalCode(this)) {
+	// 				var $err = $(this).attr('error-value');
+	// 				if ($err && $err.length) {
+	// 					$errors_msg.push($err);
+	// 				}
+	// 				if ($errors <= 1) $(this).focus();
+	// 				$errors++;
+	// 				$errors_el.push(name);
+	// 			}
+	// 		}
+	// 	}
+	// });
+
+	//Checking mobile numbers fields...
+	// $("#" + $formId + " .form-mobile").each(function () {
+	// 	var name = $(this).attr('name');
+	// 	if ($.inArray(name, $errors_el) < 0) {
+	// 		if ($(this).val().length > 0) {
+	// 			if (forms_errorIfNotMobile(this)) {
+	// 				var $err = $(this).attr('error-value');
+	// 				if ($err && $err.length) {
+	// 					$errors_msg.push($err);
+	// 				}
+	// 				if ($errors <= 1) $(this).focus();
+	// 				$errors++;
+	// 				$errors_el.push(name);
+	// 			}
+	// 		}
+	// 	}
+	// });
+
+	//Checking phone numbers fields...
+	// $("#" + $formId + " .form-phone").each(function () {
+	// 	var name = $(this).attr('name');
+	// 	if ($.inArray(name, $errors_el) < 0) {
+	// 		if ($(this).val().length > 0) {
+	// 			if (forms_errorIfNotPhone(this)) {
+	// 				var $err = $(this).attr('error-value');
+	// 				if ($err && $err.length) {
+	// 					$errors_msg.push($err);
+	// 				}
+	// 				if ($errors <= 1) $(this).focus();
+	// 				$errors++;
+	// 				$errors_el.push(name);
+	// 			}
+	// 		}
+	// 	}
+	// });
+
+	//Checking password fields...
+	// $("#" + $formId + " .form-password").each(function () {
+	// 	var name = $(this).attr('name');
+	// 	if ($.inArray(name, $errors_el) < 0) {
+	// 		if ($(this).val().length > 0) {
+	// 			if (forms_errorIfNotVerifyPassWord(this)) {
+	// 				var $err = $(this).attr('error-value');
+	// 				if ($err && $err.length) {
+	// 					$errors_msg.push($err);
+	// 				}
+	// 				if ($errors <= 1) $(this).focus();
+	// 				$errors++;
+	// 				$errors_el.push(name);
+	// 			}
+	// 		}
+	// 	}
+	// });
+
+	//Checking datepicker fields...
+	// $("#" + $formId + " .form-datepicker").each(function () {
+	// 	var name = $(this).attr('name');
+	// 	if ($.inArray(name, $errors_el) < 0) {
+	// 		if ($(this).val().length > 0) {
+	// 			if (forms_errorIfNotDatePicker(this)) {
+	// 				var $err = $(this).attr('error-value');
+	// 				if ($err && $err.length) {
+	// 					$errors_msg.push($err);
+	// 				}
+	// 				if ($errors <= 1) $(this).focus();
+	// 				$errors++;
+	// 				$errors_el.push(name);
+	// 			}
+	// 		}
+	// 	}
+	// });
+
+	//Checking select fields...
+	// $("#" + $formId + " .form-select").each(function () {
+	// 	var name = $(this).attr('name');
+	// 	if ($.inArray(name, $errors_el) < 0) {
+	// 		if ($(this).hasClass('form-required')) {
+	// 			if (forms_errorIfNotSelect(this)) {
+	// 				var $err = $(this).attr('error-value');
+	// 				if ($err && $err.length) {
+	// 					$errors_msg.push($err);
+	// 				}
+	// 				if ($errors <= 1) $(this).focus();
+	// 				$errors++;
+	// 				$errors_el.push(name);
+	// 			}
+	// 		}
+	// 	}
+	// });
+
 	//Checking select city fields...
-//	$("#" + $formId + " .selectpicker").each(function () {
-//		var city = $(this).val();
-//		if (city < 1) {
-//			forms_markError($(this), "error");
-//			var $err = $(this).attr('error-value');
-//			if ($err && $err.length) {
-//				$errors_msg.push($err);
-//			}
-//			if ($errors <= 1) $(this).focus();
-//			$errors++;
-//		}
-//		else {
-//			forms_markError($(this), "success");
-//		}
-//	});
-	//TODO: HADI Jan, please debug this. if has effect on other selectors, other than state selectors too!
+	// $("#" + $formId + " .selectpicker").each(function () {
+	// 	var name = $(this).attr('name');
+	// 	if ($.inArray(name, $errors_el) < 0) {
+	// 		var val = $(this).val();
+	// 		if (val < 1) {
+	// 			forms_markError($(this), "error");
+	// 			var $err = $(this).attr('error-value');
+	// 			if ($err && $err.length) {
+	// 				$errors_msg.push($err);
+	// 			}
+	// 			if ($errors <= 1) $(this).focus();
+	// 			$errors++;
+	// 			$errors_el.push(name);
+	// 		}
+	// 		else {
+	// 			forms_markError($(this), "success");
+	// 		}
+	// 	}
+	// });
+	//TODO: Taha i need an value for set it to default for validation, my default value is 0
 
 	if (typeof window[$formId + "_validate"] == 'function') {
 		var validate = window[$formId + "_validate"](formData, jqForm, options);
@@ -1019,6 +1316,7 @@ function forms_date_picker(selector) {
 	if($val.length < 1 )
 	{
 		$($elementSelector).val('') ;
+		$('#' + $elementID + 'Extra').val('');
 	}
 
 }
