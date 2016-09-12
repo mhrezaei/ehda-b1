@@ -4,7 +4,6 @@
 	<?php
 		if(str_contains($module,'posts-')) {
 			$slug = str_replace('posts-','',$module) ;
-			$caption = \App\Models\Branch::getTitle($slug);
 			$target = "posts/$slug" ;
 		}
 		else {
@@ -14,13 +13,23 @@
 	?>
 
 	<li {{ (Request::is('*'.$module) ? 'class="active"' : '') }}>
-		<a href="{{ url ('manage/'.$target) }}">
-			<i class="fa fa-{{ $icon or 'dot-circle-o' }} fa-fw"></i>
-			&nbsp;{{ $caption }}&nbsp;
-			@if(isset($sub_menus))
-				<span class="fa arrow">
-			@endif
-		</a>
+		@if(isset($disabled) and $disabled)
+			<a href="javascript:void(0)" class="text-grey" style="cursor: default;z-index: -1">
+				<i class="fa fa-{{ $icon or 'dot-circle-o' }} fa-fw"></i>
+				&nbsp;{{ $caption }}&nbsp;
+				@if(isset($sub_menus))
+					<span class="fa arrow">
+				@endif
+			</a>
+		@else
+			<a href="{{ url ('manage/'.$target) }}">
+				<i class="fa fa-{{ $icon or 'dot-circle-o' }} fa-fw"></i>
+				&nbsp;{{ $caption }}&nbsp;
+				@if(isset($sub_menus))
+					<span class="fa arrow">
+				@endif
+			</a>
+		@endif
 
 		@if(isset($sub_menus))
 			<ul class="nav nav-second-level">

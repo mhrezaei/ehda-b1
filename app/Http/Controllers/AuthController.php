@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
 
 class AuthController extends Controller
@@ -242,7 +243,7 @@ class AuthController extends Controller
 				return redirect()->back()->withErrors(trans('manage.old_password.error_new_password_equal_old_password'));
 		}
 
-		if ($user->oldPasswordChange(Hash::make($request->password)))
+		if ($user->oldPasswordChange($request->password))
 		{
 			if(Auth::user()->isActive('volunteer'))
 			{
@@ -265,6 +266,7 @@ class AuthController extends Controller
 	public function logout()
 	{
 		Auth::logout();
+		Session::flush();
 		return redirect('/login');
 	}
 

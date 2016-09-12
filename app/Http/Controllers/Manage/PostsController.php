@@ -56,7 +56,7 @@ class PostsController extends Controller
 		$db = Post::first() ;
 		$branch = Branch::selectBySlug($request_branch);
 		$keyword = $request->keyword ;
-		$model_data = Post::selector($request_branch , Auth::user()->domains , 'all')
+		$model_data = Post::selector('all' , Auth::user()->allowedDomains() , 'all')
 				->whereRaw(Post::searchRawQuery($keyword))
 				->paginate(50);
 
@@ -70,7 +70,7 @@ class PostsController extends Controller
 
 	}
 
-	public function search(Requests\Manage\PostSearchRequest $request)
+	public function _search(Requests\Manage\PostSearchRequest $request)
 	{
 		return view('templates.say' , ['array'=>$request->toArray()]);
 
@@ -152,7 +152,7 @@ class PostsController extends Controller
 		$page[1] = ["$request_branch/".$request_tab , trans("posts.manage.$request_tab") , "$request_branch/".$request_tab] ;
 
 		//Model...
-		$model_data = Post::selector($request_branch, Auth::user()->domains , $request_tab)->orderBy('created_at' , 'desc')->paginate(50);
+		$model_data = Post::selector($request_branch, Auth::user()->allowedDomains() , $request_tab)->orderBy('created_at' , 'desc')->paginate(50);
 		$db = Post::first() ;
 
 		//View...
@@ -224,10 +224,9 @@ class PostsController extends Controller
 		$page[1] = ["posts/create/$branch_slug" , trans('posts.manage.create' , ['thing' => $model->branch()->title(1)])];
 
 		$domains = Auth::user()->domains()->orderBy('title');
-		$encrypted_branch = Crypt::encrypt($branch_slug);
 
 		//View...
-		return view('manage.posts.editor' , compact('page', 'model' , 'domains' , 'encrypted_branch'));
+		return view('manage.posts.editor' , compact('page', 'model' , 'domains'));
 
 	}
 
@@ -250,10 +249,9 @@ class PostsController extends Controller
 		$page[1] = ["posts/$post_id/edit" , trans('posts.manage.edit' , ['thing'=>$model->branch()->singular_title]) ] ;
 
 		$domains = Auth::user()->domains()->orderBy('title') ;
-		$encrypted_branch = Crypt::encrypt($model->branch);
 
 		//View...
-		return view('manage.posts.editor' , compact('page','model' , 'domains' , 'encrypted_branch'));
+		return view('manage.posts.editor' , compact('page','model' , 'domains'));
 
 	}
 	/*
@@ -427,30 +425,45 @@ class PostsController extends Controller
 		$branch = Branch::findBySlug($request->branch);
 		$metas = $branch->allowedMeta() ;
 		$meta = [] ;
-		foreach($metas as $key => $blah) {
-			$meta[$key] = $data[$key] ;
+		foreach($metas as $key => $type) {
+			$meta[$key]['value'] = $data[$key] ;
+			$meta[$key]['type'] = $type ;
 			unset($data[$key]) ;
 		}
+
+		//Stripping unauthorized fields...
+		if(!$branch->hasFeature('image'))
+			unset($data['featured_image']) ;
+		if(!$branch->hasFeature('text'))
+			unset($data['text']);
+		if(!$branch->hasFeature('abstract'))
+			unset($data['abstract']);
+		if(!$branch->hasFeature('category'))
+			unset($data['category_id']);
+
 
 		//Save...
 		$is_saved = Post::store($data) ;
 
 		//Saving Meta...
 		$post = Post::find($is_saved) ;
-		foreach($meta as $key => $blah) {
-			$post->meta($key , $meta[$key]) ;
+		foreach($meta as $key => $array) {
+			$post->meta($key , $array['value'] , $array['type']) ;
 		}
 
-		//Saving attached photos...
+		//Making RSS...
+		//@TODO: Post RSS
 
-		$post->savePhotos($data) ;
+		//Saving attached photos...
+		if($post->branch()->hasFeature('gallery'))
+			$post->savePhotos($data) ;
 
 		//Choosing the redirection...
 		$success_redirect = str_replace('-ID-' , $is_saved , $success_redirect );
 
 		return $this->jsonAjaxSaveFeedback($is_saved , [
 			'success_redirect' => $success_redirect ,
-			'success_refresh' => 1 ,
+			'success_refresh' => 0 ,
 		]);
 
 

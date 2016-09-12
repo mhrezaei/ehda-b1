@@ -93,6 +93,7 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 			Route::post('/bulk_sms' , 'VolunteersController@bulk_sms');
 			Route::post('/email' , 'VolunteersController@email');
 			Route::post('/bulk_email' , 'VolunteersController@bulk_email');
+			Route::post('/care_review' , 'VolunteersController@care_review');
 		});
 	});
 
@@ -104,7 +105,7 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 		Route::get('/' , 'CardsController@browse') ;
 		Route::get('/browse' , 'CardsController@browse') ;
 		Route::get('/browse/{request_tab}' , 'CardsController@browse') ;
-		Route::get('/search' , 'CardsController@search');//@TODO: INTACT!
+		Route::get('/search' , 'CardsController@search');
 		Route::get('/reports' , 'CardsController@reports');//@TODO: INTACT!
 
 		Route::get('/create' , 'CardsController@create');
@@ -141,6 +142,18 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 		});
 	});
 
+	Route::group(['prefix'=>'account'] , function() {
+		Route::get('/' , 'AccountController@index') ;
+		Route::get('/{request_tab}' , 'AccountController@index') ;
+
+		Route::group(['prefix'=>'save'] , function() {
+			Route::post('/password' , 'AccountController@savePassword');
+			Route::post('/profile' , 'AccountController@saveProfile');
+			Route::post('/card' , 'AccountController@card');
+			Route::post('/card_delete' , 'AccountController@card_delete');
+			Route::post('/volunteer_delete' , 'AccountController@volunteer_delete');
+		});
+	});
 
 		/*
 		| Developer Settings

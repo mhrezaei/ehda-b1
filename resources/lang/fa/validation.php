@@ -215,10 +215,13 @@ return [
 	*/
 
 		'attributes' => [
+				'template' => 'قالب' ,
 				"action" => 'عملیات' ,
 				"email"	=> "ایمیل",
 				"username" => "شناسه‌ی کاربری",
 				"security"	=> "کد امنیتی",
+				"current_password" => "رمز عبور فعلی" ,
+				"new_password" => "رمز عبور تازه" ,
 				"password"=> "رمز عبور",
 				"password2"=> "تکرار رمز",
 				"birthday"=> "تاریخ تولد",
@@ -242,6 +245,8 @@ return [
 				"home_address" => "نشانی منزل",
 				"home_tel" => "تلفن منزل" ,
 				"home_postal_code" => "کد پستی منزل" ,
+				"icon" => "نمایه",
+				"donation_date" => "تاریخ اهدای عضو" ,
 
 				"work_city" => "محل کار",
 				"work_address" => "نشانی محل کار",
@@ -269,6 +274,7 @@ return [
 				'card_no' => 'شماره کارت' ,
 				'organs' => 'اعضای قابل اهدا',
 				'newsletter' => 'خبرنامه' ,
+				'reject_reason' => 'دلیل رد تقاضا' ,
 
 			"token" => "توکن",
 
@@ -294,7 +300,6 @@ return [
 				'unique' => 'یکتا',
 				'english-only' => 'فقط با کاراکترهای انگلیسی',
 				'persian-only' => 'فقط با کاراکترهای فارسی',
-				'metaـexample' => 'متاها را به صورت key:type بنویسید و با کامای انگلیسی (,) از هم جدا کنید. اگر نوع مشخص نشود، text در نظر گرفته می‌شود.',
 		],
 
 ];

@@ -30,7 +30,7 @@ if(isset($class)) {
 				placeholder="{{$placeholder or ''}}"
 				{{$extra or ''}}
 		>
-		<span class="help-block">
+		<span class="help-block {{$hint_class or ''}}">
 			{{ $hint or '' }}
 		</span>
 	</div>

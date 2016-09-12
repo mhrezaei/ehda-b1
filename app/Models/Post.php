@@ -115,13 +115,15 @@ class Post extends Model
 
 	public static function searchRawQuery($keyword, $fields = null)
 	{
-		if(!$fields) $fields = self::$search_fields ;
-		$query = "0 " ;
+		if(!$fields)
+			$fields = self::$search_fields ;
+
+		$concat_string = " " ;
 		foreach($fields as $field) {
-			$query .= " or `$field` like '%$keyword%' "  ;
+			$concat_string .= " , `$field` " ;
 		}
 
-		return "($query)" ;
+		return " LOCATE('$keyword' , CONCAT_WS(' ' $concat_string)) " ;
 	}
 
 	public static function selector($branch , $domains='global' , $criteria='published')
@@ -132,15 +134,19 @@ class Post extends Model
 		$domain_array = User::domainsStringToArray($domains);
 		$query = "0 " ;
 		foreach($domain_array as $domain) {
+//			$query .= " or LOCATE('|$domain|' , `domains`)" ;
 			$query .= " or `domains` like '%|$domain|%' " ;
 		}
 		$table = self::whereRaw("($query)") ;
+//		$table = self::whereNotNull('id') ;
 
 		//Process Branches...
-		if($branch == 'all' )
-			$table = $table->where('branch' , $branch) ;
+		if($branch == 'all' ) {
+			$table = $table->whereRaw(" LOCATE(`branch` , '".Branch::branchesWithFeature('searchable')."' ) ") ;
+//			$table = $table->where( "branch" , 'not like' , '%dev%' );
+		}
 		else
-			$table = $table->where( "branch" , 'not like' , '%dev%' );
+			$table = $table->where('branch' , $branch) ;
 
 		//Process Criteria...
 		switch($criteria) {

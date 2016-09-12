@@ -17,7 +17,7 @@ if(isset($class) && str_contains($class, 'form-required')) {
 
 	<div class="col-sm-10">
 		@include('forms.select_self')
-		<span class="help-block">
+		<span class="help-block {{$hint_class or ''}}">
 			{{ $hint or '' }}
 		</span>
 
