@@ -40,18 +40,6 @@ class CardController extends Controller
         return view('site.card_register.0', compact('input', 'states'));
     }
 
-    public function register_process()
-    {
-        $data = array();
-        $user = new User();
-        $user->name_first = 'salam';
-        $user->save();
-        $id = $user->id;
-
-
-
-    }
-
     public function register_first_step(Requests\CardRegisterFirstStepRequest $request)
     {
         $input = $request->toArray();
