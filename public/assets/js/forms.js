@@ -1100,13 +1100,26 @@ function forms_date_picker(selector) {
 
 	if ($val.length > 6) {
 		$val = $val.split('/');
-		if ($time) {
-			$('#' + $elementID).pDatepicker("setDate", [$val[0], $val[1], parseInt($val[2]), $val[3], $val[4], $val[5]]);
-		}
-		else
+		var $year = $val[0];
+		var $month = $val[1];
+		var $day = parseInt($val[2]);
+		var $hours = 12;
+		var $minutes = 12;
+		var $seconds = 12;
+		if ($time)
 		{
-			$( '#' + $elementID ).pDatepicker("setDate",[$val[0],$val[1],parseInt($val[2]),0,0,0] );
+			$hours = $val[3];
+			$minutes = $val[4];
+			$seconds = $val[5];
 		}
+		$('#' + $elementID).pDatepicker("setDate", [$year, $month, $day, $hours, $minutes, $seconds]);
+		// if ($time) {
+		// 	$('#' + $elementID).pDatepicker("setDate", [$val[0], $val[1], parseInt($val[2]), $val[3], $val[4], $val[5]]);
+		// }
+		// else
+		// {
+		// 	$( '#' + $elementID ).pDatepicker("setDate",[$val[0],$val[1],parseInt($val[2]),12,12,12] );
+		// }
 	}
 	if($val.length < 1 )
 	{

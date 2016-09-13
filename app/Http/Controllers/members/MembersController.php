@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\members;
 
 use App\Models\State;
+use App\Models\User;
+use App\Traits\TahaControllerTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -13,6 +15,7 @@ use Illuminate\Support\Facades\Hash;
 
 class MembersController extends Controller
 {
+    use TahaControllerTrait;
     public function index()
     {
         return view('site.members.my_card.0');
@@ -34,12 +37,11 @@ class MembersController extends Controller
         $input = $request->toArray();
         $input['id'] = Auth::user()->id;
 
-//        $input['birth_date'] = Carbon::createFromTimestamp($input['birth_date'])->toDateString() . '  00:00:00';
-        $input['birth_date'] = date('Y-m-d', $input['birth_date']);
+        $input['birth_date'] = Carbon::createFromTimestamp($input['birth_date'])->toDateString() . ' 00:00:00';
         $input['home_province'] = State::find($input['home_city']);
         $input['home_province'] = $input['home_province']->province()->id;
 
-        if (isset($input['password']) and strlen($input['password']) <= 8)
+        if (isset($input['password']) and strlen($input['password']) >= 8)
         {
             $input['password'] = Hash::make($input['password']);
         }
@@ -95,6 +97,21 @@ class MembersController extends Controller
             }
         }
 
-        print_r($input);
+        $save = User::store($input, ['code_melli']);
+
+        if ($save)
+        {
+            return $this->jsonFeedback(trans('site.global.edit_personal_data_save'), [
+                'ok' => 1,
+                'refresh' => 3000,
+            ]);
+        }
+        else
+        {
+            return $this->jsonFeedback(trans('site.global.edit_personal_data_unsave'), [
+                'ok' => 0,
+                'refresh' => 3000,
+            ]);
+        }
     }
 }

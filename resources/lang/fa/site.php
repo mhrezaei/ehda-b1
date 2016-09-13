@@ -30,6 +30,8 @@ return [
         'login_information_data' => 'اطلاعات ورود به سامانه',
         'contact_detail' => 'اطلاعات تماس',
         'personal_data' => 'اطلاعات فردی',
+        'edit_personal_data_save' => 'اطلاعات فردی شما با موفقیت ذخیره شد.',
+        'edit_personal_data_unsave' => 'خطایی در ثبت اطلاعات رخ داده است، لطفاً دوباره امتحان نمائید.',
 
 
     ],

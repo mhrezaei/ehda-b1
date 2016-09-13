@@ -99,7 +99,7 @@
                                 'class' => 'form-datepicker form-required',
                                 'required' => 1,
                                 'attr' => 'autocomplete=off',
-                                'value' => jDate::forge(Auth::user()->birth_date)->format('Y/m/d')
+                                    'value' => jDate::forge(Auth::user()->birth_date)->format('Y/m/d')
                                 ])
                             </div>
                             <div class="col-xs-12 col-sm-6">
