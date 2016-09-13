@@ -82,6 +82,7 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 			Route::post('/change_password' , 'VolunteersController@change_password');
 			Route::post('/soft_delete' , 'VolunteersController@soft_delete');
 			Route::post('/bulk_soft_delete' , 'VolunteersController@bulk_soft_delete');
+			Route::post('/bulk_soft_delete' , 'VolunteersController@bulk_soft_delete');
 			Route::post('/undelete' , 'VolunteersController@undelete');
 			Route::post('/bulk_undelete' , 'VolunteersController@bulk_undelete');
 			Route::post('/hard_delete' , 'VolunteersController@hard_delete');

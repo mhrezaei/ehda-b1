@@ -108,9 +108,9 @@ class Post extends Model
 	|
 	*/
 
-	public function counter($branch , $criteria = 'published')
+	public static function counter($branch , $domains='global' ,$criteria = 'published')
 	{
-		return $this->selector($branch , $criteria)->count() ;
+		return self::selector($branch , $domains , $criteria)->count() ;
 	}
 
 	public static function searchRawQuery($keyword, $fields = null)

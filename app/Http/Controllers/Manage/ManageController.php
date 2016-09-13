@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Manage;
 
 use App\models\Branch;
+use App\Models\Post;
+use App\Models\User;
+use App\Providers\AppServiceProvider;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -30,6 +33,68 @@ class ManageController extends Controller
 		return view('manage.index.0',compact('page'));
 	}
 
+	public static function topbarNotificationMenu()
+	{
+		$branches = Branch::all() ;
+		$array = [] ;
+		$sep = false ;
+
+		//Posts...
+		foreach($branches as $branch) {
+			if(Auth::user()->can('posts-'.$branch->slug.".publish")) {
+				$count = Post::counter($branch->slug, Auth::user()->allowedDomains() , 'pending') ;
+				if($count) {
+					$count = AppServiceProvider::pd($count) ;
+					array_push($array , [
+							"manage/posts/$branch->slug/pending" ,
+							$branch->title(0)." ".trans('posts.manage.pending')." ( $count ) ",
+							$branch->icon ,
+					]) ;
+				}
+			}
+		}
+
+		//Cards...
+		if(Auth::user()->can('cards.print')) {
+			$count = User::counter('card' , 'under_print') ;
+			if($count) {
+				$count = AppServiceProvider::pd($count) ;
+				array_push($array , [
+						"manage/cards/browse/under_print" ,
+						trans('people.cards.short_title_y')." ".trans('people.cards.manage.under_print')." ( $count ) ",
+						'credit-card' ,
+				]) ;
+			}
+		}
+
+
+		//Volunteers...
+		if(Auth::user()->can('volunteers.publish')) {
+			$count = User::counter('volunteer' , 'pending') ;
+			if($count) {
+				$count = AppServiceProvider::pd($count) ;
+				array_push($array , [
+						"manage/volunteers/browse/pending" ,
+						trans('people.volunteers.short_title')." ".trans('people.volunteers.manage.pending')." ( $count ) ",
+						'child' ,
+				]) ;
+			}
+		}
+		if(Auth::user()->can('volunteers.edit')) {
+			$count = User::counter('volunteer' , 'care') ;
+			if($count) {
+				$count = AppServiceProvider::pd($count) ;
+				array_push($array , [
+						"manage/volunteers/browse/care" ,
+						trans('people.volunteers.short_title')." ".trans('people.volunteers.manage.care')." ( $count ) ",
+						'child' ,
+				]) ;
+			}
+		}
+
+		return $array ;
+	}
+
 	public static function topbarCreateMenu()
 	{
 		$branches = Branch::all() ;
@@ -37,7 +102,7 @@ class ManageController extends Controller
 		$sep = false ;
 
 		foreach($branches as $branch) {
-			if(Auth::user()->can($branch->slug.".create"))
+			if(Auth::user()->can('posts-'.$branch->slug.".create"))
 				array_push($array , [
 						"manage/posts/$branch->slug/create" ,
 						trans('manage.global.create_in' , ['thing'=>$branch->title(0)]),
