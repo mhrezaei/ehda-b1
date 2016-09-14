@@ -418,10 +418,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	{
 
 		//Process Domain...
-		if($domains=='global')
-			$table = self::where('id') ;
+		if($domains=='auto')
+			$domains =  Auth::user()->allowedDomains() ;
+
+		if(str_contains($domains , 'global'))
+			$table = self::where('id' , '>' , 0) ;
 		else {
-			if($domains=='auto') $domains =  Auth::user()->allowedDomains() ;
 			$domain_array = User::domainsStringToArray($domains);
 			$query = "false " ;
 			foreach($domain_array as $domain) {

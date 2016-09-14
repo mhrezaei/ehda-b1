@@ -80,6 +80,7 @@ return [
 		"cards" => [
 				"short_title" => 'کارت‌ها' ,
 				"short_title_y" => 'کارت‌های' ,
+				'full_title' => 'کارت اهدای عضو' ,
 
 				"status" => [
 						'deleted' => 'حذف‌شده',

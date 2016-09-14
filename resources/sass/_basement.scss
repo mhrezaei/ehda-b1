@@ -160,6 +160,66 @@ div.mce-fullscreen {
   color: #ffffff;
 }
 
+.panel-violet {
+  border-color: #4F5B93;
+
+  .panel-heading {
+    border-color: #4F5B93;
+    color: #fff;
+    background-color: #4F5B93;
+  }
+
+  a {
+    color: #4F5B93;
+  }
+
+  a:hover {
+    color: #27275a;
+  }
+
+}
+
+.panel-orange {
+  border-color: #F18432;
+
+  .panel-heading {
+    border-color: #F18432;
+    color: #fff;
+    background-color: #F18432;
+  }
+
+  a {
+    color: #F18432;
+  }
+
+  a:hover {
+    color: #c66a2d;
+  }
+
+}
+
+.panel-pink {
+  border-color: #A400AC;
+
+  .panel-heading {
+    border-color: #A400AC;
+    color: #fff;
+    background-color: #A400AC;
+  }
+
+  a {
+    color: #A400AC;
+  }
+
+  a:hover {
+    color: #76007d;
+  }
+
+}
+
+
+
+
 /*
 |--------------------------------------------------------------------------
 | Loading Effect

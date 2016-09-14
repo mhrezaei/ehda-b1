@@ -13,7 +13,7 @@ class Branch extends Model
 	use TahaModelTrait ;
 	use SoftDeletes ;
 	protected $guarded = ['id'];
-	public static $available_features = ['image' , 'text' , 'abstract' , 'rss' , 'comment' , 'gallery' , 'category' , 'searchable' , 'preview'] ;
+	public static $available_features = ['image' , 'text' , 'abstract' , 'rss' , 'comment' , 'gallery' , 'category' , 'searchable' , 'preview' , 'digest'] ;
 	public static $available_templates = ['album' , 'post' , 'slideshow' , 'developers' , 'custom'] ;
 	public static $available_meta_types = ['text' , 'textarea' , 'date'];
 
@@ -110,6 +110,14 @@ class Branch extends Model
 		}
 
 		return $result ;
+	}
+
+	public static function selector($feature = null)
+	{
+		if($feature)
+			return self::where('features' , 'like' , "%$feature%") ;
+		else
+			return self::where('id' , '>' , '0');
 	}
 
 
