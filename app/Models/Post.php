@@ -132,7 +132,7 @@ class Post extends Model
 
 		//Process Domain...
 		$domain_array = User::domainsStringToArray($domains);
-		$query = "0 " ;
+		$query = "`domains` = 'free' " ;
 		foreach($domain_array as $domain) {
 //			$query .= " or LOCATE('|$domain|' , `domains`)" ;
 			$query .= " or `domains` like '%|$domain|%' " ;
@@ -330,7 +330,15 @@ class Post extends Model
 				else
 					return trans('forms.general.deleted');
 
+			case 'title' :
+				if($this->title == '-')
+					return str_limit($this->text , 50);
+				else
+					return $this->title ;
+
 			case 'domains' :
+				if($this->domains == 'free')
+					return $default ;
 				$slug = trim(str_replace('|' , null , str_replace('global' , null , $this->domains)));
 				$domain = Domain::selectBySlug($slug) ;
 				if($domain) {

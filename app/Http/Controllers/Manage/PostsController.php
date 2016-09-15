@@ -331,15 +331,20 @@ class PostsController extends Controller
 		$user = Auth::user() ;
 		$user_id = $user->id ;
 		$success_redirect = null ;
+		$branch = Branch::findBySlug($request->branch);
+
 
 		//Processing Custom Publish Date...
-		if($data['publish_date_mode'] == 'custom') {
-			$data['published_at'] = $data['publish_date'];
+		if($branch->hasFeature('schedule')) {
+			if($data['publish_date_mode'] == 'custom') {
+				$data['published_at'] = $data['publish_date'];
+			}
+			else {
+				$data['published_at'] = null ;
+			}
+			unset($data['publish_date']);
+			unset($data['publish_date_mode']);
 		}
-		else
-			$data['published_at'] = null ;
-		unset($data['publish_date']);
-		unset($data['publish_date_mode']);
 
 		//if new record...
 		if(!$data['id']) {
@@ -391,7 +396,7 @@ class PostsController extends Controller
 		}
 
 		//Reading the domains...
-		if(1) {
+		if($branch->hasFeature('domain')) {
 			$data['domains'] = '|' . $data['domains'] . '|' ;
 			if(isset($data['in_global']) and $data['in_global'] and $data['domains'] != '|global|')
 				$data['domains'] .= '|global|' ;
@@ -402,32 +407,19 @@ class PostsController extends Controller
 			if(isset($model) and !$user->can('*',$model->domains))
 				return $this->jsonFeedback() ;
 		}
-		if(0) {  //multi select method
-			$data['domains'] = '|' ;
-			foreach($data as $index => $item) {
-				if(str_contains($index,'domain_')) {
-					unset($data[$index]);
-					if($item+0)
-						$data['domains'] .= $index . '|' ;
-				}
-			}
-			$data['domains'] = str_replace('domain_',null,$data['domains']);
-
-			if($data['domains'] == '|')
-				return $this->jsonFeedback(trans('posts.manage.error_domain_not_selected'));
-			if(!$user->can('*',$data['domains']))
-				return $this->jsonFeedback() ;
-			if(isset($model) and !$user->can('*',$model->domains))
-				return $this->jsonFeedback() ;
+		else {
+			$data['domains'] = 'free' ;
 		}
 
 		//Stripping the Meta...
-		$branch = Branch::findBySlug($request->branch);
-		$metas = $branch->allowedMeta() ;
+		$allowed_metas = $branch->allowedMeta() ;
 		$meta = [] ;
-		foreach($metas as $key => $type) {
+		foreach($allowed_metas as  $allowed_meta) {
+			$key = $allowed_meta['name'] ;
 			$meta[$key]['value'] = $data[$key] ;
-			$meta[$key]['type'] = $type ;
+			$meta[$key]['type'] = $allowed_meta['type'] ;
+			if($allowed_meta['required'] and !$data[$key])
+				return $this->jsonFeedback(trans('validation.required' , ['attribute' => trans("validation.attributes.$key") ]));
 			unset($data[$key]) ;
 		}
 

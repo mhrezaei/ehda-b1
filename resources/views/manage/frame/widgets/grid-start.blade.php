@@ -9,7 +9,9 @@
 					</td>
 				@endif
 				@foreach($headings as $heading)
-					<td>{{ $heading }}</td>
+					@if($heading != 'NO')
+						<td>{{ $heading }}</td>
+					@endif
 				@endforeach
 			</tr>
 			</thead>

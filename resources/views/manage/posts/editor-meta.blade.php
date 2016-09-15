@@ -1,20 +1,23 @@
-@foreach($model->branch()->allowedMeta() as $key => $type)
-	@if($type=='textarea')
+@foreach($model->branch()->allowedMeta() as $field)
+	@if($field['type']=='textarea')
 		@include('forms.textarea' , [
-			'name' => $key,
-			'value' => $model->meta($key) ,
+			'name' => $field['name'],
+			'value' => $model->meta($field['name']) ,
 			'rows' => 2,
+			'class' => $field['required']? 'form-required' : ''
 		])
-	@elseif($type=='date')
+	@elseif($field['type']=='date')
 		@include('forms.datepicker' , [
-			'name' => $key,
-			'value' => $model->meta($key),
+			'name' => $field['name'],
+			'value' => $model->meta($field['name']),
 			'type' => '' ,
-		])
+			'class' => $field['required']? 'form-required' : ''
+	])
 	@else
 		@include('forms.input' , [
-			'name' => $key,
-			'value' => $model->meta($key),
+			'name' => $field['name'],
+			'value' => $model->meta($field['name']),
+			'class' => $field['required']? 'form-required' : ''
 		])
 
 	@endif
