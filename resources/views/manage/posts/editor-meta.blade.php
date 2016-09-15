@@ -3,7 +3,7 @@
 		@include('forms.textarea' , [
 			'name' => $field['name'],
 			'value' => $model->meta($field['name']) ,
-			'rows' => 2,
+			'rows' => 3,
 			'class' => $field['required']? 'form-required' : ''
 		])
 	@elseif($field['type']=='date')

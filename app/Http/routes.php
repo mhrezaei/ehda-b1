@@ -161,7 +161,7 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 		*/
 
 
-	Route::group(['prefix'=>'devSettings'], function() {
+	Route::group(['prefix'=>'devSettings'], function() { //@TODO: Middleware here!
 		Route::get('/' , 'DevSettingsController@index') ;
 		Route::get('/{request_tab}/' , 'DevSettingsController@index') ;
 		Route::get('/{request_tab}/new' , 'DevSettingsController@add') ; //@TODO: mix it like the others

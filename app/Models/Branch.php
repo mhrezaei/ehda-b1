@@ -62,7 +62,7 @@ class Branch extends Model
 		foreach($array as $item) {
 			if(str_contains($item , '*')) {
 				$required = true ;
-				str_replace('*' , null , $item) ;
+				$item = str_replace('*' , null , $item) ;
 			}
 			else
 				$required = false ;

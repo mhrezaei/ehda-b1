@@ -44,9 +44,9 @@ class Post extends Model
 		return $this->belongsTo('App\Models\Category');
 	}
 
-	public function post_comments()
+	public function comments()
 	{
-		return $this->hasMany('App\Models\Post_comment');
+		return $this->hasMany('App\Models\Comment');
 	}
 
 	public function post_medias()
