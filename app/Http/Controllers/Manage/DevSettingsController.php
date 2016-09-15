@@ -128,7 +128,10 @@ class DevSettingsController extends Controller
 		
 		switch($request_tab) {
 			case 'branches' :
-				$model_data = Branch::find($item_id);
+				if($item_id)
+					$model_data = Branch::find($item_id);
+				else
+					$model_data = new Branch();
 				$view .= "branches_edit" ;
 				break;
 
@@ -157,7 +160,7 @@ class DevSettingsController extends Controller
 
 
 		if(!isset($model_data) or !$model_data or !View::exists($view))
-			return view('errors.404');
+			return view('errors.m404');
 
 		//View...
 		return view($view, compact('page', 'model_data'));
@@ -201,8 +204,8 @@ class DevSettingsController extends Controller
 
 	public function save_branches(Requests\Manage\BranchesSaveRequest $request)
 	{
-		return $this->jsonSaveFeedback(Branch::store($request) , [
-				'success_redirect' => '/manage/devSettings/branches' ,
+		return $this->jsonAjaxSaveFeedback(Branch::store($request) , [
+			'success_refresh' => true ,
 		]);
 
 	}

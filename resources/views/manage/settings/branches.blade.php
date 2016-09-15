@@ -13,7 +13,7 @@
 		<div class="col-md-4"><p class="title">{{ trans('manage.devSettings.branches.trans') }}</p></div>
 		<div class="col-md-8 tools">
 			@include('manage.frame.widgets.toolbar_button' , [
-				'target' => 'manage/devSettings/branches/new' ,
+				'target' => "masterModal('".url('manage/devSettings/branches/0')."')" ,
 				'type' => 'success' ,
 				'caption' => trans('forms.button.add') ,
 				'icon' => 'plus-circle' ,
@@ -43,7 +43,7 @@
 				@foreach($model_data as $model)
 					<tr>
 						<td>
-							<a href="{{ url("manage/devSettings/branches/$model->id") }}">
+							<a href="javascript:void(0)" onclick="masterModal('{{url('manage/devSettings/branches/'.$model->id)}}')">
 								<i class="fa fa-{{$model->icon}}"></i>
 								{{ $model->title() }}
 							</a>
