@@ -44,6 +44,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	|--------------------------------------------------------------------------
 	|
 	*/
+
+	public function printer()
+	{
+		return $this->hasOne('App\Models\Printer') ;
+	}
 	public function logins()
 	{
 		return $this->hasMany('App\Models\Login') ;

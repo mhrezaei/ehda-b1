@@ -46,7 +46,7 @@ class VolunteersController extends Controller
 		$keyword = $request->keyword ;
 		if(isset($request->searched)) {
 			$model_data = User::where('volunteer_status' , '!=' , '0')->whereRaw(User::searchRawQuery($keyword,User::$cards_search_fields))->orderBy('volunteer_registered_at' , 'desc')->paginate(50);
-			return view('manage.cards.browse' , compact('page' , 'model_data' , 'db' , 'keyword'));
+			return view('manage.volunteers.browse' , compact('page' , 'model_data' , 'db' , 'keyword'));
 		}
 
 		//IF JUST FORM...
