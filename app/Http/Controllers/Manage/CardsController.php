@@ -64,11 +64,18 @@ class CardsController extends Controller
 		//Permission...
 		switch($request_tab) {
 			case 'active' :
+			case 'incomplete' :
 				$permission = 'cards.browse' ;
 				break;
-//			case 'pending' :
-//				$permission = 'cards.publish' ;
-//				break;
+
+			case 'under_print' :
+				$permission = 'cards.print' ;
+				break;
+
+			case 'newsletter_member' :
+				$permission = 'cards.send' ;
+				break;
+
 			case 'bin':
 				$permission = 'cards.bin' ;
 				break;

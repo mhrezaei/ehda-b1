@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
+use App\Models\Post;
 use App\Providers\ValidationServiceProvider;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -21,10 +22,16 @@ class PostSaveRequest extends Request
         $module = $input['branch'] ;
 
         if($input['id']) {
-            if($input['is_published'])
+            $model = Post::find($input['id']);
+
+            if($model->published_by)
                 return Auth::user()->can("posts-$module.edit");
-            else
+            elseif($input['action']=='publish')
                 return Auth::user()->can("posts-$module.publish");
+            else
+                return $model->canEdit() ;
+
+
         }
         else {
             if($input['action']=='publish')
@@ -48,7 +55,7 @@ class PostSaveRequest extends Request
             'id' => 'numeric' ,
             'action' => 'required|in:draft,save,publish' ,
             'title' => 'required' ,
-//            'text' => 'required' ,
+            'text' => 'required' ,
             'category_id' => 'required_if:action,publish',
             'publish_date' => 'date' ,
             'featured_image' => 'url' ,

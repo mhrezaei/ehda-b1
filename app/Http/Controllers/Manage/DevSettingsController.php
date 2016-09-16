@@ -24,7 +24,7 @@ class DevSettingsController extends Controller
 		$this->page[0] = ['devSettings' , trans('manage.modules.devSettings')];
 	}
 
-	public function index($request_tab = 'branches')
+	public function index($request_tab = 'states')
 	{
 		//Preparetions...
 		$page = $this->page;
@@ -32,28 +32,24 @@ class DevSettingsController extends Controller
 
 		//Model...
 		switch($request_tab) {
-			case 'posts-cats' :
-				$model_data = Post_cat::where('parent_id', 0)->orderBy('title')->get();
+			case 'states' :
+				$model_data = State::get_provinces()->orderBy('title')->get();
+				break;
+
+			case 'domains':
+				$model_data = Domain::orderBy('title')->get();
 				break;
 
 			case 'branches' :
 				$model_data = Branch::orderBy('plural_title')->get();
 				break ;
 
-			case 'domains':
-				$model_data = Domain::orderBy('title')->get();
-				break;
-
-			case 'states' :
-				$model_data = State::get_provinces()->orderBy('title')->get();
-				break;
-
 			default :
 				return view('errors.404');
 		}
 
 		//View...
-		return view("manage.settings.dev", compact('page', 'model_data'));
+		return view("manage.settings.$request_tab", compact('page', 'model_data'));
 
 	}
 
@@ -132,7 +128,10 @@ class DevSettingsController extends Controller
 		
 		switch($request_tab) {
 			case 'branches' :
-				$model_data = Branch::find($item_id);
+				if($item_id)
+					$model_data = Branch::find($item_id);
+				else
+					$model_data = new Branch();
 				$view .= "branches_edit" ;
 				break;
 
@@ -161,7 +160,7 @@ class DevSettingsController extends Controller
 
 
 		if(!isset($model_data) or !$model_data or !View::exists($view))
-			return view('errors.404');
+			return view('errors.m404');
 
 		//View...
 		return view($view, compact('page', 'model_data'));
@@ -205,8 +204,8 @@ class DevSettingsController extends Controller
 
 	public function save_branches(Requests\Manage\BranchesSaveRequest $request)
 	{
-		return $this->jsonSaveFeedback(Branch::store($request) , [
-				'success_redirect' => '/manage/devSettings/branches' ,
+		return $this->jsonAjaxSaveFeedback(Branch::store($request) , [
+			'success_refresh' => true ,
 		]);
 
 	}

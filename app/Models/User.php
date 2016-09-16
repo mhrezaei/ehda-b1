@@ -410,47 +410,64 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	|
 	*/
 
-	public static function counter($type, $criteria)
+	public static function counter($type, $criteria , $domains='auto')
 	{
-		return self::selector($type,$criteria)->count();
+		return self::selector($type,$criteria,$domains)->count();
 	}
-	public static function selector($type, $criteria)
+	public static function selector($type , $criteria , $domains='auto')
 	{
+
+		//Process Domain...
+		if($domains=='auto')
+			$domains =  Auth::user()->allowedDomains() ;
+
+		if(str_contains($domains , 'global'))
+			$table = self::where('id' , '>' , 0) ;
+		else {
+			$domain_array = User::domainsStringToArray($domains);
+			$query = "false " ;
+			foreach($domain_array as $domain) {
+				$query .= " or `domains` like '%|$domain|%' " ;
+			}
+			$table = self::whereRaw("($query)") ;
+		}
+
+		//Process Criteria...
 		if($type=='volunteer' or $type=='volunteers') {
 			switch($criteria) {
 				case 'examining':
-					return self::where('volunteer_status' , '=' , '1') ;
+					return $table->where('volunteer_status' , '=' , '1') ;
 				case 'documentation' :
-					return self::where('volunteer_status' , '=' , '2') ;
+					return $table->where('volunteer_status' , '=' , '2') ;
 				case 'pending' :
-					return self::where('volunteer_status' , '=' , '3') ;
+					return $table->where('volunteer_status' , '=' , '3') ;
 				case 'active':
-					return self::where('volunteer_status' , '>=' , '8') ;
+					return $table->where('volunteer_status' , '>=' , '8') ;
 				case 'care' :
-					return self::where('volunteer_status' , '>' , '0')->where('unverified_flag' , '1');
+					return $table->where('volunteer_status' , '>' , '0')->where('unverified_flag' , '1');
 				case 'bin' :
-					return self::where('volunteer_status' , '<' , '0');
+					return $table->where('volunteer_status' , '<' , '0');
 			}
 		}
 		elseif($type=='card' or $type=='cards') {
 			switch($criteria) {
 				case 'active':
 				case 'all' :
-					return self::where('card_status' , '>=' , '8') ;
+					return $table->where('card_status' , '>=' , '8') ;
 				case 'bin' :
-					return self::where('card_status' , '<' , '0');
+					return $table->where('card_status' , '<' , '0');
 				case 'complete' :
-					return self::where('card_status' , '>=' , '8')->whereRaw( " NOT ".self::incompleteRawQuery()) ; //@TODO
+					return $table->where('card_status' , '>=' , '8')->whereRaw( " NOT ".self::incompleteRawQuery()) ; //@TODO
 				case 'incomplete' :
-					return self::where('card_status' , '>=' , '8')->whereRaw(self::incompleteRawQuery()) ; //@TODO
+					return $table->where('card_status' , '>=' , '8')->whereRaw(self::incompleteRawQuery()) ; //@TODO
 				case 'under_print' :
-					return self::where('card_status' , '>=' , '8')->whereBetween('card_print_status' , [1,9]);
+					return $table->where('card_status' , '>=' , '8')->whereBetween('card_print_status' , [1,9]);
 				case 'newsletter_member' :
-					return self::where('card_status' , '>=' , '8')->where('newsletter' , 1)->whereNotNull('email');
+					return $table->where('card_status' , '>=' , '8')->where('newsletter' , 1)->whereNotNull('email');
 			}
 		}
 
-		return self::whereNull('id');
+		return $table->whereNull('id');
 
 	}
 

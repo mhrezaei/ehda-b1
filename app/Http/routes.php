@@ -85,6 +85,7 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 			Route::post('/change_password' , 'VolunteersController@change_password');
 			Route::post('/soft_delete' , 'VolunteersController@soft_delete');
 			Route::post('/bulk_soft_delete' , 'VolunteersController@bulk_soft_delete');
+			Route::post('/bulk_soft_delete' , 'VolunteersController@bulk_soft_delete');
 			Route::post('/undelete' , 'VolunteersController@undelete');
 			Route::post('/bulk_undelete' , 'VolunteersController@bulk_undelete');
 			Route::post('/hard_delete' , 'VolunteersController@hard_delete');
@@ -163,10 +164,10 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 		*/
 
 
-	Route::group(['prefix'=>'devSettings'], function() {
+	Route::group(['prefix'=>'devSettings'], function() { //@TODO: Middleware here!
 		Route::get('/' , 'DevSettingsController@index') ;
 		Route::get('/{request_tab}/' , 'DevSettingsController@index') ;
-		Route::get('/{request_tab}/new' , 'DevSettingsController@add') ; //@TODO: mix it like the others
+//		Route::get('/{request_tab}/new' , 'DevSettingsController@add') ; //@TODO: mix it like the others
 
 		Route::get('/{request_tab}/{id}' , 'DevSettingsController@item') ;
 		Route::get('/{request_tab}/{id}/edit/{parent_id}' , 'DevSettingsController@editor') ;

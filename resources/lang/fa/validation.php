@@ -275,7 +275,11 @@ return [
 				'organs' => 'اعضای قابل اهدا',
 				'newsletter' => 'خبرنامه' ,
 				'reject_reason' => 'دلیل رد تقاضا' ,
-
+				'option_true' => 'گزینه‌ی درست' ,
+				'option_wrong_1' => 'گزینه‌ی اشتباه ۱' ,
+				'option_wrong_2' => 'گزینه‌ی اشتباه ۲' ,
+				'option_wrong_3' => 'گزینه‌ی اشتباه ۳' ,
+				'additional_info' => 'اطلاعات اضافی' ,
 			"token" => "توکن",
 
 				'content' => 'محتوا',

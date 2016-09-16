@@ -25,14 +25,16 @@
 	@endif
 </td>
 
-<td>
-	{{ $model->say('domains') }}
-	@if($model->is_global_reflect )
-		<div class="mv10 f10 text-success">
-			{{trans('posts.manage.also_in_global')}}
-		</div>
-	@endif
-</td>
+@if($branch->hasFeature('domains'))
+	<td>
+		{{ $model->say('domains') }}
+		@if($model->is_global_reflect )
+			<div class="mv10 f10 text-success">
+				{{trans('posts.manage.also_in_global')}}
+			</div>
+		@endif
+	</td>
+@endif
 
 
 <td>
@@ -41,7 +43,7 @@
 		'actions' => [
 			['eye' , trans('manage.permits.view') , "urlN:".$model->say('link')],
 			['pencil' , trans('manage.permits.edit') , "url:manage/posts/-id-/edit" , '*' , $model->canEdit()],
-			['times' , trans('forms.button.hard_delete') , 'modal:manage/posts/-id-/hard_delete' , "$module.bin" , Auth::user()->isDeveloper()] ,
+			['times' , trans('forms.button.hard_delete') , 'modal:manage/posts/-id-/hard_delete' , "$module.bin" , $model->trashed() and Auth::user()->isDeveloper()] ,
 
 
 		],

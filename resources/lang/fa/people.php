@@ -41,6 +41,7 @@ return [
 				'create-time' => 'زمان ایجاد',
 		],
 		"volunteers" => [
+				'short_title' => 'سفیران' ,
 
 				"status" => [
 						'deleted' => 'حذف‌شده',
@@ -58,7 +59,7 @@ return [
 
 						'active' => 'سفیران فعال',
 						'pending' => 'منتظر تأیید',
-						'care' => 'درخواست ویرایش',
+						'care' => 'منتظر ویرایش',
 						'care_review' => 'بررسی تغییرات' ,
 						'care_save' => 'تأیید و ذخیره‌ی تغییرات' ,
 						'care_reject' => 'رد تغییرات',
@@ -77,6 +78,10 @@ return [
 		],
 
 		"cards" => [
+				"short_title" => 'کارت‌ها' ,
+				"short_title_y" => 'کارت‌های' ,
+				'full_title' => 'کارت اهدای عضو' ,
+
 				"status" => [
 						'deleted' => 'حذف‌شده',
 						'blocked' => 'مسدود',
