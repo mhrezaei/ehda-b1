@@ -351,4 +351,12 @@ class Post extends Model
 		}
 
 	}
+
+	public function checkDomain($domain)
+	{
+		if ($this->domains == 'free')
+			return true;
+		
+		return str_contains($this->domains, '|' . $domain . '|');
+	}
 }
