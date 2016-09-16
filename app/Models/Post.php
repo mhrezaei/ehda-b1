@@ -356,6 +356,13 @@ class Post extends Model
 
 			default :
 				return $this->$property ;
+
+			case 'post_header' :
+			case 'header' :
+				if($this->branch()->hasFeature('header'))
+					return $this->meta('header_title') ;
+				else
+					return $this->branch()->header_title ;
 		}
 
 	}
@@ -365,6 +372,6 @@ class Post extends Model
 		if ($this->domains == 'free')
 			return true;
 		
-		return str_contains($this->domains, '|' . $domain . '|');
+		return str_contains($this->domains, "|$domain|");
 	}
 }

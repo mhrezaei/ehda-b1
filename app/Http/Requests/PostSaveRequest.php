@@ -56,7 +56,7 @@ class PostSaveRequest extends Request
             'action' => 'required|in:draft,save,publish' ,
             'title' => 'required' ,
             'text' => 'required' ,
-            'category_id' => 'required_if:action,publish',
+//            'category_id' => 'required_if:action,publish',
             'publish_date' => 'date' ,
             'featured_image' => 'url' ,
         ];

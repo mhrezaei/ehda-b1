@@ -45,6 +45,13 @@
 	])
 
 	@include('forms.input' , [
+		'name' =>	'header_title',
+		'value' =>	$model_data->header_title,
+		'hint' =>	trans('validation.hint.persian-only'),
+	])
+
+
+	@include('forms.input' , [
 	    'name' =>	'features',
 	    'label' => trans('manage.devSettings.branches.features'),
 	    'class' =>	'ltr',

@@ -184,10 +184,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
 	public function isDeveloper()
 	{
-		if($this->id==1)
-			return true ;
-		else
-			return false ;
+		return in_array($this->code_melli , ['0074715623' , '0012071110' ]) ;
 	}
 
 	/**

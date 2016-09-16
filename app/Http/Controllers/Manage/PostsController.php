@@ -345,6 +345,9 @@ class PostsController extends Controller
 			unset($data['publish_date']);
 			unset($data['publish_date_mode']);
 		}
+		else {
+			$data['published_at'] = null ;
+		}
 
 		//if new record...
 		if(!$data['id']) {
