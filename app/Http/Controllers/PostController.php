@@ -19,10 +19,14 @@ class PostController extends Controller
 
     public function show($id, $url = null)
     {
-        $post = Post::find($id);
-        if ($post->branch()->template != 'post' or ! $post->isPublished() or ! $post->checkDomain($this->getDomain()))
+        if (is_numeric($id))
+            $post = Post::find($id);
+        else
+            $post = Post::findBySlug(urldecode($id));
+
+        if (! $post or $post->branch()->template != 'post' or ! $post->isPublished() or ! $post->checkDomain($this->getDomain()))
             return view('errors.404');
 
-        return $post->title;
+        return view('site.show_post.0', compact('post'));
     }
 }

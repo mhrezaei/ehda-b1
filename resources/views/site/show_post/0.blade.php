@@ -1,12 +1,12 @@
 @extends('site.frame.frame')
-<title>{{ trans('global.siteTitle') }} | {{ trans('site.global.card_info_page') }}</title>
+<title>{{ trans('global.siteTitle') }} | {{ $post->title }}</title>
 @section('content')
     <div class="container-fluid">
         @include('site.frame.page_title', [
-        'category' => trans('site.menu.join'),
-        'parent' => trans('site.know_menu.organ_donation_card'),
-        'sub' => trans('site.global.card_info_page')
+        'category' => $post->say('header'),
+        'parent' => $post->say('category_title'),
+        'sub' => $post->title
         ])
-        @include('site.card_info.card_info_content')
+        @include('site.show_post.content')
     </div>
 @endsection

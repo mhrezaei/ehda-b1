@@ -357,17 +357,28 @@ class Post extends Model
 			case 'preview' :
 				return url("previewPost/".$this->id."/".urlencode($this->title)) ; //TODO: Correct this
 
-			default :
-				return $this->$property ;
-
 			case 'post_header' :
 			case 'header' :
 				if($this->branch()->hasFeature('header'))
 					return $this->meta('header_title') ;
 				else
 					return $this->branch()->header_title ;
+
+			case 'category_title' :
+				return $this->meta('category_title') ;
+
+			default :
+				return $this->$property ;
 		}
 
+	}
+
+	public function keywords()
+	{
+		if(trim($this->keywords))
+			return explode(trans('site.global.comma'), $this->keywords);
+		else
+			return [] ;
 	}
 
 	public function checkDomain($domain)
