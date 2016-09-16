@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Morilog\Jalali\jDate;
 use App\Events\SendSms;
 use Illuminate\Support\Facades\Event;
@@ -34,7 +35,11 @@ class TestController extends Controller
 //		$this->convertVolunteers2Users() ;
 //		return view('templates.say' , ['array'=>date('Y/m/d H:i:s' , 9993775497)]);
 //		return $this->convertExams() ;
-		return view('templates.say' , ['array'=>Auth::user()]);
+
+
+//		$array =
+
+		return view('templates.say' , ['array'=>Session::all()]);
 
 	}
 

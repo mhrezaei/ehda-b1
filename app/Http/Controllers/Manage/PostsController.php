@@ -406,6 +406,7 @@ class PostsController extends Controller
 				return $this->jsonFeedback() ;
 			if(isset($model) and !$user->can('*',$model->domains))
 				return $this->jsonFeedback() ;
+
 		}
 		else {
 			$data['domains'] = 'free' ;
@@ -435,7 +436,7 @@ class PostsController extends Controller
 
 
 		//Save...
-		$is_saved = Post::store($data) ;
+		$is_saved = Post::store($data , ['in_global']) ;
 
 		//Saving Meta...
 		$post = Post::find($is_saved) ;
@@ -455,7 +456,7 @@ class PostsController extends Controller
 
 		return $this->jsonAjaxSaveFeedback($is_saved , [
 			'success_redirect' => $success_redirect ,
-			'success_refresh' => 0 ,
+			'success_refresh' => 1 ,
 		]);
 
 
