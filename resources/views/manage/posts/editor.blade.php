@@ -38,21 +38,17 @@
 				['is_published' , $model->published_by]
 			]])
 
-
-			@include('forms.input' , [
-			    'name' => 'title',
-			    'value' => $model->title ,
-			    'class' => 'form-required form-default',
-			    'hint' => trans('posts.manage.title_hint') ,
-			])
-
-			@if(Auth::user()->isDeveloper())
+			@if($model->branch()->hasFeature('title'))
 				@include('forms.input' , [
-					'name' => 'slug',
-					'value' => $model->slug ,
-					'class' => 'ltr',
-					'hint' => trans('posts.manage.slug_hint') ,
+					'name' => 'title',
+					'value' => $model->title ,
+					'class' => 'form-required form-default',
+					'hint' => trans('posts.manage.title_hint') ,
 				])
+			@else
+				@include('forms.hiddens' , ['fields' => [
+					['title' , $model->title? $model->title : '-'],
+				]])
 			@endif
 
 			@if($model->branch()->hasFeature('text'))
@@ -61,8 +57,12 @@
 					'id' => 'txtText' ,
 					'class' => 'form-required tinyEditor',
 					'value' => $model->text ,
-					'rows' => 20,
+					'rows' => 15,
 				])
+			@else
+				@include('forms.hiddens' , ['fields' => [
+					['text' , '-'],
+				]])
 			@endif
 
 			@if($model->branch()->hasFeature('abstract'))
@@ -85,12 +85,14 @@
 				])
 			@endif
 
-			@include('forms.textarea' , [
-			    'name' => 'keywords',
-			    'value' => $model->keywords ,
-			    'hint' => trans('posts.manage.keywords_hint'),
-			    'rows' => 2,
-			])
+			@if($model->branch()->hasFeature('keyword'))
+				@include('forms.textarea' , [
+					'name' => 'keywords',
+					'value' => $model->keywords ,
+					'hint' => trans('posts.manage.keywords_hint'),
+					'rows' => 2,
+				])
+			@endif
 
 			@include('manage.posts.editor-meta')
 			@if($model->branch()->hasFeature('gallery'))
@@ -112,6 +114,7 @@
 		<div class="col-md-3">
 
 			@include('manage.posts.editor-status')
+			@include('manage.posts.editor-slug')
 			@include('manage.posts.editor-saves')
 			@include('manage.posts.editor-image')
 			@include('manage.posts.editor-domains')

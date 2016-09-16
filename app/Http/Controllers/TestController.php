@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Mhr_state;
 use App\Models\Domain;
+use App\Models\Post;
 use App\Models\State;
 use App\Models\User;
 use App\Models\Volunteer;
+use App\Temp\Mhr_exam_questions;
 use App\Temp\Mhr_safiran_data;
 use App\Temp\Mhr_users_old;
 use Carbon\Carbon;
@@ -14,6 +16,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Morilog\Jalali\jDate;
 use App\Events\SendSms;
 use Illuminate\Support\Facades\Event;
@@ -31,9 +34,13 @@ class TestController extends Controller
 //		$this->convertVolunteers() ;
 //		$this->convertVolunteers2Users() ;
 //		return view('templates.say' , ['array'=>date('Y/m/d H:i:s' , 9993775497)]);
-		return view('templates.say' , ['array'=>Auth::user()]);
+//		return $this->convertExams() ;
 
-		
+
+//		$array =
+
+		return view('templates.say' , ['array'=>Session::all()]);
+
 	}
 
 	/*
@@ -42,6 +49,63 @@ class TestController extends Controller
 	|--------------------------------------------------------------------------
 	|
 	*/
+
+	private function convertExams()
+	{
+		$questions = Mhr_exam_questions::all() ;
+
+		foreach($questions as $question) {
+			$post = new Post() ;
+
+			$post->title = '-' ;
+			$post->text = $question->question ;
+			$post->domains = 'free' ;
+			$post->created_by = 1 ;
+			$post->published_at = Carbon::now()->toDateTimeString() ;
+			$post->published_by = 1 ;
+			$post->branch = 'tests' ;
+			$post->save() ;
+
+			switch($question->answerTrue) {
+				case 1 :
+					$option_true = $question->answerA ;
+					$option_wrong_1 = $question->answerB ;
+					$option_wrong_2 = $question->answerC ;
+					$option_wrong_3 = $question->answerD ;
+					break;
+				case 2 :
+					$option_true = $question->answerB ;
+					$option_wrong_1 = $question->answerA ;
+					$option_wrong_2 = $question->answerC ;
+					$option_wrong_3 = $question->answerD ;
+					break;
+				case 3 :
+					$option_true = $question->answerC ;
+					$option_wrong_1 = $question->answerB ;
+					$option_wrong_2 = $question->answerA ;
+					$option_wrong_3 = $question->answerD ;
+					break;
+				case 4 :
+					$option_true = $question->answerD ;
+					$option_wrong_1 = $question->answerB ;
+					$option_wrong_2 = $question->answerC ;
+					$option_wrong_3 = $question->answerA ;
+					break;
+				default:
+					continue ;
+
+			}
+
+			$post->meta('option_true' , $option_true) ;
+			$post->meta('option_wrong_1' , $option_wrong_1) ;
+			$post->meta('option_wrong_2' , $option_wrong_2) ;
+			$post->meta('option_wrong_3' , $option_wrong_3) ;
+			$post->meta('additional_info' , $question->faq) ;
+
+			echo view('templates.say' , ['array'=>$post]);
+
+		}
+	}
 
 	private function makeDomainsFromHomeCities()
 	{

@@ -119,7 +119,7 @@ class ValidationServiceProvider extends ServiceProvider
 				break;
 
 			case 'date' :
-				$data = Carbon::createFromTimestamp($data/1000)->toDateTimeString();
+				$data = Carbon::createFromTimestamp($data)->toDateTimeString();
 				break ;
 		}
 

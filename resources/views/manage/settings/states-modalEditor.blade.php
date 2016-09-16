@@ -17,9 +17,10 @@
 @include('forms.select' , [
 	'name' =>	'capital_id',
 	'class' => 'form-required',
-	'options' => isset($model)? $model->cities()->orderBy('title')->get()->toArray() : $cities->toArray() ,
+	'options' => isset($model)? $model->cities()->orderBy('title')->get()->toArray() : $cities->get()->toArray() ,
 	'value' => isset($model)? $model->capital()->id : '0' ,
 	'blank_value' => '0' ,
+	'search' => true ,
 ])
 
 @include('forms.group-start')

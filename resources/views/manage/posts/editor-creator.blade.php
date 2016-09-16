@@ -3,12 +3,17 @@
 		{{ trans('posts.manage.creator') }}
 	</div>
 
-	<div class="m10 text-center">
-		@if($model->id)
+	@if($model->id)
+		<div class="m10 text-center">
 			{{ $model->say('created_by') }}
-		@else
+		</div>
+		<div class="m10 text-center text-grey">
+			{{ $model->say('created_at') }}
+		</div>
+	@else
+		<div class="m10 text-center">
 			{{ Auth::user()->fullName() }}
-		@endif
-	</div>
+		</div>
+	@endif
 
 </div>

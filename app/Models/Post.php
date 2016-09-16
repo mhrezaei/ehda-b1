@@ -44,9 +44,9 @@ class Post extends Model
 		return $this->belongsTo('App\Models\Category');
 	}
 
-	public function post_comments()
+	public function comments()
 	{
-		return $this->hasMany('App\Models\Post_comment');
+		return $this->hasMany('App\Models\Comment');
 	}
 
 	public function post_medias()
@@ -108,9 +108,9 @@ class Post extends Model
 	|
 	*/
 
-	public function counter($branch , $criteria = 'published')
+	public static function counter($branch , $domains='global' ,$criteria = 'published')
 	{
-		return $this->selector($branch , $criteria)->count() ;
+		return self::selector($branch , $domains , $criteria)->count() ;
 	}
 
 	public static function searchRawQuery($keyword, $fields = null)
@@ -132,7 +132,7 @@ class Post extends Model
 
 		//Process Domain...
 		$domain_array = User::domainsStringToArray($domains);
-		$query = "0 " ;
+		$query = "`domains` = 'free' " ;
 		foreach($domain_array as $domain) {
 //			$query .= " or LOCATE('|$domain|' , `domains`)" ;
 			$query .= " or `domains` like '%|$domain|%' " ;
@@ -330,7 +330,15 @@ class Post extends Model
 				else
 					return trans('forms.general.deleted');
 
+			case 'title' :
+				if($this->title == '-')
+					return str_limit($this->text , 50);
+				else
+					return $this->title ;
+
 			case 'domains' :
+				if($this->domains == 'free')
+					return $default ;
 				$slug = trim(str_replace('|' , null , str_replace('global' , null , $this->domains)));
 				$domain = Domain::selectBySlug($slug) ;
 				if($domain) {

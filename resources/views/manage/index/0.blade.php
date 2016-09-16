@@ -3,7 +3,12 @@
 @section('page_heading' , trans('manage.modules.dashboard'))
 
 @section('section')
-{{--	@include('templates.say' , ['array'=>\App\models\Branch::getTopbarMenu()]);--}}
+
+	@foreach($digests as $digest)
+		@include('manage.frame.widgets.digest' , $digest)
+	@endforeach
+
+
 @endsection
 
 {{--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalTest">Small modal</button>--}}

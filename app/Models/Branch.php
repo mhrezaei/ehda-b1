@@ -13,7 +13,7 @@ class Branch extends Model
 	use TahaModelTrait ;
 	use SoftDeletes ;
 	protected $guarded = ['id'];
-	public static $available_features = ['image' , 'text' , 'abstract' , 'rss' , 'comment' , 'gallery' , 'category' , 'searchable' , 'preview'] ;
+	public static $available_features = ['image' , 'text' , 'abstract' , 'rss' , 'comment' , 'gallery' , 'category' , 'searchable' , 'preview' , 'digest' , 'domain' , 'schedule' , 'keyword' , 'title'] ;
 	public static $available_templates = ['album' , 'post' , 'slideshow' , 'developers' , 'custom'] ;
 	public static $available_meta_types = ['text' , 'textarea' , 'date'];
 
@@ -60,11 +60,20 @@ class Branch extends Model
 
 		$array = explode(',',$string) ;
 		foreach($array as $item) {
-			$thing = explode(':' , $item) ;
-			$key = $thing[0] ;
-			$type = isset($thing[1])? $thing[1] : 'text' ;
-			if(!$key) continue ;
-			$result[$key] = $type ;
+			if(str_contains($item , '*')) {
+				$required = true ;
+				$item = str_replace('*' , null , $item) ;
+			}
+			else
+				$required = false ;
+
+			$field = explode(':' , $item) ;
+			if(!$field[0]) continue ;
+			array_push($result , [
+				'name' => $field[0] ,
+				'type' => isset($field[1])? $field[1] : 'text' ,
+				'required' => $required ,
+			]) ;
 		}
 
 		return $result ;
@@ -110,6 +119,14 @@ class Branch extends Model
 		}
 
 		return $result ;
+	}
+
+	public static function selector($feature = null)
+	{
+		if($feature)
+			return self::where('features' , 'like' , "%$feature%") ;
+		else
+			return self::where('id' , '>' , '0');
 	}
 
 
