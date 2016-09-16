@@ -12,12 +12,12 @@
 			</ul>
 		</li>
 		@else
-			<li class="has-child">
+			<li>
 				<a href="{{ url('/login') }}">{{ trans('site.global.users_login') }}</a>
 			</li>
 		@endif
-<li>
-			<a href="/">{{ trans('site.global.stats_login') }}</a>
+		<li>
+			<a href="{{ url('/login11') }}">{{ trans('site.global.stats_login') }}</a>
 		</li>
 	</ul>
 	<a href="/" class="slogan pull-left">
