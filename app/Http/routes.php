@@ -23,6 +23,7 @@ Route::get('/card/show_card/mini/{national_hash}', 'CardController@card_mini');
 Route::get('/card/show_card/full/{national_hash}/{mode?}', 'CardController@card_full');
 
 Route::get('/showPost/{id}/{url?}', 'PostController@show');
+Route::get('/previewPost/{id}/{url?}', 'PostController@show');
 
 /*
 |--------------------------------------------------------------------------

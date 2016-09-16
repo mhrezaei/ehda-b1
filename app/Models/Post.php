@@ -352,7 +352,10 @@ class Post extends Model
 					return $default ;
 
 			case 'link' :
-				return url("post/".$this->id."/".$this->title) ; //TODO: Correct this
+				return url("showPost/".$this->id."/".urlencode($this->title)) ; //TODO: Correct this
+
+			case 'preview' :
+				return url("previewPost/".$this->id."/".urlencode($this->title)) ; //TODO: Correct this
 
 			default :
 				return $this->$property ;
