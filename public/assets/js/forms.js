@@ -1113,13 +1113,6 @@ function forms_date_picker(selector) {
 			$seconds = $val[5];
 		}
 		$('#' + $elementID).pDatepicker("setDate", [$year, $month, $day, $hours, $minutes, $seconds]);
-		// if ($time) {
-		// 	$('#' + $elementID).pDatepicker("setDate", [$val[0], $val[1], parseInt($val[2]), $val[3], $val[4], $val[5]]);
-		// }
-		// else
-		// {
-		// 	$( '#' + $elementID ).pDatepicker("setDate",[$val[0],$val[1],parseInt($val[2]),12,12,12] );
-		// }
 	}
 	if($val.length < 1 )
 	{
