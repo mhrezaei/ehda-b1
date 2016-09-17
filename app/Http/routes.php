@@ -24,6 +24,7 @@ Route::get('/card/show_card/full/{national_hash}/{mode?}', 'CardController@card_
 
 Route::get('/showPost/{id}/{url?}', 'PostController@show');
 Route::get('/previewPost/{id}/{url?}', 'PostController@show');
+Route::get('/archive/{branch?}/{category?}', 'PostController@archive');
 
 /*
 |--------------------------------------------------------------------------
