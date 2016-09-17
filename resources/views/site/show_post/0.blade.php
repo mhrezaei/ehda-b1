@@ -1,5 +1,5 @@
 @extends('site.frame.frame')
-<title>{{ trans('global.siteTitle') }} | {{ $post->title }}</title>
+<title>{{ trans('global.siteTitle') }} | @pd($post->title)</title>
 @section('content')
     <div class="container-fluid">
         @include('site.frame.page_title', [

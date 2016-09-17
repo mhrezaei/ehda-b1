@@ -373,7 +373,7 @@ class Post extends Model
 
 	}
 
-	public function keywords()
+	public function getKeywords()
 	{
 		if(trim($this->keywords))
 			return explode(trans('site.global.comma'), $this->keywords);
