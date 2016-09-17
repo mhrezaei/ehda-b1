@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\models\Branch;
+use App\Models\Category;
 use App\Models\Post;
 use App\Traits\GlobalControllerTrait;
 use Illuminate\Http\Request;
@@ -19,10 +21,31 @@ class PostController extends Controller
 
     public function show($id, $url = null)
     {
-        $post = Post::find($id);
-        if ($post->branch()->template != 'post' or ! $post->isPublished() or ! $post->checkDomain($this->getDomain()))
+        if (is_numeric($id))
+            $post = Post::find($id);
+        else
+            $post = Post::findBySlug(urldecode($id));
+
+        if (! $post or $post->branch()->template != 'post' or ! $post->isPublished() or ! $post->checkDomain($this->getDomain()))
             return view('errors.404');
 
-        return $post->title;
+        return view('site.show_post.0', compact('post'));
+    }
+
+    public function archive($branch = 'all', $category = 'all')
+    {
+        if ($branch and $branch != 'all')
+            $branch_name = Branch::findBySlug($branch)->plural_title;
+        else
+            $branch_name = null;
+
+        if ($category and $category != 'all')
+            $category_name = Category::findBySlug($category)->title;
+        else
+            $category_name = trans('site.global.all_post');
+
+        $archive = Post::selector('iran-news')->paginate(2);
+
+        return view('site.post_archive.0', compact('branch_name', 'category_name', 'archive'));
     }
 }

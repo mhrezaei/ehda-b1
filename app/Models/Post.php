@@ -126,24 +126,26 @@ class Post extends Model
 		return " LOCATE('$keyword' , CONCAT_WS(' ' $concat_string)) " ;
 	}
 
-	public static function selector($branch , $domains='global' , $criteria='published')
+	public static function selector($branch , $domains='all' , $criteria='published')
 	{
 		$now = Carbon::now()->toDateTimeString();
 
 		//Process Domain...
-		$domain_array = User::domainsStringToArray($domains);
-		$query = "`domains` = 'free' " ;
-		foreach($domain_array as $domain) {
-//			$query .= " or LOCATE('|$domain|' , `domains`)" ;
-			$query .= " or `domains` like '%|$domain|%' " ;
+		if($domains == 'all') {
+			$table = self::where('id' , '>' , '0');
 		}
-		$table = self::whereRaw("($query)") ;
-//		$table = self::whereNotNull('id') ;
+		else {
+			$domain_array = User::domainsStringToArray($domains);
+			$query = "`domains` = 'free' " ;
+			foreach($domain_array as $domain) {
+				$query .= " or `domains` like '%|$domain|%' " ;
+			}
+			$table = self::whereRaw("($query)") ;
+		}
 
 		//Process Branches...
 		if($branch == 'all' ) {
 			$table = $table->whereRaw(" LOCATE(`branch` , '".Branch::branchesWithFeature('searchable')."' ) ") ;
-//			$table = $table->where( "branch" , 'not like' , '%dev%' );
 		}
 		else
 			$table = $table->where('branch' , $branch) ;
@@ -178,6 +180,14 @@ class Post extends Model
 	|--------------------------------------------------------------------------
 	|
 	*/
+
+	public function getKeywords()
+	{
+		if(trim($this->keywords))
+			return explode(trans('site.global.comma'), $this->keywords);
+		else
+			return [] ;
+	}
 
 	public function canPublish()
 	{
