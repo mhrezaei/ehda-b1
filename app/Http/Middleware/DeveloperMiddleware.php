@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Response;
 
 
 class DeveloperMiddleware
@@ -17,12 +18,13 @@ class DeveloperMiddleware
 	 */
 	public function handle($request, Closure $next)
 	{
+
 		if(!Auth::user()->isDeveloper()) {
 			if($request->ajax() || $request->wantsJson()) {
 				return response('Unauthorized.', 401);
 			}
 			else {
-				return view('errors.403');
+				return new Response(view('errors.403'));
 			}
 		}
 

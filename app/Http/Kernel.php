@@ -47,10 +47,9 @@ class Kernel extends HttpKernel
         'auth' => \App\Http\Middleware\Authenticate::class,
         'MembersAuth' => \App\Http\Middleware\MembersMiddleware::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
-//        'can' => \Illuminate\Foundation\Http\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'dev' => \App\Http\Middleware\DeveloperMiddleware::class,
-        'can' => \App\Http\Middleware\CanMiddleware::class,
+        'Dev' => \App\Http\Middleware\DeveloperMiddleware::class,
+        'Can' => \App\Http\Middleware\CanMiddleware::class,
     ];
 }

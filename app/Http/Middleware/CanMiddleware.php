@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Response;
 
 
 class CanMiddleware
@@ -24,6 +25,7 @@ class CanMiddleware
 				return response('Unauthorized.', 401);
 			}
 			else {
+				return new Response(view('errors.403'));
 				return view('errors.403');
 			}
 		}

@@ -72,6 +72,11 @@ function forms_listener() {
 		);
 	})
 
+	$("input.js").each(function() {
+		$(this).removeClass('js');
+		setTimeout($(this).val() , $(this).attr('data-delay'));
+	})
+
 	setTimeout("forms_listener()", 5);
 }
 

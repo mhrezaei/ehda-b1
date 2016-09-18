@@ -12,17 +12,19 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\View;
 
-class DevSettingsController extends Controller
+class SuperSettingsController extends Controller
 {
 	use TahaControllerTrait ;
 	private $page = array();
 
 	public function __construct()
 	{
+		$this->middleware('can:dev');
+
 		$this->page[0] = ['devSettings' , trans('manage.modules.devSettings')];
 	}
 
-	public function index($request_tab = 'branches')
+	public function index($request_tab = 'menu')
 	{
 		//Preparetions...
 		$page = $this->page;

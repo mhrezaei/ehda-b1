@@ -58,6 +58,8 @@
 	{!! HTML::style ('assets/libs/datepicker/js-persian-cal.css') !!}
 	{!! HTML::script ('assets/libs/datepicker/js-persian-cal.js') !!}
 
+	{{-- Jquery Sortable --}}
+{{--	{!! HTML::script ('assets/libs/jquery-sortable/jquery-sortable.js') !!}--}}
 
 
 	{{-- Laravel File-Manage --}}

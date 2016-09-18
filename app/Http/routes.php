@@ -159,15 +159,21 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 		});
 	});
 
-		/*
-		| Developer Settings
-		*/
+	/*
+	| SuperAdmin Settings
+	*/
+	Route::group(['prefix'=>'SuperSettings'], function() { //@TODO: Middleware here!
+	});
 
 
-	Route::group(['prefix'=>'devSettings'], function() { //@TODO: Middleware here!
+	/*
+	| Developer Settings
+	*/
+
+
+	Route::group(['prefix'=>'devSettings' , 'middleware' => 'Dev'], function() {
 		Route::get('/' , 'DevSettingsController@index') ;
 		Route::get('/{request_tab}/' , 'DevSettingsController@index') ;
-//		Route::get('/{request_tab}/new' , 'DevSettingsController@add') ; //@TODO: mix it like the others
 
 		Route::get('/{request_tab}/{id}' , 'DevSettingsController@item') ;
 		Route::get('/{request_tab}/{id}/edit/{parent_id}' , 'DevSettingsController@editor') ;
