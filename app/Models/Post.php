@@ -354,15 +354,15 @@ class Post extends Model
 			case 'link' :
 				return url("post/".$this->id."/".$this->title) ; //TODO: Correct this
 
-			default :
-				return $this->$property ;
-
 			case 'post_header' :
 			case 'header' :
 				if($this->branch()->hasFeature('header'))
 					return $this->meta('header_title') ;
 				else
 					return $this->branch()->header_title ;
+			default :
+				return $this->$property ;
+
 		}
 
 	}
