@@ -1,4 +1,4 @@
-@if($model->branch()->hasFeature('schedule'))
+@if($model->branch()->hasFeature('domain'))
 	<div class="panel panel-default w100">
 		<div class="panel-heading">
 			{{ trans('posts.manage.visibility') }}

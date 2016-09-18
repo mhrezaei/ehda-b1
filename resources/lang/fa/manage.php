@@ -105,10 +105,13 @@ return [
 		"settings" => [
 				"socials" => [
 						'tab-title' => 'شبکه‌های اجتماعی',
-				]
+				],
 		],
 
 		"devSettings" => [
+				"menu" => [
+					'trans' => 'منوی سایت' ,
+				],
 				"branches" => [
 						'trans' => 'شاخه‌ها',
 						'template_hint' => 'یکی (فقط یکی) از این‌ها را برگزینید:' ,

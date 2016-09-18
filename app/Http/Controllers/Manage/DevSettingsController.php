@@ -19,12 +19,10 @@ class DevSettingsController extends Controller
 
 	public function __construct()
 	{
-		$this->middleware('can:dev');
-
 		$this->page[0] = ['devSettings' , trans('manage.modules.devSettings')];
 	}
 
-	public function index($request_tab = 'states')
+	public function index($request_tab = 'branches')
 	{
 		//Preparetions...
 		$page = $this->page;

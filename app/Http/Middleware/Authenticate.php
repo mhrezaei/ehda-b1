@@ -2,10 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use App\Events\VolunteerClick;
 use Closure;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Event;
 
 class Authenticate
 {
