@@ -126,11 +126,7 @@ class Post extends Model
 		return " LOCATE('$keyword' , CONCAT_WS(' ' $concat_string)) " ;
 	}
 
-<<<<<<< HEAD
 	public static function selector($branch , $domains='searchable' , $criteria='published')
-=======
-	public static function selector($branch , $domains='all' , $criteria='published')
->>>>>>> master
 	{
 		$now = Carbon::now()->toDateTimeString();
 
