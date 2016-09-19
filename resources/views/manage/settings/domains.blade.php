@@ -39,7 +39,7 @@
 				<tr>
 					<td>{{ trans('validation.attributes.title') }}</td>
 					<td>{{ trans('validation.attributes.slug') }}</td>
-					<td>{{ trans('manage.devSettings.domains.admin') }}</td>
+					<td>{{ trans('validation.attributes.alias') }}</td>
 					<td>{{ trans('manage.devSettings.domains.cities') }}</td>
 				</tr>
 				</thead>
@@ -54,7 +54,13 @@
 						<td id="domain-{{$model->id}}-slug" data-toggle="{{$model->slug}}" >
 							{{ $model->slug }}
 						</td>
-						<td>@pd('as123')</td>
+						<td id="domain-{{$model->id}}-alias" data-toggle="{{$model->alias}}" >
+							@if($model->alias == $model->slug)
+								<span class="null-content">{{ trans('manage.devSettings.domains.alias_same_as_slug') }}</span>
+							@else
+								{{ $model->alias }}
+							@endif
+						</td>
 						<td>
 							<a href="{{url('manage/devSettings/domains/'.$model->id)}}" >
 								@pd($model->states()->count().' '.trans('manage.devSettings.domains.city'))

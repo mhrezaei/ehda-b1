@@ -17,7 +17,8 @@ class BranchesSaveRequest extends Request
      */
     public function authorize()
     {
-        return Auth::user()->can('developer');
+        return true ;
+        //Permission is checked from the Route
     }
 
     /**

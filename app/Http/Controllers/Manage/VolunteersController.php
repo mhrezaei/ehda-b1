@@ -30,7 +30,7 @@ class VolunteersController extends Controller
 
 	public function __construct()
 	{
-		$this->middleware('can:volunteers');
+		$this->middleware('Can:volunteers');
 
 		$this->page[0] = ['volunteers' , trans('manage.modules.volunteers')];
 	}

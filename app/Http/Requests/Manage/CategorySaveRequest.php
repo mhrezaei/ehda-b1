@@ -6,7 +6,7 @@ use App\Http\Requests\Request;
 use App\Providers\ValidationServiceProvider;
 
 
-class DomainSaveRequest extends Request
+class CategorySaveRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,20 +26,20 @@ class DomainSaveRequest extends Request
     public function rules()
     {
         $input = $this->all();
-        $id = $input['id'] ;
         return [
-             'title' => "required|unique:domains,title,$id",
-             'alias' => "required|unique:domains,alias,$id",
-             'slug' => "required|unique:domains,slug,$id",
+             'branch_id' => 'required|numeric|exists:branches,id',
+             'title' => 'required|unique:categories,title,'.$input['id'].',id,branch_id,'.$input['branch_id'],
+             'slug' => 'required|unique:categories,slug,'.$input['id'].',id,branch_id,'.$input['branch_id'],
         ];
+
     }
 
     public function all()
     {
         $value	= parent::all();
         $purified = ValidationServiceProvider::purifier($value,[
-             'slug'  =>  'lower',
-             'alias'  =>  'lower',
+	        'province_id'  =>  'number',
+	        'domain_id' => 'number' ,
         ]);
         return $purified;
 

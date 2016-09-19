@@ -32,7 +32,7 @@ class ManageController extends Controller
 		$digests = $this->index_digests() ;
 
 		//View...
-		return view('manage.index.0',compact('page' , 'digests'));
+		return view('manage.index.index',compact('page' , 'digests'));
 	}
 
 	private function index_digests()
@@ -58,7 +58,7 @@ class ManageController extends Controller
 		]);
 
 		$branches = Branch::selector('digest')->get();
-		$themes = ['orange' , 'pink' , 'violet' , 'green' , 'primary' , 'red' , 'yellow'] ;
+		$themes = ['orangered' , 'pink' , 'violet' , 'green' , 'primary' , 'red' , 'yellow'] ;
 		foreach($branches as $key => $branch) {
 			$posts = Post::counter($branch->slug);
 			array_push($digests , [
@@ -174,6 +174,37 @@ class ManageController extends Controller
 
 		return $array ;
 
+	}
+
+	public static function sidebarPostsMenu()
+	{
+		$groups = Branch::groups()->get() ;
+		$array = [] ;
+
+		foreach($groups as $group) {
+			$branches = Branch::where('header_title' , $group->header_title)->orderBy('plural_title')->get() ;
+			$sub_menus = [] ;
+			foreach($branches as $branch) {
+				if(Auth::user()->can("posts-$branch->slug")) {
+					array_push($sub_menus , [
+						'posts/'.$branch->slug ,
+						$branch->plural_title ,
+						$branch->icon ,
+					]);
+				}
+			}
+
+			array_push($array , [
+					'icon' => 'dot-circle-o' ,
+					'caption' => $group->header_title ? $group->header_title : trans('posts.manage.global') ,
+					'link' => 'asd' ,
+					'sub_menus' => $sub_menus ,
+					'permission' =>  sizeof($sub_menus)? '' : 'dev',
+			]);
+
+		}
+
+		return $array ;
 	}
 
 

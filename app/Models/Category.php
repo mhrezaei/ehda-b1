@@ -12,6 +12,8 @@ class Category extends Model
 	use TahaModelTrait;
 	use SoftDeletes ;
 
+	protected $guarded = ['id'] ;
+
 	public function posts()
 	{
 		return $this->hasMany('App\Models\Post');

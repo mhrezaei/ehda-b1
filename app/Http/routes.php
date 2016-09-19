@@ -161,15 +161,27 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 		});
 	});
 
-		/*
-		| Developer Settings
-		*/
+	/*
+	| SuperAdmin Settings
+	*/
+	Route::group(['prefix'=>'settings'  , 'middleware' => 'Can:settings'], function() {
+		Route::get('/' , 'SettingsController@index') ;
+		Route::get('/{request_tab}/' , 'SettingsController@index') ;//@TODO: INTACT
+
+		Route::get('/{request_tab}/{id}' , 'SettingsController@item') ;//@TODO: INTACT
+		Route::get('/{request_tab}/{id}/edit/{parent_id}' , 'SettingsController@editor') ;//@TODO: INTACT
+		Route::get('/{request_tab}/{id}/edit' , 'SettingsController@editor') ;//@TODO: INTACT
+	});
 
 
-	Route::group(['prefix'=>'devSettings'], function() { //@TODO: Middleware here!
+	/*
+	| Developer Settings
+	*/
+
+
+	Route::group(['prefix'=>'devSettings' , 'middleware' => 'Dev'], function() {
 		Route::get('/' , 'DevSettingsController@index') ;
 		Route::get('/{request_tab}/' , 'DevSettingsController@index') ;
-//		Route::get('/{request_tab}/new' , 'DevSettingsController@add') ; //@TODO: mix it like the others
 
 		Route::get('/{request_tab}/{id}' , 'DevSettingsController@item') ;
 		Route::get('/{request_tab}/{id}/edit/{parent_id}' , 'DevSettingsController@editor') ;
@@ -181,6 +193,7 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 		Route::post('/domains/save' , 'DevSettingsController@save_domains');
 		Route::post('/states/save' , 'DevSettingsController@save_states');
 		Route::post('/cities/save' , 'DevSettingsController@save_cities');
+		Route::post('/categories/save' , 'DevSettingsController@save_category');
 	}) ;
 
 });

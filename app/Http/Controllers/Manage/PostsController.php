@@ -333,7 +333,6 @@ class PostsController extends Controller
 		$success_redirect = null ;
 		$branch = Branch::findBySlug($request->branch);
 
-
 		//Processing Custom Publish Date...
 		if($branch->hasFeature('schedule')) {
 			if($data['publish_date_mode'] == 'custom') {
@@ -388,7 +387,11 @@ class PostsController extends Controller
 					break;
 
 				case 'publish' :
-					if(!$model->isPublished()) {
+					if($model->isPublished()) {
+						if(!$model->branch()->hasFeature('schedule'))
+							$data['published_at'] = $model->published_at ;
+					}
+					else {
 						$data['published_by'] = $user_id ;
 						if(!$data['published_at'])
 							$data['published_at'] = $now ;
