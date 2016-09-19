@@ -373,6 +373,24 @@ class Post extends Model
 					return $this->meta('header_title') ;
 				else
 					return $this->branch()->header_title ;
+
+			case 'abstract' :
+				if($this->abstract)
+					return $this->abstract ;
+				else
+					return str_limit(strip_tags($this->text),200);
+
+			case 'featured_image' :
+				$default_image = url('image');
+				if(!$this->featured_image)
+					return $default_image ;
+
+				$file_headers = @get_headers($this->featured_image);
+				if($file_headers[0] == 'HTTP/1.0 404 Not Found' or ($file_headers[0] == 'HTTP/1.0 302 Found' && $file_headers[7] == 'HTTP/1.0 404 Not Found'))
+					return $default_image ;
+
+				return $this->featured_image ;
+
 			default :
 				return $this->$property ;
 
