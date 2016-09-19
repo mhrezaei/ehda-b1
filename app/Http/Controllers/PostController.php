@@ -44,7 +44,10 @@ class PostController extends Controller
         else
             $category_name = trans('site.global.all_post');
 
-        $archive = Post::selector('iran-news')->paginate(2);
+        $archive = Post::selector()->paginate(2);
+
+        return view('templates.say' , ['array'=>$archive]);
+
 
         return view('site.post_archive.0', compact('branch_name', 'category_name', 'archive'));
     }
