@@ -34,18 +34,10 @@ class PostController extends Controller
 
     public function archive($branch = 'searchable', $category = 'all')
     {
-        $post = Post::find(36) ;
-
-        return view('templates.say' , ['array'=>$post->say('featured_image')]);
-
-
-//        if ($branch and $branch != 'all')
-//=======
-//        if ($branch and $branch != 'searchable')
-//>>>>>>> origin/master
-//            $branch_name = Branch::findBySlug($branch)->plural_title;
-//        else
-//            $branch_name = null;
+        if ($branch and $branch != 'searchable')
+            $branch_name = Branch::findBySlug($branch)->plural_title;
+        else
+            $branch_name = null;
 
         if ($category and $category != 'all')
             $category_name = Category::findBySlug($category)->title;

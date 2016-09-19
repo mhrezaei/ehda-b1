@@ -188,7 +188,7 @@ class Post extends Model
 	private static function loadDefaultImage()
 	{
 		if(!self::$default_image)
-			self::$default_image = url('folan');
+			self::$default_image = url('/assets/site/images/default-post.png');
 
 	}
 
@@ -378,7 +378,7 @@ class Post extends Model
 				$link = str_replace(' ', '_', $this->title);
 				$link = str_replace('/', '_', $link);
 
-				return url("showPost/".$this->id."/".urlencode($link)) ; //TODO: Correct this
+				return url("showPost/".$this->id."/".urlencode($link)) ;
 
 			case 'post_header' :
 			case 'header' :

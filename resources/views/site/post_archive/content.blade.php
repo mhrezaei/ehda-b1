@@ -4,7 +4,7 @@
             @foreach($archive as $post)
                 <div class="media">
                     <a class="media-right" href="{{ $post->say('link') }}">
-                        <img class="media-right" src="{{ $post->featured_image }}">
+                        {{--<img class="media-right" src="{{ $post->say('featured_image') }}">--}}
                     </a>
                     <div class="media-body">
                         <h4 class="media-heading">
@@ -12,7 +12,7 @@
                         </h4>
                         @if(strlen($post->abstract))
                             <p style="text-align: justify;">
-                                {{ $post->abstract }}
+                                {{ $post->say('abstract') }}
                             </p>
                         @endif
                     </div>
