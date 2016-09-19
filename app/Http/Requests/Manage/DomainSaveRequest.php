@@ -29,6 +29,7 @@ class DomainSaveRequest extends Request
         $id = $input['id'] ;
         return [
              'title' => "required|unique:domains,title,$id",
+             'alias' => "required|unique:domains,alias,$id",
              'slug' => "required|unique:domains,slug,$id",
         ];
     }
@@ -38,6 +39,7 @@ class DomainSaveRequest extends Request
         $value	= parent::all();
         $purified = ValidationServiceProvider::purifier($value,[
              'slug'  =>  'lower',
+             'alias'  =>  'lower',
         ]);
         return $purified;
 

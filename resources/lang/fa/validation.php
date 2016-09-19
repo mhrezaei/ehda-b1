@@ -288,6 +288,7 @@ return [
 				'capital_id'=> 'مرکز استان',
 				'province_id' => 'استان',
 				'domain_id' => 'دامنه',
+				'alias' => 'نام مستعار' ,
 				'status' => 'وضعیت' ,
 				'tel' => 'تلفن',
 				'postal_code' => 'کد پستی',
