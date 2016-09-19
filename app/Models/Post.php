@@ -29,6 +29,7 @@ class Post extends Model
 	public $photos_count = 0 ;
 	public $is_global_reflect = false ;
 	protected static $search_fields = ['title', 'keywords', 'abstract'] ;
+	protected static $default_image ;
 
 
 	/*
@@ -184,6 +185,13 @@ class Post extends Model
 	|
 	*/
 
+	private static function loadDefaultImage()
+	{
+		if(!self::$default_image)
+			self::$default_image = url('folan');
+
+	}
+
 	public function getKeywords()
 	{
 		if(trim($this->keywords))
@@ -311,6 +319,8 @@ class Post extends Model
 	
 	public function say($property , $default='-')
 	{
+		self::loadDefaultImage() ;
+
 		switch($property) {
 			case 'created' :
 			case 'updated' :
@@ -384,13 +394,12 @@ class Post extends Model
 					return str_limit(strip_tags($this->text),200);
 
 			case 'featured_image' :
-				$default_image = url('image');
 				if(!$this->featured_image)
-					return $default_image ;
+					return self::$default_image ;
 
 				$file_headers = @get_headers($this->featured_image);
 				if($file_headers[0] == 'HTTP/1.0 404 Not Found' or ($file_headers[0] == 'HTTP/1.0 302 Found' && $file_headers[7] == 'HTTP/1.0 404 Not Found'))
-					return $default_image ;
+					return self::$default_image ;
 
 				return $this->featured_image ;
 
