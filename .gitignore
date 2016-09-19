@@ -44,3 +44,4 @@ storage/logs/laravel.log
 *.log
 
 *.jpg
+*.log

@@ -1,9 +1,12 @@
 <div class="col-xs-12 col-sm-6">
-    <h3>رویدادهای پیش رو</h3>
-    <ul class="events list-unstyled">
-        <li><a href="/">فراخوان اولین جشنواره تجمسی نفس</a></li>
-        <li><a href="/">رونمایی از طرح جدید کارت اهدای عضو</a></li>
-        <li><a href="/">فراخوان اولین جشنواره تجمسی نفس</a></li>
-        <li><a href="/">رونمایی از طرح جدید کارت اهدای عضو</a></li>
-    </ul>
+    @if(sizeof($events))
+        <h3>{{ trans('site.global.events') }}</h3>
+        <ul class="events list-unstyled">
+            @foreach($events as $event)
+                <li>
+                    <a href="{{ url('showPost/' . $event->id . '/' . urlencode($event->title)) }}">@pd($event->title)</a>
+                </li>
+            @endforeach
+        </ul>
+    @endif
 </div>

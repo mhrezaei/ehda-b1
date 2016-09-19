@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use App\Models\State;
 use App\Models\User;
 use App\Providers\FaGDServiceProvider;
@@ -26,7 +27,8 @@ class CardController extends Controller
     public function index()
     {
         $captcha = SecKeyServiceProvider::getQuestion('fa');
-        return view('site.card_info.0', compact('captcha'));
+        $post = Post::findBySlug('organ_donation_card');
+        return view('site.card_info.0', compact('captcha', 'post'));
     }
 
     public function register()
