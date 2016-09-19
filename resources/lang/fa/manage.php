@@ -1,7 +1,6 @@
 <?php
 
 return [
-
 	// Authentication...
 		"login" => [
 				'page_title' => 'ورود به سامانه' ,

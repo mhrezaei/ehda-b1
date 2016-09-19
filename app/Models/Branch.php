@@ -129,5 +129,8 @@ class Branch extends Model
 			return self::where('id' , '>' , '0');
 	}
 
-
+	public static function groups()
+	{
+		return self::orderBy('header_title' , 'desc')->groupBy('header_title') ;
+	}
 }

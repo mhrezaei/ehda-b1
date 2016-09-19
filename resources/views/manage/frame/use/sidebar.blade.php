@@ -2,68 +2,61 @@
 	{{--'url' => '#' ,--}}
 	{{--'placeholder' => trans('manage.menu.search-all').'...'--}}
 {{--])--}}
+
 @include('manage.frame.widgets.sidebar-link' , [
-	'module' => 'index' ,
 	'icon' => 'dashboard' ,
+	'caption' => trans('manage.modules.index') ,
+	'link' => 'index' ,
 ])
 
 @include('manage.frame.widgets.sidebar-link' , [
-	'module' => 'cards' ,
-	'icon' => 'credit-card',
+	'icon' => 'child' ,
+	'caption' => trans('manage.modules.volunteers') ,
+	'link' => 'volunteers' ,
+	'permission' => 'volunteers' ,
+])
+
+
+@include('manage.frame.widgets.sidebar-link' , [
+	'icon' => 'credit-card' ,
+	'caption' => trans('manage.modules.cards') ,
+	'link' => 'cards' ,
+	'permission' => 'cards' ,
 	'sub_menus' => [
-		['create' , 'create' , trans('people.cards.manage.create')],
-		['browse/all' , 'browse' , trans('people.cards.manage.all')],
-//		['browse/complete' , 'browse' , trans('people.cards.manage.complete')],
-		['browse/incomplete' , 'browse' , trans('people.cards.manage.incomplete')],
-		['browse/under_print' , 'print' , trans('people.cards.manage.under_print')],
-		['browse/newsletter_member' , 'send' , trans('people.cards.manage.newsletter_member')],
-		['search' , 'search' , trans('manage.permits.search')],
+		['cards/create' , trans('people.cards.manage.create') , 'plus-square-o' , 'cards.create'] ,
+		['cards/browse/all' , trans('people.cards.manage.all') , 'bars' , 'cards.browse'],
+		['cards/browse/incomplete' , trans('people.cards.manage.incomplete') , 'star-half' , 'cards.browse'],
+		['cards/browse/under_print' , trans('people.cards.manage.under_print') , 'print' , 'cards.print'],
+		['cards/browse/newsletter_member' , trans('people.cards.manage.newsletter_member') , 'newspaper-o' , 'cards.send'],
+		['cards/search' , trans('forms.button.search') , 'search' , 'cards.search'],
 	]
 ])
 
+@foreach(\App\Http\Controllers\Manage\ManageController::sidebarPostsMenu() as $item)
+	@include('manage.frame.widgets.sidebar-link' , $item)
+@endforeach
 
 @include('manage.frame.widgets.sidebar-link' , [
-	'module' => 'volunteers' ,
-	'icon' => 'child',
-	'sub_menus_' => [
-		['search' , 'search' , trans('manage.permits.search')],
-		['browse/active' , '' , trans('people.volunteers.manage.active')],
-		['browse/pending' , 'publish' , trans('people.volunteers.manage.pending')],
-		['browse/care' , 'edit' , trans('people.volunteers.manage.care')],
-		['browse/examining' , 'publish' , trans('people.volunteers.manage.examining')],
-		['browse/bin' , 'publish' , trans('people.volunteers.manage.bin')],
-		['report' , 'report' , trans('manage.permits.report')],
-	],
-])
-
-@foreach( \App\models\Branch::all() as $branch)
-	@include('manage.frame.widgets.sidebar-link' , [
-		'caption' => $branch->plural_title ,
-		'module' => 'posts-'.$branch->slug,
-		'icon' => $branch->icon  ,
-	])
-@endforeach()
-
-@include('manage.frame.widgets.sidebar-link' , [
-	'module' => 'donates' ,
 	'icon' => 'money',
+	'caption' => trans('manage.modules.donates'),
+	'link' => 'donates' ,
 	'disabled' => true ,
 ])
+
 @include('manage.frame.widgets.sidebar-link' , [
-	'module' => 'submits' ,
 	'icon' => 'comment-o',
+	'caption' => trans('manage.modules.submits') ,
+	'link' => 'submits' ,
 	'disabled' => true ,
 ])
 
 @include('manage.frame.widgets.sidebar-link' , [
-	'module' => 'settings' ,
 	'icon' => 'cogs',
-//	'sub_menus' => ['settings_profile' , 'settings_socials' , 'settings_contacts' , 'settings_general']
+	'caption' => trans('manage.modules.settings'),
+	'link' => 'settings' ,
 ])
 @include('manage.frame.widgets.sidebar-link' , [
-	'module' => 'devSettings' ,
 	'icon' => 'user-secret',
-//	'sub_menus' => ['devSettings_domains' , 'devSettings_states' , 'devSettings_activities' , 'devSettings_roles' , 'devSettings_cats']
+	'caption' => trans('manage.modules.devSettings'),
+	'link' => 'devSettings' ,
 ])
-
-{{--@include('manage.frame.use._sidebar')--}}

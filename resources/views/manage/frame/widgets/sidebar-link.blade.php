@@ -1,44 +1,46 @@
-{{-- $submenu[0=>url 1=>permission 2=>label] --}}
-@if(Auth::user()->can($module))
+@if(!isset($permission) or Auth::user()->can($permission))
+	<li {{ (Request::is('*'.$link) ? 'class="active"' : '') }}>
 
-	<?php
-		if(str_contains($module,'posts-')) {
-			$slug = str_replace('posts-','',$module) ;
-			$target = "posts/$slug" ;
-		}
-		else {
-			$target = $module ;
-			$caption = trans('manage.modules.'.$module) ;
-		}
-	?>
+		{{--
+		|--------------------------------------------------------------------------
+		| Main Manu
+		|--------------------------------------------------------------------------
+		| 
+		--}}
 
-	<li {{ (Request::is('*'.$module) ? 'class="active"' : '') }}>
 		@if(isset($disabled) and $disabled)
-			<a href="javascript:void(0)" class="text-grey" style="cursor: default;z-index: -1">
-				<i class="fa fa-{{ $icon or 'dot-circle-o' }} fa-fw"></i>
+			<a href="javascript:void(0)" class="null-content" style="cursor: default;z-index: -1">
+				<i class="fa fa-{{ $icon or 'dot-circle-o' }} fa-fw" style="width: 20px"></i>
 				&nbsp;{{ $caption }}&nbsp;
-				@if(isset($sub_menus))
-					<span class="fa arrow">
-				@endif
 			</a>
 		@else
-			<a href="{{ url ('manage/'.$target) }}">
+			<a href="{{ url ('manage/'.$link) }}">
 				<i class="fa fa-{{ $icon or 'dot-circle-o' }} fa-fw"></i>
 				&nbsp;{{ $caption }}&nbsp;
 				@if(isset($sub_menus))
-					<span class="fa arrow">
+					<span class="fa arrow"></span>
 				@endif
 			</a>
 		@endif
 
+		{{--
+		|--------------------------------------------------------------------------
+		| Sub Menus
+		|--------------------------------------------------------------------------
+		|
+		--}}
+
 		@if(isset($sub_menus))
 			<ul class="nav nav-second-level">
-				@foreach($sub_menus as $sub_menu) {{-- [$target,$permit,$caption]  --}}
-					@if(Auth::user()->can($module.$sub_menu[1]))
+				@foreach($sub_menus as $sub_menu)  {{--  [0:target 1:caption 2:icon 3:permission  --}}
+					@if(!isset($sub_menu[3]) or Auth::user()->can($sub_menu[3]))
 						<li {{ (Request::is('*'.$sub_menu[0]) ? 'class="active"' : '') }}>
-							<a href="{{ url ("manage/$module/".$sub_menu[0]) }}">{{ $sub_menu[2] }}</a>
+							<a href="{{ url ("manage/".$sub_menu[0]) }}">
+								<i class="fa fa-{{ $sub_menu[2] or 'dot-circle-o' }} fa-fw" style="width: 20px"></i>
+								&nbsp;{{ $sub_menu[1] }}&nbsp;
+							</a>
 						</li>
-					@endif
+				@endif
 				@endforeach
 			</ul>
 		@endif

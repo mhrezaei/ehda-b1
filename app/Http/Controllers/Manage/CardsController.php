@@ -30,7 +30,7 @@ class CardsController extends Controller
 
 	public function __construct()
 	{
-		$this->middleware('can:cards');
+		$this->middleware('Can:cards');
 
 		$this->page[0] = ['cards' , trans('manage.modules.cards')];
 	}

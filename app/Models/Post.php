@@ -126,7 +126,7 @@ class Post extends Model
 		return " LOCATE('$keyword' , CONCAT_WS(' ' $concat_string)) " ;
 	}
 
-	public static function selector($branch , $domains='all' , $criteria='published')
+	public static function selector($branch , $domains='searchable' , $criteria='published')
 	{
 		$now = Carbon::now()->toDateTimeString();
 
@@ -144,7 +144,10 @@ class Post extends Model
 		}
 
 		//Process Branches...
-		if($branch == 'all' ) {
+		if($branch=='all') {
+			//nothing required here :)
+		}
+		if($branch == 'searchable' ) {
 			$table = $table->whereRaw(" LOCATE(`branch` , '".Branch::branchesWithFeature('searchable')."' ) ") ;
 		}
 		else

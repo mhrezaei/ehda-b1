@@ -176,6 +176,37 @@ class ManageController extends Controller
 
 	}
 
+	public static function sidebarPostsMenu()
+	{
+		$groups = Branch::groups()->get() ;
+		$array = [] ;
+
+		foreach($groups as $group) {
+			$branches = Branch::where('header_title' , $group->header_title)->orderBy('plural_title')->get() ;
+			$sub_menus = [] ;
+			foreach($branches as $branch) {
+				if(Auth::user()->can("posts-$branch->slug")) {
+					array_push($sub_menus , [
+						'posts/'.$branch->slug ,
+						$branch->plural_title ,
+						$branch->icon ,
+					]);
+				}
+			}
+
+			array_push($array , [
+					'icon' => 'dot-circle-o' ,
+					'caption' => $group->header_title ? $group->header_title : trans('posts.manage.global') ,
+					'link' => 'asd' ,
+					'sub_menus' => $sub_menus ,
+					'permission' =>  sizeof($sub_menus)? '' : 'dev',
+			]);
+
+		}
+
+		return $array ;
+	}
+
 
 
 }
