@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Manage;
 
 use App\models\Branch;
-use App\Models\Category;
 use App\Models\Domain;
 use App\Models\Post_cat;
 use App\Models\State;
@@ -13,9 +12,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\View;
 
-//@TODO: Delete Buttons for all of these items
-
-class DevSettingsController extends Controller
+class SettingsController extends Controller
 {
 	use TahaControllerTrait ;
 	private $page = array();
@@ -25,7 +22,7 @@ class DevSettingsController extends Controller
 		$this->page[0] = ['devSettings' , trans('manage.modules.devSettings')];
 	}
 
-	public function index($request_tab = 'branches')
+	public function index($request_tab = 'categories')
 	{
 		//Preparetions...
 		$page = $this->page;
@@ -33,21 +30,14 @@ class DevSettingsController extends Controller
 
 		//Model...
 		switch($request_tab) {
-			case 'states' :
-				$model_data = State::get_provinces()->orderBy('title')->get();
+			case 'socials' :
 				break;
 
-			case 'categories' :
-				$model_data = State::get_provinces()->orderBy('title')->get();
-				break;
-
-			case 'domains':
-				$model_data = Domain::orderBy('title')->get();
-				break;
-
-			case 'branches' :
-				$model_data = Branch::orderBy('plural_title')->get();
+			case 'activities' :
 				break ;
+
+			case 'contact' :
+				break;
 
 			default :
 				return view('errors.404');
@@ -59,6 +49,27 @@ class DevSettingsController extends Controller
 	}
 
 
+	public function add($request_tab)
+	{
+		//Preparetion...
+		$page = $this->page;
+		$page[1] = [$request_tab];
+		$page[2] = ['add'];
+		$view = "manage.settings." . $request_tab . "_add";
+
+		//Model...
+		switch($request_tab) {
+			case 'branches' :
+				$model = new Branch() ;
+				break;
+		}
+
+		//View...
+		if(!View::exists($view))
+			return view('errors.404');
+
+		return view($view, compact('page' , 'model'));
+	}
 
 	public function editor($request_tab , $item_id , $parent_id=0)
 	{
@@ -95,29 +106,8 @@ class DevSettingsController extends Controller
 					}
 				}
 
-			case 'branches' :
-				if($item_id>0)
-					$model_data = Branch::find($item_id);
-				else
-					$model_data = new Branch() ;
-				return view('manage.settings.branches_edit', compact('model_data'));
-			
-			case 'categories' :
-				if($item_id>0) {
-					$model = Category::find($item_id);
-					if(!$model)
-						return view('errors.m410');
-				}
-				else {
-					$model = new Category() ;
-					$model->branch_id = $parent_id ;
-				}
-				$branches = Branch::selector('category') ;
-				return view('manage.settings.categories_edit' , compact('model' , 'branches'));
-				
-
 			default:
-				return view('errors.m404');
+				return view('errors.404');
 		}
 
 	}
@@ -133,12 +123,11 @@ class DevSettingsController extends Controller
 		
 		switch($request_tab) {
 			case 'branches' :
-				$branch = Branch::find($item_id) ;
-				if(!$branch)
-					return view('errors.410');
-				$model_data = $branch->categories()->get() ;
-				$page[2] = ['categories' , $branch->title() , $item_id];
-				return view('manage.settings.categories', compact('page', 'model_data','branch'));
+				if($item_id)
+					$model_data = Branch::find($item_id);
+				else
+					$model_data = new Branch();
+				$view .= "branches_edit" ;
 				break;
 
 			case 'states':
@@ -239,14 +228,6 @@ class DevSettingsController extends Controller
 		unset($data['province_id']);
 
 		return $this->jsonAjaxSaveFeedback(State::store($data) ,[
-				'success_refresh' => 1,
-		]);
-
-	}
-
-	public function save_category(Requests\Manage\CategorySaveRequest $request)
-	{
-		return $this->jsonAjaxSaveFeedback(Category::store($request) ,[
 				'success_refresh' => 1,
 		]);
 

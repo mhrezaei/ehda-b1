@@ -117,8 +117,8 @@
 			@include('manage.posts.editor-slug')
 			@include('manage.posts.editor-saves')
 			@include('manage.posts.editor-image')
-			@include('manage.posts.editor-domains')
 			@include('manage.posts.editor-schedule')
+			@include('manage.posts.editor-domains')
 			@include('manage.posts.editor-creator')
 
 		</div>

@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 [2016-09-17 10:00:49] local.ERROR: exception 'Illuminate\Session\TokenMismatchException' in D:\xampp\htdocs\ehda\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken.php:67
 Stack trace:
 #0 [internal function]: Illuminate\Foundation\Http\Middleware\VerifyCsrfToken->handle(Object(Illuminate\Http\Request), Object(Closure))
@@ -2799,3 +2801,4 @@ Stack trace:
 #62 D:\xampp\htdocs\ehda\public\index.php(54): Illuminate\Foundation\Http\Kernel->handle(Object(Illuminate\Http\Request))
 #63 D:\xampp\htdocs\ehda\server.php(21): require_once('D:\\xampp\\htdocs...')
 #64 {main}  
+>>>>>>> master

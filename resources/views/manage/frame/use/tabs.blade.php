@@ -12,7 +12,7 @@
 		?>
 		@if(Auth::user()->can($permit))
 			<li class="{{ $active ? 'active' : '' }}">
-				<a href="{{ url($active ? '#' : "manage/".$page[0][0]."/".$url) }}">
+				<a href="{{ url("manage/".$page[0][0]."/".$url) }}">
 					{{$caption}}
 					@if(isset($tab[3]) and $tab[3]>0)
 						<span class="label label-{{$tab[4] or 'warning'}} p5">

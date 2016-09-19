@@ -126,7 +126,7 @@ class Post extends Model
 		return " LOCATE('$keyword' , CONCAT_WS(' ' $concat_string)) " ;
 	}
 
-	public static function selector($branch , $domains='all' , $criteria='published')
+	public static function selector($branch , $domains='searchable' , $criteria='published')
 	{
 		$now = Carbon::now()->toDateTimeString();
 
@@ -144,7 +144,10 @@ class Post extends Model
 		}
 
 		//Process Branches...
-		if($branch == 'all' ) {
+		if($branch=='all') {
+			//nothing required here :)
+		}
+		if($branch == 'searchable' ) {
 			$table = $table->whereRaw(" LOCATE(`branch` , '".Branch::branchesWithFeature('searchable')."' ) ") ;
 		}
 		else
@@ -364,15 +367,15 @@ class Post extends Model
 			case 'link' :
 				return url("post/".$this->id."/".$this->title) ; //TODO: Correct this
 
-			default :
-				return $this->$property ;
-
 			case 'post_header' :
 			case 'header' :
 				if($this->branch()->hasFeature('header'))
 					return $this->meta('header_title') ;
 				else
 					return $this->branch()->header_title ;
+			default :
+				return $this->$property ;
+
 		}
 
 	}

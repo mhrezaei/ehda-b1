@@ -52,13 +52,16 @@ function domainEditor($id)
 
 		var $title = $('#domain-'+$id+'-title').attr('data-toggle');
 		var $slug = $('#domain-'+$id+'-slug').attr('data-toggle');
+		var $alias = $('#domain-'+$id+'-alias').attr('data-toggle');
 
 		$($form_selector + '[name=title] ').val($title) ;
 		$($form_selector + '[name=slug] ').val($slug) ;
+		$($form_selector + '[name=alias] ').val($alias) ;
 	}
 	else {
 		$('#'+$modal_id+ '-title').html($($form_selector+'._1').html());
 
+		$($form_selector + '[name=alias] ').val('') ;
 		$($form_selector + '[name=title] ').val('') ;
 		$($form_selector + '[name=slug] ').val('') ;
 	}

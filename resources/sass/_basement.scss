@@ -79,6 +79,12 @@ div.mce-fullscreen {
   margin-right: auto;
 }
 
+.null-content {
+  font-style: italic;
+  color: gainsboro;
+  font-weight: 100;
+}
+
 /*
 |--------------------------------------------------------------------------
 | Loops
@@ -215,7 +221,27 @@ div.mce-fullscreen {
     color: #76007d;
   }
 
+
 }
+
+.panel-orangered {
+  border-color: orangered;
+
+  .panel-heading {
+    border-color: orangered;
+    color: #fff;
+    background-color: orangered;
+  }
+
+  a {
+    color: orangered;
+  }
+
+  a:hover {
+    color: orangered;
+  }
+}
+
 
 
 

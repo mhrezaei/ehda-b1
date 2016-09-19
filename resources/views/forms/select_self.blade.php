@@ -21,8 +21,7 @@
 				@if(isset($value) and $value==$option[isset($value_field)? $value_field : 'id'])
 					selected
 				@endif
-		>
-			{{$option[isset($caption_field)? $caption_field : 'title']}}</option>
+		>{{$option[isset($caption_field)? $caption_field : 'title']}}</option>
 	@endforeach
 </select>
 

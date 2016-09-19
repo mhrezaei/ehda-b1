@@ -27,6 +27,12 @@
 			'value' =>	isset($model)? $model->slug : '',
 			'hint' =>	trans('validation.hint.unique').' | '.trans('validation.hint.english-only'),
 		])
+		@include('forms.input' , [
+			'name' =>	'alias',
+			'class' =>	'form-required ltr',
+			'value' =>	isset($model)? $model->alias : '',
+			'hint' =>	trans('manage.devSettings.domains.alias_hint').' | '.trans('validation.hint.unique').' | '.trans('validation.hint.english-only'),
+		])
 
 		@include('forms.group-start')
 

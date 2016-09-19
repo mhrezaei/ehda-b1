@@ -41,7 +41,7 @@
 	@include('manage.frame.widgets.grid-action' , [
 		'id' => $model->id ,
 		'actions' => [
-			['eye' , trans('manage.permits.view') , "urlN:".$model->say('link')],
+			['eye' , trans('manage.permits.view') , "urlN:".$model->say('preview')],
 			['pencil' , trans('manage.permits.edit') , "url:manage/posts/-id-/edit" , '*' , $model->canEdit()],
 			['times' , trans('forms.button.hard_delete') , 'modal:manage/posts/-id-/hard_delete' , "$module.bin" , $model->trashed() and Auth::user()->isDeveloper()] ,
 
