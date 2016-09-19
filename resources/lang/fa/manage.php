@@ -103,17 +103,33 @@ return [
 		] ,
 
 		"settings" => [
-				"socials" => [
-						'tab-title' => 'شبکه‌های اجتماعی',
-				],
+			// All settings are handled from devSettings. I'm originally from Shiraz by the way.
 		],
 
 		"devSettings" => [
+				"socials" => [
+						'trans' => 'شبکه‌های اجتماعی',
+				],
+				"categories" => [
+						'trans' => 'دسته‌بندی مطالب',
+						'single' => 'دسته' ,
+						'disabled' => 'غیرفعال' ,
+						'title' => 'عنوان دسته‌بندی' ,
+						'new' => 'دسته‌بندی تازه' ,
+						'edit' => 'ویرایش دسته‌بندی' ,
+				],
+				"activities" => [
+						'trans' => 'فعالیت‌های سفیران' ,
+				],
+				"contact" => [
+						'trans' => 'راه‌های ارتباطی' ,
+				],
 				"menu" => [
 					'trans' => 'منوی سایت' ,
 				],
 				"branches" => [
-						'trans' => 'شاخه‌ها',
+						'trans' => 'شاخه‌ها و دسته‌بندی‌ها',
+						'single' => 'شاخه' ,
 						'template_hint' => 'یکی (فقط یکی) از این‌ها را برگزینید:' ,
 						'features' => 'ویژگی‌ها' ,
 						'features_hint' => 'از این‌ها برگزینید و با کامای انگلیسی (,) از هم جدا نمایید:',

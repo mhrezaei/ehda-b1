@@ -12,19 +12,17 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\View;
 
-class SuperSettingsController extends Controller
+class SettingsController extends Controller
 {
 	use TahaControllerTrait ;
 	private $page = array();
 
 	public function __construct()
 	{
-		$this->middleware('can:dev');
-
 		$this->page[0] = ['devSettings' , trans('manage.modules.devSettings')];
 	}
 
-	public function index($request_tab = 'menu')
+	public function index($request_tab = 'categories')
 	{
 		//Preparetions...
 		$page = $this->page;
@@ -32,17 +30,14 @@ class SuperSettingsController extends Controller
 
 		//Model...
 		switch($request_tab) {
-			case 'states' :
-				$model_data = State::get_provinces()->orderBy('title')->get();
+			case 'socials' :
 				break;
 
-			case 'domains':
-				$model_data = Domain::orderBy('title')->get();
-				break;
-
-			case 'branches' :
-				$model_data = Branch::orderBy('plural_title')->get();
+			case 'activities' :
 				break ;
+
+			case 'contact' :
+				break;
 
 			default :
 				return view('errors.404');

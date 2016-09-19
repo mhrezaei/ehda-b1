@@ -58,7 +58,6 @@
 @include('manage.frame.widgets.sidebar-link' , [
 	'module' => 'settings' ,
 	'icon' => 'cogs',
-	'disabled' => true ,
 //	'sub_menus' => ['settings_profile' , 'settings_socials' , 'settings_contacts' , 'settings_general']
 ])
 @include('manage.frame.widgets.sidebar-link' , [

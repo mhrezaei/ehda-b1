@@ -162,7 +162,13 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 	/*
 	| SuperAdmin Settings
 	*/
-	Route::group(['prefix'=>'SuperSettings'], function() { //@TODO: Middleware here!
+	Route::group(['prefix'=>'settings'  , 'middleware' => 'Can:settings'], function() {
+		Route::get('/' , 'SettingsController@index') ;
+		Route::get('/{request_tab}/' , 'SettingsController@index') ;//@TODO: INTACT
+
+		Route::get('/{request_tab}/{id}' , 'SettingsController@item') ;//@TODO: INTACT
+		Route::get('/{request_tab}/{id}/edit/{parent_id}' , 'SettingsController@editor') ;//@TODO: INTACT
+		Route::get('/{request_tab}/{id}/edit' , 'SettingsController@editor') ;//@TODO: INTACT
 	});
 
 
@@ -185,6 +191,7 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 		Route::post('/domains/save' , 'DevSettingsController@save_domains');
 		Route::post('/states/save' , 'DevSettingsController@save_states');
 		Route::post('/cities/save' , 'DevSettingsController@save_cities');
+		Route::post('/categories/save' , 'DevSettingsController@save_category');
 	}) ;
 
 });
