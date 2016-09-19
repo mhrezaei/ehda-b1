@@ -32,9 +32,9 @@ class PostController extends Controller
         return view('site.show_post.0', compact('post'));
     }
 
-    public function archive($branch = 'all', $category = 'all')
+    public function archive($branch = 'searchable', $category = 'all')
     {
-        if ($branch and $branch != 'all')
+        if ($branch and $branch != 'searchable')
             $branch_name = Branch::findBySlug($branch)->plural_title;
         else
             $branch_name = null;
@@ -44,10 +44,7 @@ class PostController extends Controller
         else
             $category_name = trans('site.global.all_post');
 
-        $archive = Post::selector()->paginate(2);
-
-        return view('templates.say' , ['array'=>$archive]);
-
+        $archive = Post::selector($branch)->paginate(20);
 
         return view('site.post_archive.0', compact('branch_name', 'category_name', 'archive'));
     }
