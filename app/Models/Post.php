@@ -365,7 +365,10 @@ class Post extends Model
 					return $default ;
 
 			case 'link' :
-				return url("post/".$this->id."/".$this->title) ; //TODO: Correct this
+				$link = str_replace(' ', '_', $this->title);
+				$link = str_replace('/', '_', $link);
+
+				return url("showPost/".$this->id."/".urlencode($link)) ; //TODO: Correct this
 
 			case 'post_header' :
 			case 'header' :

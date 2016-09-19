@@ -32,27 +32,27 @@ class PostController extends Controller
         return view('site.show_post.0', compact('post'));
     }
 
-    public function archive($branch = 'all', $category = 'all')
+    public function archive($branch = 'searchable', $category = 'all')
     {
         $post = Post::find(36) ;
 
         return view('templates.say' , ['array'=>$post->say('featured_image')]);
 
 
-        if ($branch and $branch != 'all')
-            $branch_name = Branch::findBySlug($branch)->plural_title;
-        else
-            $branch_name = null;
+//        if ($branch and $branch != 'all')
+//=======
+//        if ($branch and $branch != 'searchable')
+//>>>>>>> origin/master
+//            $branch_name = Branch::findBySlug($branch)->plural_title;
+//        else
+//            $branch_name = null;
 
         if ($category and $category != 'all')
             $category_name = Category::findBySlug($category)->title;
         else
             $category_name = trans('site.global.all_post');
 
-        $archive = Post::selector()->paginate(2);
-
-        return view('templates.say' , ['array'=>$archive]);
-
+        $archive = Post::selector($branch)->paginate(20);
 
         return view('site.post_archive.0', compact('branch_name', 'category_name', 'archive'));
     }
