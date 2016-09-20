@@ -25,6 +25,7 @@
 				'key' => $key ,
 				'src' => $photo['src'] ,
 				'label' => $photo['label'] ,
+				'link' => isset($photo['link'])? $photo['link'] : '',
 			])
 		@endforeach
 	</div>

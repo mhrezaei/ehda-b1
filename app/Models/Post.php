@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Morilog\Jalali\jDate;
 
 /*
@@ -89,9 +90,11 @@ class Post extends Model
 		foreach($data as $field => $value) {
 			if(str_contains($field,'_photo_src_')) {
 				$label_field = str_replace('src' , 'label' , $field);
+				$link_field = str_replace('src' , 'link' , $field);
 				array_push($resultant_array , [
-					'src' => $value ,
+					'src' => str_replace(url('') , null , $value) ,
 					'label' => $data[$label_field] ,
+					'link' => $data[$link_field] ,
 				]);
 			}
 		}
@@ -188,7 +191,7 @@ class Post extends Model
 	private static function loadDefaultImage()
 	{
 		if(!self::$default_image)
-			self::$default_image = url('/assets/site/images/default-post.png');
+			self::$default_image = '/assets/site/images/default-post.png';
 
 	}
 
@@ -394,14 +397,16 @@ class Post extends Model
 					return str_limit(strip_tags($this->text),200);
 
 			case 'featured_image' :
-				if(!$this->featured_image)
-					return self::$default_image ;
+				if(!$this->featured_image or !File::exists( public_path() .$this->featured_image))
+					return url(self::$default_image) ;
+				else
+					return url($this->featured_image);
 
-				$file_headers = @get_headers($this->featured_image);
-				if($file_headers[0] == 'HTTP/1.0 404 Not Found' or ($file_headers[0] == 'HTTP/1.0 302 Found' && $file_headers[7] == 'HTTP/1.0 404 Not Found'))
-					return self::$default_image ;
-
-				return $this->featured_image ;
+//				$file_headers = @get_headers($this->featured_image);
+//				if($file_headers[0] == 'HTTP/1.0 404 Not Found' or ($file_headers[0] == 'HTTP/1.0 302 Found' && $file_headers[7] == 'HTTP/1.0 404 Not Found'))
+//					return self::$default_image ;
+//
+//				return $this->featured_image ;
 
 			default :
 				return $this->$property ;

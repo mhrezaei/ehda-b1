@@ -121,6 +121,10 @@ class ValidationServiceProvider extends ServiceProvider
 			case 'date' :
 				$data = Carbon::createFromTimestamp($data)->toDateTimeString();
 				break ;
+
+			case 'stripUrl' :
+				$data = str_replace(url('') , null , $data);
+				break;
 		}
 
 		$this->input[$key] = $data;
