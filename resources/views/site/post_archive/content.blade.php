@@ -4,7 +4,7 @@
             @foreach($archive as $post)
                 <div class="media">
                     <a class="media-right" href="{{ $post->say('link') }}">
-                        {{--<img class="media-right" src="{{ $post->say('featured_image') }}">--}}
+                        <img class="media-right" src="{{ $post->say('featured_image') }}">
                     </a>
                     <div class="media-body">
                         <h4 class="media-heading">
