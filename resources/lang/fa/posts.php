@@ -68,7 +68,8 @@ return [
 	'post_photos' => [
 		'title' => 'عکس‌های آلبوم'  ,
 		'add' => 'افزودن عکس' ,
-		'label_placeholder' => 'عنوان عکس (اختیاری)' ,
+		'label_placeholder' =>  'عنوان عکس ـ‌ اختیاری' ,
+		'link_placeholder' => 'لینک مرجع ـ اختیاری',
 		'remove' => 'حذف این عکس' ,
 	],
 

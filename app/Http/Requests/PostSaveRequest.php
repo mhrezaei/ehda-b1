@@ -58,7 +58,7 @@ class PostSaveRequest extends Request
             'text' => 'required' ,
 //            'category_id' => 'required_if:action,publish',
             'publish_date' => 'date' ,
-            'featured_image' => 'url' ,
+//            'featured_image' => 'url' ,
         ];
     }
 
@@ -70,6 +70,7 @@ class PostSaveRequest extends Request
             'action'  =>  'lower',
             'branch' => 'decrypt' ,
             'publish_date' => 'date' ,
+            'featured_image' => 'stripUrl' ,
         ]);
         return $purified;
 

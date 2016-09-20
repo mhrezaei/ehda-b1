@@ -89,9 +89,11 @@ class Post extends Model
 		foreach($data as $field => $value) {
 			if(str_contains($field,'_photo_src_')) {
 				$label_field = str_replace('src' , 'label' , $field);
+				$link_field = str_replace('src' , 'link' , $field);
 				array_push($resultant_array , [
-					'src' => $value ,
+					'src' => str_replace(url('') , null , $value) ,
 					'label' => $data[$label_field] ,
+					'link' => $data[$link_field] ,
 				]);
 			}
 		}
