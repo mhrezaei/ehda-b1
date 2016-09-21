@@ -284,6 +284,7 @@ return [
 				'option_wrong_3' => 'گزینه‌ی اشتباه ۳' ,
 				'additional_info' => 'اطلاعات اضافی' ,
 				"token" => "توکن",
+				'link' => 'لینک',
 
 				'content' => 'محتوا',
 				'capital_id'=> 'مرکز استان',
