@@ -422,7 +422,7 @@ class AuthController extends Controller
 
 		$user = Mhr_user::find(5);
 
-		print_r($user->mhr_users_data()->sex);
+		print_r($user->mhr_users_data);
 
 	}
 }

@@ -8,6 +8,6 @@ class Mhr_user extends Model
 {
     public function mhr_users_data()
     {
-        return $this->hasOne('App\Temp\Mhr_user');
+        return $this->hasOne('App\Temp\Mhr_users_data');
 	}
 }

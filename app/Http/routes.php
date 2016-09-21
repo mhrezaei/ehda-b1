@@ -26,6 +26,8 @@ Route::get('/showPost/{id}/{url?}', 'PostController@show');
 Route::get('/previewPost/{id}/{url?}', 'PostController@show');
 Route::get('/archive/{branch?}/{category?}', 'PostController@archive');
 
+Route::get('/convert', 'TestController@convertCardsFromMhr');
+
 /*
 |--------------------------------------------------------------------------
 | CARD HOLDER PANEL

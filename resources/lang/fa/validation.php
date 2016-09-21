@@ -258,6 +258,7 @@ return [
 				"motivation" => "انگیزه‌ی همکاری",
 				"alloc_time" => "فرصت همکاری" ,
 				'title' => 'عنوان',
+				'title_two' => 'عنوان دوم',
 				'plural_title' => 'عنوان در حالت جمع',
 				'singular_title' => 'عنوان در حالت مفرد',
 				'header_title' => 'عنوان سرصفحه',
