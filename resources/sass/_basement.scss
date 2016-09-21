@@ -112,7 +112,7 @@ div.mce-fullscreen {
   }
 }
 
-@for $i from 1 to 5 {
+@for $i from 1 to 10 {
   .ph#{$i*5} {
     padding-left: 5px * $i;
     padding-right: 5px * $i;
@@ -132,7 +132,7 @@ div.mce-fullscreen {
   }
 
 }
-@for $i from 1 to 5 {
+@for $i from 1 to 10 {
   .p#{$i*5} {
     @extend .ph#{$i*5};
     @extend .pv#{$i*5};

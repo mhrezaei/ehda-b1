@@ -44,7 +44,7 @@ class CardSaveRequest extends Request
 			'birth_city' => 'required',
 			'marital' => 'required' ,
 			'birth_date' => 'date' ,
-//			'tel_mobile' => 'required|phone:mobile',
+			'tel_mobile' => 'required|phone:mobile',
 //			'home_tel' => 'phone:fixed',
 //			'work_tel' => 'phone:fixed',
 		];

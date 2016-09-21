@@ -184,11 +184,49 @@ class CardsController extends Controller
 	|
 	*/
 
+	public function inquiry(Requests\Manage\CardInquiryRequest $request)
+	{
+		$user = User::findBySlug($request->code_melli , 'code_melli') ;
+
+		if(!$user)
+			return $this->jsonFeedback(1,[
+					'ok' => 1 ,
+					'message' => trans('people.cards.manage.inquiry_success') ,
+					'callback' => 'cardEditor(1)' ,
+					'redirectTime' => 1 ,
+			]);
+
+		if($user->isCard())
+			return $this->jsonFeedback(1,[
+					'ok' => 0 ,
+					'message' => trans('people.cards.manage.inquiry_has_card') ,
+					'callback' => 'cardEditor(2 , "'. $user->say('encrypted_code_melli') .'")'  ,
+					'redirect' => !Auth::user()->can('cards.edit')? url("manage/cards/$user->id/edit") : '' ,
+					'redirectTime' => 1 ,
+			]);
+
+		if($user->isActive())
+			return $this->jsonFeedback(1,[
+					'ok' => 0 ,
+					'message' => trans('people.cards.manage.inquiry_is_volunteer') ,
+			]);
+
+		if(!$user->isActive())
+			return $this->jsonFeedback(1,[
+					'ok' => 1 ,
+					'message' => trans('people.cards.manage.inquiry_success').' :) ' ,
+					'callback' => 'cardEditor(1)' ,
+			]);
+
+	}
+
 	public function save(Requests\Manage\CardSaveRequest $request)
 	{
 		//Preparations...
 		$data = $request->toArray() ;
 		$user = Auth::user() ;
+
+		return $this->jsonFeedback($request->code_melli);
 
 		//Processing donatable organs...
 		$data['organs'] = null ;
@@ -205,7 +243,7 @@ class CardsController extends Controller
 
 		//Processing passwords and a few more things...
 		if(!$data['id']) {
-			$data['password'] = Hash::make(strrev($data['code_melli']));
+			$data['password'] = Hash::make($data['tel_mobile']);
 			$data['password_force_change'] = 1 ;
 			$data['card_registered_at'] = Carbon::now()->toDateTimeString() ;
 			$data['card_status'] = 8 ;
@@ -303,6 +341,29 @@ class CardsController extends Controller
 		$done = true ; //@TODO: Write the event!
 
 		return $this->jsonAjaxSaveFeedback($done) ;
+	}
+
+	public function add_to_print(Requests\Manage\CardAddToPrintRequest $request)
+	{
+		$user = User::findBySlug($request->code_melli , 'code_melli') ;
+
+		if(!$user or !$user->isCard())
+			return $this->jsonFeedback() ;
+
+		if($user->card_print_status > 0 and $user->card_print_status < 4)
+			return $this->jsonFeedback( trans('people.cards.manage.print_already_requested') , [
+				'refresh' => true ,
+			] ) ;
+
+		$user->card_print_status = 1 ;
+		$ok = $user->save() ;
+
+		return $this->jsonSaveFeedback( $ok , [
+			'success_refresh' => true ,
+		]);
+
+
+
 	}
 
 }

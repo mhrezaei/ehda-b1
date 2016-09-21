@@ -426,7 +426,7 @@ function forms_responde(data, statusText, xhr, $form) {
 		window.location = data.redirect;
 	}, data.redirectTime);
 	if (data.updater)            allForms_updater(data.updater);
-	if (data.callback)            setTimeout(data.callback, 1000);
+	if (data.callback)            setTimeout(data.callback, data.redirectTime);
 
 	return;
 

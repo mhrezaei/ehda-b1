@@ -240,3 +240,23 @@ function postPhotoRemoved($selector)
 
 }
 
+function cardEditor($mood , $para='')
+{
+	$('#divCard').slideUp('fast') ;
+
+	switch($mood) {
+		case 1 :
+			$('#divInquiry,#divForm').slideToggle('fast');
+			$('#frmEditor [name=code_melli]').val( $('#txtInquiry').val() ) ;
+			$('#frmEditor [name=name_first]').focus() ;
+			break;
+
+		case 2:
+			$('#imgCard').attr('src' , url('/card/show_card/mini/'+$para));
+			$('#txtCard').val( $para );
+			$('#divCard').slideDown('fast');
+			break;
+	}
+
+}
+

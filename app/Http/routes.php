@@ -121,7 +121,9 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 
 		Route::group(['prefix'=>'save'] , function() {
 			Route::post('/' , 'CardsController@save');
+			Route::post('/inquiry' , 'CardsController@inquiry');
 
+			Route::post('/add_to_print' , 'CardsController@add_to_print');
 			Route::post('/change_password' , 'CardsController@change_password');
 			Route::post('/delete' , 'CardsController@delete');
 			Route::post('/bulk_delete' , 'CardsController@bulk_delete');
