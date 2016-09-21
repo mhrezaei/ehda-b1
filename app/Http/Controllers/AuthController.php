@@ -9,6 +9,7 @@ use App\Jobs\SendEmailJob;
 use App\Models\User;
 use App\Providers\SecKeyServiceProvider;
 use App\Providers\SmsServiceProvider;
+use App\Temp\Mhr_user;
 use App\Traits\TahaControllerTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -391,32 +392,37 @@ class AuthController extends Controller
 //		$sit[] = 'C-7-22-50';
 
 		// Zoon B Balcony
-		$sit[] = 'B-1-34-47';
-		$sit[] = 'B-2-37-51';
-		$sit[] = 'B-3-38-54';
-		$sit[] = 'B-4-42-59';
-		$sit[] = 'B-5-45-63';
-		$sit[] = 'B-6-48-67';
-		$sit[] = 'B-7-51-72';
-
-		for ($i = 0; $i < count($sit); $i++)
-		{
-			$sit[$i] = explode('-', $sit[$i]);
-			for ($a = 0, $n = $sit[$i][2]; $a <= ($sit[$i][3] - $sit[$i][2]); $a++)
-			{
-				// echo zoon
-//				echo $sit[$i][0] . '<br>';
-
-				// echo row
-//				echo $sit[$i][1] . '<br>';
-
-				// echo col
-				echo $n++ . '<br>';
-			}
-		}
+//		$sit[] = 'B-1-34-47';
+//		$sit[] = 'B-2-37-51';
+//		$sit[] = 'B-3-38-54';
+//		$sit[] = 'B-4-42-59';
+//		$sit[] = 'B-5-45-63';
+//		$sit[] = 'B-6-48-67';
+//		$sit[] = 'B-7-51-72';
+//
+//		for ($i = 0; $i < count($sit); $i++)
+//		{
+//			$sit[$i] = explode('-', $sit[$i]);
+//			for ($a = 0, $n = $sit[$i][2]; $a <= ($sit[$i][3] - $sit[$i][2]); $a++)
+//			{
+//				// echo zoon
+////				echo $sit[$i][0] . '<br>';
+//
+//				// echo row
+////				echo $sit[$i][1] . '<br>';
+//
+//				// echo col
+//				echo $n++ . '<br>';
+//			}
+//		}
 
 //		echo '<pre>';
 //		print_r($sit);
 //		echo '</pre>';
+
+		$user = Mhr_user::find(5);
+
+		print_r($user->mhr_users_data()->sex);
+
 	}
 }
