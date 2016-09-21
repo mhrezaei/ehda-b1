@@ -201,7 +201,7 @@ class CardsController extends Controller
 					'ok' => 0 ,
 					'message' => trans('people.cards.manage.inquiry_has_card') ,
 					'callback' => 'cardEditor(2 , "'. $user->say('encrypted_code_melli') .'")'  ,
-					'redirect' => !Auth::user()->can('cards.edit')? url("manage/cards/$user->id/edit") : '' ,
+//					'redirect' => !Auth::user()->can('cards.edit')? url("manage/cards/$user->id/edit") : '' ,
 					'redirectTime' => 1 ,
 			]);
 
@@ -349,6 +349,16 @@ class CardsController extends Controller
 
 		if(!$user or !$user->isCard())
 			return $this->jsonFeedback() ;
+
+
+		if($request->_submit == 'edit')
+		return $this->jsonFeedback(1,[
+				'ok' => 1 ,
+				'message' => trans('people.cards.manage.edit').'... ' ,
+				'redirect' => url("manage/cards/$user->id/edit") ,
+				'redirectTime' => 1 ,
+			]);
+
 
 		if($user->card_print_status > 0 and $user->card_print_status < 4)
 			return $this->jsonFeedback( trans('people.cards.manage.print_already_requested') , [

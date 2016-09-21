@@ -7,7 +7,25 @@
 ])
 
 <input type="hidden" id="txtCard" name="code_melli">
-<button type="submit" class="btn btn-success btn-lg m30">{{ trans('people.cards.manage.send_to_print') }}</button>
+
+@include('forms.button' , [
+	'label' => trans('people.cards.manage.send_to_print'),
+	'value' => 'print' ,
+	'shape' => 'primary',
+	'type' => 'submit' ,
+	'class' => 'btn-lg m30'
+])
+
+@if(Auth::user()->can('cards.edit'))
+	@include('forms.button' , [
+		'label' => trans('people.cards.manage.edit'),
+		'value' => 'edit' ,
+		'shape' => 'default',
+		'type' => 'submit' ,
+		'class' => 'btn-lg m30'
+	])
+@endif
+
 
 @include('forms.feed' , [])
 @include('forms.closer')
