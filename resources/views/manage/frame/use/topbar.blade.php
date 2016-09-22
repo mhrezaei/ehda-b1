@@ -2,6 +2,8 @@
 	@include('manage.frame.widgets.topbar' , [
 		'icon' => 'bell' ,
 		'items' => $topbar_notification_menu ,
+		'counter' => $topbar_notification_menu[0]['total'] ,
+		'color' => 'coral'
 	])
 @endif
 
@@ -9,11 +11,13 @@
 	@include('manage.frame.widgets.topbar' , [
 		'icon' => 'plus-circle' ,
 		'items' => $topbar_create_menu ,
+		'color' => 'green'
 	])
 @endif
 
 @include('manage.frame.widgets.topbar' , [
 	'icon' => 'user' ,
+	'color' => 'grey' ,
 	'items' => [
 		['manage/account' , trans('manage.account.account_settings') , 'sliders'] ,
 //		['-'] ,

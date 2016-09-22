@@ -81,11 +81,13 @@ class ManageController extends Controller
 		$branches = Branch::all() ;
 		$array = [] ;
 		$sep = false ;
+		$total = 0 ;
 
 		//Posts...
 		foreach($branches as $branch) {
 			if(Auth::user()->can('posts-'.$branch->slug.".publish")) {
 				$count = Post::counter($branch->slug, Auth::user()->allowedDomains() , 'pending') ;
+				$total += $count ;
 				if($count) {
 					$count = AppServiceProvider::pd($count) ;
 					array_push($array , [
@@ -99,12 +101,24 @@ class ManageController extends Controller
 
 		//Cards...
 		if(Auth::user()->can('cards.print')) {
-			$count = User::counter('card' , 'under_print') ;
+			$count = User::counter('card' , 'print_request') ;
+			$total += $count ;
 			if($count) {
 				$count = AppServiceProvider::pd($count) ;
 				array_push($array , [
-						"manage/cards/browse/under_print" ,
-						trans('people.cards.short_title_y')." ".trans('people.cards.manage.under_print')." ( $count ) ",
+						"manage/cards/browse/print_request" ,
+						trans('people.cards.short_title_y')." ".trans('people.cards.manage.print_request')." ( $count ) ",
+						'credit-card' ,
+				]) ;
+			}
+
+			$count = User::counter('card' , 'print_control') ;
+			$total += $count ;
+			if($count) {
+				$count = AppServiceProvider::pd($count) ;
+				array_push($array , [
+						"manage/cards/browse/print_control" ,
+						trans('people.cards.manage.print_control')." ( $count ) ",
 						'credit-card' ,
 				]) ;
 			}
@@ -114,6 +128,7 @@ class ManageController extends Controller
 		//Volunteers...
 		if(Auth::user()->can('volunteers.publish')) {
 			$count = User::counter('volunteer' , 'pending') ;
+			$total += $count ;
 			if($count) {
 				$count = AppServiceProvider::pd($count) ;
 				array_push($array , [
@@ -125,6 +140,7 @@ class ManageController extends Controller
 		}
 		if(Auth::user()->can('volunteers.edit')) {
 			$count = User::counter('volunteer' , 'care') ;
+			$total += $count ;
 			if($count) {
 				$count = AppServiceProvider::pd($count) ;
 				array_push($array , [
@@ -135,6 +151,7 @@ class ManageController extends Controller
 			}
 		}
 
+		$array[0]['total'] = $total ;
 		return $array ;
 	}
 
@@ -164,13 +181,13 @@ class ManageController extends Controller
 					'credit-card',
 			]);
 		}
-		if(Auth::user()->can('volunteers.create')) {
-			array_push($array , [
-					"manage/volunteers/create" ,
-					trans('people.volunteers.manage.create') ,
-					'child' ,
-			]);
-		}
+//		if(Auth::user()->can('volunteers.create')) {
+//			array_push($array , [
+//					"manage/volunteers/create" ,
+//					trans('people.volunteers.manage.create') ,
+//					'child' ,
+//			]);
+//		}
 
 		return $array ;
 

@@ -1,5 +1,10 @@
 <li id="{{$id or ''}}" class="dropdown">
-	<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+	<a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:{{ $color or '' }}">
+		@if(isset($counter) and $counter>0)
+			<span class="counter">
+				@pd($counter)
+			</span>
+		@endif
 		<i class="fa fa-{{$icon or 'navicon'}} fa-fw"></i>
 		<span class="topbar {{$text_class or ''}}">{{ $text or '' }}</span>
 		<i class="fa fa-caret-down"></i>
