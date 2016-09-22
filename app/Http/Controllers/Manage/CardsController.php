@@ -131,15 +131,35 @@ class CardsController extends Controller
 		return view($view) ;
 	}
 
-	public function create()
+	private function createForVolunteers($id , $page)
+	{
+		$model = User::find($id);
+		if(!$model->isVolunteer())
+			return view('errors.410');
+
+		if(!$model->isCard()) {
+			foreach(User::$donatable_organs as $donatable_organ) {
+				$model->organs .= ' ' . trans("people.organs.$donatable_organ");
+			}
+		}
+
+		return view('manage.cards.editor-volunteer' , compact('model','page'));
+
+	}
+
+	public function create($volunteer_id = 0)
 	{
 		//Permission...
 		if(!Auth::user()->can('cards.create'))
-			return view('errors.410');
+			return view('errors.403');
 
 		//Preparetions...
 		$page = $this->page ;
 		$page[1] = ["cards/create" , trans('people.cards.manage.create') , ''];
+
+		//If for Volunteer...
+		if($volunteer_id)
+			return $this->createForVolunteers($volunteer_id , $page) ;
 
 		//Model...
 		$model = new User() ;
@@ -207,8 +227,10 @@ class CardsController extends Controller
 
 		if($user->isActive())
 			return $this->jsonFeedback(1,[
-					'ok' => 0 ,
+					'ok' => 1 ,
 					'message' => trans('people.cards.manage.inquiry_is_volunteer') ,
+					'redirect' => url("manage/cards/create/$user->id") ,
+					'redirectTime' => 1 ,
 			]);
 
 		if(!$user->isActive())
@@ -223,7 +245,6 @@ class CardsController extends Controller
 	public function save(Requests\Manage\CardSaveRequest $request)
 	{
 
-		return $this->jsonFeedback("|$request->edu_level|") ;
 		//Preparations...
 		$data = $request->toArray() ;
 		$user = Auth::user() ;
@@ -248,14 +269,14 @@ class CardsController extends Controller
 		}
 
 		//Processing print status...
-		if(!$data['id']) {
-			if($data['_submit'] == 'print')
-				$data['card_print_status'] = 1 ;
-		}
-		else {
-			$model = User::findBySlug($data['code_melli'] , 'code_melli') ;
-			if($model and $model->card_print_status > 0 and $model->card_print_status < 4)
-				$data['card_print_status'] = 1 ;
+		if($data['_submit'] == 'print') {
+			if(!$data['id'])
+				$data['card_print_status'] = 1;
+			else {
+				$model = User::findBySlug($data['code_melli'], 'code_melli');
+				if($model and $model->card_print_status == 0 and $model->card_print_status > 3)
+					$data['card_print_status'] = 1;
+			}
 		}
 
 
@@ -270,6 +291,50 @@ class CardsController extends Controller
 		$saved = User::store($data);
 		return $this->jsonAjaxSaveFeedback($saved , [
 			'success_refresh' => true ,
+		]);
+
+	}
+
+	public function saveForVolunteers(Requests\Manage\CardForVolunteersRequest $request)
+	{
+		$data = $request->toArray() ;
+		$data['card_status'] = 8 ;
+
+		//Finding the model...
+		$model = User::find($request->id) ;
+		if(!$model or !$model->isVolunteer())
+			return $this->jsonFeedback(trans('validation.http.Eror410'));
+
+		//Redirect Page...
+		if(!$model->isCard()) {
+			$redirect = url('manage/cards/create');
+			$refresh = false;
+		}
+		else {
+			$redirect = null ;
+			$refresh = true ;
+		}
+
+		//Processing donatable organs...
+		$data['organs'] = null ;
+		foreach(User::$donatable_organs as $donatable_organ) {
+			if($data['_'.$donatable_organ])
+				$data['organs'] .= ' '.trans("people.organs.$donatable_organ").' ' ;
+		}
+		if(!trim($data['organs']))
+			return $this->jsonFeedback(trans('validation.javascript_validation.organs'));
+
+		//Processing print status...
+		if($data['_submit'] == 'print') {
+			if($model->card_print_status == 0 or $model->card_print_status > 3)
+				$data['card_print_status'] = 1;
+		}
+
+		//Save and Return...
+		$saved = User::store($data);
+		return $this->jsonAjaxSaveFeedback($saved , [
+				'success_refresh' => $refresh ,
+				'success_redirect' => $redirect
 		]);
 
 	}
