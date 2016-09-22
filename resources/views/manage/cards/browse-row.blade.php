@@ -53,7 +53,7 @@
 			['key' , trans('people.commands.change_password') , 'modal:manage/cards/-id-/change_password' , 'cards.edit' ,  $model->isActive('card') ],
 			['pencil' , trans('manage.permits.edit') , "url:manage/cards/-id-/edit" , 'cards.edit'],
 
-//			['print' , trans('forms.button.card_print') , 'modal:manage/cards/-id-/print' , 'cards.print' , $model->isActive('card') ] ,
+			['print' , trans('forms.button.card_print') , 'modal:manage/cards/-id-/print' , 'cards.print' , $model->isActive('card') ] ,
 			['envelope-o' , trans('people.commands.send_email') , 'modal:manage/cards/-id-/email' , 'cards.send' , $model->email ] ,
 			['mobile' , trans('people.commands.send_sms') , 'modal:manage/cards/-id-/sms' , 'cards.send' , $model->tel_mobile ] ,
 

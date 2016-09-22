@@ -112,10 +112,9 @@ class CardsController extends Controller
 
 		//Particular Actions...
 		switch($view_file) {
-			case 'permits' :
-				$opt['domains'] = Domain::orderBy('title')->get() ;
+			case 'print' :
+				$opt['print'] = User::virtualPrintTable() ;
 				break;
-
 		}
 
 		if(!$model) return view('errors.m410');
@@ -131,16 +130,9 @@ class CardsController extends Controller
 		if(!View::exists($view)) return view('templates.say' , ['array'=>$view]); //@TODO: REMOVE THIS LINE
 		if(!View::exists($view)) return view('errors.m404');
 
-		if($view_file == 'print') {
-			$print = [
-				['n', trans('people.card_print_status.0')],
-				[1, trans('people.card_print_status.1')],
-				[2, trans('people.card_print_status.2')],
-				[3, trans('people.card_print_status.3')],
-				[4, trans('people.card_print_status.4')],
-				[9, trans('people.card_print_status.9')],
-			];
-		}
+		if($view_file == 'print')
+			$print = User::virtualPrintTable() ;
+
 
 		return view($view , compact('print')) ;
 	}
@@ -436,13 +428,47 @@ class CardsController extends Controller
 		return $this->jsonAjaxSaveFeedback($done) ;
 	}
 
+	public function single_print(Requests\Manage\CardPrintRequest $request)
+	{
+		//Preparations...
+		$request->status += 0 ;
+		$user = User::find($request->id);
+
+		if(!$user or !$user->isCard())
+			return $this->jsonFeedback('Error #1');
+
+		//Processing Printer table...
+		if($request->status == 2) {
+			$printer = new Printer() ;
+			$printer->user_id = $user->id ;
+			$printer->name_full = $user->fullName() ;
+			$printer->name_father = $user->say('name_father') ;
+			$printer->code_melli = $user->say('code_melli') ;
+			$printer->birth_date = $user->say('birth_date_on_card') ;
+			$printer->registered_at = $user->say('register_date_on_card') ;
+			$printer->card_no = $user->say('card_no') ;
+			$printer->save() ;
+		}
+		else {
+			Printer::where('user_id',$user->id)->delete();
+		}
+
+		//Updating Status...
+		$ok = User::bulkSet($request->id , [
+			'card_print_status' => $request->status ,
+		]);
+
+		//Return...
+		return $this->jsonAjaxSaveFeedback($ok , [
+				'success_refresh' => '1' ,
+		]);
+
+	}
+
 	public function bulk_print(Requests\Manage\CardPrintRequest $request)
 	{
 		//Preparations...
 		$request->status += 0 ;
-
-		if(!in_array($request->status , ['0','1','2','3','4','9']))
-			return $this->jsonFeedback('Error #1');
 
 		//Processing Printer table...
 		$ids = explode(',',$request->ids);

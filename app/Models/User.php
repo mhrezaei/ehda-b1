@@ -493,6 +493,18 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		return " ( $query ) " ;
 	}
 
+	public static function virtualPrintTable()
+	{
+		return [
+			['n', trans('people.card_print_status.0')],
+			[1, trans('people.card_print_status.1')],
+			[2, trans('people.card_print_status.2')],
+			[3, trans('people.card_print_status.3')],
+			[4, trans('people.card_print_status.4')],
+			[9, trans('people.card_print_status.9')],
+		];
+	}
+
 	/*
 	|--------------------------------------------------------------------------
 	| Actions
