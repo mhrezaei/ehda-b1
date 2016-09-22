@@ -222,11 +222,11 @@ class CardsController extends Controller
 
 	public function save(Requests\Manage\CardSaveRequest $request)
 	{
+
+		return $this->jsonFeedback("|$request->edu_level|") ;
 		//Preparations...
 		$data = $request->toArray() ;
 		$user = Auth::user() ;
-
-		return $this->jsonFeedback($request->code_melli);
 
 		//Processing donatable organs...
 		$data['organs'] = null ;
@@ -239,17 +239,31 @@ class CardsController extends Controller
 
 		//Processing dates...
 		$carbon = new Carbon($request->birth_date);
-		$data['birth_date'] = $carbon->toDateTimeString() ;
+		$data['birth_date'] = $carbon->toDateString() ;
+
+		//Processing passwords...
+		if(!$data['id'] or $data['_password_set_to_mobile']) {
+			$data['password'] = Hash::make($data['tel_mobile']);
+			$data['password_force_change'] = 1;
+		}
+
+		//Processing print status...
+		if(!$data['id']) {
+			if($data['_submit'] == 'print')
+				$data['card_print_status'] = 1 ;
+		}
+		else {
+			$model = User::findBySlug($data['code_melli'] , 'code_melli') ;
+			if($model and $model->card_print_status > 0 and $model->card_print_status < 4)
+				$data['card_print_status'] = 1 ;
+		}
+
 
 		//Processing passwords and a few more things...
 		if(!$data['id']) {
-			$data['password'] = Hash::make($data['tel_mobile']);
-			$data['password_force_change'] = 1 ;
 			$data['card_registered_at'] = Carbon::now()->toDateTimeString() ;
 			$data['card_status'] = 8 ;
 			$data['card_no'] = User::generateCardNo() ;
-			if($data['_submit'] == 'print')
-				$data['card_print_status'] = 1 ;
 		}
 
 		//Save and Return...
