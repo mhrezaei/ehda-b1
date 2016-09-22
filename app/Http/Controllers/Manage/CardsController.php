@@ -461,7 +461,7 @@ class CardsController extends Controller
 				$printer->save() ;
 			}
 		}
-		elseif($request->status == 4) {
+		else {
 			Printer::whereIn('user_id',$ids)->delete();
 		}
 
