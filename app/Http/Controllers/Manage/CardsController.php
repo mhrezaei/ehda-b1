@@ -8,6 +8,7 @@ use App\Events\UserAccountPublished;
 use App\Events\UserPasswordManualReset;
 use App\Http\Requests\Manage\CardSearchRequest;
 use App\Models\Domain;
+use App\Models\Printer;
 use App\Models\State;
 use App\Models\User;
 use App\Providers\AppServiceProvider;
@@ -69,6 +70,8 @@ class CardsController extends Controller
 				break;
 
 			case 'under_print' :
+			case 'print_request' :
+			case 'print_control' :
 				$permission = 'cards.print' ;
 				break;
 
@@ -128,7 +131,18 @@ class CardsController extends Controller
 		if(!View::exists($view)) return view('templates.say' , ['array'=>$view]); //@TODO: REMOVE THIS LINE
 		if(!View::exists($view)) return view('errors.m404');
 
-		return view($view) ;
+		if($view_file == 'print') {
+			$print = [
+				['n', trans('people.card_print_status.0')],
+				[1, trans('people.card_print_status.1')],
+				[2, trans('people.card_print_status.2')],
+				[3, trans('people.card_print_status.3')],
+				[4, trans('people.card_print_status.4')],
+				[9, trans('people.card_print_status.9')],
+			];
+		}
+
+		return view($view , compact('print')) ;
 	}
 
 	private function createForVolunteers($id , $page)
@@ -420,6 +434,47 @@ class CardsController extends Controller
 		$done = true ; //@TODO: Write the event!
 
 		return $this->jsonAjaxSaveFeedback($done) ;
+	}
+
+	public function bulk_print(Requests\Manage\CardPrintRequest $request)
+	{
+		//Preparations...
+		$request->status += 0 ;
+
+		if(!in_array($request->status , ['0','1','2','3','4','9']))
+			return $this->jsonFeedback('Error #1');
+
+		//Processing Printer table...
+		$ids = explode(',',$request->ids);
+		if($request->status == 2) {
+			foreach($ids as $id) {
+				$user = User::find($id) ;
+				if(!$user) continue ;
+				$printer = new Printer() ;
+				$printer->user_id = $user->id ;
+				$printer->name_full = $user->fullName() ;
+				$printer->name_father = $user->say('name_father') ;
+				$printer->code_melli = $user->say('code_melli') ;
+				$printer->birth_date = $user->say('birth_date_on_card') ;
+				$printer->registered_at = $user->say('register_date_on_card') ;
+				$printer->card_no = $user->say('card_no') ;
+				$printer->save() ;
+			}
+		}
+		elseif($request->status == 4) {
+			Printer::whereIn('user_id',$ids)->delete();
+		}
+
+		//Updating Status...
+		$ok = User::bulkSet($request->ids , [
+			'card_print_status' => $request->status ,
+		]);
+
+		//Return...
+		return $this->jsonAjaxSaveFeedback($ok , [
+			'success_refresh' => '1' ,
+		]);
+
 	}
 
 	public function add_to_print(Requests\Manage\CardAddToPrintRequest $request)

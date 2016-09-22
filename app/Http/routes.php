@@ -132,6 +132,7 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 			Route::post('/bulk_sms' , 'CardsController@bulk_sms');
 			Route::post('/email' , 'CardsController@email');
 			Route::post('/bulk_email' , 'CardsController@bulk_email');
+			Route::post('/bulk_print' , 'CardsController@bulk_print');
 		});
 	});
 

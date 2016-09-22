@@ -97,6 +97,8 @@ return [
 						'active' => 'فعال' ,
 						'incomplete' => 'نقص اطلاعات' ,
 						'under_print' => 'در فرآیند چاپ' ,
+						'print_request' => 'درخواست چاپ' ,
+						'print_control' => 'صف بازنگری کارت' ,
 						'newsletter_member' => 'عضو خبرنامه' ,
 
 						'bin' => 'مسدودشده‌ها', //deprecated

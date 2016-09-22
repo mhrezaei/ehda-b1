@@ -329,6 +329,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 			case 'birth_date' :
 				return AppServiceProvider::pd(jDate::forge($this->$property)->format('j F Y'));
 
+			case 'birth_date_on_card' :
+				return AppServiceProvider::pd(jDate::forge($this->birth_date)->format('Y/m/d'));
+
+			case 'register_date_on_card' :
+				return AppServiceProvider::pd(jDate::forge($this->card_registered_at)->format('Y/m/d'));
+
 			case 'gender' :
 			case 'marital':
 			case 'edu_level' :
@@ -462,8 +468,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 					return $table->where('card_status' , '>=' , '8')->whereRaw( " NOT ".self::incompleteRawQuery()) ; //@TODO
 				case 'incomplete' :
 					return $table->where('card_status' , '>=' , '8')->whereRaw(self::incompleteRawQuery()) ; //@TODO
+				case 'print_request' :
+					return $table->where('card_status' , '>=' , '8')->where('card_print_status' , 1);
+				case 'print_control' :
+					return $table->where('card_status' , '>=' , '8')->where('card_print_status' , 3);
 				case 'under_print' :
-					return $table->where('card_status' , '>=' , '8')->whereBetween('card_print_status' , [1,9]);
+					return $table->where('card_status' , '>=' , '8')->whereBetween('card_print_status' , [1,8]);
 				case 'newsletter_member' :
 					return $table->where('card_status' , '>=' , '8')->where('newsletter' , 1)->whereNotNull('email');
 			}
