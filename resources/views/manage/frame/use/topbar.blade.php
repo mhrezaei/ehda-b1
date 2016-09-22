@@ -1,8 +1,8 @@
-@if(sizeof($topbar_notification_menu = \App\Http\Controllers\Manage\ManageController::topbarNotificationMenu() ))
+@if(sizeof($topbar_notification_menu = \App\Http\Controllers\Manage\ManageController::topbarNotificationMenu() )>1)
 	@include('manage.frame.widgets.topbar' , [
 		'icon' => 'bell' ,
 		'items' => $topbar_notification_menu ,
-		'counter' => $topbar_notification_menu[0]['total'] ,
+		'counter' => $topbar_notification_menu['total']  ,
 		'color' => 'coral'
 	])
 @endif

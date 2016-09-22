@@ -151,7 +151,7 @@ class ManageController extends Controller
 			}
 		}
 
-		$array[0]['total'] = $total ;
+		$array['total'] = $total ;
 		return $array ;
 	}
 

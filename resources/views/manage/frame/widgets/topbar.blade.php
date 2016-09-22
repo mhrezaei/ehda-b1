@@ -11,16 +11,19 @@
 	</a>
 	<ul class="dropdown-menu">
 
-		@foreach($items as $item)
-			@if($item[0] == '-' )
-				<li class="divider"></li>
-			@elseif(isset($item[3]) and !$item[3])
+		@foreach($items as $key => $item)
+			@if($key === 'total')
 			@else
-				@include('manage.frame.use.navbar-dropdown-link' , [
-					'target' => url($item[0]),
-					'caption'=> $item[1],
-					'icon' => $item[2]
-				])
+				@if($item[0] == '-' )
+					<li class="divider"></li>
+				@elseif(isset($item[3]) and !$item[3])
+				@else
+					@include('manage.frame.use.navbar-dropdown-link' , [
+						'target' => url($item[0]),
+						'caption'=> $item[1],
+						'icon' => $item[2]
+					])
+				@endif
 			@endif
 		@endforeach
 	</ul>
