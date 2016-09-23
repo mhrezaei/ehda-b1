@@ -192,6 +192,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		return in_array($this->code_melli , ['0074715623' , '0012071110' ]) ;
 	}
 
+	public function isActiveVolunteer()
+	{
+		if($this->volunteer_status >= 8)
+			return true ;
+		else
+			return false ;
+	}
+
 	/**
 	 * @return bool
      */

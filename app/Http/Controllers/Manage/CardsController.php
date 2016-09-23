@@ -64,10 +64,14 @@ class CardsController extends Controller
 
 		//Permission...
 		switch($request_tab) {
+			case 'all' :
 			case 'active' :
-			case 'incomplete' :
 				$permission = 'cards.browse' ;
 				break;
+
+			case 'incomplete' :
+				$permission = 'cards.edit' ;
+				break ;
 
 			case 'under_print' :
 			case 'print_request' :
@@ -137,7 +141,7 @@ class CardsController extends Controller
 		return view($view , compact('print')) ;
 	}
 
-	private function createForVolunteers($id , $page)
+	private function editorForVolunteers($id , $page)
 	{
 		$model = User::find($id);
 		if(!$model->isVolunteer())
@@ -165,7 +169,7 @@ class CardsController extends Controller
 
 		//If for Volunteer...
 		if($volunteer_id)
-			return $this->createForVolunteers($volunteer_id , $page) ;
+			return $this->editorForVolunteers($volunteer_id , $page) ;
 
 		//Model...
 		$model = new User() ;
@@ -196,7 +200,10 @@ class CardsController extends Controller
 		$states = State::get_combo() ;
 		$model = User::find($model_id) ;
 		if(!$model or !$model->isCard())
-		return view('errors.404');
+			return view('errors.404');
+
+		if($model->isActiveVolunteer() and !Auth::user()->can('volunteers.edit'))
+			return $this->editorForVolunteers($model->id , $page);
 
 		//View...
 		return view('manage.cards.editor' , compact('page' , 'model' , 'states'));
@@ -291,6 +298,11 @@ class CardsController extends Controller
 			$data['card_registered_at'] = Carbon::now()->toDateTimeString() ;
 			$data['card_status'] = 8 ;
 			$data['card_no'] = User::generateCardNo() ;
+		}
+		else {
+			$model = User::find($data['id']) ;
+			if($model->isActiveVolunteer() and !Auth::user()->can('volunteers.edit'))
+				return $this->jsonFeedback(trans('validation.http.Eror403'));
 		}
 
 		//Save and Return...

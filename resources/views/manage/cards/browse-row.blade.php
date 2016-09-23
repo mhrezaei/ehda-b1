@@ -51,7 +51,7 @@
 			['eye' , trans('people.commands.view_info') , "modal:manage/cards/-id-/view" , 'cards.view'],
 
 			['key' , trans('people.commands.change_password') , 'modal:manage/cards/-id-/change_password' , 'cards.edit' ,  $model->isActive('card') ],
-			['pencil' , trans('manage.permits.edit') , "url:manage/cards/-id-/edit" , $model->isVolunteer()? 'volunteers.edit' : 'cards.edit'],
+			['pencil' , trans('manage.permits.edit') , "url:manage/cards/-id-/edit" , $model->isActiveVolunteer()? 'volunteers.edit' : 'cards.edit'],
 
 			['print' , trans('forms.button.card_print') , 'modal:manage/cards/-id-/print' , 'cards.print' , $model->isActive('card') ] ,
 			['envelope-o' , trans('people.commands.send_email') , 'modal:manage/cards/-id-/email' , 'cards.send' , $model->email ] ,
