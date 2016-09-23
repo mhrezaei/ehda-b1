@@ -80,7 +80,7 @@
                 </ul>
                 <ul class="list-unstyled pull-left text-right">
                     <h3>{{ trans('site.ability_menu.gallery') }}</h3>
-                    <li><a href="/">{{ trans('site.ability_menu.pictures') }}</a></li>
+                    <li><a href="{{ url('/gallery/categories/gallery') }}">{{ trans('site.ability_menu.pictures') }}</a></li>
                     <li><a href="/">{{ trans('site.ability_menu.films') }}</a></li>
                     <li><a href="/">{{ trans('site.ability_menu.photo_donors') }}</a></li>
                 </ul>
