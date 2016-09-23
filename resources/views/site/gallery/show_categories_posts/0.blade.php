@@ -1,11 +1,11 @@
 @extends('site.frame.frame')
-<title>{{ trans('global.siteTitle') }} | {{ $branch_data->title }}</title>
+<title>{{ trans('global.siteTitle') }} | {{ $category->title }}</title>
 @section('content')
     <div class="container-fluid">
         @include('site.frame.page_title', [
-        'category' => $branch_data->header_title,
-        'parent' => $branch_data->title,
+        'category' => $category->branch->header_title,
+        'parent' => $category->title,
         ])
-        @include('site.gallery.show_categories.show_categories_content')
+        @include('site.gallery.show_categories_posts.show_categories_content')
     </div>
 @endsection

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\models\Branch;
 use App\Models\Category;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -26,6 +27,15 @@ class GalleryController extends Controller
         if (! $category)
             return view('errors.404');
         
-        
+        return view('site.gallery.show_categories_posts.0', compact('category'));
+    }
+
+    public function show_gallery($id, $url = null)
+    {
+        $gallery = Post::find($id);
+        if (! $gallery)
+            return view('errors.404');
+
+        return view('site.gallery.show_gallery.0', compact('gallery'));
     }
 }

@@ -27,6 +27,7 @@ Route::get('/previewPost/{id}/{url?}', 'PostController@show');
 Route::get('/archive/{branch?}/{category?}', 'PostController@archive');
 Route::get('/gallery/categories/{branch}', 'GalleryController@show_categories');
 Route::get('/gallery/posts/{category}', 'GalleryController@show_categories_posts');
+Route::get('/gallery/show/{id}/{url?}', 'GalleryController@show_gallery');
 
 Route::get('/convert', 'TestController@convertCardsFromMhr');
 

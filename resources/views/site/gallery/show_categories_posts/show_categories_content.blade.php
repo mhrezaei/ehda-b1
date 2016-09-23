@@ -2,12 +2,12 @@
     <div class="container">
         <div class="row" style="margin:20px 0">
 
-            @if(sizeof($branch_data->cetegories))
-                @foreach($branch_data->cetegories as $category)
+            @if(sizeof($category->posts))
+                @foreach($category->posts as $post)
                     <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                        <a href="" class="thumbnail">
-                            <img class="media-object" src="{{ url('') . $category->featured_image }}" alt="{{ $category->title }}">
-                            <span class="media-title">{{ $category->title }}</span>
+                        <a href="{{ $post->say('gallery_link') }}" class="thumbnail">
+                            <img class="media-object" src="{{ $post->say('featured_image') }}" alt="{{ $post->title }}">
+                            <span class="media-title">{{ $post->title }}</span>
                         </a>
                     </div>
                 @endforeach
