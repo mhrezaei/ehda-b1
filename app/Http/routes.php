@@ -25,6 +25,8 @@ Route::get('/card/show_card/full/{national_hash}/{mode?}', 'CardController@card_
 Route::get('/showPost/{id}/{url?}', 'PostController@show');
 Route::get('/previewPost/{id}/{url?}', 'PostController@show');
 Route::get('/archive/{branch?}/{category?}', 'PostController@archive');
+Route::get('/gallery/categories/{branch}', 'GalleryController@show_categories');
+Route::get('/gallery/posts/{category}', 'GalleryController@show_categories_posts');
 
 Route::get('/convert', 'TestController@convertCardsFromMhr');
 
