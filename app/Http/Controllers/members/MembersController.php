@@ -37,7 +37,7 @@ class MembersController extends Controller
         $input = $request->toArray();
         $input['id'] = Auth::user()->id;
 
-        $input['birth_date'] = Carbon::createFromTimestamp($input['birth_date'])->toDateString() . ' 00:00:00';
+        $input['birth_date'] = Carbon::createFromTimestamp($input['birth_date'])->toDateString();
         $input['home_province'] = State::find($input['home_city']);
         $input['home_province'] = $input['home_province']->province()->id;
 

@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Volunteer;
 use App\Temp\Mhr_exam_questions;
 use App\Temp\Mhr_safiran_data;
+use App\Temp\Mhr_user;
 use App\Temp\Mhr_users_old;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -121,26 +122,53 @@ class TestController extends Controller
 		}
 	}
 
-	private function convertCardsFromMhr()
+	private function help_me($input)
 	{
-		$cards = Mhr_users_old::whereBetween('id' , ['15000' , '17000'])->whereNull('res1')->get() ;
+		$input=str_replace("۱","1",$input);
+		$input=str_replace("۲","2",$input);
+		$input=str_replace("۳","3",$input);
+		$input=str_replace("۴","4",$input);
+		$input=str_replace("۵","5",$input);
+		$input=str_replace("۶","6",$input);
+		$input=str_replace("۷","7",$input);
+		$input=str_replace("۸","8",$input);
+		$input=str_replace("۹","9",$input);
+		$input=str_replace("۰","0",$input);
+		$input=str_replace("٤","4",$input);
+		$input=str_replace("٦","6",$input);
+		$input=str_replace("٥","5",$input);
 
+		$input=str_replace("ي","ی",$input);
+		$input=str_replace("ك","ک",$input);
+		$input=str_replace("ك","ک",$input);
+		$input = str_replace("¬","‏",$input) ;
+		$input = trim($input);
+
+		return $input;
+	}
+
+	public function convertCardsFromMhr()
+	{
+//		$cards = Mhr_users_old::whereBetween('id' , ['15000' , '17000'])->whereNull('res1')->get() ;
+		$cards = Mhr_user::where('convert_data', 1)->limit(200)->get();
+
+		$numer = 0;
 		foreach($cards as $card) {
 			$user = new User() ;
 
 			//Put away existance Code_mellis
-			$v = User::findBySlug($card->nationalCode , 'code_melli') ;
+			$v = User::findBySlug($card->nationalcode , 'code_melli') ;
 			if($v)
 				continue ;
 
-			$birth_city = State::findByName($card->placeOfBirth) ;
+			$birth_city = State::findByName($card->mhr_users_data->placeOfBirth) ;
 			if($birth_city)
 				$birth_city = $birth_city->id ;
 			else
 				$birth_city = 0  ;
 
 			//Copying...
-			$user->created_at = Carbon::createFromTimestamp($card->registerTime)->toDateTimeString() ;
+			$user->created_at = Carbon::createFromTimestamp($card->mhr_users_data->registerTime)->toDateTimeString() ;
 			$user->updated_at = $user->created_at ;
 			$user->deleted_at = null ;
 			$user->published_at = null ;
@@ -150,45 +178,57 @@ class TestController extends Controller
 			$user->published_by = 0 ;
 			$user->card_status = 8 ;
 			$user->card_registered_at = $user->created_at ;
-			$user->email = $card->email ;
-			$user->password = $card->passWord ;
-			$user->code_melli = $card->nationalCode ;
-			$user->code_id = $card->identifier ;
-			$user->name_first = $card->firstName ;
-			$user->name_last = $card->lastName ;
-			$user->name_father = $card->firstFatherName ;
-			$user->birth_date = Carbon::createFromTimestamp($card->dateOfBirth)->toDateTimeString() ;
+			$user->email = $this->help_me($card->email) ;
+			$user->password = $card->password ;
+			$user->code_melli = $this->help_me($card->nationalcode) ;
+			$user->code_id = $this->help_me($card->mhr_users_data->identifier) ;
+			$user->name_first = $this->help_me($card->mhr_users_data->firstName) ;
+			$user->name_last = $this->help_me($card->mhr_users_data->lastName) ;
+			$user->name_father = $this->help_me($card->mhr_users_data->fatherName) ;
+			$user->birth_date = Carbon::createFromTimestamp($card->mhr_users_data->dateOfBirth)->toDateString() ;
 			$user->birth_city = $birth_city;
-			$user->gender = $card->sex ;
+			$user->gender = $card->mhr_users_data->sex ;
 			$user->marital = 0 ;
-			$user->tel_mobile = $card->mobile ;
+			$user->tel_mobile = $this->help_me($card->mhr_users_data->mobile) ;
 			$user->tel_emergency = null ;
-			$user->home_address = $card->address ;
-			$user->home_province = $card->state ;
-			$user->home_city = $card->city ;
-			$user->home_tel = $card->homePhone ;
-			$user->home_postal_code = $card->postalCode ;
+			$user->home_address = $this->help_me($card->mhr_users_data->address) ;
+			$user->home_province = $card->mhr_users_data->state ;
+			$user->home_city = $card->mhr_users_data->city ;
+			$user->home_tel = $this->help_me($card->mhr_users_data->phone) ;
+			$user->home_postal_code = $this->help_me($card->mhr_users_data->postalCode) ;
 			$user->work_province = null ;
 			$user->work_city = null ;
-			$user->work_tel = $card->workPhone ;
+			$user->work_tel = null ;
 			$user->work_address = null ;
-			$user->edu_level = $card->education ;
+			$user->edu_level = $card->mhr_users_data->education ;
 			$user->edu_city = null ;
 			$user->edu_field = null ;
-			$user->job = $card->job ;
+			$user->job = $card->mhr_users_data->job ;
 			$user->password_force_change = 2 ;
-			$user->organs = $card->organs ;
-			$user->news_letter = $card->newsLetter ;
+			$user->card_no = $card->memberID;
+			$user->from_domain = 'global';
 
-			$ok = $user->save() ;
-			if($ok) {
-				$card->res1 = 1 ;
-				$card->update();
-				echo view('templates.say' , ['array'=>$card->id]);
-
+			if ($card->mhr_users_data->organs == 'All')
+			{
+				$user->organs = 'Heart Lung Liver Kidney Pancreas Tissues';
+			}
+			else
+			{
+				$user->organs = str_replace(',', ' ', $card->mhr_users_data->organs);
 			}
 
+			$user->newsletter = 1 ;
+
+			$ok = $user->save() ;
+			if($ok)
+			{
+				$card->convert_data = 0 ;
+				$card->update();
+				$numer++;
+			}
 		}
+		echo Carbon::now()->toDateTimeString() . ' --- ' . 'number of row inserted: ' . $numer;
+		echo '<script>document.addEventListener("DOMContentLoaded", function(event) { setTimeout("location.reload(true);", 30000); });</script>';
 	}
 
 	private function convertVolunteers2Users()

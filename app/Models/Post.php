@@ -383,12 +383,21 @@ class Post extends Model
 
 				return url("showPost/".$this->id."/".urlencode($link)) ;
 
+			case 'gallery_link' :
+				$link = str_replace(' ', '_', $this->title);
+				$link = str_replace('/', '_', $link);
+
+				return url("/gallery/show/".$this->id."/".urlencode($link)) ;
+
 			case 'post_header' :
 			case 'header' :
 				if($this->branch()->hasFeature('header'))
 					return $this->meta('header_title') ;
 				else
 					return $this->branch()->header_title ;
+
+			case 'category_name' :
+				return Category::find($this->category_id)->title;
 
 			case 'abstract' :
 				if($this->abstract)

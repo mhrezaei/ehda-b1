@@ -8,7 +8,8 @@
                     </a>
                     <div class="media-body">
                         <h4 class="media-heading">
-                            <a href="{{ $post->say('link') }}">@pd($post->title)</a>
+                            {{--<a href="{{ $post->say('link') }}">@pd($post->title)</a>--}}
+                            <a href="{{ $post->say('link') }}">{{ $post->title }}</a>
                         </h4>
                         @if(strlen($post->abstract))
                             <p style="text-align: justify;">
