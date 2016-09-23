@@ -4,8 +4,8 @@
     <div class="container-fluid">
         @include('site.frame.page_title', [
         'category' => $post->say('header'),
-        'parent' => $post->say('category_title'),
-        'sub' => $post->title
+        'parent' => $post->branch()->plural_title,
+        'sub' => $post->say('category_name')
         ])
         @include('site.show_post.content')
     </div>

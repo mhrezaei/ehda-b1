@@ -397,7 +397,8 @@ class Post extends Model
 					return $this->branch()->header_title ;
 
 			case 'category_name' :
-				return Category::find($this->category_id)->title;
+				if ($this->category_id > 0)
+					return Category::find($this->category_id)->title;
 
 			case 'abstract' :
 				if($this->abstract)

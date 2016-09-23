@@ -1,14 +1,25 @@
+@if(sizeof($event_slide_show))
 <div class="row">
     <div class="owl-carousel home-slider events-slider" dir="ltr">
+        @foreach($event_slide_show as $slide)
         <div class="item">
-            <img src="{{ url('assets') }}/site/images/slide-2-1.jpg">
+            <img src="{{ $slide->say('featured_image') }}">
             <div class="event-box">
                 <div class="text">
-                    <h2>فراخوان اولین جشنواره تجسمی نفس</h2>
-                    <p>آثار نقاشی، تصویرسازی، عکاسی، گرافیک،<br>کاریکاتور، مجسمه&zwnj;سازی ... (ادامه)</p>
+                    @if(strlen($slide->title))
+                        <h2>{{ $slide->title }}</h2>
+                    @endif
+                    @if(strlen($slide->meta('title_two')))
+                        <p>{{ $slide->meta('title_two') }}</p>
+                    @endif
+                    @if(strlen($slide->meta('link')))
+                        {{--<br>--}}
+                        <a href="{{ url('') . $slide->meta('link') }}" style="color: white;">{{ trans('site.global.continue') }}</a>
+                    @endif
                 </div>
             </div>
         </div>
-        <div class="item"><img src="{{ url('assets') }}/site/images/slide-2-2.jpg"></div>
+        @endforeach
     </div>
 </div>
+@endif

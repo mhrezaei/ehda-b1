@@ -15,9 +15,10 @@ class HomeController extends Controller
 		$news = Post::selector('iran-news')->orderBy('published_at', 'desc')->take(5)->get();
 		$events = Post::selector('event')->orderBy('published_at', 'desc')->take(5)->get();
 		$slide_show = Post::selector('slideshows')->where('category_id', '3')->get();
+		$event_slide_show = Post::selector('slideshows')->where('category_id', '4')->get();
 		$static_paragraph['top'] = Post::findBySlug('home_page_top_paragraph');
 		$static_paragraph['fix_background'] = Post::findBySlug('home_page_fix_background_paragraph');
 
-		return view('site.home.0', compact('news', 'events', 'slide_show', 'static_paragraph'));
+		return view('site.home.0', compact('news', 'events', 'slide_show', 'static_paragraph', 'event_slide_show'));
 	}
 }
