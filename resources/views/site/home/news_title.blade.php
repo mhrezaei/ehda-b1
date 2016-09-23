@@ -4,7 +4,8 @@
         <ul class="news list-unstyled">
             @foreach($news as $one_news)
                 <li>
-                    <a href="{{ url('showPost/' . $one_news->id . '/' . urlencode($one_news->title)) }}">@pd($one_news->title)</a>
+                    {{--<a href="{{ url('showPost/' . $one_news->id . '/' . urlencode($one_news->title)) }}">@pd($one_news->title)</a>--}}
+                    <a href="{{ url('showPost/' . $one_news->id . '/' . urlencode($one_news->title)) }}">{{ $one_news->title }}</a>
                     <span class="date">@pd(jDate::forge($one_news->published_at)->format('Y F d'))</span>
                 </li>
             @endforeach

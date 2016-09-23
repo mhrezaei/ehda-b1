@@ -4,7 +4,8 @@
         <ul class="events list-unstyled">
             @foreach($events as $event)
                 <li>
-                    <a href="{{ url('showPost/' . $event->id . '/' . urlencode($event->title)) }}">@pd($event->title)</a>
+                    {{--<a href="{{ url('showPost/' . $event->id . '/' . urlencode($event->title)) }}">@pd($event->title)</a>--}}
+                    <a href="{{ url('showPost/' . $event->id . '/' . urlencode($event->title)) }}">{{ $event->title }}</a>
                 </li>
             @endforeach
         </ul>

@@ -66,6 +66,7 @@ return [
         'iran_procurement' => 'فراهم آوری',
         'iran_transplant' => 'پیوند',
         'provinces' => 'استان ها',
+        'internal-ngo' => 'داخلی انجمن',
         'world_news' => 'اخبار جهان',
         'world_procurement' => 'فراهم آوری',
         'world_transplant' => 'پیوند',
