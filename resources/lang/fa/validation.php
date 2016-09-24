@@ -290,6 +290,7 @@ return [
 				'domain_id' => 'دامنه',
 				'alias' => 'نام مستعار' ,
 				'status' => 'وضعیت' ,
+				'domain' => 'دامنه' ,
 				'tel' => 'تلفن',
 				'postal_code' => 'کد پستی',
 				'message' => 'متن پیام',

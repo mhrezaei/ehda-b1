@@ -18,7 +18,27 @@
 
 	{{--
 	|--------------------------------------------------------------------------
-	| Permits
+	| Domain
+	|--------------------------------------------------------------------------
+	|
+	--}}
+
+	@include('forms.select' , [
+		'name' => 'domain' ,
+		'value' =>  $model->domain  ,
+		'blank_value' => ' ' ,
+		'blank_label' => trans('forms.general.none') ,
+		'options' => $opt['domains'] ,
+		'search' => true ,
+		'size' => 7 ,
+		'value_field' => 'slug' ,
+		'search_placeholder' => trans('forms.button.search') ,
+	])
+
+
+	{{--
+	|--------------------------------------------------------------------------
+	| Roles
 	|--------------------------------------------------------------------------
 	|
 	--}}
@@ -72,34 +92,34 @@
 	| 
 	--}}
 
-	@include('forms.sep')
+	{{--@include('forms.sep')--}}
 
-	@include('forms.group-start' , [
-		'label' => trans('manage.devSettings.domains.trans'),
-		'required'=> false ,
-	])
+	{{--@include('forms.group-start' , [--}}
+		{{--'label' => trans('manage.devSettings.domains.trans'),--}}
+		{{--'required'=> false ,--}}
+	{{--])--}}
 
-		<div class="row w100 m5">
-			@foreach($opt['domains'] as $domain)
-				<div class="col-md-3">
-					<div class="checkbox">
-						<label>
-							<input type="hidden" name="domain{{$domain->id}}" value="0">
-							{!! Form::checkbox("domain".$domain->id , '1' , $model->can('any',$domain->slug)? '1' : '0' , ['class' => '-domains']) !!}
-							{{ $domain->title }}
-						</label>
-					</div>
-				</div>
-			@endforeach
-		</div>
+		{{--<div class="row w100 m5">--}}
+			{{--@foreach($opt['domains'] as $domain)--}}
+				{{--<div class="col-md-3">--}}
+					{{--<div class="checkbox">--}}
+						{{--<label>--}}
+							{{--<input type="hidden" name="domain{{$domain->id}}" value="0">--}}
+							{{--{!! Form::checkbox("domain".$domain->id , '1' , $model->can('any',$domain->slug)? '1' : '0' , ['class' => '-domains']) !!}--}}
+							{{--{{ $domain->title }}--}}
+						{{--</label>--}}
+					{{--</div>--}}
+				{{--</div>--}}
+			{{--@endforeach--}}
+		{{--</div>--}}
 
-	@include('forms.group-end')
+	{{--@include('forms.group-end')--}}
 
 
-	@include('forms.group-start')
-		<a href="javascript:void(0)" onclick="$('.-domains').prop('checked', true)" class="p20">{{trans('forms.general.all')}}</a>
-		<a href="javascript:void(0)" onclick="$('.-domains').prop('checked', false)" class="">{{trans('forms.general.none')}}</a>
-	@include('forms.group-end')
+	{{--@include('forms.group-start')--}}
+		{{--<a href="javascript:void(0)" onclick="$('.-domains').prop('checked', true)" class="p20">{{trans('forms.general.all')}}</a>--}}
+		{{--<a href="javascript:void(0)" onclick="$('.-domains').prop('checked', false)" class="">{{trans('forms.general.none')}}</a>--}}
+	{{--@include('forms.group-end')--}}
 
 
 	{{--

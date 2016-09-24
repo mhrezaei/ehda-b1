@@ -35,6 +35,7 @@ class TestController extends Controller
 //		$this->convertVolunteers2Users() ;
 //		return view('templates.say' , ['array'=>date('Y/m/d H:i:s' , 9993775497)]);
 //		return $this->convertExams() ;
+		return $this->upgradeDomains() ;
 
 
 //		$array =
@@ -49,6 +50,34 @@ class TestController extends Controller
 	|--------------------------------------------------------------------------
 	|
 	*/
+
+	private function upgradeDomains()
+	{
+		$users = User::whereNull('domain')->whereNotNull('home_city') ;
+		return view('templates.say' , ['array'=>$users->count()]);
+		
+		$total = 0 ;
+
+		foreach($users->get() as $user) {
+			$state = State::find($user->home_city);
+			echo $user->id."<br />";
+
+			if(!$state)
+				continue;
+
+			$user->domain = $state->domain->slug ;
+			$ok = $user->update() ;
+			if($ok)
+				$total++;
+
+		}
+
+		?>
+<!--			<script>location.reload();</script>-->
+		<?php
+		return view('templates.say' , ['array'=>$total]);
+
+	}
 
 	private function convertExams()
 	{

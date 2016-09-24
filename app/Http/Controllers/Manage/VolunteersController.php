@@ -109,7 +109,12 @@ class VolunteersController extends Controller
 		//Particular Actions...
 		switch($view_file) {
 			case 'permits' :
-				$opt['domains'] = Domain::orderBy('title')->get() ;
+				$opt['domains'] = Domain::orderBy('title')->get()->toArray() ;
+
+				array_unshift($opt['domains'] , [
+					'slug' => 'global' ,
+					'title' => trans('posts.manage.global')
+				]);
 				break;
 
 			case 'care_review' :
