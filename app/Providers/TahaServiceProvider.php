@@ -35,7 +35,7 @@ class TahaServiceProvider extends ServiceProvider
         //Posts...
         foreach($branches as $branch) {
             if(Auth::user()->can('posts-'.$branch->slug.".publish")) {
-                $count = Post::counter($branch->slug, Auth::user()->allowedDomains() , 'pending') ;
+                $count = Post::counter($branch->slug, 'auto' , 'pending') ;
                 $total += $count ;
                 if($count) {
                     $count = AppServiceProvider::pd($count) ;

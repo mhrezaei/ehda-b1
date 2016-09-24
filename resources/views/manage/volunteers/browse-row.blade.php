@@ -35,10 +35,10 @@
 		'id' => $model->id ,
 		'actions' => [
 			['eye' , trans('manage.permits.view') , "modal:manage/volunteers/-id-/view" , 'volunteers.view'],
-			['copy' , trans('people.volunteers.manage.care_review') , 'modal:manage/volunteers/-id-/care_review' , 'volunteers.edit' ,  $model->isActive() and $model->unverified_flag>0 ],
+			['copy' , trans('people.volunteers.manage.care_review') , 'modal:manage/volunteers/-id-/care_review' , 'volunteers.edit' , $model->unverified_flag>0 && $model->isActive() ],
 			['key' , trans('people.commands.change_password') , 'modal:manage/volunteers/-id-/change_password' , 'volunteers.edit' ,  $model->isActive() ],
 			['pencil' , trans('manage.permits.edit') , "modal:manage/volunteers/-id-/edit" , 'volunteers.edit'],
-			['shield' , trans('manage.permits.permits') , 'modal:manage/volunteers/-id-/permits' , 'volunteers.permits' , $model->isActive()],
+			['shield' , trans('manage.permits.permits') , 'modal:manage/volunteers/-id-/permits' , 'any' , $model->canBePermitted()],
 
 			['envelope-o' , trans('people.commands.send_email') , 'modal:manage/volunteers/-id-/email' , 'volunteers.send' , $model->email ] ,
 			['mobile' , trans('people.commands.send_sms') , 'modal:manage/volunteers/-id-/sms' , 'volunteers.send' , $model->tel_mobile ] ,

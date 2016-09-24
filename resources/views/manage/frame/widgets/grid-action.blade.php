@@ -46,8 +46,10 @@
 					$permit = Auth::user()->can($action[3]) ;
 				else
 					$permit = true ;
-				if(isset($action[4]))
-					$permit = $permit and $action[4]  ;
+
+				if($permit)
+					if(isset($action[4]))
+						$permit = $action[4]  ;
 
 			?>
 			@if($permit)

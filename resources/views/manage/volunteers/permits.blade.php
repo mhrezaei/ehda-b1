@@ -23,17 +23,32 @@
 	|
 	--}}
 
-	@include('forms.select' , [
-		'name' => 'domain' ,
-		'value' =>  $model->domain  ,
-		'blank_value' => ' ' ,
-		'blank_label' => trans('forms.general.none') ,
-		'options' => $opt['domains'] ,
-		'search' => true ,
-		'size' => 7 ,
-		'value_field' => 'slug' ,
-		'search_placeholder' => trans('forms.button.search') ,
-	])
+	@if(isset($opt['domains']))
+		@include('forms.select' , [
+			'name' => 'domain' ,
+			'value' =>  $model->domain  ,
+			'blank_value' => ' ' ,
+			'blank_label' => trans('forms.general.none') ,
+			'options' => $opt['domains'] ,
+			'search' => true ,
+			'size' => 7 ,
+			'value_field' => 'slug' ,
+			'search_placeholder' => trans('forms.button.search') ,
+		])
+	@endif
+
+	@if(Auth::user()->isDeveloper())
+		@include('forms.select' , [
+			'name' => 'level' ,
+			'value' => $model->can('manage') ,
+			'options' => [
+				[ 0 , trans('people.volunteers.manage.level_user')] ,
+				[ 1 , trans('people.volunteers.manage.level_admin')]
+			],
+			'value_field' => '0' ,
+			'caption_field' => '1' ,
+		])
+	@endif
 
 
 	{{--
@@ -43,53 +58,23 @@
 	|
 	--}}
 
-	@include('forms.sep')
-
-{{--		@include('manage.volunteers.permits-role' , [--}}
-			{{--'module' => 'cards' ,--}}
-			{{--'label' => trans('label')--}}
-		{{--])--}}
-{{ $sd }}
-	@include('templates.say' , ['array'=>$opt['branches']]);
-
-
-
+	@include('manage.volunteers.permits-role' , [
+		'module' => 'cards' ,
+		'permits' => 'cards' ,
+		'label' => trans('manage.modules.cards')
+	])
+	@include('manage.volunteers.permits-role' , [
+		'module' => 'volunteers' ,
+		'permits' => 'volunteers' ,
+		'label' => trans('manage.modules.volunteers')
+	])
 
 	@foreach($opt['branches'] as $branch)
-	@endforeach
-
-	@foreach(config('permit.available_modules') as $module => $permits )
-
-		<?php
-			if(str_contains($module,'posts-')) {
-				$slug = str_replace('posts-','',$module) ;
-				$caption = \App\Models\Branch::getTitle($slug);
-			}
-			else {
-				$caption = trans('manage.modules.'.$module) ;
-			}
-		?>
-
-		@include('forms.group-start' , [
-			'label' => trans($caption),
+		@include('manage.volunteers.permits-role' , [
+			'module' => $branch->slug ,
+			'permits' => 'posts' ,
+			'label' => $branch->plural_title ,
 		])
-
-			<div class="row w100 m5">
-				@foreach($permits as $permit)
-					<div class="col-md-3">
-						<div class="checkbox">
-							<label>
-								<input type="hidden" name="permit{{$module}}_{{$permit}}" value="0">
-								{!! Form::checkbox("permit".$module."_".$permit , '1' , $model->can("$module.$permit")? '1' : '0' , ['class' => '-permits']) !!}
-								{{ trans('manage.permits.'.$permit) }}
-							</label>
-						</div>
-					</div>
-				@endforeach
-			</div>
-
-		@include('forms.group-end')
-
 	@endforeach
 
 	@include('forms.group-start')

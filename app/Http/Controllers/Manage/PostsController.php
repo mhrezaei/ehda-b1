@@ -56,7 +56,7 @@ class PostsController extends Controller
 		$db = Post::first() ;
 		$branch = Branch::selectBySlug($request_branch);
 		$keyword = $request->keyword ;
-		$model_data = Post::selector('all' , Auth::user()->allowedDomains() , 'all')
+		$model_data = Post::selector('all' , 'auto' , 'all')
 				->whereRaw(Post::searchRawQuery($keyword))
 				->paginate(50);
 
@@ -152,7 +152,7 @@ class PostsController extends Controller
 		$page[1] = ["$request_branch/".$request_tab , trans("posts.manage.$request_tab") , "$request_branch/".$request_tab] ;
 
 		//Model...
-		$model_data = Post::selector($request_branch, Auth::user()->allowedDomains() , $request_tab)->orderBy('created_at' , 'desc')->paginate(50);
+		$model_data = Post::selector($request_branch, 'auto' , $request_tab)->orderBy('created_at' , 'desc')->paginate(50);
 		$db = Post::first() ;
 
 		//View...

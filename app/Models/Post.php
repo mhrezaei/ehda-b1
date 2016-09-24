@@ -61,15 +61,6 @@ class Post extends Model
 		return Branch::selectBySlug($this->branch);
 	}
 
-	public function domains()
-	{
-
-		$domains_array = json_decode($this->domains, true);
-		if(!($domains_array)) $domains_array = array() ;
-
-
-		//@TODO: COMPLETE THIS
-	}
 
 	public function loadPhotos()
 	{
@@ -112,9 +103,9 @@ class Post extends Model
 	|
 	*/
 
-	public static function counter($branch , $domains='global' ,$criteria = 'published')
+	public static function counter($branch , $domain='global' ,$criteria = 'published')
 	{
-		return self::selector($branch , $domains , $criteria)->count() ;
+		return self::selector($branch , $domain , $criteria)->count() ;
 	}
 
 	public static function searchRawQuery($keyword, $fields = null)
@@ -130,20 +121,19 @@ class Post extends Model
 		return " LOCATE('$keyword' , CONCAT_WS(' ' $concat_string)) " ;
 	}
 
-	public static function selector($branch='searchable' , $domains='all' , $criteria='published')
+	public static function selector($branch='searchable' , $domain='all' , $criteria='published')
 	{
 		$now = Carbon::now()->toDateTimeString();
 
 		//Process Domain...
-		if($domains == 'all') {
+		if($domain=='auto')
+			$domain = Auth::user()->getDomain() ;
+
+		if($domain == 'all') {
 			$table = self::where('id' , '>' , '0');
 		}
 		else {
-			$domain_array = User::domainsStringToArray($domains);
-			$query = "`domains` = 'free' " ;
-			foreach($domain_array as $domain) {
-				$query .= " or `domains` like '%|$domain|%' " ;
-			}
+			$query = " `domains` = '$domain' or `domains` = '$domain*' or `domains` = 'free' " ;
 			$table = self::whereRaw("($query)") ;
 		}
 

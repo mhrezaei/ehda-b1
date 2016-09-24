@@ -35,12 +35,11 @@ class TestController extends Controller
 //		$this->convertVolunteers2Users() ;
 //		return view('templates.say' , ['array'=>date('Y/m/d H:i:s' , 9993775497)]);
 //		return $this->convertExams() ;
-		return $this->upgradeDomains() ;
+//		return $this->upgradeDomains() ;
 
+		$user = User::find(23);
+		return view('templates.say' , ['array'=>json_decode($user->getRoles())]);
 
-//		$array =
-
-		return view('templates.say' , ['array'=>Session::all()]);
 
 	}
 

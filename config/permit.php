@@ -10,7 +10,7 @@ return [
 
 	'available_modules' => [
 		'cards' => ['browse','view','send','search','create','bulk','edit','print','report','delete'],
-		'volunteers' => ['send','search' , 'view' ,'edit','publish','report', 'permits','delete' , 'bin'],
+		'volunteers' => ['send','search' , 'view' ,'edit','publish','report','delete' , 'bin'],
 		'posts' => ['browse','view','create','edit','publish','report','delete','bin'] ,
 
 		'settings' => ['*'],

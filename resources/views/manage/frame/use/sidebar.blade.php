@@ -36,27 +36,29 @@
 	@include('manage.frame.widgets.sidebar-link' , $item)
 @endforeach
 
-@include('manage.frame.widgets.sidebar-link' , [
-	'icon' => 'money',
-	'caption' => trans('manage.modules.donates'),
-	'link' => 'donates' ,
-	'disabled' => true ,
-])
+{{--@include('manage.frame.widgets.sidebar-link' , [--}}
+	{{--'icon' => 'money',--}}
+	{{--'caption' => trans('manage.modules.donates'),--}}
+	{{--'link' => 'donates' ,--}}
+	{{--'disabled' => true ,--}}
+{{--])--}}
 
-@include('manage.frame.widgets.sidebar-link' , [
-	'icon' => 'comment-o',
-	'caption' => trans('manage.modules.submits') ,
-	'link' => 'submits' ,
-	'disabled' => true ,
-])
+{{--@include('manage.frame.widgets.sidebar-link' , [--}}
+	{{--'icon' => 'comment-o',--}}
+	{{--'caption' => trans('manage.modules.submits') ,--}}
+	{{--'link' => 'submits' ,--}}
+	{{--'disabled' => true ,--}}
+{{--])--}}
 
 @include('manage.frame.widgets.sidebar-link' , [
 	'icon' => 'cogs',
 	'caption' => trans('manage.modules.settings'),
 	'link' => 'settings' ,
+	'permission' => 'settings' ,
 ])
 @include('manage.frame.widgets.sidebar-link' , [
 	'icon' => 'user-secret',
 	'caption' => trans('manage.modules.devSettings'),
 	'link' => 'devSettings' ,
+	'permission' => 'developer' ,
 ])

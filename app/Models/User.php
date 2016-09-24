@@ -426,27 +426,22 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	|
 	*/
 
-	public static function counter($type, $criteria , $domains='auto')
+	public static function counter($type, $criteria , $domain='auto')
 	{
-		return self::selector($type,$criteria,$domains)->count();
+		return self::selector($type,$criteria,$domain)->count();
 	}
-	public static function selector($type , $criteria , $domains='auto')
+	public static function selector($type , $criteria , $domain='auto')
 	{
+
 
 		//Process Domain...
-		if($domains=='auto')
-			$domains =  Auth::user()->allowedDomains() ;
+		if($domain=='auto')
+			$domain =  Auth::user()->getDomain() ;
 
-		if(str_contains($domains , 'global'))
+		if($domain=='global')
 			$table = self::where('id' , '>' , 0) ;
-		else {
-			$domain_array = User::domainsStringToArray($domains);
-			$query = "false " ;
-			foreach($domain_array as $domain) {
-				$query .= " or `domains` like '%|$domain|%' " ;
-			}
-			$table = self::whereRaw("($query)") ;
-		}
+		else
+			$table = self::where('domain' , $domain) ;
 
 		//Process Criteria...
 		if($type=='volunteer' or $type=='volunteers') {
@@ -511,6 +506,28 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 			[4, trans('people.card_print_status.4')],
 			[9, trans('people.card_print_status.9')],
 		];
+	}
+
+	/**
+	 * Determines if the logged user can modify the premissions of this user
+	 */
+	public function canBePermitted()
+	{
+		$logged_user = Auth::user() ;
+
+		if(!$this->isActive())
+			return false ;
+
+		if($this->isDeveloper())
+			return false ;
+
+		if($logged_user->id == $this->id)
+			return false ;
+
+		if($this->can('manage') and !$logged_user->isDeveloper())
+			return false ;
+
+		return $logged_user->can('volunteers.permit',$this->domain);
 	}
 
 	/*
@@ -580,7 +597,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 			$this->volunteer_status = 0 ;
 			$this->volunteer_registered_at = null ;
 			$this->roles = null ;
-			$this->domains = null ;
+//			$this->domains = null ;
 			return $this->save() ;
 		}
 		else {
