@@ -45,6 +45,18 @@
 
 	@include('forms.sep')
 
+{{--		@include('manage.volunteers.permits-role' , [--}}
+			{{--'module' => 'cards' ,--}}
+			{{--'label' => trans('label')--}}
+		{{--])--}}
+{{ $sd }}
+	@include('templates.say' , ['array'=>$opt['branches']]);
+
+
+
+
+	@foreach($opt['branches'] as $branch)
+	@endforeach
 
 	@foreach(config('permit.available_modules') as $module => $permits )
 

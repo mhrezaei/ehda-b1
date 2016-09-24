@@ -1,4 +1,4 @@
-@if(sizeof($topbar_notification_menu = \App\Http\Controllers\Manage\ManageController::topbarNotificationMenu() )>1)
+@if(sizeof($topbar_notification_menu = Taha::topbarNotificationMenu() )>1)
 	@include('manage.frame.widgets.topbar' , [
 		'icon' => 'bell' ,
 		'items' => $topbar_notification_menu ,
@@ -7,7 +7,7 @@
 	])
 @endif
 
-@if(sizeof($topbar_create_menu = \App\Http\Controllers\Manage\ManageController::topbarCreateMenu() ))
+@if(sizeof($topbar_create_menu = Taha::topbarCreateMenu() ))
 	@include('manage.frame.widgets.topbar' , [
 		'icon' => 'plus-circle' ,
 		'items' => $topbar_create_menu ,

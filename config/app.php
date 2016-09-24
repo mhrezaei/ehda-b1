@@ -157,6 +157,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
 	    App\Providers\RouteServiceProvider::class,
+	    App\Providers\TahaServiceProvider::class,
 	    App\Providers\AnnotationsServiceProvider::class,
 	    Collective\Html\HtmlServiceProvider::class,
 	    Barryvdh\Debugbar\ServiceProvider::class,
@@ -213,6 +214,7 @@ return [
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'jDate' => Morilog\Jalali\Facades\jDate::class,
         'Image' => Intervention\Image\Facades\Image::class,
+	    'Taha' => \App\Providers\TahaServiceProvider::class ,
     ],
 
 ];

@@ -7,6 +7,7 @@ use App\Events\SendSms;
 use App\Events\UserAccountPublished;
 use App\Events\UserPasswordManualReset;
 use App\Http\Requests\Manage\VolunteerSearchRequest;
+use App\models\Branch;
 use App\Models\Domain;
 use App\Models\State;
 use App\Models\User;
@@ -110,6 +111,7 @@ class VolunteersController extends Controller
 		switch($view_file) {
 			case 'permits' :
 				$opt['domains'] = Domain::orderBy('title')->get()->toArray() ;
+				$opt['branches'] = Branch::orderBy('plural_title')->get() ;
 
 				array_unshift($opt['domains'] , [
 					'slug' => 'global' ,

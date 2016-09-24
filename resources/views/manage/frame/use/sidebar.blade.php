@@ -32,7 +32,7 @@
 	]
 ])
 
-@foreach(\App\Http\Controllers\Manage\ManageController::sidebarPostsMenu() as $item)
+@foreach(Taha::sidebarPostsMenu() as $item)
 	@include('manage.frame.widgets.sidebar-link' , $item)
 @endforeach
 
