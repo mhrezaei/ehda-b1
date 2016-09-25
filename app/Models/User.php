@@ -192,6 +192,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		return in_array($this->code_melli , ['0074715623' , '0012071110' ]) ;
 	}
 
+	public function isActiveVolunteer()
+	{
+		if($this->volunteer_status >= 8)
+			return true ;
+		else
+			return false ;
+	}
+
 	/**
 	 * @return bool
      */
@@ -329,6 +337,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 			case 'birth_date' :
 				return AppServiceProvider::pd(jDate::forge($this->$property)->format('j F Y'));
 
+			case 'birth_date_on_card' :
+				return AppServiceProvider::pd(jDate::forge($this->birth_date)->format('Y/m/d'));
+
+			case 'register_date_on_card' :
+				return AppServiceProvider::pd(jDate::forge($this->card_registered_at)->format('Y/m/d'));
+
 			case 'gender' :
 			case 'marital':
 			case 'edu_level' :
@@ -412,27 +426,22 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	|
 	*/
 
-	public static function counter($type, $criteria , $domains='auto')
+	public static function counter($type, $criteria , $domain='auto')
 	{
-		return self::selector($type,$criteria,$domains)->count();
+		return self::selector($type,$criteria,$domain)->count();
 	}
-	public static function selector($type , $criteria , $domains='auto')
+	public static function selector($type , $criteria , $domain='auto')
 	{
+
 
 		//Process Domain...
-		if($domains=='auto')
-			$domains =  Auth::user()->allowedDomains() ;
+		if($domain=='auto')
+			$domain =  Auth::user()->getDomain() ;
 
-		if(str_contains($domains , 'global'))
+		if($domain=='global')
 			$table = self::where('id' , '>' , 0) ;
-		else {
-			$domain_array = User::domainsStringToArray($domains);
-			$query = "false " ;
-			foreach($domain_array as $domain) {
-				$query .= " or `domains` like '%|$domain|%' " ;
-			}
-			$table = self::whereRaw("($query)") ;
-		}
+		else
+			$table = self::where('domain' , $domain) ;
 
 		//Process Criteria...
 		if($type=='volunteer' or $type=='volunteers') {
@@ -462,8 +471,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 					return $table->where('card_status' , '>=' , '8')->whereRaw( " NOT ".self::incompleteRawQuery()) ; //@TODO
 				case 'incomplete' :
 					return $table->where('card_status' , '>=' , '8')->whereRaw(self::incompleteRawQuery()) ; //@TODO
+				case 'print_request' :
+					return $table->where('card_status' , '>=' , '8')->where('card_print_status' , 1);
+				case 'print_control' :
+					return $table->where('card_status' , '>=' , '8')->where('card_print_status' , 3);
 				case 'under_print' :
-					return $table->where('card_status' , '>=' , '8')->whereBetween('card_print_status' , [1,9]);
+					return $table->where('card_status' , '>=' , '8')->whereBetween('card_print_status' , [1,8]);
 				case 'newsletter_member' :
 					return $table->where('card_status' , '>=' , '8')->where('newsletter' , 1)->whereNotNull('email');
 			}
@@ -481,6 +494,40 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		}
 
 		return " ( $query ) " ;
+	}
+
+	public static function virtualPrintTable()
+	{
+		return [
+			['n', trans('people.card_print_status.0')],
+			[1, trans('people.card_print_status.1')],
+			[2, trans('people.card_print_status.2')],
+			[3, trans('people.card_print_status.3')],
+			[4, trans('people.card_print_status.4')],
+			[9, trans('people.card_print_status.9')],
+		];
+	}
+
+	/**
+	 * Determines if the logged user can modify the premissions of this user
+	 */
+	public function canBePermitted()
+	{
+		$logged_user = Auth::user() ;
+
+		if(!$this->isActive())
+			return false ;
+
+		if($this->isDeveloper())
+			return false ;
+
+		if($logged_user->id == $this->id)
+			return false ;
+
+		if($this->can('manage') and !$logged_user->isDeveloper())
+			return false ;
+
+		return $logged_user->can('volunteers.permit',$this->domain);
 	}
 
 	/*
@@ -550,7 +597,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 			$this->volunteer_status = 0 ;
 			$this->volunteer_registered_at = null ;
 			$this->roles = null ;
-			$this->domains = null ;
+//			$this->domains = null ;
 			return $this->save() ;
 		}
 		else {

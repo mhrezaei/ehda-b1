@@ -56,7 +56,7 @@
 		'headings' => [
 			trans('validation.attributes.title') ,
 			trans('posts.manage.properties'),
-			$branch->hasFeature('domains') ? trans('posts.manage.visibility') : 'NO',
+			($branch->hasFeature('domain') and Auth::user()->isGlobal()) ? trans('posts.manage.visibility') : 'NO',
 			trans('forms.button.action'),
 		],
 	])

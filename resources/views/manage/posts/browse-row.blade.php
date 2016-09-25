@@ -2,7 +2,7 @@
 	<input id="gridSelector-{{$model->id}}" data-value="{{$model->id}}" class="gridSelector" type="checkbox" onchange="gridSelector('selector','{{$model->id}}')">
 </td>
 <td>
-	{{ $model->say('title') }}
+	{{ $model->say('title_limit') }}
 </td>
 
 
@@ -25,13 +25,11 @@
 	@endif
 </td>
 
-@if($branch->hasFeature('domains'))
+@if($branch->hasFeature('domain') and Auth::user()->isGlobal())
 	<td>
 		{{ $model->say('domains') }}
-		@if($model->is_global_reflect )
-			<div class="mv10 f10 text-success">
-				{{trans('posts.manage.also_in_global')}}
-			</div>
+		@if(str_contains($model->domains , '*') )
+			<i class="fa fa-globe mh5 text-success"></i>
 		@endif
 	</td>
 @endif

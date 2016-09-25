@@ -7,6 +7,7 @@ use App\Events\SendSms;
 use App\Events\UserAccountPublished;
 use App\Events\UserPasswordManualReset;
 use App\Http\Requests\Manage\VolunteerSearchRequest;
+use App\models\Branch;
 use App\Models\Domain;
 use App\Models\State;
 use App\Models\User;
@@ -83,8 +84,7 @@ class VolunteersController extends Controller
 		}
 		if(!Auth::user()->can($permission))
 			return view('errors.403');
-
-
+		
 		//Model...
 		$model_data = User::selector('volunteer',$request_tab)->orderBy('created_at' , 'desc')->paginate(50);
 		$db = User::first() ;
@@ -109,7 +109,18 @@ class VolunteersController extends Controller
 		//Particular Actions...
 		switch($view_file) {
 			case 'permits' :
-				$opt['domains'] = Domain::orderBy('title')->get() ;
+				if(!$model->canBePermitted())
+					return view('errors.m403');
+
+				$opt['branches'] = Branch::orderBy('plural_title')->get() ;
+				if(Auth::user()->can('manage' , 'global')) {
+					$opt['domains'] = Domain::orderBy('title')->get()->toArray() ;
+
+					array_unshift($opt['domains'] , [
+						'slug' => 'global' ,
+						'title' => trans('posts.manage.global')
+					]);
+				}
 				break;
 
 			case 'care_review' :
@@ -357,39 +368,48 @@ class VolunteersController extends Controller
 
 	public function permits(Request $request)
 	{
-		$data = $request->toArray() ;
-		$allowed_domains = '|' ;
-		$allowed_permits = [] ;
+		//Preparations...
 		$model = User::find($request->id) ;
+		$logged_user = Auth::user() ;
+		$allowed_roles = [] ;
 
 		//Security...
-		if(!Auth::user()->can('volunteers.permits'))
+		if(!$model)
+			return $this->jsonFeedback(trans('validation.http.Eror410')) ;
+
+		if(!$model->canBePermitted())
 			return $this->jsonFeedback(trans('validation.http.Eror403')) ;
 
-		//Permits...
-		foreach($data as $pointer => $item) {
-			if(!str_contains($pointer,'permit') or !$data[$pointer])
-				continue;
-
-			$pointer = str_replace('permit','',$pointer) ;
-			$pointer = str_replace('_','.',$pointer) ;
-			array_push($allowed_permits,$pointer);
+		//Roles...
+		if($logged_user->isDeveloper() and $request->level == 1) {
+			array_push($allowed_roles , 'volunteers.permit');
+			array_push($allowed_roles , 'settings');
 		}
-		$is_saved_permits = $model->setPermits($allowed_permits) ;
+		foreach($request->toArray() as $field => $value) {
+			if(!str_contains($field , 'role_') or !$value)
+				continue ;
 
-		//Domains...
-		$domains = Domain::all() ;
-		foreach($domains as $domain) {
-			$pointer = "domain".$domain->id ;
-			if($data[$pointer])
-				$allowed_domains .= $domain->slug.'|';
+			$role = str_replace('role_' , null , $field) ;
+			$role = str_replace('_' , '.' , $role) ;
+			if($logged_user->can($role))
+				array_push($allowed_roles , $role) ;
 		}
 
-		$is_saved_domains = $model->setDomains($allowed_domains) ;
+		//Domain...
+		if($logged_user->can('manage' , 'global')) {
+			$model->domain = $request->domain ;
+		}
+		else {
+			//cannot change at all.
+		}
+
+		//Save...
+		$ok = $model->setPermits($allowed_roles , $model->domain) ;
 
 		//Return...
-		return $this->jsonAjaxSaveFeedback($is_saved_domains and $is_saved_permits);
+		return $this->jsonAjaxSaveFeedback($ok) ;
 	}
+
 
 	public function sms(Requests\Manage\VolunteerSendMessage $request)
 	{

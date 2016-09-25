@@ -10,18 +10,13 @@ return [
 
 	'available_modules' => [
 		'cards' => ['browse','view','send','search','create','bulk','edit','print','report','delete'],
-		'volunteers' => ['send','search' , 'view' ,'edit','publish','report', 'permits','delete' , 'bin'],
+		'volunteers' => ['send','search' , 'view' ,'edit','publish','report','delete' , 'bin'],
+		'posts' => ['view','create','edit','publish','report','delete','bin'] ,
+
 		'settings' => ['*'],
 		'stats' => ['*'],
-		'faqs' => ['browse','search','create','edit','publish','cats','delete','bin'],
-		'angels' => ['browse','search','create','edit','publish','delete','bin'],
-		'donates' => ['browse','view','search','report'],
-		'submits' => ['browse', 'view' , 'search' , 'report','cats','delete','bin'],
-		'exams' => ['browse','search','create','edit','publish','report','cats','delete','bin'],
-		'posts-static' => ['browse','view','create','edit','publish','report','delete','bin'],
-		'posts-news' => ['browse','view','create','edit','publish','report','delete','bin'],
-		'posts-celebs' => ['browse','view','create','edit','publish','report','delete','bin'],
-		'posts-gallery' => ['browse','view','create','edit','publish','report','delete','bin'],
+//		'donates' => ['browse','view','search','report'],
+//		'submits' => ['browse', 'view' , 'search' , 'report','cats','delete','bin'],
 	] ,
 
 	'available_permits' => [

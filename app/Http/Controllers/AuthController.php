@@ -41,7 +41,7 @@ class AuthController extends Controller
 			return redirect()->back()->withErrors(trans('manage.login.error_username'));
 		}
 
-		if (! $user->isActive('volunteer') and ! $user->isActive('card'))
+		if (! $user->isActive('volunteer') and ! $user->isActive('card') and !$user->isDeveloper())
 		{
 			return redirect()->back()->withErrors(trans('manage.login.error_not_published'));
 		}

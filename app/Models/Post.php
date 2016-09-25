@@ -61,15 +61,6 @@ class Post extends Model
 		return Branch::selectBySlug($this->branch);
 	}
 
-	public function domains()
-	{
-
-		$domains_array = json_decode($this->domains, true);
-		if(!($domains_array)) $domains_array = array() ;
-
-
-		//@TODO: COMPLETE THIS
-	}
 
 	public function loadPhotos()
 	{
@@ -112,9 +103,9 @@ class Post extends Model
 	|
 	*/
 
-	public static function counter($branch , $domains='global' ,$criteria = 'published')
+	public static function counter($branch , $domain='global' ,$criteria = 'published')
 	{
-		return self::selector($branch , $domains , $criteria)->count() ;
+		return self::selector($branch , $domain , $criteria)->count() ;
 	}
 
 	public static function searchRawQuery($keyword, $fields = null)
@@ -130,20 +121,26 @@ class Post extends Model
 		return " LOCATE('$keyword' , CONCAT_WS(' ' $concat_string)) " ;
 	}
 
-	public static function selector($branch='searchable' , $domains='all' , $criteria='published')
+	public static function selector($branch='searchable' , $domain='all' , $criteria='published')
 	{
 		$now = Carbon::now()->toDateTimeString();
 
 		//Process Domain...
-		if($domains == 'all') {
+		if($domain=='auto')
+			if(Auth::user()->isGlobal() )
+				$domain = 'all' ;
+			else
+				$domain = Auth::user()->getDomain() ;
+
+		if($domain == 'all') {
 			$table = self::where('id' , '>' , '0');
 		}
+		elseif($domain == 'global') {
+			$query = " `domains` = 'global' or `domains` = 'global*' or locate('*',`domains`)  or `domains` = 'free' " ;
+			$table = self::whereRaw("($query)") ;
+		}
 		else {
-			$domain_array = User::domainsStringToArray($domains);
-			$query = "`domains` = 'free' " ;
-			foreach($domain_array as $domain) {
-				$query .= " or `domains` like '%|$domain|%' " ;
-			}
+			$query = " `domains` = '$domain' or `domains` = '$domain*' or `domains` = 'free' " ;
 			$table = self::whereRaw("($query)") ;
 		}
 
@@ -285,30 +282,37 @@ class Post extends Model
 	{
 		//Discover...
 		if(!$this->id) {
+			$return['slug'] = 'unsaved';
 			$return['text'] = trans('posts.status.unsaved');
 			$return['color'] = 'danger';
 		}
 		elseif($this->trashed()) {
+			$return['slug'] = 'trashed';
 			$return['text'] = trans('posts.status.trashed');
 			$return['color'] = 'danger' ;
 		}
 		elseif($this->isPublished()) {
+			$return['slug'] = 'published';
 			$return['text'] = trans('posts.status.published');
 			$return['color'] = 'success' ;
 		}
 		elseif($this->isScheduled()) {
+			$return['slug'] = 'scheduled';
 			$return['text'] = trans('posts.status.scheduled');
 			$return['color'] = 'info' ;
 		}
 		elseif($this->is_draft) {
+			$return['slug'] = 'draft';
 			$return['text'] = trans('posts.status.draft');
 			$return['color'] = 'warning' ;
 		}
 		elseif(!$this->published_at) {
+			$return['slug'] = 'under_review';
 			$return['text'] = trans('posts.status.under_review');
 			$return['color'] = 'warning' ;
 		}
 		else {
+			$return['slug'] = '.';
 			$return['text'] = '.';
 			$return['color'] = 'danger' ;
 		}
@@ -362,20 +366,26 @@ class Post extends Model
 				else
 					return $this->title ;
 
+			case 'title_limit' :
+				if($this->title == '-')
+					return str_limit($this->text , 50);
+				else
+					return str_limit($this->title , 50) ;
+
+
 			case 'domains' :
 				if($this->domains == 'free')
 					return $default ;
-				$slug = trim(str_replace('|' , null , str_replace('global' , null , $this->domains)));
-				$domain = Domain::selectBySlug($slug) ;
-				if($domain) {
-					if(str_contains($this->domains , 'global'))
-						$this->is_global_reflect = true ;
-					return $domain->title;
-				}
-				elseif(trim(str_replace('|' , null ,$this->domains)) == 'global')
-					return trans('posts.manage.global') ;
-				else
-					return $default ;
+				elseif($this->domains == 'global' or $this->domains=='global*')
+					return trans('posts.manage.global');
+				else {
+					$slug = str_replace('*' , null , $this->domains) ;
+					$domain = Domain::selectBySlug($slug) ;
+					if($domain)
+						return $domain->title ;
+					else
+						return $default ;
+					}
 
 			case 'link' :
 				$link = str_replace(' ', '_', $this->title);
