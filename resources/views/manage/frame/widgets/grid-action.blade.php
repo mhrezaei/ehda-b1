@@ -43,11 +43,13 @@
 
 				//rest...
 				if(isset($action[3]))
-					$permit = \Illuminate\Support\Facades\Auth::user()->can($action[3]) ;
+					$permit = Auth::user()->can($action[3]) ;
 				else
 					$permit = true ;
-				if(isset($action[4]))
-					$permit = $action[4] and $permit ;
+
+				if($permit)
+					if(isset($action[4]))
+						$permit = $action[4]  ;
 
 			?>
 			@if($permit)

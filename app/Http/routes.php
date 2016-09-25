@@ -123,14 +123,17 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 		Route::get('/search' , 'CardsController@search');
 		Route::get('/reports' , 'CardsController@reports');//@TODO: INTACT!
 
-		Route::get('/create' , 'CardsController@create');
+		Route::get('/create/{volunteer_id?}' , 'CardsController@create');
 		Route::get('/{card_id}' , 'CardsController@show');
 		Route::get('/{card_id}/edit' , 'CardsController@editor');
 		Route::get('/{card_id}/{modal_action}' , 'CardsController@modalActions');
 
 		Route::group(['prefix'=>'save'] , function() {
 			Route::post('/' , 'CardsController@save');
+			Route::post('/volunteers' , 'CardsController@saveForVolunteers');
+			Route::post('/inquiry' , 'CardsController@inquiry');
 
+			Route::post('/add_to_print' , 'CardsController@add_to_print');
 			Route::post('/change_password' , 'CardsController@change_password');
 			Route::post('/delete' , 'CardsController@delete');
 			Route::post('/bulk_delete' , 'CardsController@bulk_delete');
@@ -138,6 +141,8 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 			Route::post('/bulk_sms' , 'CardsController@bulk_sms');
 			Route::post('/email' , 'CardsController@email');
 			Route::post('/bulk_email' , 'CardsController@bulk_email');
+			Route::post('/print' , 'CardsController@single_print');
+			Route::post('/bulk_print' , 'CardsController@bulk_print');
 		});
 	});
 

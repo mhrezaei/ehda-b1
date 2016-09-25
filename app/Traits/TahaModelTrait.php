@@ -141,4 +141,12 @@ trait TahaModelTrait
 
 	}
 
+	public static function bulkSet($ids , $setting=[])
+	{
+		if(!is_array($ids))
+			$ids = explode(',',$ids);
+
+		return Self::whereIn('id',$ids)->update($setting);
+	}
+
 }
