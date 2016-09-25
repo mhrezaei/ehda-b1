@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Manage;
 
 use App\models\Branch;
+use App\Models\Domain;
 use App\models\Meta;
 use App\Models\Post;
 use App\Traits\TahaControllerTrait;
@@ -114,13 +115,13 @@ class PostsController extends Controller
 				$permission = "$request_branch.search" ;
 				break;
 			case 'published' :
-				$permission = "$request_branch.browse";
+				$permission = "$request_branch";
 				break;
 			case 'scheduled' :
-				$permission = "$request_branch.browse" ;
+				$permission = "$request_branch" ;
 				break ;
 			case 'pending' :
-				$permission = "$request_branch.publish" ;
+				$permission = "$request_branch" ;
 				break;
 			case 'drafts' :
 				$permission = "$request_branch.publish" ;
@@ -223,7 +224,8 @@ class PostsController extends Controller
 		$page[0] = ["posts/$branch_slug" , $model->branch()->title()] ;
 		$page[1] = ["posts/create/$branch_slug" , trans('posts.manage.create' , ['thing' => $model->branch()->title(1)])];
 
-		$domains = Auth::user()->domains()->orderBy('title');
+		if(Auth::user()->isGlobal())
+			$domains = Domain::orderBy('title');
 
 		//View...
 		return view('manage.posts.editor' , compact('page', 'model' , 'domains'));
@@ -248,7 +250,8 @@ class PostsController extends Controller
 		$page[0] = ["posts/".$model->branch , $model->branch()->title() ] ;
 		$page[1] = ["posts/$post_id/edit" , trans('posts.manage.edit' , ['thing'=>$model->branch()->singular_title]) ] ;
 
-		$domains = Auth::user()->domains()->orderBy('title') ;
+		if(Auth::user()->isGlobal())
+			$domains = Domain::orderBy('title');
 
 		//View...
 		return view('manage.posts.editor' , compact('page','model' , 'domains'));
@@ -350,9 +353,9 @@ class PostsController extends Controller
 
 		//if new record...
 		if(!$data['id']) {
+			$success_redirect = 'manage/posts/-ID-/edit' ;
 			switch($action) {
 				case 'draft' :
-					$success_redirect = 'manage/posts/-ID-/edit' ;
 					$data['is_draft'] = 1 ;
 					break;
 
@@ -403,16 +406,14 @@ class PostsController extends Controller
 
 		//Reading the domains...
 		if($branch->hasFeature('domain')) {
-			$data['domains'] = '|' . $data['domains'] . '|' ;
-			if(isset($data['in_global']) and $data['in_global'] and $data['domains'] != '|global|')
-				$data['domains'] .= '|global|' ;
-			unset($data['in_global']) ;
-
-			if(!$user->can('*',$data['domains']))
-				return $this->jsonFeedback() ;
-			if(isset($model) and !$user->can('*',$model->domains))
-				return $this->jsonFeedback() ;
-
+			if(Auth::user()->getDomain() == 'global') {
+				if($data['_in_global'] and $data['domains'] != 'global')
+					$data['domains'] .= '*' ;
+			}
+			else {
+				if(!$data['id'])
+					$data['domains'] = Auth::user()->getDomain() ;
+			}
 		}
 		else {
 			$data['domains'] = 'free' ;
@@ -457,8 +458,8 @@ class PostsController extends Controller
 		if($post->branch()->hasFeature('gallery'))
 			$post->savePhotos($data) ;
 
-		//Choosing the redirection...
 		$success_redirect = str_replace('-ID-' , $is_saved , $success_redirect );
+		//Choosing the redirection...
 
 		return $this->jsonAjaxSaveFeedback($is_saved , [
 			'success_redirect' => $success_redirect ,

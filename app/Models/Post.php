@@ -127,10 +127,17 @@ class Post extends Model
 
 		//Process Domain...
 		if($domain=='auto')
-			$domain = Auth::user()->getDomain() ;
+			if(Auth::user()->isGlobal() )
+				$domain = 'all' ;
+			else
+				$domain = Auth::user()->getDomain() ;
 
 		if($domain == 'all') {
 			$table = self::where('id' , '>' , '0');
+		}
+		elseif($domain == 'global') {
+			$query = " `domains` = 'global' or `domains` = 'global*' or locate('*',`domain`)  or `domains` = 'free' " ;
+			$table = self::whereRaw("($query)") ;
 		}
 		else {
 			$query = " `domains` = '$domain' or `domains` = '$domain*' or `domains` = 'free' " ;
@@ -275,30 +282,37 @@ class Post extends Model
 	{
 		//Discover...
 		if(!$this->id) {
+			$return['slug'] = 'unsaved';
 			$return['text'] = trans('posts.status.unsaved');
 			$return['color'] = 'danger';
 		}
 		elseif($this->trashed()) {
+			$return['slug'] = 'trashed';
 			$return['text'] = trans('posts.status.trashed');
 			$return['color'] = 'danger' ;
 		}
 		elseif($this->isPublished()) {
+			$return['slug'] = 'published';
 			$return['text'] = trans('posts.status.published');
 			$return['color'] = 'success' ;
 		}
 		elseif($this->isScheduled()) {
+			$return['slug'] = 'scheduled';
 			$return['text'] = trans('posts.status.scheduled');
 			$return['color'] = 'info' ;
 		}
 		elseif($this->is_draft) {
+			$return['slug'] = 'draft';
 			$return['text'] = trans('posts.status.draft');
 			$return['color'] = 'warning' ;
 		}
 		elseif(!$this->published_at) {
+			$return['slug'] = 'under_review';
 			$return['text'] = trans('posts.status.under_review');
 			$return['color'] = 'warning' ;
 		}
 		else {
+			$return['slug'] = '.';
 			$return['text'] = '.';
 			$return['color'] = 'danger' ;
 		}

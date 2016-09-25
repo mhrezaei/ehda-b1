@@ -45,6 +45,14 @@ trait PermitsTrait
 			return $this->domain ;
 	}
 
+	public function isGlobal()
+	{
+		if($this->getDomain() == 'global')
+			return true ;
+		else
+			return false ;
+	}
+
 	public function getDomainName()
 	{
 		if($this->getDomain() == 'global')
