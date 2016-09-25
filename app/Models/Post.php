@@ -136,7 +136,7 @@ class Post extends Model
 			$table = self::where('id' , '>' , '0');
 		}
 		elseif($domain == 'global') {
-			$query = " `domains` = 'global' or `domains` = 'global*' or locate('*',`domain`)  or `domains` = 'free' " ;
+			$query = " `domains` = 'global' or `domains` = 'global*' or locate('*',`domains`)  or `domains` = 'free' " ;
 			$table = self::whereRaw("($query)") ;
 		}
 		else {
@@ -366,20 +366,26 @@ class Post extends Model
 				else
 					return $this->title ;
 
+			case 'title_limit' :
+				if($this->title == '-')
+					return str_limit($this->text , 50);
+				else
+					return str_limit($this->title , 50) ;
+
+
 			case 'domains' :
 				if($this->domains == 'free')
 					return $default ;
-				$slug = trim(str_replace('|' , null , str_replace('global' , null , $this->domains)));
-				$domain = Domain::selectBySlug($slug) ;
-				if($domain) {
-					if(str_contains($this->domains , 'global'))
-						$this->is_global_reflect = true ;
-					return $domain->title;
-				}
-				elseif(trim(str_replace('|' , null ,$this->domains)) == 'global')
-					return trans('posts.manage.global') ;
-				else
-					return $default ;
+				elseif($this->domains == 'global' or $this->domains=='global*')
+					return trans('posts.manage.global');
+				else {
+					$slug = str_replace('*' , null , $this->domains) ;
+					$domain = Domain::selectBySlug($slug) ;
+					if($domain)
+						return $domain->title ;
+					else
+						return $default ;
+					}
 
 			case 'link' :
 				$link = str_replace(' ', '_', $this->title);
