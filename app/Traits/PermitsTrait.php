@@ -6,7 +6,40 @@ use Illuminate\Support\Facades\Crypt;
 
 trait PermitsTrait
 {
+	protected static $available_modules = [
+		'cards' => ['browse','view','send','search','create','bulk','edit','print','report','delete'],
+		'volunteers' => ['send','search' , 'view' ,'edit','publish','report','delete' , 'bin'],
+		'posts' => ['create','edit','publish','report','delete','bin'] ,
+	];
 
+	protected static $available_permits = [
+			'browse' , // np need for volunteers but vital for cards.
+			'print' , // np need for volunteers but vital for cards.
+			'view',
+			'send',
+			'search',
+			'create',
+			'bulk',
+			'edit',
+			'publish',
+			'report',
+			'cats',
+			'delete',
+			'permits',
+			'bin',
+	];
+
+	protected static $public_modules = [
+			'index' ,
+			'profile' ,
+			'logout' ,
+	];
+
+	protected static $wildcards = [
+			'' ,
+			'any' ,
+			'*' ,
+	];
 	/*
 	|--------------------------------------------------------------------------
 	| Set
@@ -27,6 +60,14 @@ trait PermitsTrait
 	|--------------------------------------------------------------------------
 	| 
 	*/
+
+	public static function availableModules($key=null)
+	{
+		if($key)
+			return self::$available_modules[$key] ;
+		else
+			return self::$available_modules ;
+	}
 
 	public function getRoles()
 	{
@@ -94,7 +135,7 @@ trait PermitsTrait
 		if(!$requested_domain)
 			return true ;
 
-		if(in_array($requested_domain , config('permit.wildcards')))
+		if(in_array($requested_domain , self::$wildcards ))
 			return true ;
 
 		//Check...
@@ -107,7 +148,7 @@ trait PermitsTrait
 	private function canRole($requested_role)
 	{
 		//Obvious Conditions...
-		if(in_array($requested_role, config('permit.wildcards')))
+		if(in_array($requested_role, self::$wildcards))
 			return true;
 
 		if(!$requested_role)
