@@ -8,8 +8,8 @@
                 @if(sizeof(json_decode($gallery->meta('post_photos'), true)))
                     @foreach(json_decode($gallery->meta('post_photos'), true) as $pic)
                         <?php
-                            $image = explode('/', $pic['src']);
-                            $image_thumbs = str_replace($image[count($image) -1], 'thumbs/' . $image[count($image) -1], $pic['src']);
+                        $image = explode('/', $pic['src']);
+                        $image_thumbs = str_replace($image[count($image) -1], 'thumbs/' . $image[count($image) -1], $pic['src']);
                         ?>
                         <div class="flex-item">
                             <a href="{{ url('') . $pic['src'] }}" class="inner">

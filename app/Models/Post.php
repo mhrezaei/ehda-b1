@@ -368,9 +368,9 @@ class Post extends Model
 
 			case 'title_limit' :
 				if($this->title == '-')
-					return str_limit($this->text , 50);
+					return str_limit($this->text , 60);
 				else
-					return str_limit($this->title , 50) ;
+					return str_limit($this->title , 60) ;
 
 
 			case 'domains' :

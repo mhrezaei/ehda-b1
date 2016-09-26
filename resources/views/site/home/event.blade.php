@@ -13,7 +13,6 @@
                         <p>{{ $slide->meta('title_two') }}</p>
                     @endif
                     @if(strlen($slide->meta('link')))
-                        {{--<br>--}}
                         <a href="{{ url('') . $slide->meta('link') }}" style="color: white;">{{ trans('site.global.continue') }}</a>
                     @endif
                 </div>

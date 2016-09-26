@@ -4,8 +4,7 @@
         <ul class="events list-unstyled">
             @foreach($events as $event)
                 <li>
-                    {{--<a href="{{ url('showPost/' . $event->id . '/' . urlencode($event->title)) }}">@pd($event->title)</a>--}}
-                    <a href="{{ url('showPost/' . $event->id . '/' . urlencode($event->title)) }}">{{ $event->title }}</a>
+                    <a href="{{ $event->say('link') }}">@pd($event->say('title_limit'))</a>
                 </li>
             @endforeach
         </ul>
