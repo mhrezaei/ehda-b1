@@ -175,7 +175,7 @@ class TestController extends Controller
 		return $input;
 	}
 
-	public function convertCardsFromMhr()
+	protected function convertCardsFromMhr()
 	{
 //		$cards = Mhr_users_old::whereBetween('id' , ['15000' , '17000'])->whereNull('res1')->get() ;
 		$cards = Mhr_user::where('convert_data', 1)->limit(200)->get();
