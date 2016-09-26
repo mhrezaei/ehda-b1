@@ -59,6 +59,7 @@ Route::group(['prefix' => 'members', 'middleware' => 'MembersAuth', 'namespace' 
 */
 
 Route::get('/login', 'AuthController@login_panel');
+Route::get('/relogin', 'AuthController@relogin_panel');
 Route::post('/auth', 'AuthController@login');
 Route::get('/logout', 'AuthController@logout');
 

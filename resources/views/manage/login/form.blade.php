@@ -7,6 +7,12 @@
 		<h4>{{ trans('manage.login.head_title') }}</h4>
 	</div>
 
+	@if(isset($relogin))
+		<div class="alert alert-info">
+			{{ trans('site.global.relogin') }}
+		</div>
+	@endif
+
 	<div class="content">
 		@include('manage.login.input' , [
 			'name' => 'username' ,

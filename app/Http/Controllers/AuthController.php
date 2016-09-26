@@ -219,6 +219,24 @@ class AuthController extends Controller
 		return view('manage.login.0', compact('captcha'));
 	}
 
+	public function relogin_panel()
+	{
+		if(Auth::check())
+		{
+			if(Auth::user()->isActive('volunteer'))
+			{
+				return redirect('/manage/index');
+			}
+			else
+			{
+				return redirect('/members/my_card');
+			}
+		}
+		$captcha	= SecKeyServiceProvider::getQuestion('fa');
+		$relogin = true;
+		return view('manage.login.0', compact('captcha', 'relogin'));
+	}
+
 	/**
 	 * @return mixed
      */
