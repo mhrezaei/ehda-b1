@@ -34,6 +34,7 @@ Route::get('/convert', 'TestController@convertCardsFromMhr');
 // static pages
 Route::get('/organ_donation_card', 'CardController@index');
 Route::get('/faq', 'PostController@faq');
+Route::get('/angels', 'PostController@angels');
 
 /*
 |--------------------------------------------------------------------------
