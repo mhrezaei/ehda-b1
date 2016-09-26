@@ -30,10 +30,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	use TahaMetaTrait ;
 
 	protected $guarded = ['id' , 'deleted_at' , 'roles' , 'domains' , 'unverified_changes' , 'unverified_flag' , 'settings'] ;
-	protected static $cards_mandatory_fields = ['code_melli' , 'code_id' , 'name_first' , 'name_last' , 'name_father' , 'birth_date' , 'birth_city' , 'gender' , 'home_province' , 'home_city' , 'organs' , 'from_domain' ] ; //@TODO hadi check for data
+	protected static $cards_mandatory_fields = ['code_melli' , 'code_id' , 'name_first' , 'name_last' , 'name_father' , 'birth_date' , 'birth_city' , 'gender' , 'home_province' , 'home_city' , 'organs'  ] ; //@TODO hadi check for data
 	protected static $cards_optional_fields = ['email' , 'marital' , 'tel_mobile' , 'home_address' , 'home_tel' , 'home_postal_code' , 'work_address' , 'work_province' , 'work_city' , 'work_tel' , 'work_postal_code' , 'edu_level', 'edu_city' , 'edu_field' , 'job' , 'newsletter' , 'print_status' ] ;
 	public static $donatable_organs = ['heart','lung','liver','kidney','pancreas','tissues'] ;
-	public static $cards_search_fields = ['name_first' , 'name_last' , 'code_melli' , 'email' , 'card_no'] ;
+	public static $cards_search_fields = ['name_first' , 'name_last' , 'email' ] ;
 	public static $volunteers_search_fields = ['name_first' , 'name_last' , 'code_melli' , 'email'] ;
 
 
@@ -143,7 +143,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	/**
 	 * @param string $key
 	 * @return mixed
-     */
+	 */
 	public function volunteerStatus($key = 'text')
 	{
 
@@ -186,7 +186,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	/**
 	 * @return bool
-     */
+	 */
 	public function isDeveloper()
 	{
 		return in_array($this->code_melli , ['0074715623' , '0012071110' ]) ;
@@ -202,7 +202,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	/**
 	 * @return bool
-     */
+	 */
 	public function isVolunteer()
 	{
 		if($this->volunteer_status != 0)
@@ -213,7 +213,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	/**
 	 * @return bool
-     */
+	 */
 	public function isCard()
 	{
 		if($this->card_status != 0)
@@ -225,7 +225,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	/**
 	 * @param string $type
 	 * @return bool
-     */
+	 */
 	public function isActive($type='volunteer')
 	{
 		$field = $type."_status" ;
@@ -385,7 +385,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	*/
 	/**
 	 * @return mixed
-     */
+	 */
 	public function makeForgotPasswordToken()
 	{
 		$token['reset_token'] = rand(100000, 999999);
@@ -400,7 +400,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	/**
 	 * @param $password
 	 * @return bool
-     */
+	 */
 	public function oldPasswordChange($password)
 	{
 		$this->password = Hash::make($password);
@@ -411,7 +411,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	/**
 	 * @param int $password_force_change
 	 * @return bool
-     */
+	 */
 	public function updateUserForResetPassword($password_force_change = 1)
 	{
 		$this->reset_token = null;
@@ -499,12 +499,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	public static function virtualPrintTable()
 	{
 		return [
-			['n', trans('people.card_print_status.0')],
-			[1, trans('people.card_print_status.1')],
-			[2, trans('people.card_print_status.2')],
-			[3, trans('people.card_print_status.3')],
-			[4, trans('people.card_print_status.4')],
-			[9, trans('people.card_print_status.9')],
+				['n', trans('people.card_print_status.0')],
+				[1, trans('people.card_print_status.1')],
+				[2, trans('people.card_print_status.2')],
+				[3, trans('people.card_print_status.3')],
+				[4, trans('people.card_print_status.4')],
+				[9, trans('people.card_print_status.9')],
 		];
 	}
 
@@ -563,7 +563,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		if($this->isVolunteer()) {
 			$this->card_status = 0 ;
 			$this->card_registered_at = null ;
-//			$this->card_no = null ;
+			//			$this->card_no = null ;
 			$this->organs = null ;
 			return $this->save() ;
 		}
@@ -597,7 +597,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 			$this->volunteer_status = 0 ;
 			$this->volunteer_registered_at = null ;
 			$this->roles = null ;
-//			$this->domains = null ;
+			//			$this->domains = null ;
 			return $this->save() ;
 		}
 		else {
