@@ -74,4 +74,9 @@ class PostController extends Controller
         
         return view('site.faq.0', compact('faq'));
     }
+
+    public function angels()
+    {
+        return view('site.angels.0');
+    }
 }
