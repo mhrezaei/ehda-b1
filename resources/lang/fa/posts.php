@@ -66,6 +66,9 @@ return [
 		'categories' => 'دسته‌بندی‌ها' ,
 		'category' => 'دسته‌بندی' ,
 		'without' => 'پادرهوا',
+		'withouts' => 'بدون دسته‌ها' ,
+		'all' => 'همه‌ی دسته‌ها' ,
+		'filter_by_category' => 'نمایش بر اساس دسته‌بندی' ,
 	],
 
 	'post_photos' => [
