@@ -39,6 +39,7 @@ class MembersController extends Controller
 
         $input['birth_date'] = Carbon::createFromTimestamp($input['birth_date'])->toDateString();
         $input['home_province'] = State::find($input['home_city']);
+        $input['domain'] = $input['home_province']->domain->slug ;
         $input['home_province'] = $input['home_province']->province()->id;
 
         if (isset($input['password']) and strlen($input['password']) >= 8)

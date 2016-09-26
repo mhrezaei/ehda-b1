@@ -114,8 +114,8 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 	});
 
 	/*
-| cards
-*/
+	| cards
+	*/
 
 	Route::group(['prefix'=>'cards'] , function() {
 		Route::get('/' , 'CardsController@browse') ;
@@ -155,7 +155,7 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 		Route::get('/{branch_slug}' , 'PostsController@browse') ;
 		Route::get('{branch_slug}/searched' , 'PostsController@searchResult');
 		Route::get('{branch_slug}/search' , 'PostsController@searchPanel');
-		Route::get('/{branch_slug}/{request_tab}' , 'PostsController@browse') ;
+		Route::get('/{branch_slug}/{request_tab}/{request_category?}' , 'PostsController@browse') ;
 
 		Route::group(['prefix'=>'save'] , function() {
 			Route::post('/' , 'PostsController@save');

@@ -5,7 +5,7 @@
 	])
 
 	<div class="row w100 m5">
-		@foreach(config("permit.available_modules.$permits") as $permit)
+		@foreach($model->availableModules($permits) as $permit)
 			@if(Auth::user()->can("$module.$permit"))
 				<div class="col-md-3">
 					<div class="checkbox">

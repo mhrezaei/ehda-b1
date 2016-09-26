@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Manage;
 
 use App\models\Branch;
+use App\Models\Category;
 use App\Models\Domain;
 use App\models\Meta;
 use App\Models\Post;
@@ -99,7 +100,7 @@ class PostsController extends Controller
 	}
 
 
-	public function browse($request_branch, $request_tab = 'published')
+	public function browse($request_branch, $request_tab = 'published' , $request_category = 'all')
 	{
 		//Redirect if $request_branch is a number!
 		if(is_numeric($request_branch))
@@ -152,12 +153,62 @@ class PostsController extends Controller
 		$page[0] = ["posts/".$request_branch , $branch->title() , $request_tab] ;
 		$page[1] = ["$request_branch/".$request_tab , trans("posts.manage.$request_tab") , "$request_branch/".$request_tab] ;
 
+		//Categories...
+		if($branch->hasFeature('category')) {
+			$categories = Category::where('branch_id', $branch->id)->orderBy('title')->get() ;
+
+			$categories_array = [
+				[
+					$request_category=='all'? 'check' : '',
+					trans('posts.categories.all'),
+					url("manage/posts/$branch->slug/$request_tab/all")
+				],
+				[
+					$request_category=='without'? 'check' : '',
+					trans('posts.categories.withouts'),
+					url("manage/posts/$branch->slug/$request_tab/without")
+				],
+				['-']
+			] ;
+
+			foreach($categories as $category) {
+				array_push($categories_array , [
+					$request_category==$category->slug? 'check' : '' ,
+					$category->title ,
+					url("manage/posts/$branch->slug/$request_tab/$category->slug") ,
+				]);
+			}
+
+			if($request_category == 'without') {
+				$category_id = '0';
+				$category_label = trans('posts.categories.withouts');
+			}
+			elseif($request_category == 'all') {
+				$category_id = 'all';
+				$category_label = trans('posts.categories.all');
+			}
+			elseif($request_category) {
+				$category = Category::where('branch_id', $branch->id)->where('slug', $request_category)->first();
+				if($category) {
+					$category_id = $category->id;
+					$category_label = $category->title ;
+				}
+				else
+					return view('errors.404');;
+			}
+			else {
+				$category_id = 'all';
+			}
+		}
+		else
+			$category_id = 'all' ;
+
 		//Model...
-		$model_data = Post::selector($request_branch, 'auto' , $request_tab)->orderBy('created_at' , 'desc')->paginate(50);
+		$model_data = Post::selector($request_branch, 'auto' , $request_tab , $category_id)->orderBy('created_at' , 'desc')->paginate(50);
 		$db = Post::first() ;
 
 		//View...
-		return view("manage.posts.browse" , compact('page','branch','model_data' , 'db'));
+		return view("manage.posts.browse" , compact('page','branch','model_data' , 'db' , 'categories_array' , 'category_label'));
 
 	}
 

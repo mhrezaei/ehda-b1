@@ -27,7 +27,7 @@ class CardSearchRequest extends Request
 	public function rules()
 	{
 		return [
-			'keyword' => "required_with:searched|min:3",
+			'keyword' => "required_with:searched|min:2",
 		];
 
 	}
@@ -36,6 +36,7 @@ class CardSearchRequest extends Request
 	{
 		$value	= parent::all();
 		$purified = ValidationServiceProvider::purifier($value,[
+			'keyword' => 'ed'
 		]);
 		return $purified;
 

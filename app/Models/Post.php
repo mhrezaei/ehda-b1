@@ -121,7 +121,7 @@ class Post extends Model
 		return " LOCATE('$keyword' , CONCAT_WS(' ' $concat_string)) " ;
 	}
 
-	public static function selector($branch='searchable' , $domain='all' , $criteria='published')
+	public static function selector($branch='searchable' , $domain='all' , $criteria='published' , $category_id = 'all')
 	{
 		$now = Carbon::now()->toDateTimeString();
 
@@ -145,7 +145,10 @@ class Post extends Model
 		}
 
 		//Process Branches...
-		if($branch=='all') {
+		if(is_array($branch)) {
+			$table = $table->whereIn('branch', $branch) ;
+		}
+		elseif($branch=='all') {
 			//nothing required here :)
 		}
 		if($branch == 'searchable' ) {
@@ -153,6 +156,10 @@ class Post extends Model
 		}
 		else
 			$table = $table->where('branch' , $branch) ;
+
+		//Process Category...
+		if($category_id != 'all')
+			$table = $table->where('category_id' , $category_id) ;
 
 		//Process Criteria...
 		switch($criteria) {
@@ -175,6 +182,8 @@ class Post extends Model
 			default:
 				return $table->where('id' , '0') ;
 		}
+
+
 	}
 
 
