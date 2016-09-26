@@ -46,8 +46,19 @@ class CardsController extends Controller
 		//IF SEARCHED...
 		$keyword = $request->keyword ;
 		if(isset($request->searched)) {
-			$model_data = User::where('card_status' , '!=' , '0')->whereRaw(User::searchRawQuery($keyword,User::$cards_search_fields))->orderBy('card_registered_at' , 'desc')->paginate(50);
-				return view('manage.cards.browse' , compact('page' , 'model_data' , 'db' , 'keyword'));
+			$model_data = User::where('card_status' , '!=' , '0') ;
+
+			if(is_numeric($request->keyword and strlen($request->keyword)==10)) {
+				$model_data = $model_data->where('code_melli' , $request->keyword)->paginate(50) ;
+			}
+			elseif(is_numeric($request->keyword)) {
+				$model_data = $model_data->where('card_no' , $request->keyword)->paginate(50) ;
+			}
+			else {
+				$model_data = $model_data->whereRaw(User::searchRawQuery($keyword,User::$cards_search_fields))->orderBy('card_registered_at' , 'desc')->paginate(50);
+			}
+
+			return view('manage.cards.browse' , compact('page' , 'model_data' , 'db' , 'keyword'));
 		}
 
 		//IF JUST FORM...
@@ -262,6 +273,12 @@ class CardsController extends Controller
 		$data = $request->toArray() ;
 		$user = Auth::user() ;
 
+		if($data['id']) {
+			$model = User::find($data['id']);
+			if(!$model)
+				return $this->jsonFeedback(trans('validation.http.Eror410'));
+		}
+
 		//Processing donatable organs...
 		$data['organs'] = null ;
 		foreach(User::$donatable_organs as $donatable_organ) {
@@ -287,10 +304,19 @@ class CardsController extends Controller
 				$data['card_print_status'] = 1;
 			else {
 				$model = User::findBySlug($data['code_melli'], 'code_melli');
-				if($model and $model->card_print_status == 0 and $model->card_print_status > 3)
+				if($model and ($model->card_print_status == 0 or $model->card_print_status > 3))
 					$data['card_print_status'] = 1;
 			}
 		}
+
+		//Processing Domain...
+		$data['domain'] = Auth::user()->domain ;
+		if(!$data['domain'] or $data['domain']=='global') {
+			$state = State::find($user->home_city);
+			if($state)
+				$data['domain'] = $state->domain->slug ;
+		}
+
 
 
 		//Processing passwords and a few more things...
@@ -300,7 +326,6 @@ class CardsController extends Controller
 			$data['card_no'] = User::generateCardNo() ;
 		}
 		else {
-			$model = User::find($data['id']) ;
 			if($model->isActiveVolunteer() and !Auth::user()->can('volunteers.edit'))
 				return $this->jsonFeedback(trans('validation.http.Eror403'));
 		}

@@ -30,7 +30,7 @@
 	@include('forms.group-start')
 
 		@include('forms.button' , [
-			'label' => trans('people.commands.send_email'),
+			'label' => trans('forms.button.save'),
 			'shape' => 'success',
 			'type' => 'submit' ,
 		])

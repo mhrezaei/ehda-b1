@@ -145,7 +145,10 @@ class Post extends Model
 		}
 
 		//Process Branches...
-		if($branch=='all') {
+		if(is_array($branch)) {
+			$table = $table->whereIn('branch', $branch) ;
+		}
+		elseif($branch=='all') {
 			//nothing required here :)
 		}
 		if($branch == 'searchable' ) {

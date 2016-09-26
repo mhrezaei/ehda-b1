@@ -81,7 +81,7 @@
 		'name' => 'birth_city' ,
 		'class' => 'form-required',
 		'value' => $model->id? $model->birth_city : '0' ,
-		'blank_value' => '0' ,
+		'blank_value' => '' ,
 		'options' => $states ,
 		'search' => true ,
 		'search_placeholder' => trans('forms.button.search') ,
@@ -99,6 +99,7 @@
 		'name' => 'edu_level' ,
 		'class' => 'form-required' ,
 		'blank_value' => '' ,
+		'value' => $model->edu_level ,
 	])
 
 	@include('forms.input' , [
@@ -121,7 +122,7 @@
 	@include('forms.select' , [
 		'name' => 'home_city' ,
 		'value' => $model->id? $model->home_city : '0' ,
-		'blank_value' => '0' ,
+		'blank_value' => '' ,
 		'options' => $states ,
 		'search' => true ,
 		'class' => 'form-required'

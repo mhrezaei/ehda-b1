@@ -30,10 +30,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	use TahaMetaTrait ;
 
 	protected $guarded = ['id' , 'deleted_at' , 'roles' , 'domains' , 'unverified_changes' , 'unverified_flag' , 'settings'] ;
-	protected static $cards_mandatory_fields = ['code_melli' , 'code_id' , 'name_first' , 'name_last' , 'name_father' , 'birth_date' , 'birth_city' , 'gender' , 'home_province' , 'home_city' , 'organs' , 'from_domain' ] ;
+	protected static $cards_mandatory_fields = ['code_melli' , 'code_id' , 'name_first' , 'name_last' , 'name_father' , 'birth_date' , 'birth_city' , 'gender' , 'home_province' , 'home_city' , 'organs'  ] ;
 	protected static $cards_optional_fields = ['email' , 'marital' , 'tel_mobile' , 'home_address' , 'home_tel' , 'home_postal_code' , 'work_address' , 'work_province' , 'work_city' , 'work_tel' , 'work_postal_code' , 'edu_level', 'edu_city' , 'edu_field' , 'job' , 'newsletter' , 'print_status' ] ;
 	public static $donatable_organs = ['heart','lung','liver','kidney','pancreas','tissues'] ;
-	public static $cards_search_fields = ['name_first' , 'name_last' , 'code_melli' , 'email' , 'card_no'] ;
+	public static $cards_search_fields = ['name_first' , 'name_last' , 'email' ] ;
 	public static $volunteers_search_fields = ['name_first' , 'name_last' , 'code_melli' , 'email'] ;
 
 

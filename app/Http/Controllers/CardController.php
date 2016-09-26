@@ -85,9 +85,11 @@ class CardController extends Controller
         $input['password'] = Hash::make($input['password']);
         $input['birth_date'] = Carbon::createFromTimestamp($input['birth_date'])->toDateString();
         $input['home_province'] = State::find($input['home_city']);
+        $input['domain'] = $input['home_province']->domain->slug ;
         $input['home_province'] = $input['home_province']->province()->id;
         $input['password_force_change'] = 0;
         unset($input['password2']);
+
 
 
         if (isset($input['chRegisterAll']))
