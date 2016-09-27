@@ -11,11 +11,7 @@
 			<input id="txtFeaturedImage" type="hidden" name="featured_image" value="{{ $model->featured_image? url($model->featured_image) : '' }}">
 			<div id="divFeaturedImage" class="{{ $model->featured_image? '' : 'noDisplay' }}">
 				<div class="text-center">
-<<<<<<< HEAD
-					<img id="imgFeaturedImage" src="{{ $model->featured_image? url($model->featured_image) : '' }}" style="margin-top:15px;max-height:100px;" ondblclick="postEditorFeatures('delete_featured_image')">
-=======
 					<img id="imgFeaturedImage" src="{{ $model->featured_image? url($model->featured_image) : '' }}" style="margin-top:15px;max-height:100px;max-width: 100%">
->>>>>>> manage-filals3-permission-rewrite
 				</div>
 				<btn id="btnDeleteFeaturedImage" class="btn btn-link btn-xs">
 				<span class="text-danger clickable" onclick="postEditorFeatures('featured_image_deleted')">
