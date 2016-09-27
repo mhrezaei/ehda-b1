@@ -449,6 +449,6 @@ class Post extends Model
 		if ($this->domains == 'free')
 			return true;
 		
-		return str_contains($this->domains, "|$domain|");
+		return str_contains($this->domains, "$domain");
 	}
 }
