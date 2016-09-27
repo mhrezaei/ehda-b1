@@ -291,6 +291,6 @@ class AuthController extends Controller
 
 	public function sms()
 	{
-		
+		echo public_path();
 	}
 }

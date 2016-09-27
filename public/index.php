@@ -35,6 +35,14 @@ require __DIR__.'/../bootstrap/autoload.php';
 
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
+$app = new Illuminate\Foundation\Application(
+    realpath(__DIR__ . '/../')
+);
+
+$app->bind('path.public', function() {
+    return base_path().env('PUBLIC_FOLDER', 'public_html');
+});
+
 /*
 |--------------------------------------------------------------------------
 | Run The Application
