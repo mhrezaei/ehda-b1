@@ -35,12 +35,8 @@ require __DIR__.'/../bootstrap/autoload.php';
 
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
-$app = new Illuminate\Foundation\Application(
-    realpath(__DIR__ . '/../')
-);
-
 $app->bind('path.public', function() {
-    return base_path().env('PUBLIC_FOLDER', 'public_html');
+	return base_path().env('PUBLIC_FOLDER', 'public');
 });
 
 /*
@@ -58,7 +54,7 @@ $app->bind('path.public', function() {
 $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
 
 $response = $kernel->handle(
-    $request = Illuminate\Http\Request::capture()
+	$request = Illuminate\Http\Request::capture()
 );
 
 $response->send();
