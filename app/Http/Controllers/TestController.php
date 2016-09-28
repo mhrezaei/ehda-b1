@@ -38,8 +38,7 @@ class TestController extends Controller
 //		return $this->convertExams() ;
 //		return $this->upgradeDomains() ;
 
-		$user = User::find(23);
-		return view('templates.say' , ['array'=>json_decode($user->getRoles())]);
+		return view('templates.say' , ['array'=>public_path()]);
 
 
 	}
