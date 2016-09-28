@@ -34,16 +34,22 @@
 
 	@include('forms.group-start')
 
-	@include('forms.button' , [
-		'label' => trans('forms.button.save'),
-		'shape' => 'success',
-		'type' => 'submit' ,
-	])
-	@include('forms.button' , [
-		'label' => trans('forms.button.cancel'),
-		'shape' => 'link',
-		'link' => '$(".modal").modal("hide")'
-	])
+		@include('manage.settings.categories_edit_image')
+
+	@include('forms.group-end')
+
+	@include('forms.group-start')
+
+		@include('forms.button' , [
+			'label' => trans('forms.button.save'),
+			'shape' => 'success',
+			'type' => 'submit' ,
+		])
+		@include('forms.button' , [
+			'label' => trans('forms.button.cancel'),
+			'shape' => 'link',
+			'link' => '$(".modal").modal("hide")'
+		])
 
 	@include('forms.group-end')
 

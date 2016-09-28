@@ -35,9 +35,15 @@ require __DIR__.'/../bootstrap/autoload.php';
 
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
+<<<<<<< HEAD
 //$app->bind('path.public', function() {
 //	return base_path().env('PUBLIC_FOLDER', 'public');
 //});
+=======
+$app->bind('path.public', function() {
+	return base_path().env('PUBLIC_FOLDER', 'public');
+});
+>>>>>>> master
 
 /*
 |--------------------------------------------------------------------------
@@ -54,7 +60,7 @@ $app = require_once __DIR__.'/../bootstrap/app.php';
 $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
 
 $response = $kernel->handle(
-    $request = Illuminate\Http\Request::capture()
+	$request = Illuminate\Http\Request::capture()
 );
 
 $response->send();
