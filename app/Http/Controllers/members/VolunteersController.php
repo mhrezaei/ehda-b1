@@ -30,4 +30,9 @@ class VolunteersController extends Controller
 
         print_r($input);
     }
+
+    public function exam()
+    {
+        return 1333;
+    }
 }

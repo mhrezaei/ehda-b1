@@ -39,6 +39,7 @@ Route::get('/angels', 'PostController@angels');
 // volunteer pages
 Route::get('/volunteers', 'members\VolunteersController@index');
 Route::post('/volunteer/first_step', 'members\VolunteersController@register_first_step');
+Route::get('/volunteers/exam', 'members\VolunteersController@exam');
 
 /*
 |--------------------------------------------------------------------------

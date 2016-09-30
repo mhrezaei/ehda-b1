@@ -7,11 +7,20 @@
             <div class="row">
                 <p style="text-align: justify;">
                 {!! $volunteer->text !!}
-                    @include('forms.button', [
+                    @if(Auth::check())
+                        @include('forms.button', [
+                        'shape' => 'success',
+                        'link' => url('/volunteers/exam'),
+                        'label' => trans('site.global.volunteer_register_page')
+                        ])
+                    @else
+                        @include('forms.button', [
                         'shape' => 'success stepOneBtn',
                         'link' => 'volunteer_register_step_one("start")',
                         'label' => trans('site.global.volunteer_register_page')
-                    ])
+                        ])
+                    @endif
+
                     @include('forms.button', [
                         'shape' => 'info pdf-book',
                         'link' => url('') . '/assets/files/safiran-learning.pdf',
@@ -66,7 +75,7 @@
                     <div class="col-xs-12 col-sm-6">
                         <div class="form-group">
                             <label for="email">{{ trans('validation.attributes.email') }}: <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control form-national form-required" id="email" name="email" data-toggle="tooltip" data-placement="top" placeholder="{{ trans('validation.attributes_placeholder.email') }}" title="{{ trans('validation.attributes_example.email') }}" error-value="{{ trans('validation.javascript_validation.email') }}">
+                            <input type="text" class="form-control form-email form-required" id="email" name="email" data-toggle="tooltip" data-placement="top" placeholder="{{ trans('validation.attributes_placeholder.email') }}" title="{{ trans('validation.attributes_example.email') }}" error-value="{{ trans('validation.javascript_validation.email') }}">
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-6">

@@ -17,7 +17,7 @@ class VolunteerFirstStepRequest extends Request
     public function authorize()
     {
         if (Auth::check())
-            return false;
+            return true;
         else
             return true;
     }
@@ -34,7 +34,7 @@ class VolunteerFirstStepRequest extends Request
              'name_first' => 'required|persian:60',
              'name_last' => 'required|persian:60',
              'code_melli' => 'required|code_melli',
-             'tel_mobile' => 'required|mobile',
+             'tel_mobile' => 'required|phone:mobile',
              'email' => 'required|email',
              'security' => 'required|captcha:'.$input['key'],
         ];
