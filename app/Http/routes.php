@@ -36,6 +36,9 @@ Route::get('/organ_donation_card', 'CardController@index');
 Route::get('/faq', 'PostController@faq');
 Route::get('/angels', 'PostController@angels');
 
+// volunteer pages
+Route::get('/volunteers', 'PostController@angels');
+
 /*
 |--------------------------------------------------------------------------
 | CARD HOLDER PANEL

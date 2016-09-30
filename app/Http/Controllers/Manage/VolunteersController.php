@@ -228,6 +228,7 @@ class VolunteersController extends Controller
 		return $this->jsonAjaxSaveFeedback($is_saved);
 
 	}
+	
 	public function publish(Request $request)
 	{
 		if(!Auth::user()->can('volunteers.publish')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
@@ -332,7 +333,7 @@ class VolunteersController extends Controller
 		return $this->jsonAjaxSaveFeedback($done, ['success_refresh' => true,]);
 	}
 
-		public function hard_delete(Request $request)
+	public function hard_delete(Request $request)
 	{
 		if(!Auth::user()->isDeveloper()) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
 
