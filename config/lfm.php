@@ -27,10 +27,10 @@ return [
     'shared_folder_name'    => 'posts',
     'thumb_folder_name'     => 'thumbs',
 
-    'images_dir'            => 'public_html/assets/photos/',
+    'images_dir'            => env('PUBLIC_FOLDER', 'public_html').'/assets/photos/',
     'images_url'            => 'assets/photos/',
 
-    'files_dir'             => 'public_html/assets/files/',
+    'files_dir'             => env('PUBLIC_FOLDER', 'public_html').'/assets/files/',
     'files_url'             => 'assets/files/',
 
     // available since v1.3.0
