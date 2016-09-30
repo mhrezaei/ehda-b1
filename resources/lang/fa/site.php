@@ -17,6 +17,8 @@ return [
         'donate_life' => 'اهدای زندگی',
         'organ_donation_btn' => 'کارت اهدای عضو',
         'home_page' => 'صفحه نخست',
+        'volunteer_resource_pdf' => 'کتاب آموزشی سفیران',
+        'volunteer_register_page' => 'ثبت نام سفیران اهدای عضو',
         'card_register_page' => 'ثبت نام کارت اهدای عضو',
         'card_edit_page' => 'ویرایش کارت اهدای عضو',
         'card_info_page' => 'تاریخچه و اهمیت کارت اهدای عضو',

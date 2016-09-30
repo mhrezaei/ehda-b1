@@ -48,7 +48,7 @@
                 <ul class="list-unstyled pull-left text-right">
                     <h3>{{ trans('site.ask_menu.volunteers') }}</h3>
                     <li><a href="/">{{ trans('site.ask_menu.special_volunteers') }}</a></li>
-                    <li><a href="{{ url('/showPost/organ_donation_volunteer/' . urlencode(trans('site.ask_menu.organ_donation_volunteers'))) }}">{{ trans('site.ask_menu.organ_donation_volunteers') }}</a></li>
+                    <li><a href="{{ url('/volunteers') }}">{{ trans('site.ask_menu.organ_donation_volunteers') }}</a></li>
                 </ul>
                 <ul class="list-unstyled pull-left text-right">
                     <h3><a href="/"> {{ trans('site.ask_menu.participation_in_the_notification') }}</a></h3>

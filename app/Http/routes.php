@@ -37,7 +37,8 @@ Route::get('/faq', 'PostController@faq');
 Route::get('/angels', 'PostController@angels');
 
 // volunteer pages
-Route::get('/volunteers', 'PostController@angels');
+Route::get('/volunteers', 'members\VolunteersController@index');
+Route::post('/volunteer/first_step', 'members\VolunteersController@register_first_step');
 
 /*
 |--------------------------------------------------------------------------

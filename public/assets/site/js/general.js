@@ -17,6 +17,27 @@ function register_card_step_one($mode)
     }
 }
 
+function volunteer_register_step_one($mode)
+{
+    if ($mode == 'start')
+    {
+        $('.stepOneBtn').hide();
+        $('.pdf-book').hide();
+        $('.stepOneForm').slideToggle();
+        $('#name_first').focus();
+    }
+    else if($mode == 'stop')
+    {
+        $('.stepOneBtn').show();
+        $('.pdf-book').show();
+        $('.stepOneForm').slideToggle();
+    }
+    else
+    {
+        alert('Error!');
+    }
+}
+
 function registerForm_validate()
 {
     if ($('#chRegisterAll').is(":checked") || $('#chRegisterHeart').is(":checked") || $('#chRegisterLung').is(":checked") ||
