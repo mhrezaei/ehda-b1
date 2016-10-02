@@ -40,6 +40,7 @@ class CategorySaveRequest extends Request
         $purified = ValidationServiceProvider::purifier($value,[
 	        'province_id'  =>  'number',
 	        'domain_id' => 'number' ,
+             'featured_image' => 'stripUrl' ,
         ]);
         return $purified;
 

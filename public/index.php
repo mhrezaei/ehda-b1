@@ -35,15 +35,9 @@ require __DIR__.'/../bootstrap/autoload.php';
 
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
-<<<<<<< HEAD
-//$app->bind('path.public', function() {
-//	return base_path().env('PUBLIC_FOLDER', 'public');
-//});
-=======
 $app->bind('path.public', function() {
-	return base_path().env('PUBLIC_FOLDER', 'public');
+	return base_path().'/'.env('PUBLIC_FOLDER', 'public');
 });
->>>>>>> master
 
 /*
 |--------------------------------------------------------------------------
