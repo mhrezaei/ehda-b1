@@ -55,7 +55,8 @@ class CardsController extends Controller
 				$model_data = $model_data->where('card_no' , $request->keyword)->paginate(50) ;
 			}
 			else {
-				$model_data = $model_data->whereRaw(User::searchRawQuery($keyword,User::$cards_search_fields))->orderBy('card_registered_at' , 'desc')->paginate(50);
+//				$model_data = $model_data->whereRaw(User::searchRawQuery($keyword,User::$cards_search_fields))->orderBy('card_registered_at' , 'desc')->paginate(50);
+				$model_data = User::selector('cards' , "search:$keyword")->orderBy('card_registered_at' , 'desc')->paginate(50);
 			}
 
 			return view('manage.cards.browse' , compact('page' , 'model_data' , 'db' , 'keyword'));

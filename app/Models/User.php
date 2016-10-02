@@ -433,7 +433,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	public static function selector($type , $criteria , $domain='auto')
 	{
 
-
 		//Process Domain...
 		if($domain=='auto')
 			$domain =  Auth::user()->getDomain() ;
@@ -443,8 +442,17 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		else
 			$table = self::where('domain' , $domain) ;
 
+		//Process Search...
+		if(str_contains($criteria , 'search')) {
+			$keyword = str_replace('search:' , null , $criteria) ;
+			$criteria = 'search' ;
+		}
+
 		//Process Criteria...
 		if($type=='volunteer' or $type=='volunteers') {
+			if(!Auth::user()->isDeveloper())
+				$table = $table->where('code_melli' , '<>' , '0074715623' );
+
 			switch($criteria) {
 				case 'examining':
 					return $table->where('volunteer_status' , '=' , '1') ;
@@ -458,6 +466,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 					return $table->where('volunteer_status' , '>' , '0')->where('unverified_flag' , '1');
 				case 'bin' :
 					return $table->where('volunteer_status' , '<' , '0');
+				case 'search' :
+					return $table->where('volunteer_status' , '!=' , '0')->whereRaw(self::searchRawQuery($keyword,self::$volunteers_search_fields)) ;
 			}
 		}
 		elseif($type=='card' or $type=='cards') {
@@ -479,6 +489,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 					return $table->where('card_status' , '>=' , '8')->whereBetween('card_print_status' , [1,8]);
 				case 'newsletter_member' :
 					return $table->where('card_status' , '>=' , '8')->where('newsletter' , 1)->whereNotNull('email');
+				case 'search' :
+					return $table->where('card_status' , '!=' , '0')->whereRaw(self::searchRawQuery($keyword,self::$cards_search_fields)) ;
 			}
 		}
 
