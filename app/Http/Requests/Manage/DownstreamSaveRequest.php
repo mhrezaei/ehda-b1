@@ -3,11 +3,11 @@
 namespace App\Http\Requests\Manage;
 
 use App\Http\Requests\Request;
-use App\Models\Category;
+use App\Models\Setting;
 use App\Providers\ValidationServiceProvider;
 
 
-class CategorySaveRequest extends Request
+class DownstreamSaveRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,11 +27,17 @@ class CategorySaveRequest extends Request
     public function rules()
     {
         $input = $this->all();
-        return [
-             'branch_id' => 'required|numeric|exists:branches,id',
-             'title' => 'required|unique:categories,title,'.$input['id'].',id,branch_id,'.$input['branch_id'],
-             'slug' => 'required|not_in:'.Category::$reserved_slugs.'|unique:categories,slug,'.$input['id'].',id,branch_id,'.$input['branch_id'],
-        ];
+        if($input['_submit'] == 'save')  {
+            return [
+                 'title' => 'required|unique:settings,title,'.$input['id'] ,
+                 'slug' => 'required|alpha_dash|not_in:'.Setting::$reserved_slugs.'|unique:settings,slug,'.$input['id'],
+                 'category' => 'required',
+                 'data_type' => 'required',
+            ];
+        }
+        else {
+            return [] ;
+        }
 
     }
 
@@ -39,9 +45,8 @@ class CategorySaveRequest extends Request
     {
         $value	= parent::all();
         $purified = ValidationServiceProvider::purifier($value,[
-	        'province_id'  =>  'number',
-	        'domain_id' => 'number' ,
-             'featured_image' => 'stripUrl' ,
+	        'available_for_domains'  =>  'bool',
+	        'is_resident'  =>  'bool',
         ]);
         return $purified;
 

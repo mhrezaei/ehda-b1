@@ -38,8 +38,10 @@ class TestController extends Controller
 //		return $this->convertExams() ;
 //		return $this->upgradeDomains() ;
 
-		return view('templates.say' , ['array'=>public_path()]);
+//		return view('templates.say' , ['array'=>public_path()]);
 
+
+		dd(Post::hasColumn('title'));
 
 	}
 

@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
 
 trait TahaModelTrait
 {
@@ -22,6 +23,16 @@ trait TahaModelTrait
 		return $short_name ;
 	}
 
+	public static function tableName()
+	{
+		$model = new self() ;
+		return $model->getTable() ;
+	}
+
+	public static function hasColumn($field_name)
+	{
+		return Schema::hasColumn(self::tableName(), $field_name);
+	}
 	/*
 	|--------------------------------------------------------------------------
 	| General Select Methods
@@ -72,7 +83,8 @@ trait TahaModelTrait
 		//Action...
 		if(isset($data['id']) and $data['id'] > 0) {
 			$affected = Self::where('id', $data['id'])->update($data);
-			if(!isset($data['updated_by'])) {
+
+			if(self::hasColumn('updated_by') and !isset($data['updated_by'])) {
 				if( Auth::check())
 					$data['updated_by'] = Auth::user()->id ;
 				else
@@ -81,7 +93,7 @@ trait TahaModelTrait
 			if($affected) $affected = $data['id'] ;
 		}
 		else {
-			if(!isset($data['created_by'])) {
+			if(self::hasColumn('created_by') and !isset($data['created_by'])) {
 				if( Auth::check())
 					$data['created_by'] = Auth::user()->id ;
 				else
@@ -103,17 +115,20 @@ trait TahaModelTrait
 	public function unpublish()
 	{
 		$this->published_at = null ;
-		$this->published_by = null ;
+		if(self::hasColumn('published_by'))
+			$this->published_by = null ;
 		return $this->save() ;
 	}
 
 	public function delete()
 	{
-//		if($this->id == Auth::user()->id)
-//			return 0 ;
+		if(self::hasColumn('deleted_at'))
+			$this->deleted_at = Carbon::now()->toDateTimeString();
+		else
+			return parent::delete() ;
 
-		$this->deleted_at = Carbon::now()->toDateTimeString();
-		$this->deleted_by = Auth::user()->id ;
+		if(self::hasColumn('deleted_by'))
+			$this->deleted_by = Auth::user()->id ;
 		return $this->save();
 	}
 
@@ -124,7 +139,7 @@ trait TahaModelTrait
 
 		return Self::whereIn('id',$ids)->where('id','<>',$exception)->update([
 				'deleted_at' => Carbon::now()->toDateTimeString() ,
-				'deleted_by' => Auth::user()->id ,
+				'deleted_by' => Auth::user()->id , //@TODO: What if doesn't have this column  in database
 		]);
 
 	}
@@ -136,7 +151,7 @@ trait TahaModelTrait
 
 		return Self::whereIn('id',$ids)->whereNull('deleted_at')->whereNull('published_at')->update([
 				'published_at' => Carbon::now()->toDateTimeString() ,
-				'published_by' => Auth::user()->id ,
+				'published_by' => Auth::user()->id , //@TODO: What if doesn't have this column  in database
 		]);
 
 	}

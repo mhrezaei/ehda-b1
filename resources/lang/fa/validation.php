@@ -22,7 +22,7 @@ return [
 		"active_url"       => "نشانی :attribute معتبر نیست",
 		"after"            => ":attribute منطقی نیست." , ":attribute باید تاریخی بعد از :date باشد.",
 		"alpha"            => ":attribute باید شامل حروف الفبا باشد.",
-		"alpha_dash"       => ":attribute باید شامل حروف الفبا و عدد و خظ تیره(-) باشد.",
+		"alpha_dash"       => ":attribute فقط می‌تواند شامل حروف الفبا و عدد و خط (underline یا dash) باشد.",
 		"alpha_num"        => ":attribute باید شامل حروف الفبا و عدد باشد.",
 		"array"            => ":attribute باید شامل آرایه باشد.",
 		"before"           => ":attribute باید تاریخی قبل از :date باشد.",
@@ -271,6 +271,7 @@ return [
 				'abstract' => 'چکیده',
 				'text' => 'متن',
 				'category_id' => 'دسته‌بندی',
+				'category' => 'دسته‌بندی',
 				'keywords' => 'کلیدواژه‌ها',
 				'allowed_meta' => 'متاهای مجاز' ,
 				'featured_image' => 'نمایه',
@@ -301,6 +302,11 @@ return [
 				'keyword' => 'کلیدواژه',
 
 				'branch_id' => 'شاخه' ,
+				'value' => 'مقدار' ,
+				'global_value' => 'مقدار پیش‌فرض' ,
+				'data_type' => 'نوع داده' ,
+				'available_for_domains' => 'قابلیت خصوصی‌سازی در دامنه‌ها' ,
+				'is_resident' => 'ماندگار در حافظه' ,
 		],
 
 		"http" => [

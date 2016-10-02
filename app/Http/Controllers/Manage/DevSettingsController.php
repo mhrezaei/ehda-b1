@@ -6,6 +6,7 @@ use App\models\Branch;
 use App\Models\Category;
 use App\Models\Domain;
 use App\Models\Post_cat;
+use App\Models\Setting;
 use App\Models\State;
 use App\Traits\TahaControllerTrait;
 
@@ -33,6 +34,10 @@ class DevSettingsController extends Controller
 
 		//Model...
 		switch($request_tab) {
+			case 'downstream' :
+				$model_data = Setting::orderBy('title')->get() ;
+				break;
+
 			case 'states' :
 				$model_data = State::get_provinces()->orderBy('title')->get();
 				break;
@@ -63,9 +68,19 @@ class DevSettingsController extends Controller
 	public function editor($request_tab , $item_id , $parent_id=0)
 	{
 		//Appears in modal and doesn't need $this->page stuff
-		
 
 		switch($request_tab) {
+			case 'downstream' :
+				if($item_id>0) {
+					$model = Setting::find($item_id);
+					if(!$model)
+						return trans('validation.invalid');
+				}
+				else {
+					$model = new Setting() ;
+				}
+			return view('manage.settings.downstream-edit' , compact('model'));
+
 			case 'states' :
 				if($item_id>0) {
 					$model = State::find($item_id) ;
@@ -249,6 +264,21 @@ class DevSettingsController extends Controller
 		return $this->jsonAjaxSaveFeedback(Category::store($request) ,[
 				'success_refresh' => 1,
 		]);
+
+	}
+
+	public function save_downstream(Requests\Manage\DownstreamSaveRequest $request)
+	{
+		if($request->_submit == 'save') {
+			return $this->jsonAjaxSaveFeedback(Setting::store($request) ,[
+					'success_refresh' => 1,
+			]);
+		}
+		else {
+			return $this->jsonAjaxSaveFeedback(Setting::destroy($request->id) , [
+					'success_refresh' => 1,
+			]);
+		}
 
 	}
 
