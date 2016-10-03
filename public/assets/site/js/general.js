@@ -38,6 +38,17 @@ function volunteer_register_step_one($mode)
     }
 }
 
+function volunteer_send_sheet(element)
+{
+    var count = $('input:radio:checked').length;
+    var text = $('#exam_count').text() + ' ' + forms_digit_fa('' + count + '');
+    $('#exam_count').text(text);
+    $(element).hide(500, function () {
+        $('#exam_count').show();
+        $('.btn-primary').show();
+    });
+}
+
 function registerForm_validate()
 {
     if ($('#chRegisterAll').is(":checked") || $('#chRegisterHeart').is(":checked") || $('#chRegisterLung').is(":checked") ||

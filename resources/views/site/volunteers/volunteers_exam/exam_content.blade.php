@@ -16,22 +16,20 @@
                     <div class="form-group" style="margin-bottom: 40px; color: #0f0f0f;">
                         <div>{{ trans('site.global.volunteer_exam_detail') }}</div>
                     </div>
-                    <?php $row = 1; ?>
-                    @foreach($tests as $test)
+
+                    @foreach($tests as $key => $test)
                         <div class="row">
                             <div class="col-xs-12 col-sm-12 col-md-12">
                                 <div class="form-group">
-                                    @pd($row++)- {!! $test['title'] !!}
+                                    @pd($key+1)- {!! $test['question'] !!}
                                     <div style="width: 90%; color: #002166; margin: 0 auto;">
-                                        <?php $label = array('A', 'B', 'C', 'D'); $count = 0; ?>
-                                        @foreach($test['answer'] as $answer)
+                                        @foreach($test['options'] as $k => $answer)
                                             @include('site.volunteers.volunteers_exam.exam_radio_form', [
                                             'id' => $test['id'],
-                                            'value' => encrypt($answer->key),
-                                            'label' => trans('forms.alphabet.' . $label[$count]),
-                                            'title' => $answer->value
+                                            'value' => encrypt($answer[1]),
+                                            'label' => trans('forms.alphabet.' . $k),
+                                            'title' => $answer[0]
                                             ])
-                                            <?php $count++; ?>
                                         @endforeach
                                     </div>
                                     <hr style="background-color: #0A3C6E;">
@@ -40,11 +38,21 @@
                         </div>
                     @endforeach
 
+                <p id="exam_count" class="hide-element">{{ trans('site.global.volunteer_exam_count') }}</p>
+
                     @include('forms.feed')
+                    @include('forms.button', [
+                        'shape' => 'primary',
+                        'label' => trans('site.global.volunteer_db_check_send_sheet'),
+                        'type' => 'submit',
+                        'class' => 'hide-element',
+                    ])
+
                     @include('forms.button', [
                         'shape' => 'success',
                         'label' => trans('forms.button.send_answer_sheet'),
-                        'type' => 'submit',
+                        'type' => 'button',
+                        'link' => 'volunteer_send_sheet(this)'
                     ])
 
                     {!! Form::close() !!}
