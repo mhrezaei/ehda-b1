@@ -41,6 +41,7 @@
 				<tr>
 					<td>#</td>
 					<td>{{ trans('validation.attributes.title') }}</td>
+					<td>{{ trans('validation.attributes.category_id') }}</td>
 					<td>{{ trans('validation.attributes.data_type') }}</td>
 					<td>{{ trans('validation.attributes.value') }}</td>
 					<td>{{ trans('manage.devSettings.domains.trans') }}</td>
@@ -57,6 +58,9 @@
 								{{ $model->title }}
 							</a>
 							<i class="mh5 text-grey f10">{{ $model->slug }}</i>
+						</td>
+						<td>
+							{{ trans("manage.devSettings.downstream.category.$model->category") }}
 						</td>
 						<td>
 							{{ trans("manage.devSettings.downstream.data_type.$model->data_type")  }}
