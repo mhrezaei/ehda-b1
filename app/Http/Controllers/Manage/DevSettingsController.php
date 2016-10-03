@@ -206,6 +206,12 @@ class DevSettingsController extends Controller
 		$view = "manage.settings." ;
 
 		switch($request_tab) {
+			case 'downstream' :
+				$model_data = Setting::where('title' , 'like' , "%$key%")->orWhere('slug' , 'like' , "%$key%")->orderBy('title')->paginate(100);
+				$view .= 'downstream' ;
+				$page[2] = ['search',trans('forms.button.search_for')." $key",''];
+				break;
+
 			case 'states' :
 				$model_data = State::where([
 					['title' , 'like' , '%'.$key.'%'] ,
@@ -221,7 +227,7 @@ class DevSettingsController extends Controller
 		}
 
 		//View...
-		return view($view, compact('page', 'model_data'));
+		return view($view, compact('page', 'model_data' , 'key'));
 
 	}
 

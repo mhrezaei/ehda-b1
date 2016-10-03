@@ -20,8 +20,9 @@
 				'icon' => 'plus-circle' ,
 			])
 			@include('manage.frame.widgets.toolbar_search' , [
-				'target' => url('manage/devSettings/states/search/-key-') ,
+				'target' => url('manage/devSettings/downstream/search/-key-') ,
 				'label' => trans('forms.button.search') ,
+				'value' => isset($key)? $key : '' ,
 			])
 		</div>
 	</div>

@@ -17,7 +17,7 @@
 		'onsubmit' => "return search('$id')"
 	]) !!}
 
-	<input name="key" class="form-control" placeholder="{{$label}}...">
+	<input name="key" value="{{$value or ''}}" class="form-control" placeholder="{{$label}}...">
 	<button type="submit" class="btn btn-{{$type or 'warning'}}">
 		<i class="fa fa-search"></i>
 	</button>
