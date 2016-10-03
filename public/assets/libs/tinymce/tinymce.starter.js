@@ -6,7 +6,7 @@ var editor_config = {
 	content_css: assets()+'/css/tinyMCE.min.css',
 	directionality : 'rtl',
 	language: 'fa',
-	plugins: "link,table,textcolor,image,fullscreen",
+	plugins: "link,table,textcolor,image,fullscreen,",
 //	plugins: [
 //		"advlist autolink lists link image charmap print preview hr anchor pagebreak",
 //		"searchreplace wordcount visualblocks visualchars code fullscreen",
@@ -14,7 +14,7 @@ var editor_config = {
 //		"emoticons template paste textcolor colorpicker textpattern"
 //	],
 	toolbar: ['insertfile undo redo | bold italic underline strikethrough | copy cut paste removeformat | link unlink inserttable | image fullscreen',
-		    'alignleft aligncenter alignright | bullist numlist | outdent indent | forecolor backcolor forecolorpicker backcolorpicker'
+		    'alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | forecolor backcolor forecolorpicker backcolorpicker fontsizeselect'
 	],
 
 	relative_urls: false,
