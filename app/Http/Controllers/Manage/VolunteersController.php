@@ -191,7 +191,20 @@ class VolunteersController extends Controller
 		$carbon = new Carbon($request->birth_date);
 		$data['birth_date'] = $carbon->toDateTimeString() ; //TODO: No Age Validation?
 
-		if(!$request->id) {
+		if($request->id) {
+			$model = User::find($request->id) ;
+			if($model->isDeveloper() and !$user->isDeveloper())
+				return $this->jsonFeedback(trans('validation.http.Eror403'));
+
+			if($data['_need_exam']) {
+				$data['exam_passed_at'] = null ;
+			}
+			else {
+				if(!$model->exam_passed_at)
+					$data['exam_passed_at'] = Carbon::now()->toDateTimeString() ;
+			}
+		}
+		else {
 			$data['password'] = Hash::make($data['password']);
 			$data['password_force_change'] = 1 ;
 			$data['volunteer_registered_at'] = Carbon::now()->toDateTimeString() ;
@@ -200,8 +213,12 @@ class VolunteersController extends Controller
 				$data['published_at'] = Carbon::now()->toDateTimeString() ;
 				$data['published_by'] = $user->id ;
 			}
-			else
-				$data['volunteer_status'] = 3 ;
+			else {
+				$data['volunteer_status'] = 3;
+			}
+			if($data['_no_exam']) {
+				$data['exam_passed_at'] = Carbon::now()->toDateTimeString() ;
+			}
 		}
 
 		//Save and Return...

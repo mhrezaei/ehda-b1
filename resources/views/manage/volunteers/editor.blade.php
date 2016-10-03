@@ -195,6 +195,24 @@
 
 	@include('forms.group-start')
 
+		@if(isset($model))
+			@include('forms.check' , [
+				'name' => '_need_exam',
+				'label' => trans('people.volunteers.manage.need_exam'),
+				'value' => $model->exam_passed_at? 0 : 1,
+			])
+		@else
+			@include('forms.check' , [
+				'name' => '_no_exam',
+				'label' => trans('people.volunteers.manage.no_exam'),
+				'value' => 1,
+			])
+		@endif
+
+	@include('forms.group-end')
+
+	@include('forms.group-start')
+
 		@include('forms.button' , [
 			'label' => trans('forms.button.save'),
 			'shape' => 'success',
