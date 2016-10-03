@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Session;
 use Morilog\Jalali\jDate;
 use App\Events\SendSms;
@@ -41,11 +42,24 @@ class TestController extends Controller
 
 //		return view('templates.say' , ['array'=>public_path()]);
 
-		$post = Post::first() ;
-		dd($post) ;
-//
-//
-//		dd(Post::hasColumn('title'));
+		$posts = Post::selector('tests')->limit(5)->inRandomOrder()->get() ;
+		$array = [] ;
+
+		foreach($posts as $post) {
+			$metas = $post->metas()->where('' , '!' , '')->inRandomOrder()->get()->toArray() ;
+
+			$array[] = [
+				'question' => $post->text ,
+				'0' => [$metas[0]['value'] , encrypt($metas[0]['key'])] ,
+				'1' => [$metas[1]['value'] , encrypt($metas[1]['key'])] ,
+				'2' => [$metas[2]['value'] , encrypt($metas[2]['key'])] ,
+				'3' => [$metas[3]['value'] , encrypt($metas[3]['key'])] ,
+			];
+
+		}
+		return view('templates.say' , ['array'=>$array]);
+
+
 
 	}
 
