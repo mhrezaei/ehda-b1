@@ -48,6 +48,10 @@
 		@include('forms.group-start')
 
 			@include('forms.check' , [
+				'name' => 'developers_only',
+				'value' => $model->developers_only,
+			])
+			@include('forms.check' , [
 				'name' => 'available_for_domains',
 				'value' => $model->available_for_domains,
 			])

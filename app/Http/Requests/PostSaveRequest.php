@@ -59,6 +59,8 @@ class PostSaveRequest extends Request
 //            'category_id' => 'required_if:action,publish',
             'publish_date' => 'date' ,
 //            'featured_image' => 'url' ,
+            'slug' => 'alpha_dash|not_in:'.Post::$reserved_slugs.'|unique:posts,slug,'.$input['id'].',id',
+
         ];
     }
 

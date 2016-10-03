@@ -16,9 +16,14 @@
 			'extra' => 'disabled'
 		])
 
-		@include("manage.settings.downstream-value-$model->data_type")
+		@include("manage.settings.downstream-value-$model->data_type" , [
+			'value' => $model->global_value ,
+		])
+
 		@foreach($model->domains() as $domain)
-			@include("manage.settings.downstream-value-$model->data_type")
+			@include("manage.settings.downstream-value-$model->data_type" , [
+				'value' => $model->value($domain->slug) ,
+			])
 		@endforeach
 
 		@include('forms.group-start')

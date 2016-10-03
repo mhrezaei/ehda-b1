@@ -12,6 +12,7 @@ use App\Traits\TahaControllerTrait;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Hamcrest\Core\Set;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 
 class SettingsController extends Controller
@@ -31,10 +32,15 @@ class SettingsController extends Controller
 		$page[1] = [$request_tab , trans("manage.devSettings.downstream.category.$request_tab")];
 
 		//Model...
-		$model_data = Setting::where('category' , $request_tab)->orderBy('title')->get();
+		$model_data = Setting::where('category' , $request_tab)->where('developers_only' , '0') ;
+		if(!Auth::user()->isGlobal())
+			$model_data = $model_data->where('available_for_domains') ;
+		$model_data = $model_data->orderBy('title')->get();
+
+		$request_domain = Auth::user()->getDomain() ;
 
 		//View...
-		return view("manage.settings.settings", compact('page', 'model_data' , 'request_tab'));
+		return view("manage.settings.settings", compact('page', 'model_data' , 'request_tab' , 'request_domain'));
 
 	}
 

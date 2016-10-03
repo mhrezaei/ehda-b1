@@ -58,6 +58,9 @@
 								{{ $model->title }}
 							</a>
 							<i class="mh5 text-grey f10">{{ $model->slug }}</i>
+							@if($model->developers_only)
+								<i class="fa fa-minus-circle text-danger"></i>
+							@endif
 						</td>
 						<td>
 							{{ trans("manage.devSettings.downstream.category.$model->category") }}

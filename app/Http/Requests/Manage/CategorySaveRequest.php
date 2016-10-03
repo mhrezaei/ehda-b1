@@ -30,7 +30,7 @@ class CategorySaveRequest extends Request
         return [
              'branch_id' => 'required|numeric|exists:branches,id',
              'title' => 'required|unique:categories,title,'.$input['id'].',id,branch_id,'.$input['branch_id'],
-             'slug' => 'required|not_in:'.Category::$reserved_slugs.'|unique:categories,slug,'.$input['id'].',id,branch_id,'.$input['branch_id'],
+             'slug' => 'required|alpha_dash|not_in:'.Category::$reserved_slugs.'|unique:categories,slug,'.$input['id'].',id,branch_id,'.$input['branch_id'],
         ];
 
     }

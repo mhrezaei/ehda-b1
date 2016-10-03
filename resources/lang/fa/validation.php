@@ -306,6 +306,7 @@ return [
 				'global_value' => 'مقدار پیش‌فرض' ,
 				'data_type' => 'نوع داده' ,
 				'available_for_domains' => 'قابلیت خصوصی‌سازی در دامنه‌ها' ,
+				'developers_only' => 'فقط برای استفاده‌ی برنامه‌نویسان' ,
 				'is_resident' => 'ماندگار در حافظه' ,
 		],
 

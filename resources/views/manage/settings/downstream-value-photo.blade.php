@@ -1,4 +1,4 @@
-@include('forms.sep')
+{{--@include('forms.sep')--}}
 
 @include('forms.group-start' , [
     'label' => isset($domain)? $domain->title : trans('validation.attributes.global_value'),
@@ -10,13 +10,8 @@
 				{{ trans('forms.button.browse_image') }}
 			</button>
 		</div>
-		<div class="col-md-8">
-			<input id="{{ $input_id }}" type="text" name="{{ isset($domain)? $domain->slug : 'global_value' }}" value="{{ $value = isset($domain)? $model->value($domain->slug) : $model->global_value }}" class="form-control ltr">
-		</div>
-		<div class="col-md-1">
-			<a href="javascript:void(0)" onclick="downstreamPhotoPreview('#{{ $input_id }}')">
-				<span class="fa fa-link text-grey"></span>
-			</a>
+		<div class="col-md-9">
+			<input id="{{ $input_id }}" type="text" name="{{ isset($domain)? $domain->slug : 'global_value' }}" value="{{ $value or ''  }}" readonly class="form-control ltr clickable text-grey italic" onclick="downstreamPhotoPreview('#{{ $input_id }}')">
 		</div>
 	</div>
 

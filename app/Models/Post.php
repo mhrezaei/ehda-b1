@@ -31,6 +31,7 @@ class Post extends Model
 	public $is_global_reflect = false ;
 	protected static $search_fields = ['title', 'keywords', 'abstract'] ;
 	protected static $default_image ;
+	public static $reserved_slugs = 'none,without' ;
 
 
 	/*
