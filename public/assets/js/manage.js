@@ -260,3 +260,15 @@ function cardEditor($mood , $para='')
 
 }
 
+function downstreamPhotoSelected($input_selector)
+{
+	$($input_selector).val($($input_selector).val().replace(url(),''));
+}
+
+function downstreamPhotoPreview($input_selector)
+{
+	$url = $($input_selector).val() ;
+	if($url)
+		window.open(url($url)) ;
+}
+

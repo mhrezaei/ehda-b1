@@ -33,6 +33,11 @@ trait TahaModelTrait
 	{
 		return Schema::hasColumn(self::tableName(), $field_name);
 	}
+
+	public static function none()
+	{
+		return self::whereNull('id') ;
+	}
 	/*
 	|--------------------------------------------------------------------------
 	| General Select Methods

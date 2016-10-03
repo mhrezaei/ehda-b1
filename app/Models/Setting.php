@@ -12,11 +12,24 @@ class Setting extends Model
 	public static $available_data_types = ['text' , 'textarea' , 'boolean' , 'date' , 'photo'] ;
 	public static $available_categories = ['socials' , 'contact' , 'template'] ;
 	public static $default_when_not_found = '-' ;
-	public static $unset_signals = ['unset'] ;
+	public static $unset_signals = ['unset' , 'default' , '=' , ''] ;
 	public static $reserved_slugs = 'none,setting' ;
 	protected $guarded = ['id' , 'global_value' , 'domain_value'] ;
 
 	use TahaModelTrait ;
+
+	public function value($domain = 'global' , $default = '')
+	{
+		if($domain=='global' or !$this->available_for_domains)
+			return $this->global_value ;
+
+		$value = json_decode($this->domain_value , true) ;
+		if(isset($value[$domain]))
+			return $value[$domain] ;
+		else
+			return $default ;
+
+	}
 
 	public static function get($slug, $domain = 'global')
 	{
@@ -75,6 +88,15 @@ class Setting extends Model
 	|--------------------------------------------------------------------------
 	|
 	*/
+	public function domains()
+	{
+		if($this->available_for_domains)
+			$domains = Domain::orderBy('title')->get() ;
+		else
+			$domains = Domain::none()->get();
+
+		return $domains ;
+	}
 	public function categories()
 	{
 		$return = [] ;

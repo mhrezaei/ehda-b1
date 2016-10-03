@@ -63,16 +63,30 @@
 						<td>
 							<a href="javascript:void(0)" onclick="masterModal('{{url("manage/devSettings/downstream/$model->id")}}')">
 								@if($model->global_value)
-									{{ $model->global_value }}
+									@if($model->data_type== 'text' or $model->data_type== 'textarea')
+										{{ str_limit($model->global_value , 100) }}
+									@elseif($model->data_type == 'boolean')
+										<i class="fa fa-check"></i>
+									@elseif($model->data_type == 'date')
+										@pd(jdate($model->global_value)->format('Y/m/d'))
+									@elseif($model->data_type == 'photo')
+										<i class="fa fa-image"></i>
+									@endif
 								@else
 									<i class="text-grey">{{ trans('manage.devSettings.downstream.unset') }}</i>
 								@endif
 							</a>
 						</td>
 						<td>
-							<a href="javascript:void(0)" onclick="masterModal('{{url("manage/devSettings/downstream/$model->id")}}')">
-							-
-							</a>
+							@if($model->available_for_domains)
+								<a href="javascript:void(0)" onclick="masterModal('{{url("manage/devSettings/downstream/$model->id")}}')">
+
+									@pd(sizeof(json_decode($model->domain_value , true)))
+									{{ trans('manage.devSettings.domains.domain') }}
+								</a>
+							@else
+								<span class="null-content">{{ trans('posts.manage.global') }}</span>
+							@endif
 						</td>
 					</tr>
 				@endforeach
@@ -80,6 +94,11 @@
 			</table>
 		</div>
 	</div>
+
+	<div class="paginate">
+		{!! $model_data->render() !!}
+	</div>
+
 
 
 @endsection

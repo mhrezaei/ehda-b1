@@ -12,6 +12,8 @@ use App\Traits\TahaControllerTrait;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 
 //@TODO: Delete Buttons for all of these items
@@ -35,7 +37,7 @@ class DevSettingsController extends Controller
 		//Model...
 		switch($request_tab) {
 			case 'downstream' :
-				$model_data = Setting::orderBy('title')->get() ;
+				$model_data = Setting::orderBy('title')->paginate(100) ;
 				break;
 
 			case 'states' :
@@ -147,6 +149,14 @@ class DevSettingsController extends Controller
 		$view = "manage.settings." ;
 		
 		switch($request_tab) {
+			case 'downstream' :
+				$model = Setting::find($item_id) ;
+				if(!$model)
+					return view('errors.m410');
+
+				return view('manage.settings.downstream-value' , compact('model'));
+				break;
+
 			case 'branches' :
 				$branch = Branch::find($item_id) ;
 				if(!$branch)
@@ -279,6 +289,67 @@ class DevSettingsController extends Controller
 					'success_refresh' => 1,
 			]);
 		}
+	}
+
+	public function set_downstream(Request $request)
+	{
+		//Preparations...
+		$data = $request->toArray();
+		$model = Setting::find($request->id);
+		if(!$model)
+			return $this->jsonFeedback(trans('validation.http.Eror410'));
+
+		//Purification of the global value...
+		switch ($request->data_type) {
+			case 'bool' :
+				$data['global_value'] += 0 ;
+				break;
+
+			case 'date' :
+				$carbon = new Carbon($data['global_value']);
+				$data['global_value'] = $carbon->toDateString();
+				break;
+
+			case 'photo' :
+				$data['global_value'] = str_replace(url('') , null , $data['global_value']);
+				break ;
+
+		}
+
+		//Processing Domains...
+		$value = [] ;
+		foreach($model->domains() as $domain) {
+			//Bypass...
+			if(in_array($data[$domain->slug] , Setting::$unset_signals))
+				continue ;
+
+			//Purification...
+			switch ($request->data_type) {
+				case 'bool' :
+					$data[$domain->slug] += 0 ;
+					break;
+
+				case 'date' :
+					$carbon = new Carbon($data[$domain->slug]);
+					$data[$domain->slug] = $carbon->toDateString() ;
+					break;
+
+				case 'photo' :
+					$data[$domain->slug] = str_replace(url('') , null , $data[$domain->slug]);
+					break ;
+			}
+
+			//Set...
+			$value[$domain->slug] = $data[$domain->slug] ;
+		}
+
+		//Save...
+		$model->global_value = $data['global_value'] ;
+		$model->domain_value = json_encode($value) ;
+
+		return $this->jsonAjaxSaveFeedback($model->update() , [
+				'success_refresh' => 1,
+		]);
 
 	}
 
