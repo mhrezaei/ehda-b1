@@ -94,6 +94,14 @@ trait PermitsTrait
 			return false ;
 	}
 
+	public function isAdmin()
+	{
+		if($this->isGlobal() and $this->can('settings'))
+			return true ;
+		else
+			return false ;
+	}
+
 	public function getDomainName()
 	{
 		if($this->getDomain() == 'global')

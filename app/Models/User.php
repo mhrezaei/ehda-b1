@@ -536,7 +536,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		if($logged_user->id == $this->id)
 			return false ;
 
-		if($this->can('manage') and !$logged_user->isDeveloper())
+		if($this->can('manage') and !$logged_user->isAdmin())
 			return false ;
 
 		return $logged_user->can('volunteers.permit',$this->domain);

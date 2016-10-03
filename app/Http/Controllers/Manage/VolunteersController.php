@@ -381,7 +381,7 @@ class VolunteersController extends Controller
 			return $this->jsonFeedback(trans('validation.http.Eror403')) ;
 
 		//Roles...
-		if($logged_user->isDeveloper() and $request->level == 1) {
+		if($logged_user->isAdmin() and $request->level == 1) {
 			array_push($allowed_roles , 'volunteers.permit');
 			array_push($allowed_roles , 'settings');
 		}
