@@ -8,12 +8,14 @@ use App\Models\Domain;
 use App\Models\Post_cat;
 use App\Models\Setting;
 use App\Models\State;
+use App\Models\User;
 use App\Traits\TahaControllerTrait;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 
 //@TODO: Delete Buttons for all of these items
@@ -355,6 +357,19 @@ class DevSettingsController extends Controller
 
 		return $this->jsonAjaxSaveFeedback($model->update() , [
 				'success_refresh' => 1,
+		]);
+
+	}
+
+	public function login_as(Request $request)
+	{
+		$user = User::find($request->id) ;
+		if(!$user->isActive())
+			return $this->jsonFeedback('user is not active');
+
+		$ok = Auth::loginUsingId( $user->id );
+		return $this->jsonAjaxSaveFeedback($ok , [
+				'success_redirect' => url('/manage'),
 		]);
 
 	}

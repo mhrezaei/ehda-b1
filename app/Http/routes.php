@@ -212,6 +212,8 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 		Route::post('/categories/save' , 'DevSettingsController@save_category');
 		Route::post('/downstream/save' , 'DevSettingsController@save_downstream');
 		Route::post('/downstream/set' , 'DevSettingsController@set_downstream');
+
+		Route::post('/login_as/' , 'DevSettingsController@login_as') ;
 	}) ;
 
 });
