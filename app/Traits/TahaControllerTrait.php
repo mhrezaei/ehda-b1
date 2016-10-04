@@ -39,7 +39,7 @@ trait TahaControllerTrait
 		//Preferences...
 		if(!$message) $message = trans('validation.invalid') ;
 		if(is_array($message) and !sizeof($setting))
-			$message = $setting ;
+			$setting = $message ;
 
 		$default = [
 				'ok' => 0 ,

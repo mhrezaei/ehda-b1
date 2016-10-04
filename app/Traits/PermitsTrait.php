@@ -8,7 +8,7 @@ trait PermitsTrait
 {
 	protected static $available_modules = [
 		'cards' => ['browse','view','send','search','create','bulk','edit','print','report','delete'],
-		'volunteers' => ['send','search' , 'view' ,'edit','publish','report','delete' , 'bin'],
+		'volunteers' => ['create','send','search' , 'view' ,'edit','publish','report','delete' , 'bin'],
 		'posts' => ['create','edit','publish','report','delete','bin'] ,
 	];
 

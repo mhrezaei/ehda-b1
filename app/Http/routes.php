@@ -84,7 +84,7 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 		Route::get('/' , 'VolunteersController@browse') ;
 		Route::get('/browse' , 'VolunteersController@browse') ;
 		Route::get('/browse/{request_tab}' , 'VolunteersController@browse') ;
-		Route::get('/create/{branch}' , 'VolunteersController@create') ;
+		Route::get('/create/' , 'VolunteersController@editor') ;
 		Route::get('/search' , 'VolunteersController@search');
 		Route::get('/reports' , 'VolunteersController@reports');
 
@@ -94,6 +94,7 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 
 		Route::group(['prefix'=>'save'] , function() {
 			Route::post('/' , 'VolunteersController@save');
+			Route::post('/inquiry' , 'VolunteersController@inquiry');
 
 			Route::post('/change_password' , 'VolunteersController@change_password');
 			Route::post('/soft_delete' , 'VolunteersController@soft_delete');

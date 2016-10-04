@@ -14,7 +14,7 @@
 		<div class="col-md-8 tools">
 
 			@include('manage.frame.widgets.toolbar_button' , [
-				'target' => "masterModal('".url('manage/volunteers/0/edit')."')" ,
+				'target' => url('manage/volunteers/create') ,
 				'type' => 'success' ,
 				'caption' => trans('people.volunteers.manage.create') ,
 				'icon' => 'plus-circle' ,

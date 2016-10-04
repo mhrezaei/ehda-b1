@@ -57,6 +57,7 @@
 //			['envelope-o' , trans('people.commands.send_email') , 'modal:manage/cards/-id-/email' , 'cards.send' , $model->email ] ,
 //			['mobile' , trans('people.commands.send_sms') , 'modal:manage/cards/-id-/sms' , 'cards.send' , $model->tel_mobile ] ,
 
+			['user-plus' , trans('people.cards.manage.add_as_volunteer') , 'url:manage/volunteers/-id-/edit' , 'volunteers.create' , !$model->isVolunteer()] ,
 			['times' , trans('forms.button.hard_delete') , 'modal:manage/cards/-id-/delete' , 'cards.delete' , !$model->trashed('card')] ,
 		],
 	])

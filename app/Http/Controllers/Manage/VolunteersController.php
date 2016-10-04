@@ -156,22 +156,35 @@ class VolunteersController extends Controller
 		//Models...
 		$states = State::get_combo() ;
 
-		//View...
+		//Model...
 		if($model_id==0) {
-			if(!Auth::user()->can('volunteers:create')) return view('errors.403');
+			$permit = 'volunteers.create' ;
 			$page[1] = ['create' , trans('people.volunteers.manage.create') , ''] ;
 
-			$random_password = Str::random(10) ;
-			return view($view , compact('page' , 'random_password' , 'states'));
+			$model = new User() ;
+			$model->exam_passed_at = 1 ;
 		}
 		else {
-			if(!Auth::user()->can('volunteers:edit')) return view('errors.403');
-			$page[1] = ['edit' , trans('people.volunteers.manage.edit') , ''] ;
-
 			$model = User::find($model_id);
 			if(!$model) return view('errors.410');
-			return view($view , compact('page' , 'states' , 'model'));
+
+			if(!$model->isVolunteer()) {
+				$page[1] = ['create', trans('people.volunteers.manage.create'), ''];
+				$permit = 'volunteers.create' ;
+			}
+			else {
+				$page[1] = ['edit', trans('people.volunteers.manage.edit'), ''];
+				$permit = 'volunteers.edit' ;
+			}
+
 		}
+
+		//Permission...
+		if(!Auth::user()->can($permit))
+			return view('errors.403');
+
+		//View...
+		return view($view , compact('page' , 'states' , 'model'));
 
 	}
 
@@ -182,9 +195,58 @@ class VolunteersController extends Controller
 	|
 	*/
 
+	public function inquiry(Requests\Manage\CardInquiryRequest $request)
+	{
+		$user = User::findBySlug($request->code_melli , 'code_melli') ;
+
+		if(!$user){
+			return $this->jsonFeedback([
+					'ok' => 1 ,
+					'message' => trans('people.cards.manage.inquiry_success') ,
+					'callback' => 'cardEditor(1)' ,
+//					'redirectTime' => 1 ,
+			]);
+		}
+
+		if($user->volunteer_status < 0) {
+			return $this->jsonFeedback([
+				'ok' => 0 ,
+				'message' => trans('people.cards.manage.inquiry_was_volunteer') ,
+			]);
+		}
+
+		if($user->volunteer_status > 0) {
+			return $this->jsonFeedback(1,[
+					'ok' => 1 ,
+					'message' => trans('people.cards.manage.inquiry_is_volunteer') ,
+					'redirect' => Auth::user()->can('volunteers.edit')? url("manage/volunteers/$user->id/edit") : '' ,
+					'redirectTime' => 1 ,
+			]);
+		}
+
+		if($user->isCard()) {
+			return $this->jsonFeedback([
+					'ok' => 1 ,
+					'message' => trans('people.cards.manage.inquiry_has_card') ,
+					'redirect' => url("manage/volunteers/$user->id/edit") ,
+//					'redirectTime' => 1 ,
+			]);
+		}
+
+		return $this->jsonFeedback([
+				'ok' => 0 ,
+				'message' => "it's complicated!" ,
+//				'redirect' => url("manage/volunteers/$user->id/edit") ,
+//				'redirectTime' => 1 ,
+		]);
+
+
+	}
+
+
 	public function save(Requests\Manage\VolunteerSaveRequest $request)
 	{
-		//Normalization...
+		//Preparations...
 		$data = $request->toArray() ;
 		$user = Auth::user() ;
 
@@ -193,20 +255,43 @@ class VolunteersController extends Controller
 
 		if($request->id) {
 			$model = User::find($request->id) ;
-			if($model->isDeveloper() and !$user->isDeveloper())
-				return $this->jsonFeedback(trans('validation.http.Eror403'));
+			if(!$model)
+				return $this->jsonFeedback(trans('validation.http.Eror410'));
 
-			if($data['_need_exam']) {
-				$data['exam_passed_at'] = null ;
-			}
-			else {
-				if(!$model->exam_passed_at)
-					$data['exam_passed_at'] = Carbon::now()->toDateTimeString() ;
-			}
+			if(!$model->isVolunteer())
+				$permit = 'volunteers.create' ;
+			else
+				$permit = 'volunteers.edit' ;
 		}
 		else {
-			$data['password'] = Hash::make($data['password']);
-			$data['password_force_change'] = 1 ;
+			$permit = 'volunteers.create' ;
+		}
+
+		//Permission...
+		if(isset($model) and $model->isDeveloper() and !$user->isDeveloper())
+			return $this->jsonFeedback(trans('validation.http.Eror403'));
+		if(!$user->can($permit))
+			return $this->jsonFeedback(trans('validation.http.Eror403'));
+
+		//Processing _no_exam...
+		if(!$data['_no_exam']) {
+			$data['exam_passed_at'] = null ;
+		}
+		elseif(isset($model) and $model->exam_passed_at) {
+			// just leave it as it is.
+		}
+		else {
+			$data['exam_passed_at'] = Carbon::now()->toDateTimeString() ;
+		}
+
+		//Processing Password...
+		if(!isset($model) or !$model->password or $data['_password_set_to_mobile']) {
+			$data['password'] = Hash::make($data['tel_mobile']);
+			$data['password_force_change'] = 1;
+		}
+
+		//Volunteer Registration Time...
+		if(!isset($model) or !$model->isVolunteer()) {
 			$data['volunteer_registered_at'] = Carbon::now()->toDateTimeString() ;
 			if($user->can('volunteers.publish')) {
 				$data['volunteer_status'] = 8 ;
@@ -216,18 +301,14 @@ class VolunteersController extends Controller
 			else {
 				$data['volunteer_status'] = 3;
 			}
-			if($data['_no_exam']) {
-				$data['exam_passed_at'] = Carbon::now()->toDateTimeString() ;
-			}
 		}
 
 		//Save and Return...
 		$saved = User::store($data);
 		return $this->jsonAjaxSaveFeedback($saved , [
-			'success_refresh' => true ,
+			'success_refresh' => $permit == 'volunteers.create' ? false : true ,
+			'success_redirect' => $permit == 'volunteers.create' ?  url('manage/volunteers/create') : '' ,
 		]);
-
-		// return $this->jsonFeedback($data['birth_date']);
 
 	}
 
