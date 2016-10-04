@@ -9,12 +9,12 @@
 		['id' , $model->id ],
 	]])
 
-	@include('forms.input' , [
-		'name' => '',
-		'label' => trans('validation.attributes.name_first'),
-		'value' => $model->fullName() ,
-		'extra' => 'disabled' ,
-	])
+{{--	@include('forms.input' , [--}}
+		{{--'name' => '',--}}
+		{{--'label' => trans('validation.attributes.name_first'),--}}
+		{{--'value' => $model->fullName() ,--}}
+		{{--'extra' => 'disabled' ,--}}
+	{{--])--}}
 
 	@include('forms.select' , [
 		'name' => 'status' ,
@@ -45,4 +45,12 @@
 	@include('forms.feed')
 
 </div>
+
+<div class="text-center mv20">
+	<a href="{{url('/card/show_card/full/'.$model->say('encrypted_code_melli'))}}" target="_blank">
+		<img src="{{url('/card/show_card/mini/'.$model->say('encrypted_code_melli'))}}" style="height: 350px">
+	</a>
+</div>
+
+
 @include('templates.modal.end')
