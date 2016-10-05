@@ -9,6 +9,7 @@
 		@elseif(isset($link))
 			onclick="window.location ='{{ url($link) }}'"
 		@endif
+		{{ $extra or '' }}
 >
 	{{$label or ''}}
 </button>

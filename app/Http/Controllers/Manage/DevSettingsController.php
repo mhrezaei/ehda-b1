@@ -91,8 +91,6 @@ class DevSettingsController extends Controller
 					$model = State::find($item_id) ;
 					if(!$model) return trans('validation.invalid') ;
 					if($model->isProvince()) {
-//						return view('templates.say' , ['array'=>$model->cities()->orderBy('title')->get()->toArray()]);
-
 						return view('manage.settings.states-modalEditor', compact('model'));
 					}
 					else {
@@ -260,9 +258,26 @@ class DevSettingsController extends Controller
 
 	public function save_states(Requests\Manage\StatesSaveRequest $request)
 	{
-		return $this->jsonAjaxSaveFeedback(State::store($request) ,[
-			'success_refresh' => 1,
-		]);
+
+		//If Save...
+		if($request->_submit == 'save') {
+			return $this->jsonAjaxSaveFeedback(State::store($request) ,[
+				'success_refresh' => 1,
+			]);
+		}
+
+		//If Delete...
+
+		if($request->_submit == 'delete') {
+			$model = State::find($request->id) ;
+			if(!$model or !$model->isProvince() or $model->cities()->count())
+				return $this->jsonFeedback();
+
+			return $this->jsonAjaxSaveFeedback(State::destroy($request->id) ,[
+					'success_refresh' => 1,
+			]);
+		}
+
 
 	}
 
@@ -280,7 +295,7 @@ class DevSettingsController extends Controller
 			]);
 		}
 
-
+		//If Delete...
 		if($data['_submit'] == 'delete') {
 			return $this->jsonAjaxSaveFeedback(State::destroy($data['id']) ,[
 					'success_refresh' => 1,
