@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\members;
 
+use App\Models\Activity;
 use App\models\Meta;
 use App\Models\Post;
 use App\Models\State;
@@ -425,8 +426,9 @@ class VolunteersController extends Controller
         if (! $volunteer)
             return redirect(url(''));
         $states = State::get_combo() ;
+        $activity = Activity::all();
 
-        return view('site.volunteers.volunteer_register.0', compact('user', 'volunteer', 'states'));
+        return view('site.volunteers.volunteer_register.0', compact('user', 'volunteer', 'states', 'activity'));
         
     }
 

@@ -21,9 +21,9 @@
                         'id' => 'volunteer_final_step',
                     ]) !!}
 
-                    <div class="form-group">
-                        <div>{{ trans('site.global.personal_data') }}</div>
-                    </div>
+                    @include('forms_site.form_separator', [
+                        'title' => trans('site.global.personal_data')
+                    ])
 
                     <div class="row">
                         <div class="col-xs-12 col-sm-6">
@@ -124,18 +124,57 @@
                         </div>
                         <div class="col-xs-12 col-sm-6">
                             @include('forms_site.input', [
-                            'field' => 'job',
-                            'min' => 2,
-                            'class' => 'form-persian  form-required',
+                            'field' => 'email',
+                            'class' => 'form-email form-required',
                             'required' => 1,
-                            'value' => $user->job
-                             ])
+                            'value' => $user->email
+                            ])
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <div>{{ trans('site.global.contact_detail') }}</div>
+                    @include('forms_site.form_separator', [
+                        'title' => trans('site.global.edu_detail')
+                    ])
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6">
+                            @include('forms_site.select_edu_level', [
+                                'field' => 'edu_level',
+                                'class' => 'form-select form-required',
+                                'required' => 1,
+                                'value' => $user->edu_level
+                                ])
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            @include('forms_site.input', [
+                            'field' => 'edu_field',
+                            'class' => 'form-persian form-required',
+                            'required' => 1,
+                            'value' => $user->edu_field
+                            ])
+                        </div>
                     </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6">
+                            @include('forms_site.select_city' , [
+                            'field' => 'edu_city' ,
+                            'blank_value' => '0' ,
+                            'options' => $states ,
+                            'search' => true ,
+                            'required' => 1,
+                            'class' => 'form-selectpicker form-required',
+                            'value' => $user->edu_city
+                            ])
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+
+                        </div>
+                    </div>
+
+                    @include('forms_site.form_separator', [
+                        'title' => trans('site.global.contact_detail')
+                    ])
 
                     <div class="row">
                         <div class="col-xs-12 col-sm-6">
@@ -150,15 +189,19 @@
                         </div>
                         <div class="col-xs-12 col-sm-6">
                             @include('forms_site.input', [
-                            'field' => 'home_tel',
+                            'field' => 'tel_emergency',
                             'min' => 11,
                             'max' => 11,
                             'class' => 'form-phone form-required',
                             'required' => 1,
-                            'value' => $user->home_tel
+                            'value' => $user->tel_emergency
                             ])
                         </div>
                     </div>
+
+                    @include('forms_site.form_separator', [
+                        'title' => trans('site.global.home_contact_detail')
+                    ])
 
                     <div class="row">
                         <div class="col-xs-12 col-sm-6">
@@ -174,11 +217,140 @@
                         </div>
                         <div class="col-xs-12 col-sm-6">
                             @include('forms_site.input', [
-                            'field' => 'email',
-                            'class' => 'form-email form-required',
+                            'field' => 'home_address',
+                            'class' => 'form-persian form-required',
                             'required' => 1,
-                            'value' => $user->email
+                            'value' => $user->home_address
                             ])
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6">
+                            @include('forms_site.input', [
+                            'field' => 'home_tel',
+                            'min' => 11,
+                            'max' => 11,
+                            'class' => 'form-phone form-required',
+                            'required' => 1,
+                            'value' => $user->home_tel
+                            ])
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            @include('forms_site.input', [
+                            'field' => 'home_postal_code',
+                            'min' => 10,
+                            'max' => 10,
+                            'class' => 'form-number',
+                            'value' => $user->home_postal_code
+                            ])
+                        </div>
+                    </div>
+
+                    @include('forms_site.form_separator', [
+                        'title' => trans('site.global.work_contact_detail')
+                    ])
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6">
+                            @include('forms_site.input', [
+                            'field' => 'job',
+                            'min' => 2,
+                            'class' => 'form-persian  form-required',
+                            'required' => 1,
+                            'value' => $user->job
+                             ])
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            @include('forms_site.select_city' , [
+                            'field' => 'work_city' ,
+                            'blank_value' => '0' ,
+                            'options' => $states ,
+                            'search' => true ,
+                            'class' => 'form-selectpicker',
+                            'value' => $user->work_city
+                            ])
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6">
+                            @include('forms_site.input', [
+                            'field' => 'work_address',
+                            'class' => 'form-persian',
+                            'value' => $user->work_address
+                            ])
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            @include('forms_site.input', [
+                            'field' => 'work_tel',
+                            'min' => 11,
+                            'max' => 11,
+                            'class' => 'form-phone',
+                            'value' => $user->work_tel
+                            ])
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6">
+                            @include('forms_site.input', [
+                            'field' => 'work_postal_code',
+                            'min' => 10,
+                            'max' => 10,
+                            'class' => 'form-number',
+                            'value' => $user->work_postal_code
+                            ])
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+
+                        </div>
+                    </div>
+
+                    @include('forms_site.form_separator', [
+                        'title' => trans('site.global.additional_data')
+                    ])
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6">
+                            @include('forms_site.select_familization', [
+                                'field' => 'familization',
+                                'class' => 'form-select form-required',
+                                'required' => 1,
+                                'value' => $user->familization
+                                ])
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            @include('forms_site.input', [
+                            'field' => 'motivation',
+                            'class' => 'form-persian',
+                            'required' => 1,
+                            'value' => $user->motivation
+                            ])
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6">
+                            @include('forms_site.input', [
+                            'field' => 'alloc_time',
+                            'class' => 'form-persian',
+                            'required' => 1,
+                            'value' => $user->alloc_time
+                            ])
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+
+                        </div>
+                    </div>
+
+                    @include('forms_site.form_separator', [
+                        'title' => trans('site.global.activity')
+                    ])
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12">
+                            @include('forms_site.activity')
                         </div>
                     </div>
 

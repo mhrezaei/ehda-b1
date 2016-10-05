@@ -11,3 +11,7 @@
 .hide-element{
     display: none;
 }
+
+.form-category{
+    margin-bottom: 25px; margin-top: 25px; font-weight: 900;
+}
