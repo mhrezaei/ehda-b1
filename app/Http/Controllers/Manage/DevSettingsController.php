@@ -132,7 +132,17 @@ class DevSettingsController extends Controller
 				}
 				$branches = Branch::selector('category') ;
 				return view('manage.settings.categories_edit' , compact('model' , 'branches'));
-				
+
+			case 'domains' :
+				if($item_id>0) {
+					$model = Domain::find($item_id) ;
+					if(!$model)
+						return view('errors.m410') ;
+				}
+				else {
+					$model = new Domain();
+				}
+				return view ('manage.settings.domains-editor' , compact('model'));
 
 			default:
 				return view('errors.m404');
@@ -251,9 +261,24 @@ class DevSettingsController extends Controller
 
 	public function save_domains(Requests\Manage\DomainSaveRequest $request)
 	{
-		return $this->jsonAjaxSaveFeedback(Domain::store($request) ,[
-				'success_refresh' => 1,
-		]);
+		//If Save...
+		if($request->_submit == 'save') {
+			return $this->jsonAjaxSaveFeedback(Domain::store($request) ,[
+					'success_refresh' => 1,
+			]);
+		}
+
+		//If Delete...
+		if($request->_submit == 'delete') {
+			$model = Domain::find($request->id) ;
+			if(!$model or $model->states()->count() )
+				return $this->jsonFeedback();
+
+			return $this->jsonAjaxSaveFeedback(Domain::destroy($request->id) ,[
+					'success_refresh' => 1,
+			]);
+		}
+
 	}
 
 	public function save_states(Requests\Manage\StatesSaveRequest $request)

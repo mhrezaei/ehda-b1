@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Manage;
 
 use App\Http\Requests\Request;
+use App\Models\Domain;
 use App\Providers\ValidationServiceProvider;
 
 
@@ -29,8 +30,8 @@ class DomainSaveRequest extends Request
         $id = $input['id'] ;
         return [
              'title' => "required|unique:domains,title,$id",
-             'alias' => "required|unique:domains,alias,$id",
-             'slug' => "required|unique:domains,slug,$id",
+             'alias' => "alpha_dash|not_in:".Domain::$reserved_slugs."|unique:domains,alias,$id",
+             'slug' => "required|alpha_dash|not_in:".Domain::$reserved_slugs."|unique:domains,slug,$id",
         ];
     }
 
