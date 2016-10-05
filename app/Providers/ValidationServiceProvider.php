@@ -16,9 +16,13 @@ class ValidationServiceProvider extends ServiceProvider
 {
 	private $input;
 	private $rules;
+	private static $default_global_rules = 'stripArabic';
 
-	public static function purifier($input, $rules , $global_rules = 'stripArabic')
+	public static function purifier($input, $rules , $global_rules = '--default--')
 	{
+		if($global_rules == '--default--')
+			$global_rules = self::$default_global_rules ;
+
 		$ME = new ValidationServiceProvider(app());
 
 		$result = $ME->fire($input, $rules , $global_rules);

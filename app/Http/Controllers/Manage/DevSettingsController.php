@@ -9,6 +9,7 @@ use App\Models\Post_cat;
 use App\Models\Setting;
 use App\Models\State;
 use App\Models\User;
+use App\Providers\AppServiceProvider;
 use App\Traits\TahaControllerTrait;
 
 use App\Http\Requests;
@@ -268,12 +269,23 @@ class DevSettingsController extends Controller
 	public function save_cities(Requests\Manage\CitiesSaveRequest $request)
 	{
 		$data = $request->toArray() ;
-		$data['parent_id'] = $data['province_id'] ;
-		unset($data['province_id']);
 
-		return $this->jsonAjaxSaveFeedback(State::store($data) ,[
-				'success_refresh' => 1,
-		]);
+		//If Save...
+		if($data['_submit'] == 'save') {
+			$data['parent_id'] = $data['province_id'] ;
+			unset($data['province_id']);
+
+			return $this->jsonAjaxSaveFeedback(State::store($data) ,[
+					'success_refresh' => 1,
+			]);
+		}
+
+
+		if($data['_submit'] == 'delete') {
+			return $this->jsonAjaxSaveFeedback(State::destroy($data['id']) ,[
+					'success_refresh' => 1,
+			]);
+		}
 
 	}
 

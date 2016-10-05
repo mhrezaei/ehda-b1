@@ -87,7 +87,7 @@
 					'class' => 'noDisplay'
 				])
 
-		@endif
+			@endif
 		@include('forms.button' , [
 			'label' => trans('forms.button.cancel'),
 			'shape' => 'link',

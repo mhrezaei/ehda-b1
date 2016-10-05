@@ -5,7 +5,7 @@
 
 @include('forms.input' , [
 	'name' =>	'title',
-	'class' => 'form-required' ,
+	'class' => 'form-required form-default' ,
 	'value' => isset($model)? $model->title : '' ,
 //	'hint' =>	trans('validation.hint.unique'),
 ])
@@ -26,13 +26,43 @@
 	'blank_value' => '0' ,
 ])
 
+@include('forms.note' , [
+	'shape' => 'danger' ,
+	'text' => trans('manage.devSettings.states.city_delete_alert') ,
+	'class' => '-delHandle noDisplay'
+])
+
 @include('forms.group-start')
 
 	@include('forms.button' , [
+		'id' => 'btnSave' ,
 		'label' => trans('forms.button.save'),
 		'shape' => 'success',
 		'type' => 'submit' ,
+		'value' => 'save' ,
+		'class' => '-delHandle'
 	])
+
+	@if(isset($model))
+		@include('forms.button' , [
+			'id' => 'btnDeleteWarning' ,
+			'label' => trans('forms.button.delete'),
+			'shape' => 'warning',
+			'link' => '$(".-delHandle").toggle()' ,
+			'class' => '-delHandle' ,
+		])
+		@include('forms.button' , [
+			'id' => 'btnDelete' ,
+			'label' => trans('forms.button.sure_hard_delete'),
+			'shape' => 'danger',
+			'value' => 'delete' ,
+			'type' => 'submit' ,
+			'class' => 'noDisplay -delHandle'
+		])
+
+	@endif
+
+
 	@include('forms.button' , [
 		'label' => trans('forms.button.cancel'),
 		'shape' => 'link',
