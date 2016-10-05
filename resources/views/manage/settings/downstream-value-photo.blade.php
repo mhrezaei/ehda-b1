@@ -12,6 +12,7 @@
 		</div>
 		<div class="col-md-9">
 			<input id="{{ $input_id }}" type="text" name="{{ isset($domain)? $domain->slug : 'global_value' }}" value="{{ $value or ''  }}" readonly class="form-control ltr clickable text-grey italic" onclick="downstreamPhotoPreview('#{{ $input_id }}')">
+			<i class="fa fa-times text-grey clickable" style="position: relative;top:-25px;left:-10px" onclick="$('#{{$input_id}}').val('')"></i>
 		</div>
 	</div>
 

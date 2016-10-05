@@ -331,10 +331,25 @@ class DevSettingsController extends Controller
 
 	public function save_category(Requests\Manage\CategorySaveRequest $request)
 	{
-		return $this->jsonAjaxSaveFeedback(Category::store($request) ,[
-				'success_refresh' => 1,
-		]);
+		//If Save...
+		if($request->_submit == 'save') {
+			return $this->jsonAjaxSaveFeedback(Category::store($request) ,[
+					'success_refresh' => 1,
+			]);
+		}
 
+		//If Delete...
+		if($request->_submit == 'delete') {
+			$model = Category::find($request->id) ;
+			if(!$model)
+				return $this->jsonFeedback();
+
+			$model->posts()->update(['category_id' => '0']);
+			return $this->jsonAjaxSaveFeedback($model->forceDelete() , [
+					'success_refresh' => 1,
+			]);
+
+		}
 	}
 
 	public function save_downstream(Requests\Manage\DownstreamSaveRequest $request)
