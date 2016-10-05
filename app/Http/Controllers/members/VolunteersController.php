@@ -54,7 +54,7 @@ class VolunteersController extends Controller
             {
                 if ($user->exam_passed_at)
                 {
-                    if (Carbon::parse($user->exam_passed_at)->addDay(1) <= Carbon::now())
+                    if (Carbon::parse($user->exam_passed_at)->diffInHours(Carbon::now()) >= 24)
                     {
                         $return = $this->jsonFeedback(null, [
                             'ok' => 1,
@@ -71,9 +71,19 @@ class VolunteersController extends Controller
                         ]);
                     }
                 }
+                else
+                {
+                    $return = $this->jsonFeedback(null, [
+                        'ok' => 1,
+                        'message' => trans('forms.feed.wait'),
+                        'redirect' => url('/volunteers/exam'),
+                        'redirectTime' => 2000,
+                    ]);
+                }
             }
             else if($user->volunteer_status == 2)
             {
+                Session::put('volunteer_exam_passed', $user->id);
                 $return = $this->jsonFeedback(null, [
                     'ok' => 1,
                     'message' => trans('forms.feed.wait'),
@@ -153,7 +163,7 @@ class VolunteersController extends Controller
                 }
                 elseif ($user->volunteer_status == 1)
                 {
-                    if (! Carbon::parse($user->exam_passed_at)->addDay(1) <= Carbon::now())
+                    if (Carbon::parse($user->exam_passed_at)->diffInHours(Carbon::now()) < 24)
                         return redirect('/');
                 }
                 elseif ($user->volunteer_status == 3)
@@ -218,12 +228,14 @@ class VolunteersController extends Controller
                 $answer = decrypt($value);
                 if ($answer == 'option_true')
                 {
-                    $data[$count]['status'] = 1;
+                    $data[$count]['status'] = 2;
+                    $data[$count]['select'] = $answer;
                     $true_answer++;
                 }
                 else
                 {
-                    $data[$count]['status'] = 0;
+                    $data[$count]['status'] = 1;
+                    $data[$count]['select'] = $answer;
                 }
                 $count++;
             }
@@ -233,6 +245,170 @@ class VolunteersController extends Controller
         $store['exam_passed_at'] = Carbon::now()->toDateTimeString();
         $store['exam_sheet'] = json_encode($data);
         $store['exam_result'] = ceil(($true_answer * 100) / 30);
-        dd($store);
+        
+        if ($store['exam_result'] >= 50)
+        {
+            $msg = trans('site.global.volunteer_exam_passed_ok') . $store['exam_result'] . trans('site.global.volunteer_exam_passed_ok1');
+            $volunteer_status = 2;
+            $ajax_status = 1;
+        }
+        else
+        {
+            $msg = trans('site.global.volunteer_exam_passed_nok');
+            $volunteer_status = 1;
+            $ajax_status = 0;
+        }
+
+        $user = User::selectBySlug($store['code_melli'], 'code_melli');
+        if (! $user)
+        {
+            $store['volunteer_status'] = $volunteer_status;
+            $id = User::store($store);
+            if ($id)
+            {
+                Session::put('volunteer_exam_passed', $id);
+                if ($store['exam_result'] >= 50)
+                {
+                    $return = $this->jsonFeedback(null, [
+                        'ok' => $ajax_status,
+                        'message' => $msg . trans('site.global.volunteer_exam_passed_ok2'),
+                        'redirect' => url('/volunteers/final_step'),
+                        'redirectTime' => 2000,
+                    ]);
+                }
+                else
+                {
+                    $return = $this->jsonFeedback(null, [
+                        'ok' => $ajax_status,
+                        'message' => $msg,
+                    ]);
+                }
+            }
+            else
+            {
+                $return = $this->jsonFeedback(null, [
+                    'ok' => 0,
+                    'message' => trans('forms.feed.error'),
+                ]);
+            }
+        }
+        else
+        {
+            if ($user->isActive('volunteer'))
+            {
+                $update = [
+                    'exam_passed_at' => $store['exam_passed_at'],
+                    'exam_sheet' => $store['exam_sheet'],
+                    'exam_result' => $store['exam_result'],
+                    'id' => $user->id,
+                ];
+                $id = User::store($update);
+                if ($id)
+                {
+                    if ($store['exam_result'] >= 50)
+                    {
+                        $return = $this->jsonFeedback(null, [
+                            'ok' => $ajax_status,
+                            'message' => $msg,
+                            'redirect' => url('/manage'),
+                            'redirectTime' => 2000,
+                        ]);
+                    }
+                    else
+                    {
+                        $return = $this->jsonFeedback(null, [
+                            'ok' => $ajax_status,
+                            'message' => $msg,
+                        ]);
+                    }
+                }
+                else
+                {
+                    $return = $this->jsonFeedback(null, [
+                        'ok' => 0,
+                        'message' => trans('forms.feed.error'),
+                    ]);
+                }
+            }
+            elseif ($user->volunteer_status == 3)
+            {
+                $update = [
+                    'exam_passed_at' => $store['exam_passed_at'],
+                    'exam_sheet' => $store['exam_sheet'],
+                    'exam_result' => $store['exam_result'],
+                    'id' => $user->id,
+                ];
+                $id = User::store($update);
+                if ($id)
+                {
+                    if ($store['exam_result'] >= 50)
+                    {
+                        $return = $this->jsonFeedback(null, [
+                            'ok' => $ajax_status,
+                            'message' => $msg . trans('site.global.volunteer_exam_passed_ok_volunteer_status_3'),
+                        ]);
+                    }
+                    else
+                    {
+                        $return = $this->jsonFeedback(null, [
+                            'ok' => $ajax_status,
+                            'message' => $msg,
+                        ]);
+                    }
+                }
+                else
+                {
+                    $return = $this->jsonFeedback(null, [
+                        'ok' => 0,
+                        'message' => trans('forms.feed.error'),
+                    ]);
+                }
+            }
+            elseif ($user->volunteer_status == 1 or ($user->volunteer_status == 0 and $user->isActive('card')))
+            {
+                $update = [
+                    'exam_passed_at' => $store['exam_passed_at'],
+                    'exam_sheet' => $store['exam_sheet'],
+                    'exam_result' => $store['exam_result'],
+                    'id' => $user->id,
+                ];
+                $id = User::store($update);
+                if ($id)
+                {
+                    if ($store['exam_result'] >= 50)
+                    {
+                        $return = $this->jsonFeedback(null, [
+                            'ok' => $ajax_status,
+                            'message' => $msg . trans('site.global.volunteer_exam_passed_ok2'),
+                            'redirect' => url('/volunteers/final_step'),
+                            'redirectTime' => 2000,
+                        ]);
+                    }
+                    else
+                    {
+                        $return = $this->jsonFeedback(null, [
+                            'ok' => $ajax_status,
+                            'message' => $msg,
+                        ]);
+                    }
+                }
+                else
+                {
+                    $return = $this->jsonFeedback(null, [
+                        'ok' => 0,
+                        'message' => trans('forms.feed.error'),
+                    ]);
+                }
+            }
+            else
+            {
+                $return = $this->jsonFeedback(null, [
+                    'ok' => 0,
+                    'message' => trans('forms.feed.error'),
+                ]);
+            }
+        }
+
+        return $return;
     }
 }

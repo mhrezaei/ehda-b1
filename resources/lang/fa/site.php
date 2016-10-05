@@ -49,6 +49,13 @@ return [
         'volunteer_account_not_confirm' => 'اکانت شما هنوز تایید نشده است.',
         'volunteer_db_check_send_sheet' => 'از ارسال پاسخنامه اطمینان دارید؟',
         'volunteer_exam_count' => 'تعداد سوالات پاسخ داده شما:',
+        'volunteer_exam_passed_ok' => 'ضمن عرض تبریک، شما موفق شدید آزمون سفیران اهدای عضو را با کسب نمره ',
+        'volunteer_exam_passed_ok1' => 'از ۱۰۰ با موفقیت سپری کنید. ',
+        'volunteer_exam_passed_ok2' => '  جهت اتمام مراحل فرم سفیران را تمکیل نمایید.',
+        'volunteer_exam_passed_ok_volunteer_status_3' => ' پس از فعال شدن اکانت می توانید وارد بخش سفیران شوید.',
+        'volunteer_exam_passed_nok' => 'متاسفانه شما موفق به کسب نمره حدنصاب در آزمون سفیران نشدید، می توانید ۲۴ ساعت بعد دوباره در آزمون شرکت نمایید.',
+
+
         
 
 

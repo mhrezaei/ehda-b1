@@ -5,6 +5,7 @@ namespace App\Http\Requests\site\volunteer;
 use App\Http\Requests\Request;
 use App\Models\User;
 use App\Providers\ValidationServiceProvider;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
@@ -46,7 +47,7 @@ class VolunteerSecondStepRequest extends Request
                 }
                 elseif ($user->volunteer_status == 1)
                 {
-                    if (! Carbon::parse($user->exam_passed_at)->addDay(1) <= Carbon::now())
+                    if (Carbon::parse($user->exam_passed_at)->diffInHours(Carbon::now()) < 24)
                         return false;
                     else
                         return true;
@@ -57,6 +58,10 @@ class VolunteerSecondStepRequest extends Request
                         return false;
                     else
                         return true;
+                }
+                else
+                {
+                    return true;
                 }
             }
             else
