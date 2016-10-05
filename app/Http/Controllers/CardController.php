@@ -63,6 +63,8 @@ class CardController extends Controller
         {
             return $this->jsonFeedback(null, [
                 'redirect' => url('relogin'),
+                'ok' => 1,
+                'message' => trans('forms.feed.wait'),
             ]);
         }
 
@@ -153,6 +155,8 @@ class CardController extends Controller
             {
                 $return = $this->jsonFeedback(null, [
                     'redirect' => url('relogin'),
+                    'ok' => 1,
+                    'message' => trans('forms.feed.wait'),
                 ]);
             }
             else
@@ -191,11 +195,41 @@ class CardController extends Controller
         }
 
         $user = User::selectBySlug($data['code_melli'], 'code_melli');
-        if ($user and ($user->isActive('volunteer') or $user->isActive('card')))
+        if ($user)
         {
-            $return = $this->jsonFeedback(null, [
-                'redirect' => url('relogin'),
-            ]);
+            if ($user->isActive('volunteer') or $user->isActive('card'))
+            {
+                $return = $this->jsonFeedback(null, [
+                    'redirect' => url('relogin'),
+                    'ok' => 1,
+                    'message' => trans('forms.feed.wait'),
+                ]);
+            }
+            else
+            {
+                $data['id'] = $user->id;
+                $user_id = User::store($data);
+
+                if ($user_id)
+                {
+                    Auth::loginUsingId( $user_id );
+                    $return = $this->jsonFeedback(null, [
+                        'redirect' => url('members/my_card'),
+                        'ok' => 1,
+                        'message' => trans('site.global.register_success'),
+                        'redirectTime' => 2000,
+                    ]);
+                }
+                else
+                {
+                    $return = $this->jsonFeedback(null, [
+                        'redirect' => url('organ_donation_card'),
+                        'ok' => 0,
+                        'message' => trans('site.global.register_not_complete'),
+                        'redirectTime' => 2000,
+                    ]);
+                }
+            }
         }
         else
         {

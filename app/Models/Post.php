@@ -410,14 +410,16 @@ class Post extends Model
 
 			case 'post_header' :
 			case 'header' :
-				if($this->branch()->hasFeature('header'))
-					return $this->meta('header_title') ;
+				if ($this->branch == 'statics')
+					return $this->meta('header_title');
 				else
-					return $this->branch()->header_title ;
+					return $this->branch()->header_title;
 
 			case 'category_name' :
 				if ($this->category_id > 0)
 					return Category::find($this->category_id)->title;
+				else
+					return $this->meta('category_title');
 
 			case 'abstract' :
 				if($this->abstract)
@@ -426,9 +428,9 @@ class Post extends Model
 					return str_limit(strip_tags($this->text),200);
 
 			case 'featured_image' :
-//				if(!$this->featured_image or !File::exists( public_path() .$this->featured_image))
-//					return url(self::$default_image) ;
-//				else
+				if(!$this->featured_image or !File::exists( public_path() .$this->featured_image))
+					return url(self::$default_image) ;
+				else
 					return url($this->featured_image);
 
 //				$file_headers = @get_headers($this->featured_image);

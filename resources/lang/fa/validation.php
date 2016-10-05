@@ -137,7 +137,7 @@ return [
 				"birth_city" => "مثال: تهران",
 				"marital_status" => "مثال: متاهل",
 				"edu_level" => "مثال: لیسانس",
-				"edu_field" => "مثال: مهندسی مکانیک." ,
+				"edu_field" => "مثال: مهندسی مکانیک" ,
 				'edu_city' => 'مثال: شیراز',
 				"tel_mobile" => 'مثال: ۰۹۱۲۱۲۳۴۵۶۷',
 				"tel_emergency" => 'مثال: ۰۲۱۲۲۳۳۴۴۵۵' ,
@@ -151,6 +151,9 @@ return [
 				"familization" => "مثال: سایت" ,
 				"motivation" => "مثال: انجام کارهای خیرخواهانه",
 				"alloc_time" => "مثال: ۵روز" ,
+				"marital" => 'مثال: متاهل',
+				"home_postal_code" => 'مثال: 1122334455',
+				"work_postal_code" => 'مثال: 1122334455',
 		],
 
 		'attributes_placeholder' => [
@@ -183,6 +186,8 @@ return [
 				"familization" => "" ,
 				"motivation" => "(حروف فارسی)",
 				"alloc_time" => "(تعداد روز، فقط عدد)" ,
+				"home_postal_code" => "(۱۰ رقم بدون خط تیره)" ,
+				"work_postal_code" => "(۱۰ رقم بدون خط تیره)" ,
 		],
 
 

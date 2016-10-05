@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\members;
 
+use App\Models\Post;
 use App\Models\State;
 use App\Models\User;
 use App\Traits\TahaControllerTrait;
@@ -18,7 +19,10 @@ class MembersController extends Controller
     use TahaControllerTrait;
     public function index()
     {
-        return view('site.members.my_card.0');
+        $card_detail = Post::findBySlug('my_card_detail');
+        if (! $card_detail)
+            redirect(url(''));
+        return view('site.members.my_card.0', compact('card_detail'));
     }
 
     public function print_my_card()
