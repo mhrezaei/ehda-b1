@@ -73,6 +73,9 @@ class VolunteersController extends Controller
 			case 'care' :
 				$permission = 'volunteers.edit' ;
 				break;
+			case 'documentation' :
+				$permission = 'volunteers.edit' ;
+				break;
 			case 'examining' :
 				$permission = 'volunteers.publish' ;
 				break;
