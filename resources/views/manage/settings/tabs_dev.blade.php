@@ -6,5 +6,6 @@
 //		['categories' , trans('manage.devSettings.categories.trans')],
 		['domains' , trans('manage.devSettings.domains.trans')],
 		['states' , trans('manage.devSettings.states.trans')],
+		['activities' , trans('manage.devSettings.activities.trans')],
 	] ,
 ])

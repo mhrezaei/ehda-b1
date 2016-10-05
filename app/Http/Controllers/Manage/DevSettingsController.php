@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Manage;
 
+use App\Models\Activity;
 use App\models\Branch;
 use App\Models\Category;
 use App\Models\Domain;
@@ -31,7 +32,7 @@ class DevSettingsController extends Controller
 		$this->page[0] = ['devSettings' , trans('manage.modules.devSettings')];
 	}
 
-	public function index($request_tab = 'branches')
+	public function index($request_tab = 'downstream')
 	{
 		//Preparetions...
 		$page = $this->page;
@@ -59,6 +60,11 @@ class DevSettingsController extends Controller
 				$model_data = Branch::orderBy('plural_title')->get();
 				break ;
 
+			case 'activities' :
+				$model_data = Activity::orderBy('title')->paginate(100) ;
+				break;
+
+
 			default :
 				return view('errors.404');
 		}
@@ -75,6 +81,18 @@ class DevSettingsController extends Controller
 		//Appears in modal and doesn't need $this->page stuff
 
 		switch($request_tab) {
+			case 'activities' :
+				if($item_id > 0) {
+					$model = Activity::find($item_id) ;
+					if(!$model)
+						return trans('validation.invalid');
+				}
+				else {
+					$model = new Activity() ;
+				}
+				return view('manage.settings.activities-edit' , compact('model'));
+				break;
+
 			case 'downstream' :
 				if($item_id>0) {
 					$model = Setting::find($item_id);
@@ -230,6 +248,12 @@ class DevSettingsController extends Controller
 				])->orderBy('title')->get();
 				$view .= "states-cities";
 				$page[2] = ['search',trans('manage.devSettings.states.city-search')." $key",''];
+				break;
+
+			case 'activities' :
+				$model_data = Activity::where('title' , 'like' , "%$key%")->orWhere('slug' , 'like' , "%$key%")->orderBy('title')->paginate(100);
+				$view .= 'activities' ;
+				$page[2] = ['search',trans('manage.devSettings.activities.search_for')." $key",''];
 				break;
 
 			default:
@@ -439,6 +463,29 @@ class DevSettingsController extends Controller
 		return $this->jsonAjaxSaveFeedback($model->update() , [
 				'success_refresh' => 1,
 		]);
+
+	}
+
+	public function save_activities( Requests\Manage\ActivitySaveRequest $request	)
+	{
+		//If Save...
+		if($request->_submit == 'save') {
+			return $this->jsonAjaxSaveFeedback(Activity::store($request) ,[
+					'success_refresh' => 1,
+			]);
+		}
+
+		//If Delete...
+		if($request->_submit == 'delete') {
+			$model = Activity::find($request->id) ;
+			if(!$model)
+				return $this->jsonFeedback();
+
+			return $this->jsonAjaxSaveFeedback($model->delete() , [
+					'success_refresh' => 1,
+			]);
+
+		}
 
 	}
 
