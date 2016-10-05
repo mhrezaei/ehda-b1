@@ -166,6 +166,8 @@ class Post extends Model
 		switch($criteria) {
 			case 'all' :
 				return $table ;
+			case 'all_with_trashed' :
+				return $table->withTrashed() ;
 			case 'published':
 				return $table->whereDate('published_at','<=',$now)->whereNotNull('published_by') ;
 			case 'scheduled' :

@@ -33,6 +33,7 @@ return [
 				'hard_delete' => 'حذف برای همیشه' ,
 				'delete' => 'حذف' ,
 				'sure_hard_delete' => 'مطمئن! حذف برای همیشه!' ,
+				'sure_delete' => 'مطمئن! حذف' ,
 				'card_save' => 'ذخیره کارت اهدای عضو',
 				'card_print' => 'چاپ کارت اهدای عضو',
 

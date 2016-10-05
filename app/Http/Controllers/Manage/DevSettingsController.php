@@ -252,9 +252,23 @@ class DevSettingsController extends Controller
 
 	public function save_branches(Requests\Manage\BranchesSaveRequest $request)
 	{
-		return $this->jsonAjaxSaveFeedback(Branch::store($request) , [
-			'success_refresh' => true ,
-		]);
+		//If Save...
+		if($request->_submit == 'save') {
+			return $this->jsonAjaxSaveFeedback(Branch::store($request) ,[
+					'success_refresh' => 1,
+			]);
+		}
+
+		//If Delete...
+		if($request->_submit == 'delete') {
+			$model = State::find($request->id) ;
+			if(!$model)
+				return $this->jsonFeedback();
+
+			return $this->jsonAjaxSaveFeedback(Branch::destroy($request->id) ,[
+					'success_refresh' => 1,
+			]);
+		}
 
 	}
 

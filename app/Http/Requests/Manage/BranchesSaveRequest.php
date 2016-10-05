@@ -33,7 +33,7 @@ class BranchesSaveRequest extends Request
         return [
              'plural_title' => 'required|unique:branches,plural_title,'.$id,
              'singular_title' => 'required',
-             'slug' => 'required|unique:branches,slug,'.$id,
+             'slug' => 'required|alpha_dash|not_in:'.Branch::$reserved_slugs.'|unique:branches,slug,'.$id.',id',
              'template'=>'required|in:'.implode(',',Branch::$available_templates) ,
              'icon' => 'required'
         ];
