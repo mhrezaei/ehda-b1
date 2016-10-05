@@ -41,6 +41,8 @@ Route::get('/volunteers', 'members\VolunteersController@index');
 Route::post('/volunteer/first_step', 'members\VolunteersController@register_first_step');
 Route::post('/volunteer/second_step', 'members\VolunteersController@register_second_step');
 Route::get('/volunteers/exam', 'members\VolunteersController@exam');
+Route::get('/volunteers/final_step', 'members\VolunteersController@register_final_step');
+Route::post('/volunteers/final_step/submit', 'members\VolunteersController@register_final_step_submit');
 
 /*
 |--------------------------------------------------------------------------

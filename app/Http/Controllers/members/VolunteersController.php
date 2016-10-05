@@ -4,6 +4,7 @@ namespace App\Http\Controllers\members;
 
 use App\models\Meta;
 use App\Models\Post;
+use App\Models\State;
 use App\Models\User;
 use App\Providers\SecKeyServiceProvider;
 use App\Traits\TahaControllerTrait;
@@ -410,5 +411,27 @@ class VolunteersController extends Controller
         }
 
         return $return;
+    }
+
+    public function register_final_step()
+    {
+        $id = Session::get('volunteer_exam_passed');
+        if (!$id)
+            return redirect(url(''));
+        $user = User::find($id);
+        if (!$user or $user->volunteer_status != 2)
+            return redirect(url(''));
+        $volunteer = Post::findBySlug('volunteers_detail');
+        if (! $volunteer)
+            return redirect(url(''));
+        $states = State::get_combo() ;
+
+        return view('site.volunteers.volunteer_register.0', compact('user', 'volunteer', 'states'));
+        
+    }
+
+    public function register_final_step_submit()
+    {
+
     }
 }
