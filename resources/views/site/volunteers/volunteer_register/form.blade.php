@@ -115,11 +115,11 @@
 
                     <div class="row">
                         <div class="col-xs-12 col-sm-6">
-                            @include('forms_site.select_edu_level', [
-                                'field' => 'edu_level',
+                            @include('forms_site.select_marital', [
+                                'field' => 'marital',
                                 'class' => 'form-select form-required',
                                 'required' => 1,
-                                'value' => $user->edu_level
+                                'value' => $user->marital
                                 ])
                         </div>
                         <div class="col-xs-12 col-sm-6">

@@ -151,6 +151,7 @@ return [
 				"familization" => "مثال: سایت" ,
 				"motivation" => "مثال: انجام کارهای خیرخواهانه",
 				"alloc_time" => "مثال: ۵روز" ,
+				"marital" => 'مثال: متاهل'
 		],
 
 		'attributes_placeholder' => [
