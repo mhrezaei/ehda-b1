@@ -37,7 +37,7 @@ class VolunteersController extends Controller
         $user = User::selectBySlug($input['code_melli'], 'code_melli');
         if ($user)
         {
-            if ($user->isActive('volunteer') and $user->isActive('card'))
+            if ($user->isActive('volunteer') or $user->isActive('card'))
             {
                 $return = $this->jsonFeedback(null, [
                     'redirect' => url('relogin'),
