@@ -266,7 +266,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		if($this->job)
 			$return .= $this->job. " / " ;
 
-		$return .= trans('people.edu_level.'.$this->edu_level) ;
+		$return .= $this->say('edu_level'); // trans('people.edu_level.'.$this->edu_level) ;
 
 		if($this->edu_field)
 			$return .= " / ".$this->edu_field ;
@@ -347,10 +347,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 			case 'marital':
 			case 'edu_level' :
 			case 'familization' :
-				return trans("people.$property.".$this->$property) ;
+				if(!$this->$property)
+					return '-' ;
+				else
+					return trans("people.$property.".$this->$property) ;
 
 			case 'education' :
-				return trans("people.education.".$this->edu_level);
+				return trans("people.education.".$this->edu_level+0);
 
 			case 'birth_city' :
 			case 'edu_city' :

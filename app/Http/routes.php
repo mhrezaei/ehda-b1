@@ -1,6 +1,9 @@
 <?php
 
 Route::get('test','TestController@index') ;
+Route::get('convertVolunteers','TestController@convertVolunteers') ;
+Route::get('removeDuplicates','TestController@removeDuplicates') ;
+Route::get('makeDomains','TestController@makeDomainsFromHomeCities') ;
 
 /*
 |--------------------------------------------------------------------------
