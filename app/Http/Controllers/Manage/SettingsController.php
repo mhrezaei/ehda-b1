@@ -5,11 +5,14 @@ namespace App\Http\Controllers\Manage;
 use App\models\Branch;
 use App\Models\Domain;
 use App\Models\Post_cat;
+use App\Models\Setting;
 use App\Models\State;
 use App\Traits\TahaControllerTrait;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Hamcrest\Core\Set;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 
 class SettingsController extends Controller
@@ -22,29 +25,22 @@ class SettingsController extends Controller
 		$this->page[0] = ['devSettings' , trans('manage.modules.devSettings')];
 	}
 
-	public function index($request_tab = 'categories')
+	public function index($request_tab = 'socials')
 	{
 		//Preparetions...
-		$page = $this->page;
-		$page[1] = [$request_tab];
+		$page[0] = ['settings' , trans('manage.modules.settings')];
+		$page[1] = [$request_tab , trans("manage.devSettings.downstream.category.$request_tab")];
 
 		//Model...
-		switch($request_tab) {
-			case 'socials' :
-				break;
+		$model_data = Setting::where('category' , $request_tab)->where('developers_only' , '0') ;
+		if(!Auth::user()->isGlobal())
+			$model_data = $model_data->where('available_for_domains') ;
+		$model_data = $model_data->orderBy('title')->get();
 
-			case 'activities' :
-				break ;
-
-			case 'contact' :
-				break;
-
-			default :
-				return view('errors.404');
-		}
+		$request_domain = Auth::user()->getDomain() ;
 
 		//View...
-		return view("manage.settings.$request_tab", compact('page', 'model_data'));
+		return view("manage.settings.settings", compact('page', 'model_data' , 'request_tab' , 'request_domain'));
 
 	}
 

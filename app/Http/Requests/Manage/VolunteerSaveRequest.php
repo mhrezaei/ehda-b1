@@ -16,11 +16,7 @@ class VolunteerSaveRequest extends Request
 	 */
 	public function authorize()
 	{
-		$input = $this->all() ;
-		if($input['id']==0)
-			return Auth::user()->can('volunteers.create') ;
-		else
-			return Auth::user()->can('volunteers.edit');
+		return true ; //permission checked in the controller
 	}
 
 	/**

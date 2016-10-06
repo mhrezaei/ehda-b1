@@ -37,7 +37,7 @@
 		])
 	@endif
 
-	@if(Auth::user()->isDeveloper())
+	@if(Auth::user()->isAdmin())
 		@include('forms.select' , [
 			'name' => 'level' ,
 			'value' => $model->can('manage') ,

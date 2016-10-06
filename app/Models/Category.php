@@ -12,6 +12,7 @@ class Category extends Model
 	use TahaModelTrait;
 	use SoftDeletes ;
 
+	public static $reserved_slugs = 'none,without' ;
 	protected $guarded = ['id'] ;
 
 	public function posts()

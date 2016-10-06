@@ -55,7 +55,8 @@ class CardsController extends Controller
 				$model_data = $model_data->where('card_no' , $request->keyword)->paginate(50) ;
 			}
 			else {
-				$model_data = $model_data->whereRaw(User::searchRawQuery($keyword,User::$cards_search_fields))->orderBy('card_registered_at' , 'desc')->paginate(50);
+//				$model_data = $model_data->whereRaw(User::searchRawQuery($keyword,User::$cards_search_fields))->orderBy('card_registered_at' , 'desc')->paginate(50);
+				$model_data = User::selector('cards' , "search:$keyword")->orderBy('card_registered_at' , 'desc')->paginate(50);
 			}
 
 			return view('manage.cards.browse' , compact('page' , 'model_data' , 'db' , 'keyword'));
@@ -205,13 +206,21 @@ class CardsController extends Controller
 
 		//Preparetions...
 		$page = $this->page ;
-		$page[1] = ["cards/$model_id/edit" , trans('people.cards.manage.edit') , ''];
 
 		//Model...
 		$states = State::get_combo() ;
 		$model = User::find($model_id) ;
-		if(!$model or !$model->isCard())
-			return view('errors.404');
+		if(!$model)
+			return view('errors.410');
+
+		//Page..
+		if($model->isCard()) {
+			$page[1] = ["cards/$model_id/edit", trans('people.cards.manage.edit'), ''];
+		}
+		else {
+			$page[1] = ["cards/$model_id/edit", trans('people.cards.manage.create'), ''];
+		}
+
 
 		if($model->isActiveVolunteer() and !Auth::user()->can('volunteers.edit'))
 			return $this->editorForVolunteers($model->id , $page);
@@ -249,7 +258,7 @@ class CardsController extends Controller
 					'redirectTime' => 1 ,
 			]);
 
-		if($user->isActive())
+		if(abs($user->volunteer_status) >= 7)
 			return $this->jsonFeedback(1,[
 					'ok' => 1 ,
 					'message' => trans('people.cards.manage.inquiry_is_volunteer') ,
@@ -257,11 +266,11 @@ class CardsController extends Controller
 					'redirectTime' => 1 ,
 			]);
 
-		if(!$user->isActive())
+		if(1)
 			return $this->jsonFeedback(1,[
 					'ok' => 1 ,
-					'message' => trans('people.cards.manage.inquiry_success').' :) ' ,
-					'callback' => 'cardEditor(1)' ,
+					'message' => trans('people.cards.manage.inquiry_will_be_volunteer') ,
+					'redirect' => Auth::user()->can('cards.edit') ? url("manage/cards/$user->id/edit") : '' ,
 			]);
 
 	}
@@ -320,7 +329,7 @@ class CardsController extends Controller
 
 
 		//Processing passwords and a few more things...
-		if(!$data['id']) {
+		if(!$data['id'] or (isset($model) and !$model->isCard())) {
 			$data['card_registered_at'] = Carbon::now()->toDateTimeString() ;
 			$data['card_status'] = 8 ;
 			$data['card_no'] = User::generateCardNo() ;

@@ -13,6 +13,8 @@ class Domain extends Model
 	use SoftDeletes;
 	use TahaModelTrait ;
 
+	public static $reserved_slugs = 'admin,global,iran,ir,manage' ;
+
 
 	public function states()
 	{

@@ -5,6 +5,8 @@ namespace App\Providers;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use App\Providers\SecKeyServiceProvider;
@@ -14,24 +16,45 @@ class ValidationServiceProvider extends ServiceProvider
 {
 	private $input;
 	private $rules;
+	private static $default_global_rules = 'stripArabic';
 
-	public static function purifier($input, $rules)
+	public static function purifier($input, $rules , $global_rules = '--default--')
 	{
+		if($global_rules == '--default--')
+			$global_rules = self::$default_global_rules ;
+
 		$ME = new ValidationServiceProvider(app());
-		$result = $ME->fire($input, $rules);
+
+		$result = $ME->fire($input, $rules , $global_rules);
 
 		return $result;
 	}
 
-	public function fire($input, $rules)
+	private function addGlobalRules($global_rules)
+	{
+		foreach($this->input as $key => $data) {
+			if($key[0] == '_')
+				continue ;
+
+			if(isset($this->rules[$key]))
+				$this->rules[$key] .= '|'.$global_rules ;
+			else
+				$this->rules[$key] = $global_rules ;
+		}
+	}
+
+	public function fire($input, $rules , $global_rules)
 	{
 		$this->input = $input;
 		$this->rules = $rules;
 
+
+		$this->addGlobalRules($global_rules) ;
+//		Session::push('test' , $this->rules) ;
+
 		foreach($input as $varName => $data) {
 			$this->process($varName);
 		}
-
 		return $this->input;
 	}
 
@@ -43,8 +66,10 @@ class ValidationServiceProvider extends ServiceProvider
 
 		//Process...
 		$rules = explode('|', $this->rules[$key]);
+		array_push($rules , 'stripArabic') ;
 		foreach($rules as $rule) {
 			$this->applyFilter($key, $rule);
+//			Session::push('test', $key.': '.$rule);
 		}
 
 	}
@@ -55,6 +80,15 @@ class ValidationServiceProvider extends ServiceProvider
 		switch ($rule) {
 			case "url":
 				$data = urldecode($data);
+				break;
+
+			case 'stripArabic': //persian characters
+				$data = str_replace("ي", "ی", $data);
+				$data = str_replace("ك", "ک", $data);
+				$data = str_replace("ك", "ک", $data);
+				$data = str_replace("٤", "۴", $data);
+				$data = str_replace("٦", "۶", $data);
+				$data = str_replace("٥", "۵", $data);
 				break;
 
 			case "pd":

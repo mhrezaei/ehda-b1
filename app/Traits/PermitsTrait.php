@@ -8,7 +8,7 @@ trait PermitsTrait
 {
 	protected static $available_modules = [
 		'cards' => ['browse','view','send','search','create','bulk','edit','print','report','delete'],
-		'volunteers' => ['send','search' , 'view' ,'edit','publish','report','delete' , 'bin'],
+		'volunteers' => ['create','send','search' , 'view' ,'edit','publish','report','delete' , 'bin'],
 		'posts' => ['create','edit','publish','report','delete','bin'] ,
 	];
 
@@ -89,6 +89,14 @@ trait PermitsTrait
 	public function isGlobal()
 	{
 		if($this->getDomain() == 'global')
+			return true ;
+		else
+			return false ;
+	}
+
+	public function isAdmin()
+	{
+		if($this->isGlobal() and $this->can('settings'))
 			return true ;
 		else
 			return false ;

@@ -1,3 +1,4 @@
+
 @if(sizeof($topbar_notification_menu = Taha::topbarNotificationMenu() )>1)
 	@include('manage.frame.widgets.topbar' , [
 		'icon' => 'bell' ,
@@ -11,13 +12,16 @@
 	@include('manage.frame.widgets.topbar' , [
 		'icon' => 'plus-circle' ,
 		'items' => $topbar_create_menu ,
-		'color' => 'green'
+		'color' => 'green' ,
+//		'text' => trans('forms.button.add') ,
 	])
 @endif
+
 
 @include('manage.frame.widgets.topbar' , [
 	'icon' => 'user' ,
 	'color' => 'grey' ,
+	'text' => Auth::user()->fullName() ,
 	'items' => [
 		['manage/account' , trans('manage.account.account_settings') , 'sliders'] ,
 //		['-'] ,

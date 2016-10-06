@@ -55,9 +55,9 @@
 							</a>
 						</td>
 						<td id="domain-{{$model->id}}-province" data-toggle="{{$model->province()->id}}">
-							<a href="javascript:void(0)" onclick="modalForm('modalStateEditor' , '{{$model->province()->id}}')">
+							{{--<a href="javascript:void(0)" onclick="modalForm('modalStateEditor' , '{{$model->province()->id}}')">--}}
 								{{ $model->province()->title }}
-							</a>
+							{{--</a>--}}
 						</td>
 						<td>
 							{{ $model->domain->title }}

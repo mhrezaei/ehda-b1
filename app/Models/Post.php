@@ -31,6 +31,7 @@ class Post extends Model
 	public $is_global_reflect = false ;
 	protected static $search_fields = ['title', 'keywords', 'abstract'] ;
 	protected static $default_image ;
+	public static $reserved_slugs = 'none,without' ;
 
 
 	/*
@@ -165,6 +166,8 @@ class Post extends Model
 		switch($criteria) {
 			case 'all' :
 				return $table ;
+			case 'all_with_trashed' :
+				return $table->withTrashed() ;
 			case 'published':
 				return $table->whereDate('published_at','<=',$now)->whereNotNull('published_by') ;
 			case 'scheduled' :

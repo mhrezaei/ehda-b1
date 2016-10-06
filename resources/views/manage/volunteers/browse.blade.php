@@ -14,7 +14,7 @@
 		<div class="col-md-8 tools">
 
 			@include('manage.frame.widgets.toolbar_button' , [
-				'target' => "masterModal('".url('manage/volunteers/0/edit')."')" ,
+				'target' => url('manage/volunteers/create') ,
 				'type' => 'success' ,
 				'caption' => trans('people.volunteers.manage.create') ,
 				'icon' => 'plus-circle' ,
@@ -27,8 +27,8 @@
 				'button_label' => trans('forms.button.bulk_action'),
 				'button_extra' => 'disabled' ,
 				'actions' => [
-					['envelope-o' , trans('people.commands.send_email') , 'modal:manage/volunteers/-id-/email' , 'volunteers.send' ] ,
-					['mobile' , trans('people.commands.send_sms') , 'modal:manage/volunteers/-id-/sms' , 'volunteers.send' ] ,
+//					['envelope-o' , trans('people.commands.send_email') , 'modal:manage/volunteers/-id-/email' , 'volunteers.send' ] ,
+//					['mobile' , trans('people.commands.send_sms') , 'modal:manage/volunteers/-id-/sms' , 'volunteers.send' ] ,
 					['check' , trans('people.commands.activate') , 'modal:manage/volunteers/-id-/publish' , 'volunteers.publish' , $page[1][2]!='bin' and $page[1][2]!='active'],
 					['ban' , trans('people.commands.block') , 'modal:manage/volunteers/-id-/soft_delete' , 'volunteers.delete' , $page[1][2]!='bin'] ,
 					['undo' , trans('people.commands.unblock') , 'modal:manage/volunteers/-id-/undelete' , 'volunteers.bin' , $page[1][2]=='bin'] ,

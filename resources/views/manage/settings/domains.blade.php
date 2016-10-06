@@ -13,7 +13,7 @@
 		<div class="col-md-4"><p class="title">{{ trans('manage.devSettings.domains.trans') }}</p></div>
 		<div class="col-md-8 tools">
 			@include('manage.frame.widgets.toolbar_button' , [
-				'target' => 'domainEditor("0")' ,
+				'target' => "masterModal(url('manage/devSettings/domains/0/edit'))" ,
 				'type' => 'success' ,
 				'caption' => trans('forms.button.add') ,
 				'icon' => 'plus-circle' ,
@@ -47,7 +47,7 @@
 				@foreach($model_data as $model)
 					<tr>
 						<td id="domain-{{$model->id}}-title" data-toggle="{{$model->title}}">
-							<a href="javascript:void(0)" onclick="domainEditor('{{$model->id}}')">
+							<a href="javascript:void(0)" onclick="masterModal(url('manage/devSettings/domains/{{$model->id}}/edit'))">
 								{{ $model->title }}
 							</a>
 						</td>
@@ -55,8 +55,8 @@
 							{{ $model->slug }}
 						</td>
 						<td id="domain-{{$model->id}}-alias" data-toggle="{{$model->alias}}" >
-							@if($model->alias == $model->slug)
-								<span class="null-content">{{ trans('manage.devSettings.domains.alias_same_as_slug') }}</span>
+							@if(!$model->alias)
+								<span class="null-content">{{ trans('manage.devSettings.domains.domain_deactive') }}</span>
 							@else
 								{{ $model->alias }}
 							@endif
@@ -74,5 +74,4 @@
 	</div>
 
 
-	@include('manage.settings.domains-modalEditor')
 @endsection

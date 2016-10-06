@@ -26,11 +26,15 @@ class StatesSaveRequest extends Request
     public function rules()
     {
         $input = $this->all();
-//        $id = $input['id'] ;
-        return [
-             'title' => 'required',
-             'capital_id' => 'required|exists:states,id,parent_id,!0',
-        ];
+        if($input['_submit'] == 'save') {
+            return [
+                 'title' => 'required',
+                 'capital_id' => 'required|exists:states,id,parent_id,!0',
+            ];
+        }
+        else {
+            return [] ;
+        }
 
     }
 

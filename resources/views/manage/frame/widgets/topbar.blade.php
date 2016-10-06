@@ -6,7 +6,11 @@
 			</span>
 		@endif
 		<i class="fa fa-{{$icon or 'navicon'}} fa-fw"></i>
-		<span class="topbar {{$text_class or ''}}">{{ $text or '' }}</span>
+		<span class="topbar {{$text_class or ''}}">
+			@if(isset($text))
+				<span class="mh5">{{$text}}</span>
+			@endif
+		</span>
 		<i class="fa fa-caret-down"></i>
 	</a>
 	<ul class="dropdown-menu">

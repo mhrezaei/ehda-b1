@@ -1,6 +1,9 @@
 <?php
 
 Route::get('test','TestController@index') ;
+Route::get('convertVolunteers','TestController@convertVolunteers') ;
+Route::get('removeDuplicates','TestController@removeDuplicates') ;
+Route::get('makeDomains','TestController@makeDomainsFromHomeCities') ;
 
 /*
 |--------------------------------------------------------------------------
@@ -92,7 +95,7 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 		Route::get('/' , 'VolunteersController@browse') ;
 		Route::get('/browse' , 'VolunteersController@browse') ;
 		Route::get('/browse/{request_tab}' , 'VolunteersController@browse') ;
-		Route::get('/create/{branch}' , 'VolunteersController@create') ;
+		Route::get('/create/' , 'VolunteersController@editor') ;
 		Route::get('/search' , 'VolunteersController@search');
 		Route::get('/reports' , 'VolunteersController@reports');
 
@@ -102,6 +105,7 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 
 		Route::group(['prefix'=>'save'] , function() {
 			Route::post('/' , 'VolunteersController@save');
+			Route::post('/inquiry' , 'VolunteersController@inquiry');
 
 			Route::post('/change_password' , 'VolunteersController@change_password');
 			Route::post('/soft_delete' , 'VolunteersController@soft_delete');
@@ -218,6 +222,11 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 		Route::post('/states/save' , 'DevSettingsController@save_states');
 		Route::post('/cities/save' , 'DevSettingsController@save_cities');
 		Route::post('/categories/save' , 'DevSettingsController@save_category');
+		Route::post('/downstream/save' , 'DevSettingsController@save_downstream');
+		Route::post('/activities/save' , 'DevSettingsController@save_activities');
+		Route::post('/downstream/set' , 'DevSettingsController@set_downstream');
+
+		Route::post('/login_as/' , 'DevSettingsController@login_as') ;
 	}) ;
 
 });

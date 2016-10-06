@@ -17,6 +17,9 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Session;
 use Morilog\Jalali\jDate;
 use App\Events\SendSms;
@@ -38,9 +41,8 @@ class TestController extends Controller
 //		return $this->convertExams() ;
 //		return $this->upgradeDomains() ;
 
-		$user = User::find(23);
-		return view('templates.say' , ['array'=>json_decode($user->getRoles())]);
 
+//		return view('templates.say' , ['array'=>public_path()]);
 
 	}
 
@@ -136,18 +138,27 @@ class TestController extends Controller
 		}
 	}
 
-	private function makeDomainsFromHomeCities()
+	public function makeDomainsFromHomeCities()
 	{
-		$users = User::where('card_status' , '!=' , '0')->whereNull('from_domain')->get() ;
+		$users = User::where('card_status' , '!=' , '0')->orderBy('domain' , 'desc')->whereNull('domain')->limit(1000)->get() ;
+		$count = 0 ;
 
 		foreach($users as $user) {
 			$city = State::find($user->home_city) ;
 			if($city) {
-				$user->from_domain = $city->domain->slug ;
-				$user->update() ;
-				echo view('templates.say' , ['array'=>[$user->id,$city->domain->slug]]);
+				$user->domain = $city->domain->slug ;
+				$ok = $user->update() ;
 			}
+			else {
+				$ok = 0 ;
+			}
+			$count += $ok ;
 		}
+
+		if($count)
+			echo '<script>document.addEventListener("DOMContentLoaded", function(event) { setTimeout("location.reload(true);", 1000); });</script>';
+
+		dd($count) ;
 	}
 
 	private function help_me($input)
@@ -328,52 +339,103 @@ class TestController extends Controller
 		}
 	}
 
-	private function convertVolunteers()
+	public function convertVolunteers()
 	{
-		$safiran = Mhr_safiran_data::all() ;
+		$safirs = Mhr_safiran_data::where('roles' , '!=' , 'converted')->limit(100)->get();
 
-		foreach($safiran as $safir) {
-			$exam = json_decode($safir->examResult,1);
-
-			$volunteer = new Volunteer() ;
-			$volunteer->created_at = Carbon::createFromTimestamp($safir->registerTime) ;
-			if($safir->password) {
-				$volunteer->published_at = Carbon::createFromTimestamp($safir->registerTime) ;
+		$count = 0 ;
+		foreach($safirs as $safir) {
+			$user = [] ;
+			if($safir->examResult) {
+				$exam = json_decode($safir->examResult,1);
 			}
-			$volunteer->password = $safir->password ;
-			$volunteer->password_force_change = 2 ;
-			$volunteer->name_first = $safir->firstName ;
-			$volunteer->name_last = $safir->lastName ;
-			$volunteer->code_meli = $safir->nationalcode ;
-			$volunteer->email = $safir->email ;
-			$volunteer->gender = $safir->sex ;
-			if($safir->dateOfBirth)
-				$volunteer->birth_date = Carbon::createFromTimestamp($safir->dateOfBirth) ;
-			$volunteer->marital_status = $safir->maried ;
-			$volunteer->edu_city = State::findByName($safir->educationCity);
-			$volunteer->edu_field = $safir->education ;
-			$volunteer->job = $safir->job ;
-			$volunteer->tel_mobile = $safir->mobile ;
-			$volunteer->tel_emergency = $safir->emergencyTel ;
-			$volunteer->home_address = $safir->homeAddress ;
-			$volunteer->home_tel = $safir->homeTel ;
-			$volunteer->work_address = $safir->jobAddress ;
-			$volunteer->work_tel = $safir->jobTel ;
-			$volunteer->exam_passed_at = Carbon::createFromTimestamp($safir->lastExamTime) ;
-			$volunteer->exam_sheet = json_encode($exam['examResult'])  ;
-			if($exam['total'])
-				$volunteer->exam_result = round (100 * $exam['trueAnswer'] / ($exam['total'])) ;
-			$volunteer->familization = $safir->introduction ;
-			$volunteer->motivation = $safir->motivation ;
-			$volunteer->alloc_time = $safir->numberOfMonth ;
-			$volunteer->activities = $safir->activity ;
+			else {
+				$exam['status'] = '' ;
+				$exam['trueAnswer'] = 0 ;
+				$exam['total'] = 1 ;
+			}
 
-			$volunteer->save();
+			if($exam['status'] != 'success')
+				$status = 1 ;
+			elseif(!$safir->dateOfBirth)
+				$status = 2 ;
+			elseif(!$safir->password)
+				$status = 3 ;
+			else
+				$status = 8 ;
+
+			$user['volunteer_status'] = $status ;
+			$user['volunteer_registered_at'] = Carbon::createFromTimestamp($safir->registerTime)->toDateTimeString() ;
+			$user['email'] = $safir->email ;
+			$user['password'] = $safir->password ;
+			$user['code_melli'] = $safir->nationalcode ;
+			$user['name_first'] = $safir->firstName ;
+			$user['name_last'] = $safir->lastName ;
+			$user['birth_date'] = Carbon::createFromTimestamp($safir->dateOfBirth)->toDateString();
+			$user['gender'] = $safir->sex  ;
+			$user['marital'] = $safir->maried ;
+			$user['tel_mobile'] = $safir->mobile ;
+			$user['tel_emergency'] = $safir->emergencyTel ;
+			$user['home_address'] = $safir->homeAddress ;
+			$user['home_tel'] = $safir->homeTel ;
+			$user['work_address'] = $safir->jobAddress ;
+			$user['work_tel'] = $safir->jobTel ;
+			$user['edu_level'] = $safir->edu_level ;
+			$user['edu_field'] = $safir->education ;
+			$user['job'] = $safir->job ;
+			$user['password_force_change'] = 2 ;
+			$user['exam_passed_at'] = Carbon::createFromTimestamp($safir->lastExamTime)->toDateTimeString() ;
+			$user['exam_result'] = $exam['total']? round (100 * $exam['trueAnswer'] / ($exam['total'])) : ''  ;
+			$user['familization'] = $safir->introduction ;
+			$user['motivation'] = $safir->motivation ;
+			$user['alloc_time'] = $safir->numberOfMonth.' '.$safir->activityDetail ;
+			$user['activities'] = $safir->activity ;
+
+			$model = User::findBySlug($user['code_melli'] , 'code_melli') ;
+			if($model) {
+				$user['id'] = $model->id ;
+				if($model->password) {
+					unset($user['password'])  ;
+					unset($user['password_force_change']);
+				}
+				$user['edu_level'] = max($user['edu_level'] , $model->edu_level ) ;
+			}
+			else {
+				$user['id'] = 0 ;
+			}
+
+			$ok = User::store($user) ;
+			if($ok) {
+				$count++ ;
+				$safir->roles = 'converted' ;
+				$safir->update() ;
+			}
+
 		}
 
+		if($count)
+			echo '<script>document.addEventListener("DOMContentLoaded", function(event) { setTimeout("location.reload(true);", 1000); });</script>';
 
-//		echo view('templates.say' , ['array'=>$old_records]);
+		dd($count) ;
 
 	}
 
+	public function removeDuplicates()
+	{
+		$array = DB::select('SELECT code_melli, id , COUNT( * ) c FROM users GROUP BY code_melli HAVING c >1 limit 50');
+
+		$count = 0 ;
+		foreach($array as $item) {
+			$code_melli = $item->code_melli ;
+			$id = $item->id ;
+			$deleted = DB::delete("delete from `users` where `code_melli` = '$code_melli' and `id` != '$id' ");
+			$count += $deleted ;
+			echo $deleted.'<br>';
+		}
+
+		echo view('templates.say' , ['array'=>$count]);
+		if($count)
+			echo '<script>document.addEventListener("DOMContentLoaded", function(event) { setTimeout("location.reload(true);", 1000); });</script>';
+
+	}
 }

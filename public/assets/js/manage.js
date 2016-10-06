@@ -38,54 +38,6 @@ function modalForm($modal_id , $item_id , $parent_id)
 
 }
 
-function domainEditor($id)
-{
-	//Preparetions...
-	var $modal_id = 'modalDomainEditor' ;
-	var $form_selector = '#' + $modal_id + ' form ' ;
-
-	//Form Placement...
-	forms_reset($form_selector , 'title');
-	$($form_selector + '[name=id] ').val($id) ;
-	if($id!='0') {
-		$('#'+$modal_id+ '-title').html($($form_selector+'._2').html());
-
-		var $title = $('#domain-'+$id+'-title').attr('data-toggle');
-		var $slug = $('#domain-'+$id+'-slug').attr('data-toggle');
-		var $alias = $('#domain-'+$id+'-alias').attr('data-toggle');
-
-		$($form_selector + '[name=title] ').val($title) ;
-		$($form_selector + '[name=slug] ').val($slug) ;
-		$($form_selector + '[name=alias] ').val($alias) ;
-	}
-	else {
-		$('#'+$modal_id+ '-title').html($($form_selector+'._1').html());
-
-		$($form_selector + '[name=alias] ').val('') ;
-		$($form_selector + '[name=title] ').val('') ;
-		$($form_selector + '[name=slug] ').val('') ;
-	}
-
-	$('#modalDomainEditor').modal() ;
-}
-
-function domainCities($id)
-{
-	var $modal_id = "modalDomainCities" ;
-	var $form_selector = '#' + $modal_id + ' form ' ;
-
-	//Form Placement...
-	forms_reset($form_selector , 'cities');
-	$($form_selector + '[name=id] ').val($id) ;
-
-	$('#'+$modal_id+ '-title').html($($form_selector+'._1').html()+'  '+$('#domain-'+$id+'-title').attr('data-toggle'));
-
-	$('#'+$modal_id).modal() ;
-	$($form_selector + '[name=cities] ');
-
-	//@TODO: Make a state selector from an array or something! 
-
-}
 
 function postSave($action)
 {
@@ -258,5 +210,17 @@ function cardEditor($mood , $para='')
 			break;
 	}
 
+}
+
+function downstreamPhotoSelected($input_selector)
+{
+	$($input_selector).val($($input_selector).val().replace(url(),''));
+}
+
+function downstreamPhotoPreview($input_selector)
+{
+	$url = $($input_selector).val() ;
+	if($url)
+		window.open(url($url)) ;
 }
 

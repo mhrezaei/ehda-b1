@@ -45,7 +45,7 @@ $app = require_once __DIR__.'/../bootstrap/app.php';
 //});
 
 $app->bind('path.public', function() {
-	return base_path().env('PUBLIC_FOLDER', 'public');
+	return base_path().'/'.env('PUBLIC_FOLDER', 'public');
 });
 
 

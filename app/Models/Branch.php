@@ -16,6 +16,7 @@ class Branch extends Model
 	public static $available_features = ['image' , 'text' , 'abstract' , 'rss' , 'comment' , 'gallery' , 'category' , 'searchable' , 'preview' , 'digest' , 'domain' , 'schedule' , 'keyword' , 'title' , 'header'] ;
 	public static $available_templates = ['album' , 'post' , 'slideshow' , 'developers' , 'custom'] ;
 	public static $available_meta_types = ['text' , 'textarea' , 'date'];
+	public static $reserved_slugs = 'root,admin' ;
 
 
 	/*
@@ -29,6 +30,12 @@ class Branch extends Model
 	public function posts($criteria='all')
 	{
 		return Post::selector($this->slug , $criteria);
+	}
+
+	public function allPosts()
+	{
+		return $this->posts('all_with_trashed');
+
 	}
 
 	public function categories()
