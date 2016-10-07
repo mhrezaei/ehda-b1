@@ -30,7 +30,7 @@
                 <ul class="list-unstyled pull-left text-right">
                     <h3>{{ trans('site.know_menu.iran_news') }}</h3>
                     <li><a href="{{ url('/archive/iran-news/iran-opu-transplant') }}">{{ trans('site.know_menu.iran_procurement') }}</a></li>
-                    <li><a href="{{ url('/archive/iran-news/internal-ngo') }}">{{ trans('site.know_menu.provinces') }}</a></li>
+                    <li><a href="{{ url('/archive/iran-news/internal-ngo') }}">{{ trans('site.know_menu.internal-ngo') }}</a></li>
                 </ul>
                 <ul class="list-unstyled pull-left text-right">
                     <h3>{{ trans('site.know_menu.world_news') }}</h3>

@@ -57,9 +57,9 @@ class PostController extends Controller
             $archive = $archive->where('category_id', $category_id);
         }
 
-        $archive = $archive->where('published_at', '<=', Carbon::now()
+        $archive = $archive->where('published_at', '<=', Carbon::now()->toDateTimeString())
             ->orderBy('published_at', 'desc')
-            ->toDateTimeString())->paginate(20);
+            ->paginate(20);
 
         return view('site.post_archive.0', compact('branch_name', 'category_name', 'archive'));
     }
