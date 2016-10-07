@@ -244,7 +244,15 @@ class VolunteersController extends Controller
             }
         }
 
-        $store = Session::pull('volunteer_first_step');
+        if (Auth::check())
+        {
+            $store['code_melli'] = Auth::user()->code_melli;
+        }
+        else
+        {
+            $store = Session::pull('volunteer_first_step');
+        }
+
         $store['exam_passed_at'] = Carbon::now()->toDateTimeString();
         $store['exam_sheet'] = json_encode($data);
         $store['exam_result'] = ceil(($true_answer * 100) / 30);
@@ -373,9 +381,12 @@ class VolunteersController extends Controller
                     'exam_passed_at' => $store['exam_passed_at'],
                     'exam_sheet' => $store['exam_sheet'],
                     'exam_result' => $store['exam_result'],
+                    'volunteer_status' => $volunteer_status,
                     'id' => $user->id,
                 ];
+
                 $id = User::store($update);
+                Session::put('volunteer_exam_passed', $id);
                 if ($id)
                 {
                     if ($store['exam_result'] >= 50)

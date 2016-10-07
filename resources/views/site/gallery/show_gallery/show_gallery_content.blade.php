@@ -7,25 +7,28 @@
             <div class="flex_wrapper" id="gallery">
                 @if(sizeof(json_decode($gallery->meta('post_photos'), true)))
                     <?php
-                        $array = [];
-                        for ($i = 0; $i < count(json_decode($gallery->meta('post_photos'), true)); $i++)
-                        {
-                            $array[] = (8 * $i) + 5;
-                        }
+                    $array = [];
+                    $count = 1;
+                    for ($i = 0; $i < count(json_decode($gallery->meta('post_photos'), true)); $i++) {
+                        $array[] = (8 * $i) + 5;
+                    }
                     ?>
                     @foreach(json_decode($gallery->meta('post_photos'), true) as $key => $pic)
                         <?php
-                            $image = explode('/', $pic['src']);
-                            $image_thumbs = str_replace($image[count($image) -1], 'thumbs/' . $image[count($image) -1], $pic['src']);
+                        $image = explode('/', $pic['src']);
+                        $image_thumbs = str_replace($image[count($image) - 1], 'thumbs/' . $image[count($image) - 1], $pic['src']);
                         ?>
-                        @if(in_array($key, $array))
-                            <div class="flex-item"></div>
+                        @if(in_array($count, $array))
+                            <div class="flex-item" id="{{ $count }}"></div>
+                            <?php $count++; ?>
                         @endif
-                        <div class="flex-item">
+                        <div class="flex-item" id="{{ $count }}">
                             <a href="{{ url('') . $pic['src'] }}" class="inner">
-                                <img src="{{ url('') . $image_thumbs }}" alt="{{ $pic['label'] }}" style="width: 300px; height: 300px;">
+                                <img src="{{ url('') . $image_thumbs }}" alt="{{ $pic['label'] }}"
+                                     style="width: 300px; height: 300px;">
                             </a>
                         </div>
+                        <?php $count++; ?>
                     @endforeach
                 @endif
             </div>
@@ -34,11 +37,11 @@
 </div>
 
 <script type="text/javascript">
-    $(document).ready(function() {
+    $(document).ready(function () {
         $("#gallery a").featherlightGallery({
             openSpeed: 300
         });
-        $.featherlightGallery.prototype.afterContent = function() {
+        $.featherlightGallery.prototype.afterContent = function () {
             var caption = this.$currentTarget.find('img').attr('alt');
             this.$instance.find('.featherlight-caption').remove();
             $('<h4 class="featherlight-caption text-right">').text(caption).appendTo(this.$instance.find('.featherlight-content'));
