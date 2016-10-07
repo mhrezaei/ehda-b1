@@ -489,12 +489,14 @@ class DevSettingsController extends Controller
 
 	}
 
-	public function login_as(Request $request)
+	public function loginAs(Request $request)
 	{
 		$user = User::find($request->id) ;
 		if(!$user->isActive())
 			return $this->jsonFeedback('user is not active');
 
+
+		$request->session()->set('logged_developer' , encrypt(Auth::user()->id)) ;
 		$ok = Auth::loginUsingId( $user->id );
 		return $this->jsonAjaxSaveFeedback($ok , [
 				'success_redirect' => url('/manage'),

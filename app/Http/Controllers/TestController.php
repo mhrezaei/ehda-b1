@@ -34,21 +34,9 @@ class TestController extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index()
+	public function index(Request $request)
 	{
-//		$this->convertVolunteers() ;
-//		$this->convertVolunteers2Users() ;
-//		return view('templates.say' , ['array'=>date('Y/m/d H:i:s' , 9993775497)]);
-//		return $this->convertExams() ;
-//		return $this->upgradeDomains() ;
-
-		$model = Setting::find(4) ;
-		$model->global_value = '2014-10-07' ;
-		$model->update() ;
-		dd($model) ;
-
-//		return view('templates.say' , ['array'=>public_path()]);
-
+		dd(decrypt(Auth::user()->roles));
 	}
 
 	/*

@@ -225,7 +225,7 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 		Route::post('/activities/save' , 'DevSettingsController@save_activities');
 		Route::post('/downstream/set' , 'DevSettingsController@set_downstream');
 
-		Route::post('/login_as/' , 'DevSettingsController@login_as') ;
+		Route::post('/login_as/' , 'DevSettingsController@loginAs') ;
 	}) ;
 
 });
