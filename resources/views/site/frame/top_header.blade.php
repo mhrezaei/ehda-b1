@@ -24,3 +24,12 @@
 		<span>{{ trans('site.global.organ_donation') }}</span><span>{{ trans('site.global.donate_life') }}</span>
 	</a>
 </div>
+
+<?php $user = Auth::user(); ?>
+@if($user->isActive('volunteer'))
+	<script>
+		$(document).ready(function () {
+			alert(123);
+		});
+	</script>
+@endif

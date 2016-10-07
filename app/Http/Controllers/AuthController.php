@@ -6,6 +6,7 @@ use App\Events\SendEmail;
 use App\Events\SendSms;
 use App\Events\UserForgotPassword;
 use App\Jobs\SendEmailJob;
+use App\Models\Setting;
 use App\Models\User;
 use App\Providers\SecKeyServiceProvider;
 use App\Providers\SmsServiceProvider;
@@ -64,6 +65,9 @@ class AuthController extends Controller
 		Auth::loginUsingId( $user->id );
 		if($user['password_force_change'])
 			return redirect('/password/old_password');
+
+		if (! $user->exam_passed_at)
+			return redirect('/volunteers/exam');
 
 		if ($user->isVolunteer())
 		{
@@ -291,6 +295,6 @@ class AuthController extends Controller
 
 	public function sms()
 	{
-		echo public_path();
+		echo Setting::get('site_logo');
 	}
 }

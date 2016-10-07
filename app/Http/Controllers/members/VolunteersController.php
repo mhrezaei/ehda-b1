@@ -7,6 +7,7 @@ use App\models\Meta;
 use App\Models\Post;
 use App\Models\State;
 use App\Models\User;
+use App\Providers\AppServiceProvider;
 use App\Providers\SecKeyServiceProvider;
 use App\Traits\TahaControllerTrait;
 use Carbon\Carbon;
@@ -250,7 +251,7 @@ class VolunteersController extends Controller
         
         if ($store['exam_result'] >= 50)
         {
-            $msg = trans('site.global.volunteer_exam_passed_ok') . $store['exam_result'] . trans('site.global.volunteer_exam_passed_ok1');
+            $msg = trans('site.global.volunteer_exam_passed_ok') . AppServiceProvider::pd($store['exam_result']) . trans('site.global.volunteer_exam_passed_ok1');
             $volunteer_status = 2;
             $ajax_status = 1;
         }
@@ -438,6 +439,9 @@ class VolunteersController extends Controller
 
         $input['id'] = Session::get('volunteer_exam_passed');
         $input['volunteer_status'] = 3;
+        $input['home_province'] = State::find($input['home_city']);
+        $input['work_province'] = State::find($input['work_city']);
+        $input['domain'] = $input['home_province']->domain->slug ;
 
         $activity = '';
         foreach ($input['activity'] as $item => $value)

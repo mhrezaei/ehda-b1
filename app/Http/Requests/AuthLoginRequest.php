@@ -29,7 +29,7 @@ class AuthLoginRequest extends Request
         return [
              'username' => 'required|numeric', //no need to check existence here.
              'password' => 'required',
-//             'security' => 'required|captcha:'.$input['key'], @TODO: Remove Comment
+             'security' => 'required|captcha:'.$input['key'],
         ];
     }
 
