@@ -8,11 +8,41 @@
                 <p style="text-align: justify;">
                 {!! $volunteer->text !!}
                     @if(Auth::check())
-                        @include('forms.button', [
-                        'shape' => 'success',
-                        'link' => url('/volunteers/exam'),
-                        'label' => trans('site.global.volunteer_register_page')
-                        ])
+                        @if(Auth::user()->volunteer_status >= 3 or Auth::user()->volunteer_status < 0)
+                            @include('forms.button', [
+                            'shape' => 'success',
+                            'link' => url('/volunteers/exam'),
+                            'label' => trans('site.global.volunteer_register_page'),
+                            'extra' => 'disabled=disabled',
+                            ])
+                        @elseif(Auth::user()->volunteer_status == 2)
+                            @include('forms.button', [
+                            'shape' => 'success',
+                            'link' => url('/volunteers/final_step'),
+                            'label' => trans('site.global.volunteer_complete_form'),
+                            ])
+                        @elseif(Auth::user()->volunteer_status == 1)
+                            @if(\Carbon\Carbon::parse(Auth::user()->exam_passed_at)->diffInHours(\Carbon\Carbon::now()) >= 24)
+                                @include('forms.button', [
+                                'shape' => 'success',
+                                'link' => url('/volunteers/exam'),
+                                'label' => trans('site.global.volunteer_exam'),
+                                ])
+                            @else
+                                @include('forms.button', [
+                                'shape' => 'success',
+                                'link' => url('/volunteers/exam'),
+                                'label' => 24 - \Carbon\Carbon::parse(Auth::user()->exam_passed_at)->diffInHours(\Carbon\Carbon::now()) . trans('site.global.volunteer_waiting_time_for_exam'),
+                                'extra' => 'disabled=disabled',
+                                ])
+                            @endif
+                        @else
+                            @include('forms.button', [
+                            'shape' => 'success stepOneBtn',
+                            'link' => 'volunteer_register_step_one("start")',
+                            'label' => trans('site.global.volunteer_register_page')
+                            ])
+                        @endif
                     @else
                         @include('forms.button', [
                         'shape' => 'success stepOneBtn',
@@ -24,7 +54,7 @@
                     @include('forms.button', [
                         'shape' => 'info pdf-book',
                         'link' => url('') . '/assets/files/safiran-learning.pdf',
-                        'label' => trans('site.global.volunteer_resource_pdf')
+                        'label' => trans('site.global.volunteer_resource_pdf'),
                     ])
                 </p>
             </div>

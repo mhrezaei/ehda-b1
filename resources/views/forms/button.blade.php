@@ -11,5 +11,9 @@
 		@endif
 		{{ $extra or '' }}
 >
-	{{$label or ''}}
+	@if(isset($label))
+		@pd($label)
+	@else
+		''
+	@endif
 </button>

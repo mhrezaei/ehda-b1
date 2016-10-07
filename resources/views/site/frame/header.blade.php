@@ -1,3 +1,4 @@
+<?php $online_user = Auth::user(); ?>
 <html dir="rtl">
 <head>
     <meta charset="UTF-8">
