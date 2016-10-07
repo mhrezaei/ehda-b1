@@ -27,7 +27,7 @@ class Setting extends Model
 		if(isset($value[$domain]))
 			return $value[$domain] ;
 		else
-			return $default ;
+			return $this->global_value ;
 
 	}
 
@@ -53,7 +53,7 @@ class Setting extends Model
 
 	public static function set($slug, $new_value , $domain = 'global')
 	{
-		$model = self::where('slug' , $slug) ;
+		$model = self::findBySlug($slug);
 
 		//If not found...
 		if(!$model)

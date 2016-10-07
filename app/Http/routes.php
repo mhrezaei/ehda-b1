@@ -196,9 +196,8 @@ Route::group(['prefix' => 'manage','middleware' => 'auth','namespace'=>'manage']
 		Route::get('/' , 'SettingsController@index') ;
 		Route::get('/{request_tab}/' , 'SettingsController@index') ;//@TODO: INTACT
 
-		Route::get('/{request_tab}/{id}' , 'SettingsController@item') ;//@TODO: INTACT
-		Route::get('/{request_tab}/{id}/edit/{parent_id}' , 'SettingsController@editor') ;//@TODO: INTACT
-		Route::get('/{request_tab}/{id}/edit' , 'SettingsController@editor') ;//@TODO: INTACT
+		Route::post('/save' , 'settingsController@save');
+
 	});
 
 

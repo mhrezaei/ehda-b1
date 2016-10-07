@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mhr_state;
 use App\Models\Domain;
 use App\Models\Post;
+use App\Models\Setting;
 use App\Models\State;
 use App\Models\User;
 use App\Models\Volunteer;
@@ -41,6 +42,10 @@ class TestController extends Controller
 //		return $this->convertExams() ;
 //		return $this->upgradeDomains() ;
 
+		$model = Setting::find(4) ;
+		$model->global_value = '2014-10-07' ;
+		$model->update() ;
+		dd($model) ;
 
 //		return view('templates.say' , ['array'=>public_path()]);
 
