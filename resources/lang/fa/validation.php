@@ -186,7 +186,7 @@ return [
 				"job" => "(حروف فارسی)",
 				"familization" => "" ,
 				"motivation" => "(حروف فارسی)",
-				"alloc_time" => "(تعداد روز، فقط عدد)" ,
+				"alloc_time" => "(تعداد روز در ماه)" ,
 				"home_postal_code" => "(۱۰ رقم بدون خط تیره)" ,
 				"work_postal_code" => "(۱۰ رقم بدون خط تیره)" ,
 		],

@@ -334,7 +334,7 @@
                         <div class="col-xs-12 col-sm-6">
                             @include('forms_site.input', [
                             'field' => 'alloc_time',
-                            'class' => 'form-persian',
+                            'class' => 'form-persian form-required',
                             'required' => 1,
                             'value' => $user->alloc_time
                             ])
@@ -345,7 +345,7 @@
                     </div>
 
                     @include('forms_site.form_separator', [
-                        'title' => trans('site.global.activity')
+                        'title' => trans('site.global.your_activity')
                     ])
 
                     <div class="row">

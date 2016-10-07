@@ -432,8 +432,46 @@ class VolunteersController extends Controller
         
     }
 
-    public function register_final_step_submit()
+    public function register_final_step_submit(Requests\site\volunteer\VolunteerThirdStepRequest $request)
     {
+        $input = $request->toArray();
 
+        $input['id'] = Session::get('volunteer_exam_passed');
+        $input['volunteer_status'] = 3;
+
+        $activity = '';
+        foreach ($input['activity'] as $item => $value)
+        {
+            if ($item == count($input['activity']) - 2)
+            {
+                $activity .= $value;
+            }
+            else
+            {
+                $activity .= $value . ',';
+            }
+        }
+        $input['activities'] = $activity;
+
+        $update = User::store($input, ['activity']);
+        
+        if ($update)
+        {
+            $return = $this->jsonFeedback(null, [
+                'ok' => 1,
+                'message' => trans('site.global.volunteer_register_success'),
+                'callback' => 'volunteer_final_step_form_data()',
+            ]);
+        }
+        else
+        {
+            $return = $this->jsonFeedback(null, [
+                'ok' => 0,
+                'message' => trans('forms.feed.un_save'),
+            ]);
+        }
+
+        Session::forget('volunteer_exam_passed');
+        return $return;
     }
 }

@@ -77,6 +77,23 @@ function editForm_validate()
     }
 }
 
+function volunteer_final_step_validate() {
+    $check = $("input[name='activity[]']:checked").length;
+
+    if ($check > 0)
+    {
+        return 0;
+    }
+    else
+    {
+        return 'حداقل یکی از فعالیت ها را انتخاب نمائید.';
+    }
+}
+
+function volunteer_final_step_form_data() {
+    document.volunteer_final_step.reset();
+}
+
 function register_step_second(string) {
     var $formID = '#registerForm';
     var $form = $($formID);

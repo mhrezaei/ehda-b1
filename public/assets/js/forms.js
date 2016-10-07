@@ -310,21 +310,24 @@ function forms_validate(formData, jqForm, options) {
 
 		if ($selectpicker && $err_el < 0)
 		{
-			if ($val < 1)
+			if ($required)
 			{
-				forms_markError($(this), "error");
-				if ($err && $err.length)
+				if ($val < 1)
 				{
-					$errors_msg.push($err);
+					forms_markError($(this), "error");
+					if ($err && $err.length)
+					{
+						$errors_msg.push($err);
+					}
+					if ($errors < 1) $(this).focus();
+					$errors++;
+					$errors_el.push($name);
+					$err_el = $.inArray($name, $errors_el);
 				}
-				if ($errors < 1) $(this).focus();
-				$errors++;
-				$errors_el.push($name);
-				$err_el = $.inArray($name, $errors_el);
-			}
-			else
-			{
-				forms_markError($(this), "success");
+				else
+				{
+					forms_markError($(this), "success");
+				}
 			}
 		}
 	});
