@@ -2,10 +2,8 @@
 <html>
     <head>
         <title>{{ trans('global.siteTitle') }}</title>
-
-        {{--<link href="//fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">--}}
+        <meta charset="utf-8"/>
         {!! Html::style('assets/css/fontiran.css') !!}
-        {!! Html::style('assets/css/home.css') !!}
 
         <style>
             html, body {
