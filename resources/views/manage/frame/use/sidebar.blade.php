@@ -16,7 +16,7 @@
 	'permission' => 'volunteers' ,
 	'sub_menus' => [
 		['volunteers/create' , trans('people.volunteers.manage.create') , 'plus-square-o' , 'volunteers.create'] ,
-		['volunteers/browse/active' , trans('people.volunteers.manage.active') , 'check' , 'volunteers.browse'],
+		['volunteers/browse/active' , trans('people.volunteers.manage.active') , 'check' , 'volunteers.*'],
 		['volunteers/browse/pending' , trans('people.volunteers.manage.pending') , 'gavel' , 'volunteers.publish'],
 		['volunteers/browse/care' , trans('people.volunteers.manage.care') , 'ambulance' , 'volunteers.edit'],
 		['volunteers/browse/documentation' , trans('people.volunteers.manage.documentation') , 'adjust' , 'volunteers.edit'],
