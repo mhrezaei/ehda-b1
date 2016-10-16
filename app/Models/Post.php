@@ -173,7 +173,7 @@ class Post extends Model
 			case 'scheduled' :
 				return $table->whereDate('published_at','>',$now)->whereNotNull('published_by') ;
 			case 'pending':
-				return $table->whereNull('published_at')->where('is_draft',false) ;
+				return $table->whereNull('published_by')->where('is_draft',false) ;
 			case 'drafts' :
 				return $table->where('is_draft',true)->whereNull('published_by');
 			case 'my_posts' :
@@ -274,7 +274,7 @@ class Post extends Model
 
 	public function isScheduled()
 	{
-		if($this->published_at and $this->published_at > Carbon::now())
+		if($this->published_by  and $this->published_at and $this->published_at > Carbon::now())
 			return true ;
 		else
 			return false ;
@@ -283,7 +283,7 @@ class Post extends Model
 
 	public function isPublished()
 	{
-		if($this->published_at and $this->published_at <= Carbon::now() and !$this->copy_of)
+		if($this->published_by  and $this->published_at and $this->published_at <= Carbon::now() and !$this->copy_of)
 			return true ;
 		else
 			return false ;
@@ -318,16 +318,16 @@ class Post extends Model
 			$return['text'] = trans('posts.status.draft');
 			$return['color'] = 'warning' ;
 		}
-		elseif(!$this->published_at) {
+		else  {
 			$return['slug'] = 'under_review';
 			$return['text'] = trans('posts.status.under_review');
 			$return['color'] = 'warning' ;
 		}
-		else {
-			$return['slug'] = '.';
-			$return['text'] = '.';
-			$return['color'] = 'danger' ;
-		}
+//		else {
+//			$return['slug'] = '.';
+//			$return['text'] = '.';
+//			$return['color'] = 'danger' ;
+//		}
 
 		//Return...
 		if(!$key)
