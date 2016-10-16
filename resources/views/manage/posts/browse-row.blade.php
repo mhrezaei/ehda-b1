@@ -2,7 +2,13 @@
 	<input id="gridSelector-{{$model->id}}" data-value="{{$model->id}}" class="gridSelector" type="checkbox" onchange="gridSelector('selector','{{$model->id}}')">
 </td>
 <td>
-	{{ $model->say('title_limit') }}
+	@if($model->canEdit())
+		<a href="{{ url("manage/posts/".$model->branch()->slug."/edit/".$model->id) }}">
+			{{ $model->say('title_limit') }}
+		</a>
+	@else
+		{{ $model->say('title_limit') }}
+	@endif
 </td>
 
 
@@ -40,7 +46,7 @@
 		'id' => $model->id ,
 		'actions' => [
 			['eye' , trans('manage.permits.view') , "urlN:".$model->say('preview')],
-			['pencil' , trans('manage.permits.edit') , "url:manage/posts/-id-/edit" , '*' , $model->canEdit()],
+			['pencil' , trans('manage.permits.edit') , "url:manage/posts/".$model->branch()->slug."/edit/-id-" , '*' , $model->canEdit()],
 			['times' , trans('forms.button.hard_delete') , 'modal:manage/posts/-id-/hard_delete' , "$module.bin" , $model->trashed() and Auth::user()->isDeveloper()] ,
 
 

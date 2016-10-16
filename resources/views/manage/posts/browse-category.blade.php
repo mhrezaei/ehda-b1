@@ -1,4 +1,4 @@
-@if($branch->hasFeature('category'))
+@if($branch->hasFeature('category')  and isset($categories_array))
 	@include('manage.frame.widgets.grid-action' , [
 		'id' => '0',
 		'button_size' => 'md' ,

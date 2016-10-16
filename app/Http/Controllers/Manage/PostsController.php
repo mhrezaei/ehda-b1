@@ -58,7 +58,7 @@ class PostsController extends Controller
 		$db = Post::first() ;
 		$branch = Branch::selectBySlug($request_branch);
 		$keyword = $request->keyword ;
-		$model_data = Post::selector('all' , 'auto' , 'all')
+		$model_data = Post::selector($request_branch , 'auto' , 'all')
 				->whereRaw(Post::searchRawQuery($keyword))
 				->paginate(50);
 
@@ -69,33 +69,6 @@ class PostsController extends Controller
 
 		//View...
 		return view("manage.posts.browse" , compact('page','branch','model_data' , 'db' , 'keyword'));
-
-	}
-
-	public function _search(Requests\Manage\PostSearchRequest $request)
-	{
-		return view('templates.say' , ['array'=>$request->toArray()]);
-
-		//Preparation...
-		$page = $this->page ;
-		$page[1] = ["search" , trans("people.volunteers.manage.search") , "search"] ;
-		$db = User::first() ;
-
-		//IF SEARCHED...
-		if(isset($request->searched)) {
-			$keyword = $request->keyword ;
-			$model_data = User::where('volunteer_status' , '!=' , '0')
-					->where('name_first','like',"%{$keyword}%")
-					->orWhere('name_last','like',"%{$keyword}%")
-					->orWhere('code_melli','like',"%{$keyword}%")
-					->orWhere('email','like',"%{$keyword}%")
-					->orderBy('created_at' , 'desc')->paginate(50);
-
-			return view('manage.volunteers.browse' , compact('page' , 'model_data' , 'db'));
-		}
-
-		//IF JUST FORM...
-		return view("manage.volunteers.search" , compact('page' , 'db'));
 
 	}
 
@@ -283,7 +256,7 @@ class PostsController extends Controller
 
 	}
 
-	public function editor($post_id)
+	public function editor($branch_slug , $post_id)
 	{
 		//Model...
 		$model = Post::withTrashed()->find($post_id) ;
