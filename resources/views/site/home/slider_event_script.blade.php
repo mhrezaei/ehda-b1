@@ -3,7 +3,7 @@
 
         $(".home-slider").owlCarousel({
             autoPlay : 3000,
-            stopOnHover : true,
+            stopOnHover : false,
             navigation:true,
             paginationSpeed : 1000,
             goToFirstSpeed : 2000,
