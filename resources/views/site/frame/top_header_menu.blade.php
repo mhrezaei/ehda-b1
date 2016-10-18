@@ -42,7 +42,7 @@
             <a href="/">{{ trans('site.menu.ask') }}</a>
             <ul class="bg-primary mega-menu col-xs-12">
                 <ul class="list-unstyled pull-left text-right">
-                    <h3><a href="/"> {{ trans('site.ask_menu.donations') }}</a></h3>
+                    <h3><a href="{{ url('/showPost/donations/' . urlencode(trans('site.ask_menu.donations'))) }}"> {{ trans('site.ask_menu.donations') }}</a></h3>
                 </ul>
                 <ul class="list-unstyled pull-left text-right">
                     <h3>{{ trans('site.ask_menu.volunteers') }}</h3>
@@ -50,12 +50,12 @@
                     <li><a href="{{ url('/volunteers') }}">{{ trans('site.ask_menu.organ_donation_volunteers') }}</a></li>
                 </ul>
                 <ul class="list-unstyled pull-left text-right">
-                    <h3><a href="/"> {{ trans('site.ask_menu.participation_in_the_notification') }}</a></h3>
+                    <h3><a href="{{ url('/showPost/participation_in_the_notification/' . urlencode(trans('site.ask_menu.participation_in_the_notification'))) }}"> {{ trans('site.ask_menu.participation_in_the_notification') }}</a></h3>
                 </ul>
                 <ul class="list-unstyled pull-left text-right">
-                    <h3><a href="/"> {{ trans('site.ask_menu.supporters') }}</a></h3>
+                    <h3><a href="{{ url('/showPost/supporters/' . urlencode(trans('site.ask_menu.supporters'))) }}"> {{ trans('site.ask_menu.supporters') }}</a></h3>
                 </ul>
-                <ul class="list-unstyled pull-left text-right">
+                <ul class="list-unstyled pull-left text-right" style="display: none;">
                     <h3>{{ trans('site.ask_menu.you_say') }}</h3>
                     <li><a href="/">{{ trans('site.ask_menu.your_works') }}</a></li>
                     <li><a href="/">{{ trans('site.ask_menu.your_memories') }}</a></li>
