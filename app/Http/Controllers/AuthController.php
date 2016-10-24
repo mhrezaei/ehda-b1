@@ -7,6 +7,7 @@ use App\Events\SendSms;
 use App\Events\UserForgotPassword;
 use App\Jobs\SendEmailJob;
 use App\Models\Setting;
+use App\Models\State;
 use App\Models\User;
 use App\Providers\SecKeyServiceProvider;
 use App\Providers\SmsServiceProvider;
@@ -23,6 +24,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
+use Morilog\Jalali\Facades\jDate;
 
 class AuthController extends Controller
 {
@@ -300,8 +302,45 @@ class AuthController extends Controller
 		return redirect('/login');
 	}
 
-	public function sms()
+	private function sms()
 	{
-		echo Setting::get('site_logo');
+		$users = User::where('home_province', '7')->get();
+		echo '<table style="direction: rtl; font-family: Tahoma;">';
+		echo '<thead>';
+		echo '<tr>';
+		echo '<th>ردیف</th>';
+		echo '<th>نام و نام خانوادگی</th>';
+		echo '<th>نام پدر</th>';
+		echo '<th>کدملی</th>';
+		echo '<th>تاریخ تولد</th>';
+		echo '<th>شماره موبایل</th>';
+		echo '<th>شماره ثابت</th>';
+		echo '<th>استان</th>';
+		echo '<th>شهر</th>';
+		echo '<th>شماره عضویت</th>';
+		echo '<th>تاریخ عضویت</th>';
+		echo '</tr>';
+		echo '</thead>';
+		echo '<tbody>';
+		$a = 1;
+		foreach ($users as $user)
+		{
+			echo '<tr>';
+			echo '<td>' . $a . '</td>';
+			echo '<td>' . $user->name_first . ' ' . $user->name_last . '</td>';
+			echo '<td>' . $user->name_father . '</td>';
+			echo '<td>' . $user->code_melli . '</td>';
+			echo '<td>' . jDate::forge($user->birth_date)->format('Y/m/d') . '</td>';
+			echo '<td>' . $user->tel_mobile . '</td>';
+			echo '<td>' . $user->home_tel . '</td>';
+			echo '<td>' . State::find($user->home_province)->title . '</td>';
+			echo '<td>' . State::find($user->home_city)->title . '</td>';
+			echo '<td>' . $user->card_no . '</td>';
+			echo '<td>' . jDate::forge($user->register_at)->format('Y/m/d') . '</td>';
+			echo '</tr>';
+			$a++;
+		}
+		echo '</tbody>';
+		echo '</table>';
 	}
 }
