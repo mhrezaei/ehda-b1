@@ -10,7 +10,7 @@ if(isset($class))
 else
 	$class = 'datepicker ';
 
-if(isset($value) and $value) {
+if(isset($value) and $value and $value != '0000-00-00') {
 	$j_value = jdate($value)->format('Y/m/d');
 }
 else {

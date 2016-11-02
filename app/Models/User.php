@@ -335,7 +335,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 				return $this->title().' '. $this->name_first . " " . $this->name_last ;
 
 			case 'birth_date' :
-				return AppServiceProvider::pd(jDate::forge($this->$property)->format('j F Y'));
+				if(!$this->$property and $this->$property!='0000-00-00')
+					return AppServiceProvider::pd(jDate::forge($this->$property)->format('j F Y'));
+				else
+					return $default ;
 
 			case 'birth_date_on_card' :
 				return AppServiceProvider::pd(jDate::forge($this->birth_date)->format('Y/m/d'));
