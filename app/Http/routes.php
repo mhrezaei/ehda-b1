@@ -5,6 +5,8 @@ Route::get('convertVolunteers','TestController@convertVolunteers') ;
 Route::get('removeDuplicates','TestController@removeDuplicates') ;
 Route::get('makeDomains','TestController@makeDomainsFromHomeCities') ;
 
+Route::get('hadi', 'TestController@hadi');
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
