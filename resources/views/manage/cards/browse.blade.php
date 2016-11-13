@@ -10,8 +10,17 @@
 	|
 	--}}
 	<div class="panel panel-toolbar row w100">
-		<div class="col-md-4"><p class="title">{{$page[1][1] or ''}}</p></div>
-		<div class="col-md-8 tools">
+		<div class="col-md-6">
+			<p class="title">
+				{{$page[1][1] or ''}}
+				@if(isset($volunteer))
+					<span class="f8 mv5 text-grey">
+						({{ trans('posts.manage.created_by' , ['name' => $volunteer->fullName(),]) }})
+					</span>
+				@endif
+			</p>
+		</div>
+		<div class="col-md-6 tools">
 
 			@if(Auth::user()->can('cards.create'))
 				@include('manage.frame.widgets.toolbar_button' , [

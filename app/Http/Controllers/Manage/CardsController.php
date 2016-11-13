@@ -68,11 +68,11 @@ class CardsController extends Controller
 	}
 
 
-	public function browse($request_tab = 'active')
+	public function browse($request_tab = 'active' , $volunteer_id = 0)
 	{
-		//Prepar ation...
+		//Preparation...
 		$page = $this->page ;
-		$page[1] = ["browse/".$request_tab , trans("people.cards.manage.$request_tab") , $request_tab] ;
+		$page[1] = ["browse/$request_tab/$volunteer_id" , trans("people.cards.manage.$request_tab") , $request_tab] ;
 
 		//Permission...
 		switch($request_tab) {
@@ -106,11 +106,21 @@ class CardsController extends Controller
 
 
 		//Model...
-		$model_data = User::selector('card',$request_tab)->orderBy('created_at' , 'desc')->paginate(50);
+		$model_data = User::selector('card',$request_tab) ;
+
+		if($volunteer_id>0) {
+			$volunteer = User::find($volunteer_id);
+			if(!$volunteer or !$volunteer->isVolunteer())
+				return view('errors.410');
+		}
+
+			$model_data = $model_data->where('created_by' , $volunteer_id) ;
+
+		$model_data = $model_data->orderBy('created_at' , 'desc')->paginate(50);
 		$db = User::first() ;
 
 		//View...
-		return view("manage.cards.browse" , compact('page','model_data' , 'db'));
+		return view("manage.cards.browse" , compact('page','model_data' , 'db' , 'volunteer' , 'volunteer_id'));
 
 	}
 
