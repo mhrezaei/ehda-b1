@@ -134,17 +134,25 @@ class Post extends Model
 				$domain = Auth::user()->getDomain() ;
 
 		if(is_array($domain))
+		{
 			$table = self::whereIn('domains' , $domain);
-		elseif($domain == 'all') {
-			$table = self::where('id' , '>' , '0');
 		}
-		elseif($domain == 'global') {
-			$query = " `domains` = 'global' or `domains` = 'global*' or locate('*',`domains`)  or `domains` = 'free' " ;
-			$table = self::whereRaw("($query)") ;
-		}
-		else {
-			$query = " `domains` = '$domain' or `domains` = '$domain*' or `domains` = 'free' " ;
-			$table = self::whereRaw("($query)") ;
+		else
+		{
+			if($domain == 'all')
+			{
+				$table = self::where('id' , '>' , '0');
+			}
+			elseif($domain == 'global')
+			{
+				$query = " `domains` = 'global' or `domains` = 'global*' or locate('*',`domains`)  or `domains` = 'free' " ;
+				$table = self::whereRaw("($query)") ;
+			}
+			else
+			{
+				$query = " `domains` = '$domain' or `domains` = '$domain*' or `domains` = 'free' " ;
+				$table = self::whereRaw("($query)") ;
+			}
 		}
 
 		//Process Branches...
