@@ -133,7 +133,9 @@ class Post extends Model
 			else
 				$domain = Auth::user()->getDomain() ;
 
-		if($domain == 'all') {
+		if(is_array($domain))
+			$table = self::whereIn('domains' , $domain);
+		elseif($domain == 'all') {
 			$table = self::where('id' , '>' , '0');
 		}
 		elseif($domain == 'global') {
