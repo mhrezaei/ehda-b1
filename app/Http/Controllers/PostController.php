@@ -27,7 +27,7 @@ class PostController extends Controller
         else
             $post = Post::findBySlug(urldecode($id));
 
-        if (! $post or $post->branch()->template != 'post' or ! $post->isPublished() or ! $post->checkDomain($this->getDomain()))
+        if (! $post or $post->branch()->template != 'post' or ! $post->isPublished())
             return view('errors.404');
 
         return view('site.show_post.0', compact('post'));

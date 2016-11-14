@@ -51,5 +51,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'Dev' => \App\Http\Middleware\DeveloperMiddleware::class,
         'Can' => \App\Http\Middleware\CanMiddleware::class,
+        'Subdomain' => \App\Http\Middleware\Subdomain::class,
     ];
 }
