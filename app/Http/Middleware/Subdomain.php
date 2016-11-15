@@ -30,7 +30,7 @@ class Subdomain
             else
             {
                 Session::put('domain', 'global');
-                return redirect('http://ehda.center');
+                return redirect('http://ehda.center'); //@TODO: Hadi, this restricts access from localhost!
             }
         }
         return $next($request);

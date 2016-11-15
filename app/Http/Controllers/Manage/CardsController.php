@@ -109,12 +109,12 @@ class CardsController extends Controller
 		$model_data = User::selector('card',$request_tab) ;
 
 		if($volunteer_id>0) {
+			$model_data = $model_data->where('created_by' , $volunteer_id) ;
 			$volunteer = User::find($volunteer_id);
 			if(!$volunteer or !$volunteer->isVolunteer())
 				return view('errors.410');
-		}
 
-			$model_data = $model_data->where('created_by' , $volunteer_id) ;
+		}
 
 		$model_data = $model_data->orderBy('created_at' , 'desc')->paginate(50);
 		$db = User::first() ;
