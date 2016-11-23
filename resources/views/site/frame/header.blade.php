@@ -27,6 +27,7 @@
             return $result  ;
         }
     </script>
+    <meta name="enamad" content="183499414"/>
 </head>
 <body>
 <script>
