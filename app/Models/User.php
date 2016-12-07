@@ -376,6 +376,20 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 					return $domain->title;
 				else
 					return $default;
+			case 'activities' :
+				$act = '';
+				if ($this->activities)
+				{
+					$activities = explode(',', $this->activities);
+					for ($i = 0; $i < count($activities); $i++)
+					{
+						if (strlen($activities[$i]))
+						{
+							$act[] = Activity::findBySlug($activities[$i])->title;
+						}
+					}
+				}
+			return $act;
 
 			default:
 				return $this->$property ;

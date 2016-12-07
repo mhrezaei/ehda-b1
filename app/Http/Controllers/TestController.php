@@ -434,31 +434,7 @@ class TestController extends Controller
 
 	public function hadi()
 	{
-		$subdomain = str_replace('http://', '', url(''));
-		$subdomain = str_replace('http://', '', $subdomain);
-		$subdomain = explode('.', $subdomain);
-		if ($subdomain[0] == 'www')
-		{
-			if ($subdomain[1] == 'ehda')
-			{
-				$subdomain = 'global';
-			}
-			else
-			{
-				$subdomain = $subdomain[1];
-			}
-		}
-		else
-		{
-			if ($subdomain[0] == 'ehda')
-			{
-				$subdomain = 'global';
-			}
-			else
-			{
-				$subdomain = $subdomain[0];
-			}
-		}
-		dd($subdomain);
+		$user = User::where('volunteer_status', 8)->orderBy('created_at', 'desc')->get();
+		return view('hadi.test', compact('user'));
 	}
 }
