@@ -1,7 +1,7 @@
 <?php
 
 // subdomain
-//Route::group(['prefix' => '', 'middleware' => 'Subdomain'], function () {
+Route::group(['prefix' => '', 'middleware' => 'Subdomain'], function () {
 
 
     Route::get('test', 'TestController@index');
@@ -236,4 +236,4 @@
 
     });
 
-//});
+});
