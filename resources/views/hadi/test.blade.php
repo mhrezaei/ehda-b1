@@ -7,9 +7,10 @@
             <th style="border: 1px solid black;">تمایلات</th>
         </thead>
         <tbody>
-            @foreach($user as $u)
+        <?php $row = 1; ?>
+        @foreach($user as $u)
                 <tr>
-                    <th style="border: 1px solid black;">{{ $u->id + 1 }}</th>
+                    <th style="border: 1px solid black;">{{ $row++ }}</th>
                     <td style="border: 1px solid black;">
                         نام و نام خانوادگی: {{ $u->name_first . ' ' . $u->name_last }}<hr>
                         نام پدر: {{ $u->name_father }}<hr>
@@ -28,7 +29,7 @@
                                 {{ $value }}
                                 <hr>
                             @endforeach
-                        @endifnd
+                        @endif
                     </td>
                 </tr>
             @endforeach

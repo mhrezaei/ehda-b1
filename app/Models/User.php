@@ -385,7 +385,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 					{
 						if (strlen($activities[$i]))
 						{
-							$act[] = Activity::findBySlug($activities[$i])->title;
+							$a = Activity::findBySlug($activities[$i]);
+							if ($a)
+							{
+								$act[] = $a->title;
+							}
 						}
 					}
 				}
