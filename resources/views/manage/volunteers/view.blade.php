@@ -236,6 +236,18 @@
 			</td>
 		</tr>
 
+		<tr>
+			<td class="head">
+				{{ trans('manage.devSettings.activities.title') }}
+			</td>
+			<td class="body">
+				@foreach($model->say('activities') as $activity)
+					{{$activity}}
+					<br />
+				@endforeach
+			</td>
+		</tr>
+
 		{{-- @TODO: Activitis --}}
 
 		{{--
