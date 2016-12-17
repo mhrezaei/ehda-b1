@@ -150,18 +150,20 @@
 		'value' => $model->job  ,
 	])
 
-	@include('forms.sep')
 
+<div class="noDisplay">
+	@include('forms.sep')
 	@include('forms.group-start' , [
 		'required' => true ,
-		'label' => trans('validation.attributes.organs')
+		'label' => trans('validation.attributes.organs'),
+		'class' => "noDisplay",
 	])
+			@include('manage.cards.editor-organs' , [
+				'organs' => $model::$donatable_organs ,
+			])
 
-		@include('manage.cards.editor-organs' , [
-			'organs' => $model::$donatable_organs ,
-		])
-
-	@include('forms.group-end')
+		@include('forms.group-end')
+	</div>
 
 	@include('forms.sep')
 
