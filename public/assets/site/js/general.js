@@ -1,3 +1,8 @@
+function faq_new_reset_form()
+{
+    document.new_faq_qs.reset();
+}
+
 function register_card_step_one($mode)
 {
     if ($mode == 'start')

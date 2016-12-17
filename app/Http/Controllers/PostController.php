@@ -4,17 +4,24 @@ namespace App\Http\Controllers;
 
 use App\models\Branch;
 use App\Models\Category;
+use App\models\Meta;
 use App\Models\Post;
 use App\Traits\GlobalControllerTrait;
+use App\Traits\TahaControllerTrait;
+use App\Traits\TahaMetaTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
     use GlobalControllerTrait;
+    use TahaControllerTrait;
+    use TahaMetaTrait;
+
     public function index()
     {
         return view('errors.404');
@@ -77,9 +84,44 @@ class PostController extends Controller
         return view('site.faq.0', compact('faq'));
     }
 
-    public function faq_new()
+    public function faq_new(Requests\site\FaqNewQsRequest $request)
     {
+        $data = $request->toArray();
+
+
+        $store['text'] = $data['text'];
+        $store['branch'] = 'faq_users';
+        $store['domains'] = 'free';
+        $store['published_at'] = Carbon::now()->toDateTimeString();
+
+        if (strlen($data['title']) > 0)
+        {
+            $store['title'] = $data['title'];
+        }
+        else
+        {
+            $store['title'] = trans('site.global.does_not_have');
+        }
+
+        if (Auth::check())
+        {
+            $store['created_by'] = Auth::user()->id;
+            $store['published_by'] = Auth::user()->id;
+        }
+
+        $post = Post::store($store);
+        $post = Post::find($post);
+
+        $post->meta('full_name', $data['full_name']);
+        $post->meta('email', $data['email']);
+        $post->meta('tel_mobile', $data['tel_mobile']);
         
+        return $this->jsonFeedback(null, [
+            'ok' => 1,
+            'message' => trans('site.global.your_question_record_successfully'),
+            'callback' => 'faq_new_reset_form()',
+        ]);
+
     }
 
     public function angels()

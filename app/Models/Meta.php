@@ -2,12 +2,13 @@
 
 namespace App\models;
 
+use App\Traits\TahaModelTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class Meta extends Model
 {
 	//
-
+	use TahaModelTrait;
 
 	public static function get($model_name , $record_id, $key)
 	{
