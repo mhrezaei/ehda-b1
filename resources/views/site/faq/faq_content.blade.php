@@ -21,6 +21,7 @@
                                 </div>
                             @endforeach
                         @endif
+                        @include('site.faq.new_question')
                     </div>
                 </div>
             </div>

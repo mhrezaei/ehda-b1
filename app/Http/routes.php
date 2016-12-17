@@ -4,12 +4,12 @@
 Route::group(['prefix' => '', 'middleware' => 'Subdomain'], function () {
 
 
-    Route::get('test', 'TestController@index');
-    Route::get('convertVolunteers', 'TestController@convertVolunteers');
-    Route::get('removeDuplicates', 'TestController@removeDuplicates');
-    Route::get('makeDomains', 'TestController@makeDomainsFromHomeCities');
-
-    Route::get('hadi', 'TestController@hadi');
+//    Route::get('test', 'TestController@index');
+//    Route::get('convertVolunteers', 'TestController@convertVolunteers');
+//    Route::get('removeDuplicates', 'TestController@removeDuplicates');
+//    Route::get('makeDomains', 'TestController@makeDomainsFromHomeCities');
+//
+//    Route::get('hadi', 'TestController@hadi');
 
     /*
     |--------------------------------------------------------------------------
@@ -43,6 +43,7 @@ Route::group(['prefix' => '', 'middleware' => 'Subdomain'], function () {
 // static pages
     Route::get('/organ_donation_card', 'CardController@index');
     Route::get('/faq', 'PostController@faq');
+    Route::post('/faq/new', 'PostController@faq_new');
     Route::get('/angels', 'PostController@angels');
 
 // volunteer pages
