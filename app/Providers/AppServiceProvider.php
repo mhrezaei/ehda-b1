@@ -39,4 +39,9 @@ class AppServiceProvider extends ServiceProvider
 
 		return $new_str ;
 	}
+
+	public static function getRoute()
+	{
+		return app('request')->route()->getAction();
+	}
 }
