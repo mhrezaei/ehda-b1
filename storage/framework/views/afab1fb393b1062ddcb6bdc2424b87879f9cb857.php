@@ -9,5 +9,7 @@
                 </li>
             <?php endforeach; ?>
         </ul>
+        <hr>
+        <a href="<?php echo e(url('/archive/iran-news/iran-opu-transplant')); ?>" class="left"><?php echo e(trans('site.global.more')); ?></a>
     <?php endif; ?>
 </div>

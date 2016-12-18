@@ -9,5 +9,7 @@
                 </li>
             @endforeach
         </ul>
+        <hr>
+        <a href="{{ url('/archive/iran-news/internal-ngo') }}" class="left">{{ trans('site.global.more') }}</a>
     @endif
 </div>

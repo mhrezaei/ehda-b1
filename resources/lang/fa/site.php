@@ -67,6 +67,7 @@ return [
         'new_faq_qs' => 'پاسخ سوال خود را پیدا نکرده اید؟ از ما بپرسید',
         'your_question_record_successfully' => 'پرسش شما با موفقیت ذخیره شد.',
         'does_not_have' => 'ندارد',
+        'more' => 'ادامه...',
 
 
         
