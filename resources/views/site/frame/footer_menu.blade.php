@@ -8,7 +8,7 @@
         <div class="col-xs-6">
             <li><a href="{{ url('/showPost/organ_donation_volunteer/' . urlencode(trans('site.ask_menu.organ_donation_volunteers'))) }}">{{ trans('site.ask_menu.organ_donation_volunteers') }}</a></li>
             <li><a href="/">{{ trans('site.ability_menu.gallery') }}</a></li>
-            <li><a href="/">{{ trans('site.ability_menu.photo_donors') }}</a></li>
+            <li><a href="{{ url('/angels') }}">{{ trans('site.ability_menu.photo_donors') }}</a></li>
         </div>
     </ul>
 </div>

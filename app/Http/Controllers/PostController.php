@@ -154,7 +154,14 @@ class PostController extends Controller
         {
             $result['name'] = $angel->title;
             $result['picture_url'] = $angel->say('featured_image');
-            $result['donate_time'] = AppServiceProvider::pd(jDate::forge($angel->meta('donation_date'))->format('Y/m/d'));
+            if ($angel->meta('donation_date'))
+            {
+                $result['donate_time'] = AppServiceProvider::pd(jDate::forge($angel->meta('donation_date'))->format('Y/m/d'));
+            }
+            else
+            {
+                $result['donate_time'] = false;
+            }
             $result['status'] = 'find';
         }
         else

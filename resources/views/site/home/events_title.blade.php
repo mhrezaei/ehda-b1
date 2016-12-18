@@ -1,6 +1,6 @@
-<div class="col-xs-12 col-sm-6">
+<div class="col-xs-12 col-sm-4">
     @if(sizeof($events))
-        <h3>{{ trans('site.global.events') }}</h3>
+        <h4>{{ trans('site.global.events') }}</h4>
         <ul class="events list-unstyled">
             @foreach($events as $event)
                 <li>

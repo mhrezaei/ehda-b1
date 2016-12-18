@@ -7,7 +7,7 @@
                 @endif
 
                 {!! $post->text !!}
-
+                <small>{{ trans('validation.attributes.publish_date') }}: {{ $post->say('published_at') }}</small>
             </div>
 
             @include('site.show_post.post_footer')

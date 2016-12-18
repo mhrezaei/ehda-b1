@@ -1,6 +1,6 @@
-<div class="col-xs-12 col-sm-6">
+<div class="col-xs-12 col-sm-4">
     <?php if(sizeof($events)): ?>
-        <h3><?php echo e(trans('site.global.events')); ?></h3>
+        <h4><?php echo e(trans('site.global.events')); ?></h4>
         <ul class="events list-unstyled">
             <?php foreach($events as $event): ?>
                 <li>

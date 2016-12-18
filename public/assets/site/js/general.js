@@ -150,7 +150,10 @@ function showStar(circleIndex, name, imgSrc, donate_time){
     var circleParent = circle.parent();
     userCard.find('.angel-img').attr('src', imgSrc);
     userCard.find('.angel-name').text(name);
-    userCard.find('.angel-time').text('اهدا: ' + donate_time);
+    if (donate_time)
+    {
+        userCard.find('.angel-time').text('اهدا: ' + donate_time);
+    }
     $('.stars').prepend(userCard);
     $('.user-card').fadeIn();
     var cardWidth = 140;

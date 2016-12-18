@@ -14,6 +14,7 @@
                             <p style="text-align: justify;">
                                 {{ $post->say('abstract') }}
                             </p>
+                            <small>{{ $post->say('published_at') }}</small>
                         @endif
                     </div>
                 </div>
