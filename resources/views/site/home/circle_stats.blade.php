@@ -1,6 +1,6 @@
 <div class="timers container">
     <div class="row">
-        <div class="col-xs-12 col-sm-6 col-lg-3">
+        <div class="col-xs-12 col-sm-6 col-lg-4">
             <div class="row">
                 <div class="clearfix text-left col-xs-6 col-lg-12 count-down">
                     <div dir="ltr" class="timer pull-right" data-minutes="10">
@@ -14,21 +14,21 @@
                 </div>
             </div>
         </div>
-        <div class="col-xs-12 col-sm-6 col-lg-3">
-            <div class="row">
-                <div class="clearfix text-left col-xs-6 col-lg-12 count-down">
-                    <div dir="ltr" class="timer pull-right" data-minutes="70">
-                        <span class="hours"></span><span class="minutes"></span><span class="secconds"></span>
-                    </div>
-                    <div class="circle" data-fill="{&quot;color&quot;: &quot;#1c3482&quot;}" data-empty-fill="#3ab637"></div>
-                </div>
-                <div class="timer-message col-xs-6 col-lg-12">
-                    <strong>در هر ۷۰ دقیقه</strong>
-                    <span>یک نفر در ایران با مرگ مغزی جان خود را از دست می&zwnj;دهد.</span>
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-6 col-lg-3">
+        {{--<div class="col-xs-12 col-sm-6 col-lg-3">--}}
+            {{--<div class="row">--}}
+                {{--<div class="clearfix text-left col-xs-6 col-lg-12 count-down">--}}
+                    {{--<div dir="ltr" class="timer pull-right" data-minutes="70">--}}
+                        {{--<span class="hours"></span><span class="minutes"></span><span class="secconds"></span>--}}
+                    {{--</div>--}}
+                    {{--<div class="circle" data-fill="{&quot;color&quot;: &quot;#1c3482&quot;}" data-empty-fill="#3ab637"></div>--}}
+                {{--</div>--}}
+                {{--<div class="timer-message col-xs-6 col-lg-12">--}}
+                    {{--<strong>در هر ۷۰ دقیقه</strong>--}}
+                    {{--<span>یک نفر در ایران با مرگ مغزی جان خود را از دست می&zwnj;دهد.</span>--}}
+                {{--</div>--}}
+            {{--</div>--}}
+        {{--</div>--}}
+        <div class="col-xs-12 col-sm-6 col-lg-4">
             <div class="row">
                 <div class="clearfix text-left col-xs-6 col-lg-12 count-down">
                     <div dir="ltr" class="timer pull-right" data-minutes="120">
@@ -42,7 +42,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xs-12 col-sm-6 col-lg-3">
+        <div class="col-xs-12 col-sm-6 col-lg-4">
             <div class="row">
                 <div class="clearfix text-left col-xs-6 col-lg-12 count-down">
                     <div dir="ltr" class="timer pull-right" data-minutes="720">

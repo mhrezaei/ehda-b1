@@ -6,6 +6,7 @@ use App\models\Branch;
 use App\Models\Category;
 use App\models\Meta;
 use App\Models\Post;
+use App\Providers\AppServiceProvider;
 use App\Traits\GlobalControllerTrait;
 use App\Traits\TahaControllerTrait;
 use App\Traits\TahaMetaTrait;
@@ -15,6 +16,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Morilog\Jalali\jDate;
 
 class PostController extends Controller
 {
@@ -106,7 +108,7 @@ class PostController extends Controller
         if (Auth::check())
         {
             $store['created_by'] = Auth::user()->id;
-            $store['published_by'] = Auth::user()->id;
+//            $store['published_by'] = Auth::user()->id;
         }
 
         $post = Post::store($store);
@@ -126,6 +128,40 @@ class PostController extends Controller
 
     public function angels()
     {
-        return view('site.angels.0');
+        $angels = Post::selector('angles')->orderByRaw("RAND()")->limit(19)->get();
+
+        $java_var = '';
+        for ($i = 0; $i < count($angels); $i++)
+        {
+            $java_var[$i]['name'] = $angels[$i]->title;
+            $java_var[$i]['picture_url'] = $angels[$i]->say('featured_image');
+            $java_var[$i]['donate_time'] = AppServiceProvider::pd(jDate::forge($angels[$i]->meta('donation_date'))->format('Y/m/d'));
+        }
+
+        $java_var = json_encode($java_var);
+
+        return view('site.angels.0', compact('angels', 'java_var'));
+    }
+
+    public function angels_find(Request $request)
+    {
+        $data = $request->toArray();
+        $data = $data['angel_name'];
+
+        $angel = Post::selector('angles')->where('title', 'LIKE', "%$data%")->first();
+
+        if ($angel)
+        {
+            $result['name'] = $angel->title;
+            $result['picture_url'] = $angel->say('featured_image');
+            $result['donate_time'] = AppServiceProvider::pd(jDate::forge($angel->meta('donation_date'))->format('Y/m/d'));
+            $result['status'] = 'find';
+        }
+        else
+        {
+            $result['status'] = 'not_find';
+        }
+
+        echo json_encode($result);
     }
 }

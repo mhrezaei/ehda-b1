@@ -1,3 +1,7 @@
+function faq_new_reset_form() {
+    document.new_faq_qs.reset();
+}
+
 function register_card_step_one($mode)
 {
     if ($mode == 'start')
@@ -121,4 +125,38 @@ function register_step_second(string) {
 function register_third_step_validate() {
     $("#registerForm .form-feed").hide();
     return 0;
+}
+
+
+// angels
+function hideActiveStar(){
+    $('.user-card').fadeOut(400, function(){
+        $(this).remove();
+        $('.stars circle.active').removeClass('active');
+    });
+}
+
+function showStar(circleIndex, name, imgSrc, donate_time){
+    hideActiveStar();
+    var userCard = $('\
+        <div class="user-card" style="display:none;">\
+            <img width="100" height="100" class="img-circle angel-img" onload="$(this).fadeIn()">\
+            <h6 class="angel-name"></h6>\
+            <h6 class="angel-time"></h6>\
+          </div>\
+      ');
+    var card = $('.user-card');
+    var circle = $($('.stars circle')[circleIndex]);
+    var circleParent = circle.parent();
+    userCard.find('.angel-img').attr('src', imgSrc);
+    userCard.find('.angel-name').text(name);
+    userCard.find('.angel-time').text('اهدا: ' + donate_time);
+    $('.stars').prepend(userCard);
+    $('.user-card').fadeIn();
+    var cardWidth = 140;
+    var cardHeight = 160;
+    userCard.css({
+        left: ((circleParent.offset().left+parseInt(circle.attr('cx'))) * circleParent.outerWidth() / 873.296875) - (cardWidth/2),
+        top: circleParent.offset().top+parseInt(circle.attr('cy')) - (cardHeight/2)
+    });
 }

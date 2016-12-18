@@ -1,10 +1,12 @@
 <div class="row top-bar bg-primary clearfix">
-	<ul class="pull-right list-inline no-margin">
-		@if(! \App\Providers\TahaServiceProvider::getHomeControllerRoute())
+	@if(! \App\Providers\TahaServiceProvider::getHomeControllerRoute())
+		<ul class="pull-right list-inline no-margin">
 			<li>
 				<a href="{{ url('/') }}">{{ trans('site.global.home_page') }}</a>
 			</li>
-		@endif
+		</ul>
+	@endif
+	<ul class="pull-right list-inline no-margin">
 		@if($online_user)
 		<li class="has-child">
 			<a href="/">{{ $online_user->name_first }} {{ trans('site.global.users_welcome_msg') }}</a>
@@ -26,9 +28,9 @@
 			<a href="{{ url('/login') }}">{{ trans('site.global.users_login') }}</a>
 		</li>
 		@endif
-		{{--<li>--}}
-			{{--<a href="{{ url('/') }}">{{ trans('site.global.stats_login') }}</a>--}}
-		{{--</li>--}}
+		<li>
+			<a href="{{ url('/') }}">{{ trans('site.global.stats_login') }}</a>
+		</li>
 	</ul>
 	<a href="/" class="slogan pull-left">
 		<span>{{ trans('site.global.organ_donation') }}</span><span>{{ trans('site.global.donate_life') }}</span>

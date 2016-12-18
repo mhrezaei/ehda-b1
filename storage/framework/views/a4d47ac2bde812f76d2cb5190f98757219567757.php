@@ -10,6 +10,18 @@
             <a href="/"><?php echo e(trans('site.menu.know')); ?></a>
             <ul class="bg-primary mega-menu col-xs-12">
                 <ul class="list-unstyled pull-left text-right">
+                    <h3><?php echo e(trans('site.know_menu.world_news')); ?></h3>
+                    <li><a href="<?php echo e(url('/archive/word-news/world-opu-transplant')); ?>"><?php echo e(trans('site.know_menu.world_procurement')); ?></a></li>
+                </ul>
+                <ul class="list-unstyled pull-left text-right">
+                    <h3><?php echo e(trans('site.know_menu.iran_news')); ?></h3>
+                    <li><a href="<?php echo e(url('/archive/iran-news/iran-opu-transplant')); ?>"><?php echo e(trans('site.know_menu.iran_procurement')); ?></a></li>
+                    <li><a href="<?php echo e(url('/archive/iran-news/internal-ngo')); ?>"><?php echo e(trans('site.know_menu.internal-ngo')); ?></a></li>
+                </ul>
+                <ul class="list-unstyled pull-left text-right">
+                    <h3><a href="<?php echo e(url('/faq')); ?>"> <?php echo e(trans('site.know_menu.faq')); ?></a></h3>
+                </ul>
+                <ul class="list-unstyled pull-left text-right">
                     <h3><?php echo e(trans('site.know_menu.academic')); ?></h3>
                     <li><a href="<?php echo e(url('/showPost/brain_death/' . urlencode(trans('site.know_menu.brain_death')))); ?>"><?php echo e(trans('site.know_menu.brain_death')); ?></a></li>
                     <li><a href="<?php echo e(url('/showPost/organ_donation/' . urlencode(trans('site.know_menu.organ_donation')))); ?>"><?php echo e(trans('site.know_menu.organ_donation')); ?></a></li>
@@ -23,18 +35,6 @@
                     <li><a href="<?php echo e(url('/showPost/organ_donation_in_religion/' . urlencode(trans('site.know_menu.organ_donation_in_religion')))); ?>"><?php echo e(trans('site.know_menu.organ_donation_in_religion')); ?></a></li>
                     <li><a href="<?php echo e(url('/showPost/organ_donation_in_another_country/' . urlencode(trans('site.know_menu.organ_donation_in_another_country')))); ?>"><?php echo e(trans('site.know_menu.organ_donation_in_another_country')); ?></a></li>
                     <li><a href="<?php echo e(url('/organ_donation_card')); ?>"><?php echo e(trans('site.know_menu.organ_donation_card')); ?></a></li>
-                </ul>
-                <ul class="list-unstyled pull-left text-right">
-                    <h3><a href="<?php echo e(url('/faq')); ?>"> <?php echo e(trans('site.know_menu.faq')); ?></a></h3>
-                </ul>
-                <ul class="list-unstyled pull-left text-right">
-                    <h3><?php echo e(trans('site.know_menu.iran_news')); ?></h3>
-                    <li><a href="<?php echo e(url('/archive/iran-news/iran-opu-transplant')); ?>"><?php echo e(trans('site.know_menu.iran_procurement')); ?></a></li>
-                    <li><a href="<?php echo e(url('/archive/iran-news/internal-ngo')); ?>"><?php echo e(trans('site.know_menu.internal-ngo')); ?></a></li>
-                </ul>
-                <ul class="list-unstyled pull-left text-right">
-                    <h3><?php echo e(trans('site.know_menu.world_news')); ?></h3>
-                    <li><a href="<?php echo e(url('/archive/word-news/world-opu-transplant')); ?>"><?php echo e(trans('site.know_menu.world_procurement')); ?></a></li>
                 </ul>
             </ul>
         </li>
@@ -81,7 +81,7 @@
                     <h3><?php echo e(trans('site.ability_menu.gallery')); ?></h3>
                     <li><a href="<?php echo e(url('/gallery/categories/gallery')); ?>"><?php echo e(trans('site.ability_menu.pictures')); ?></a></li>
                     <li><a href="/"><?php echo e(trans('site.ability_menu.films')); ?></a></li>
-                    <li><a href="/"><?php echo e(trans('site.ability_menu.photo_donors')); ?></a></li>
+                    <li><a href="<?php echo e(url('/angels')); ?>"><?php echo e(trans('site.ability_menu.photo_donors')); ?></a></li>
                 </ul>
                 <ul class="list-unstyled pull-left text-right">
                     <h3><a href="/"> <?php echo e(trans('site.ability_menu.contact_us')); ?></a></h3>

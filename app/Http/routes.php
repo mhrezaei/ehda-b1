@@ -45,6 +45,7 @@ Route::group(['prefix' => '', 'middleware' => 'Subdomain'], function () {
     Route::get('/faq', 'PostController@faq');
     Route::post('/faq/new', 'PostController@faq_new');
     Route::get('/angels', 'PostController@angels');
+    Route::post('/angels/find', 'PostController@angels_find');
 
 // volunteer pages
     Route::get('/volunteers', 'members\VolunteersController@index');

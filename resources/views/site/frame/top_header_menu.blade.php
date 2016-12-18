@@ -10,6 +10,18 @@
             <a href="/">{{ trans('site.menu.know') }}</a>
             <ul class="bg-primary mega-menu col-xs-12">
                 <ul class="list-unstyled pull-left text-right">
+                    <h3>{{ trans('site.know_menu.world_news') }}</h3>
+                    <li><a href="{{ url('/archive/word-news/world-opu-transplant') }}">{{ trans('site.know_menu.world_procurement') }}</a></li>
+                </ul>
+                <ul class="list-unstyled pull-left text-right">
+                    <h3>{{ trans('site.know_menu.iran_news') }}</h3>
+                    <li><a href="{{ url('/archive/iran-news/iran-opu-transplant') }}">{{ trans('site.know_menu.iran_procurement') }}</a></li>
+                    <li><a href="{{ url('/archive/iran-news/internal-ngo') }}">{{ trans('site.know_menu.internal-ngo') }}</a></li>
+                </ul>
+                <ul class="list-unstyled pull-left text-right">
+                    <h3><a href="{{ url('/faq') }}"> {{ trans('site.know_menu.faq') }}</a></h3>
+                </ul>
+                <ul class="list-unstyled pull-left text-right">
                     <h3>{{ trans('site.know_menu.academic') }}</h3>
                     <li><a href="{{ url('/showPost/brain_death/' . urlencode(trans('site.know_menu.brain_death'))) }}">{{ trans('site.know_menu.brain_death') }}</a></li>
                     <li><a href="{{ url('/showPost/organ_donation/' . urlencode(trans('site.know_menu.organ_donation'))) }}">{{ trans('site.know_menu.organ_donation') }}</a></li>
@@ -23,18 +35,6 @@
                     <li><a href="{{ url('/showPost/organ_donation_in_religion/' . urlencode(trans('site.know_menu.organ_donation_in_religion'))) }}">{{ trans('site.know_menu.organ_donation_in_religion') }}</a></li>
                     <li><a href="{{ url('/showPost/organ_donation_in_another_country/' . urlencode(trans('site.know_menu.organ_donation_in_another_country'))) }}">{{ trans('site.know_menu.organ_donation_in_another_country') }}</a></li>
                     <li><a href="{{ url('/organ_donation_card') }}">{{ trans('site.know_menu.organ_donation_card') }}</a></li>
-                </ul>
-                <ul class="list-unstyled pull-left text-right">
-                    <h3><a href="{{ url('/faq') }}"> {{ trans('site.know_menu.faq') }}</a></h3>
-                </ul>
-                <ul class="list-unstyled pull-left text-right">
-                    <h3>{{ trans('site.know_menu.iran_news') }}</h3>
-                    <li><a href="{{ url('/archive/iran-news/iran-opu-transplant') }}">{{ trans('site.know_menu.iran_procurement') }}</a></li>
-                    <li><a href="{{ url('/archive/iran-news/internal-ngo') }}">{{ trans('site.know_menu.internal-ngo') }}</a></li>
-                </ul>
-                <ul class="list-unstyled pull-left text-right">
-                    <h3>{{ trans('site.know_menu.world_news') }}</h3>
-                    <li><a href="{{ url('/archive/word-news/world-opu-transplant') }}">{{ trans('site.know_menu.world_procurement') }}</a></li>
                 </ul>
             </ul>
         </li>
@@ -81,7 +81,7 @@
                     <h3>{{ trans('site.ability_menu.gallery') }}</h3>
                     <li><a href="{{ url('/gallery/categories/gallery') }}">{{ trans('site.ability_menu.pictures') }}</a></li>
                     <li><a href="/">{{ trans('site.ability_menu.films') }}</a></li>
-                    <li><a href="/">{{ trans('site.ability_menu.photo_donors') }}</a></li>
+                    <li><a href="{{ url('/angels') }}">{{ trans('site.ability_menu.photo_donors') }}</a></li>
                 </ul>
                 <ul class="list-unstyled pull-left text-right">
                     <h3><a href="/"> {{ trans('site.ability_menu.contact_us') }}</a></h3>

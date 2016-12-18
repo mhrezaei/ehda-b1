@@ -1,10 +1,12 @@
 <div class="row top-bar bg-primary clearfix">
-	<ul class="pull-right list-inline no-margin">
-		<?php if(! \App\Providers\TahaServiceProvider::getHomeControllerRoute()): ?>
+	<?php if(! \App\Providers\TahaServiceProvider::getHomeControllerRoute()): ?>
+		<ul class="pull-right list-inline no-margin">
 			<li>
 				<a href="<?php echo e(url('/')); ?>"><?php echo e(trans('site.global.home_page')); ?></a>
 			</li>
-		<?php endif; ?>
+		</ul>
+	<?php endif; ?>
+	<ul class="pull-right list-inline no-margin">
 		<?php if($online_user): ?>
 		<li class="has-child">
 			<a href="/"><?php echo e($online_user->name_first); ?> <?php echo e(trans('site.global.users_welcome_msg')); ?></a>
@@ -26,9 +28,9 @@
 			<a href="<?php echo e(url('/login')); ?>"><?php echo e(trans('site.global.users_login')); ?></a>
 		</li>
 		<?php endif; ?>
-		<?php /*<li>*/ ?>
-			<?php /*<a href="<?php echo e(url('/')); ?>"><?php echo e(trans('site.global.stats_login')); ?></a>*/ ?>
-		<?php /*</li>*/ ?>
+		<li>
+			<a href="<?php echo e(url('/')); ?>"><?php echo e(trans('site.global.stats_login')); ?></a>
+		</li>
 	</ul>
 	<a href="/" class="slogan pull-left">
 		<span><?php echo e(trans('site.global.organ_donation')); ?></span><span><?php echo e(trans('site.global.donate_life')); ?></span>
