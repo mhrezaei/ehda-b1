@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\Post;
+use App\Providers\TahaServiceProvider;
 use App\Traits\GlobalControllerTrait;
 use Illuminate\Http\Request;
 
@@ -14,6 +15,7 @@ class HomeController extends Controller
 	use GlobalControllerTrait;
 	public function index()
 	{
+//		dd(TahaServiceProvider::getHomeControllerRoute());
 		$news = Post::selector('iran-news')->orderBy('published_at', 'desc')->take(5)->get();
 		$events = Post::selector('event')->orderBy('published_at', 'desc')->take(5)->get();
 		$slide_show = Post::selector('slideshows', [$this->domain(), 'global'])->where('category_id', '3')->orderBy('created_at', 'desc')->get();

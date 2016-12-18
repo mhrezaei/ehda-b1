@@ -173,5 +173,11 @@ class TahaServiceProvider extends ServiceProvider
         return $array ;
     }
 
+    public static function getHomeControllerRoute()
+    {
+        $route = app('request')->route()->getAction();
+        return strpos($route['controller'], 'HomeController@index');
+    }
+
 
 }
