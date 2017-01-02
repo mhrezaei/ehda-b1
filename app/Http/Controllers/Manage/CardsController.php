@@ -299,13 +299,13 @@ class CardsController extends Controller
 		}
 
 		//Processing donatable organs...
-		$data['organs'] = null ;
-		foreach(User::$donatable_organs as $donatable_organ) {
-			if($data['_'.$donatable_organ])
-				$data['organs'] .= ' '.trans("people.organs.$donatable_organ").' ' ;
-		}
-		if(!trim($data['organs']))
-			return $this->jsonFeedback(trans('validation.javascript_validation.organs'));
+//		$data['organs'] = null ;
+//		foreach(User::$donatable_organs as $donatable_organ) {
+//			if($data['_'.$donatable_organ])
+//				$data['organs'] .= ' '.trans("people.organs.$donatable_organ").' ' ;
+//		}
+//		if(!trim($data['organs']))
+//			return $this->jsonFeedback(trans('validation.javascript_validation.organs'));
 
 		//Processing dates...
 		$carbon = new Carbon($request->birth_date);

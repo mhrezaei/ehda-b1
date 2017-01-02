@@ -393,6 +393,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 						}
 					}
 				}
+				else
+					return [] ;
 			return $act;
 
 			default:
