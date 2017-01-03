@@ -292,8 +292,9 @@ class AuthController extends Controller
 	{
 		$logged_developer = $request->session()->pull('logged_developer') ;
 
+
 		if($logged_developer)
-			$logged_developer = decrypt($request->session()->pull('logged_developer'));
+			$logged_developer = decrypt($logged_developer);
 
 		if($logged_developer) {
 			$ok = Auth::loginUsingId( $logged_developer );

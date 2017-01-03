@@ -12,7 +12,7 @@ class Subdomain
     use GlobalControllerTrait;
     public function handle($request, Closure $next)
     {
-//        return $next($request); //@TODO: Remove This!
+        return $next($request); //@TODO: Remove This!
         if ($this->getDomain() == 'inspector')
         {
             return redirect('http://ehda.center/inspector');

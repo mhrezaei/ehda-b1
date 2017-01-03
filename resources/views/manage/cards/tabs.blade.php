@@ -1,5 +1,6 @@
 @include('manage.frame.use.tabs' , [
 	'current' => $page[1][0] ,
+	'fake' => !isset($volunteer_id)? $volunteer_id = 0 : 1,
 	'tabs' => [
 		['browse/all/'.$volunteer_id , trans('people.cards.manage.all') , 'cards.browse'],
 //		['browse/complete/'.$volunteer_id , trans('people.cards.manage.complete') , 'cards.browse'],

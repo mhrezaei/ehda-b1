@@ -191,20 +191,20 @@
 		--}}
 
 
-		<tr>
-			<td colspan="2">
-				<hr>
-			</td>
-		</tr>
-		
-		<tr>
-			<td class="head">
-				{{ trans('validation.attributes.organs') }}
-			</td>
-			<td class="body">
-				{{ $model->say('organs') }}
-			</td>
-		</tr>
+		{{--<tr>--}}
+			{{--<td colspan="2">--}}
+				{{--<hr>--}}
+			{{--</td>--}}
+		{{--</tr>--}}
+		{{----}}
+		{{--<tr>--}}
+			{{--<td class="head">--}}
+				{{--{{ trans('validation.attributes.organs') }}--}}
+			{{--</td>--}}
+			{{--<td class="body">--}}
+				{{--{{ $model->say('organs') }}--}}
+			{{--</td>--}}
+		{{--</tr>--}}
 
 		{{--
 		|--------------------------------------------------------------------------
