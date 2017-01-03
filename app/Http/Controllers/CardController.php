@@ -92,53 +92,61 @@ class CardController extends Controller
         $input['password_force_change'] = 0;
         unset($input['password2']);
 
+        // disable organ check
+        $input['organs'] = 'Heart Lung Liver Kidney Pancreas Tissues';
+        unset($input['chRegisterAll']);
+        unset($input['chRegisterHeart']);
+        unset($input['chRegisterLung']);
+        unset($input['chRegisterLiver']);
+        unset($input['chRegisterKidney']);
+        unset($input['chRegisterPancreas']);
+        unset($input['chRegisterTissues']);
 
-
-        if (isset($input['chRegisterAll']))
-        {
-            $input['organs'] = 'Heart Lung Liver Kidney Pancreas Tissues';
-            unset($input['chRegisterAll']);
-            unset($input['chRegisterHeart']);
-            unset($input['chRegisterLung']);
-            unset($input['chRegisterLiver']);
-            unset($input['chRegisterKidney']);
-            unset($input['chRegisterPancreas']);
-            unset($input['chRegisterTissues']);
-        }
-        else
-        {
-            $input['organs'] = '';
-            if (isset($input['chRegisterHeart']))
-            {
-                $input['organs'] .= 'Heart ';
-                unset($input['chRegisterHeart']);
-            }
-            if (isset($input['chRegisterLung']))
-            {
-                $input['organs'] .= 'Lung ';
-                unset($input['chRegisterLung']);
-            }
-            if (isset($input['chRegisterLiver']))
-            {
-                $input['organs'] .= 'Liver ';
-                unset($input['chRegisterLiver']);
-            }
-            if (isset($input['chRegisterKidney']))
-            {
-                $input['organs'] .= 'Kidney ';
-                unset($input['chRegisterKidney']);
-            }
-            if (isset($input['chRegisterPancreas']))
-            {
-                $input['organs'] .= 'Pancreas ';
-                unset($input['chRegisterPancreas']);
-            }
-            if (isset($input['chRegisterTissues']))
-            {
-                $input['organs'] .= 'Tissues ';
-                unset($input['chRegisterTissues']);
-            }
-        }
+//        if (isset($input['chRegisterAll']))
+//        {
+//            $input['organs'] = 'Heart Lung Liver Kidney Pancreas Tissues';
+//            unset($input['chRegisterAll']);
+//            unset($input['chRegisterHeart']);
+//            unset($input['chRegisterLung']);
+//            unset($input['chRegisterLiver']);
+//            unset($input['chRegisterKidney']);
+//            unset($input['chRegisterPancreas']);
+//            unset($input['chRegisterTissues']);
+//        }
+//        else
+//        {
+//            $input['organs'] = '';
+//            if (isset($input['chRegisterHeart']))
+//            {
+//                $input['organs'] .= 'Heart ';
+//                unset($input['chRegisterHeart']);
+//            }
+//            if (isset($input['chRegisterLung']))
+//            {
+//                $input['organs'] .= 'Lung ';
+//                unset($input['chRegisterLung']);
+//            }
+//            if (isset($input['chRegisterLiver']))
+//            {
+//                $input['organs'] .= 'Liver ';
+//                unset($input['chRegisterLiver']);
+//            }
+//            if (isset($input['chRegisterKidney']))
+//            {
+//                $input['organs'] .= 'Kidney ';
+//                unset($input['chRegisterKidney']);
+//            }
+//            if (isset($input['chRegisterPancreas']))
+//            {
+//                $input['organs'] .= 'Pancreas ';
+//                unset($input['chRegisterPancreas']);
+//            }
+//            if (isset($input['chRegisterTissues']))
+//            {
+//                $input['organs'] .= 'Tissues ';
+//                unset($input['chRegisterTissues']);
+//            }
+//        }
 
         $user = User::selectBySlug($input['code_melli'], 'code_melli');
 

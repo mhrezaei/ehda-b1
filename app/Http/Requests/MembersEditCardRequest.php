@@ -41,7 +41,7 @@ class MembersEditCardRequest extends Request
             'home_city' => 'required|numeric|min:1',
             'email' => 'required|email',
             'password' => 'same:password2|min:8',
-            'chRegisterAll' => 'required_without_all:chRegisterHeart,chRegisterLung,chRegisterLiver,chRegisterKidney,chRegisterPancreas,chRegisterTissues'
+//            'chRegisterAll' => 'required_without_all:chRegisterHeart,chRegisterLung,chRegisterLiver,chRegisterKidney,chRegisterPancreas,chRegisterTissues'
 
         ];
     }

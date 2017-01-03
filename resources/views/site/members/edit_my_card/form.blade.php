@@ -210,7 +210,7 @@
                         </div>
                     </div>
 
-                    @include('forms_site.organs_checkbox')
+{{--                    @include('forms_site.organs_checkbox')--}}
                     @include('forms.feed')
                     <div class="form-group text-center">
                         @include('forms.button', [
