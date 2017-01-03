@@ -211,7 +211,9 @@
                     </div>
 
 {{--                    @include('forms_site.organs_checkbox')--}}
-                    @include('forms.feed')
+                    <div class="row" style="margin-top: 15px;">
+                        @include('forms.feed')
+                    </div>
                     <div class="form-group text-center">
                         @include('forms.button', [
                             'shape' => 'success step_one_btn',
