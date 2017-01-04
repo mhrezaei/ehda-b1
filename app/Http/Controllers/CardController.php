@@ -199,12 +199,13 @@ class CardController extends Controller
         else
         {
             $data['card_registered_at'] = Carbon::now()->toDateTimeString();
-            $data['card_no'] = User::generateCardNo();
+//            $data['card_no'] = User::generateCardNo(); when register multi user in one time this line have bug
         }
 
         $user = User::selectBySlug($data['code_melli'], 'code_melli');
         if ($user)
         {
+            $user_id = $user->id;
             if ($user->isActive('volunteer') or $user->isActive('card'))
             {
                 $return = $this->jsonFeedback(null, [
@@ -263,6 +264,15 @@ class CardController extends Controller
                 ]);
             }
         }
+
+        // generate card_no
+        if ($user_id and $user_id > 0)
+        {
+            $update['id'] = $user_id;
+            $update['card_no'] = $user_id + 5000;
+            $user_id = User::store($update);
+        }
+
         return $return;
     }
 
