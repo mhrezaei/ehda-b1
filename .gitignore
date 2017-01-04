@@ -25,3 +25,4 @@
 gulpfile.js
 *.log
 .env
+storage/framework/session/*.php

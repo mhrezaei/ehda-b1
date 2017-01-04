@@ -4,4 +4,7 @@
     <?php /*<br>*/ ?>
     <?php echo e(trans('site.global.ngo_phone_number')); ?>
 
+    <br>
+    <?php echo e(trans('site.global.ngo_email')); ?>
+
 </p>
