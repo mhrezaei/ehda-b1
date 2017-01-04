@@ -24,4 +24,4 @@
 .idea/
 gulpfile.js
 *.log
-storage/
+.env
