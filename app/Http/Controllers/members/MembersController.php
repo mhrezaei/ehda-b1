@@ -53,8 +53,8 @@ class MembersController extends Controller
         else
         {
             unset($input['password']);
-            unset($input['password2']);
         }
+        unset($input['password2']);
 
         // disable organ check
         $input['organs'] = 'Heart Lung Liver Kidney Pancreas Tissues';
