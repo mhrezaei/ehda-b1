@@ -28,7 +28,7 @@ class VolunteerChangePasswordRequest extends Request
 	{
 		$input = $this->all();
 		return [
-			'password'=> 'required|min:8',
+			'password'=> 'required|min:8|max:50|',
 		];
 
 	}

@@ -30,7 +30,7 @@ class AccountChangePasswordRequest extends Request
         $input = $this->all();
         return [
              'current_password' => 'required|different:new_password',
-             'new_password' => 'required|min:8|same:password2',
+             'new_password' => 'required|min:8|max:50|same:password2',
         ];
 
     }

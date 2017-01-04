@@ -35,7 +35,7 @@ class VolunteerSaveRequest extends Request
 			'code_melli' => "required|code_melli|unique:users,code_melli,".$id,
 			'code_id' => "required" ,
 			'email'=> 'required|email|unique:users,email,'.$id,
-			'password'=> 'required_if:id,0|min:8',
+			'password'=> 'required_if:id,0|min:8|max:50|',
 			'gender'=>'required',
 			'birth_city' => 'required',
 			'marital' => 'required' ,

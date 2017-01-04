@@ -28,7 +28,7 @@ class AuthLoginRequest extends Request
         $input = $this->all();
         return [
              'username' => 'required|numeric', //no need to check existence here.
-             'password' => 'required',
+             'password' => 'required|max:50',
              'security' => 'required|captcha:'.$input['key'],
         ];
     }

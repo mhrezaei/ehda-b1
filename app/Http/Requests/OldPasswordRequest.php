@@ -26,7 +26,7 @@ class OldPasswordRequest extends Request
     {
         //$input = $this->all();
         return [
-            'password' => 'required|min:8', //no need to check existence here.
+            'password' => 'required|min:8|max:50|', //no need to check existence here.
             'password2' => 'required|same:password',
         ];
     }
