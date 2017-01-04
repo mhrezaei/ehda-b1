@@ -13,6 +13,7 @@
                         <p><?php echo e($slide->meta('title_two')); ?></p>
                     <?php endif; ?>
                     <?php if(strlen($slide->meta('link'))): ?>
+                        <?php /*<br>*/ ?>
                         <a href="<?php echo e(url('') . $slide->meta('link')); ?>" style="color: white;"><?php echo e(trans('site.global.continue')); ?></a>
                     <?php endif; ?>
                 </div>

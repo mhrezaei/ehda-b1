@@ -1,10 +1,10 @@
-<title><?php echo e(trans('global.siteTitle')); ?> | <?php echo e($card_detail->title); ?></title>
+<title><?php echo e(trans('global.siteTitle')); ?> | <?php echo e(trans('site.global.my_card_page')); ?></title>
 <?php $__env->startSection('content'); ?>
     <div class="container-fluid">
         <?php echo $__env->make('site.frame.page_title', [
-        'category' => $card_detail->meta('header_title'),
-        'parent' => $card_detail->meta('category_title'),
-        'sub' => $card_detail->title
+        'category' => trans('site.menu.join'),
+        'parent' => trans('site.know_menu.organ_donation_card'),
+        'sub' => trans('site.global.my_card_page')
         ], array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
         <?php echo $__env->make('site.members.my_card.card_info_content', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
     </div>

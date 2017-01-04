@@ -4,7 +4,8 @@
         <ul class="events list-unstyled">
             <?php foreach($events as $event): ?>
                 <li>
-                    <a href="<?php echo e($event->say('link')); ?>"><?php echo App\Providers\AppServiceProvider::pd(($event->say('title_limit'))) ?></a>
+                    <?php /*<a href="<?php echo e(url('showPost/' . $event->id . '/' . urlencode($event->title))); ?>"><?php echo App\Providers\AppServiceProvider::pd(($event->title)) ?></a>*/ ?>
+                    <a href="<?php echo e(url('showPost/' . $event->id . '/' . urlencode($event->title))); ?>"><?php echo e($event->title); ?></a>
                 </li>
             <?php endforeach; ?>
         </ul>

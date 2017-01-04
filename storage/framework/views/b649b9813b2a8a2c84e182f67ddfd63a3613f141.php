@@ -2,8 +2,11 @@
 <html>
     <head>
         <title><?php echo e(trans('global.siteTitle')); ?></title>
-        <meta charset="utf-8"/>
+
+        <?php /*<link href="//fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">*/ ?>
         <?php echo Html::style('assets/css/fontiran.css'); ?>
+
+        <?php echo Html::style('assets/css/home.css'); ?>
 
 
         <style>

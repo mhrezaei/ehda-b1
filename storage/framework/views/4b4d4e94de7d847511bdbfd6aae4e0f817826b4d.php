@@ -9,13 +9,8 @@ if(isset($class) && str_contains($class, 'form-required')) {
             for="<?php echo e($name); ?>"
             class="col-sm-2 control-label <?php echo e(isset($label_class) ? $label_class : ''); ?>"
     >
-        <?php if(isset($label)): ?>
-            <?php echo e($label); ?>
+        <?php echo e(isset($label) ? $label : Lang::has("validation.attributes.$name") ? trans("validation.attributes.$name") : $name); ?>
 
-        <?php else: ?>
-            <?php echo e(Lang::has("validation.attributes.$name") ? trans("validation.attributes.$name") : $name); ?>
-
-        <?php endif; ?>
         <?php if(isset($required) and $required): ?>
             <span class="fa fa-star required-sign " title="<?php echo e(trans('forms.logic.required')); ?>"></span>
         <?php endif; ?>

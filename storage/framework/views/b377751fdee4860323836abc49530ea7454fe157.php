@@ -8,13 +8,6 @@
 		<h4><?php echo e(trans('manage.login.head_title')); ?></h4>
 	</div>
 
-	<?php if(isset($relogin)): ?>
-		<div class="alert alert-info">
-			<?php echo e(trans('site.global.relogin')); ?>
-
-		</div>
-	<?php endif; ?>
-
 	<div class="content">
 		<?php echo $__env->make('manage.login.input' , [
 			'name' => 'username' ,

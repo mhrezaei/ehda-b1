@@ -8,7 +8,8 @@
                     </a>
                     <div class="media-body">
                         <h4 class="media-heading">
-                            <a href="<?php echo e($post->say('link')); ?>"><?php echo App\Providers\AppServiceProvider::pd(($post->title)) ?></a>
+                            <?php /*<a href="<?php echo e($post->say('link')); ?>"><?php echo App\Providers\AppServiceProvider::pd(($post->title)) ?></a>*/ ?>
+                            <a href="<?php echo e($post->say('link')); ?>"><?php echo e($post->title); ?></a>
                         </h4>
                         <?php if(strlen($post->abstract)): ?>
                             <p style="text-align: justify;">

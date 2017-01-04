@@ -18,7 +18,7 @@
 	]); ?>
 
 
-	<input name="key" value="<?php echo e(isset($value) ? $value : ''); ?>" class="form-control" placeholder="<?php echo e($label); ?>...">
+	<input name="key" class="form-control" placeholder="<?php echo e($label); ?>...">
 	<button type="submit" class="btn btn-<?php echo e(isset($type) ? $type : 'warning'); ?>">
 		<i class="fa fa-search"></i>
 	</button>

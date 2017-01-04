@@ -3,7 +3,8 @@
         <div class="article">
             <div class="col-xs-12" style="text-align: justify;">
                 <?php if($post->branch()->slug != 'statics'): ?>
-                    <h3 class="post-title"><?php echo App\Providers\AppServiceProvider::pd(($post->title)) ?></h3>
+                    <?php /*<h3 class="post-title"><?php echo App\Providers\AppServiceProvider::pd(($post->title)) ?></h3>*/ ?>
+                    <h3 class="post-title"><?php echo e($post->title); ?></h3>
                 <?php endif; ?>
 
                 <?php echo $post->text; ?>

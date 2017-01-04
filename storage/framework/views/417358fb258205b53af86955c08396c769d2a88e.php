@@ -8,26 +8,30 @@
 	|
 	*/ ?>
 	<div class="panel panel-toolbar row w100">
-		<div class="col-md-6">
-			<p class="title">
-				<?php echo e($page[0][1]. ': ' . $page[1][1]); ?>
+		<div class="col-md-4"><p class="title"><?php echo e($page[0][1]. ': ' . $page[1][1]); ?></p></div>
+		<div class="col-md-8 tools">
 
-				<?php if(isset($category_label)): ?>
-					<span class="badge mh20 ph20">
-						<?php echo e($category_label); ?>
-
-					</span>
-				<?php endif; ?>
-			</p>
-		</div>
-		<div class="col-md-6 tools">
-			<?php echo $__env->make('manage.posts.browse-category', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 			<?php echo $__env->make('manage.frame.widgets.toolbar_button' , [
 				'target' => url('manage/posts/'.$branch->slug.'/create') ,
 				'type' => 'success' ,
 				'caption' => trans('posts.manage.create' , ['thing'=>$branch->title(1)]) ,
 				'icon' => 'plus-circle' ,
 			], array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+			<?php /*<?php echo $__env->make('manage.frame.widgets.grid-action' , [*/ ?>
+				<?php /*'id' => '0',*/ ?>
+				<?php /*'button_size' => 'md' ,*/ ?>
+				<?php /*'button_class' => 'primary' ,*/ ?>
+				<?php /*'button_label' => trans('forms.button.bulk_action'),*/ ?>
+				<?php /*'button_extra' => 'disabled' ,*/ ?>
+				<?php /*'actions' => [*/ ?>
+<?php /*//					['check' , trans('people.commands.activate') , 'modal:manage/posts/-id-/publish' , 'volunteers.publish' , $page[1][2]!='bin' and $page[1][2]!='active'],*/ ?>
+					<?php /*['trash-o' , trans('people.commands.soft_delete') , 'modal:manage/posts/-id-/soft_delete' , $branch->slug.".delete" , $page[1][2]!='bin'] ,*/ ?>
+					<?php /*['undo' , trans('people.commands.undelete') , 'modal:manage/posts/-id-/undelete' , $branch->slug.".bin" , $page[1][2]=='bin'] ,*/ ?>
+					<?php /*['times' , trans('people.commands.hard_delete') , 'modal:manage/posts/-id-/hard_delete' , $branch->slug.".bin" , $page[1][2]=='bin'] ,*/ ?>
+
+				<?php /*]*/ ?>
+			<?php /*], array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>*/ ?>
 
 			<?php echo $__env->make('manage.frame.widgets.toolbar_search_inline' , [
 				'target' => url('manage/posts/'.$branch->slug.'/searched/') ,
@@ -50,7 +54,7 @@
 		'headings' => [
 			trans('validation.attributes.title') ,
 			trans('posts.manage.properties'),
-			($branch->hasFeature('domain') and Auth::user()->isGlobal()) ? trans('posts.manage.visibility') : 'NO',
+			$branch->hasFeature('domains') ? trans('posts.manage.visibility') : 'NO',
 			trans('forms.button.action'),
 		],
 	], array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

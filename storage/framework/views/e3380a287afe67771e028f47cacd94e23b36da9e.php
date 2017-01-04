@@ -2,15 +2,8 @@
 	<input id="gridSelector-<?php echo e($model->id); ?>" data-value="<?php echo e($model->id); ?>" class="gridSelector" type="checkbox" onchange="gridSelector('selector','<?php echo e($model->id); ?>')">
 </td>
 <td>
-	<?php if($model->canEdit()): ?>
-		<a href="<?php echo e(url("manage/posts/".$model->branch()->slug."/edit/".$model->id)); ?>">
-			<?php echo e($model->say('title_limit')); ?>
+	<?php echo e($model->say('title')); ?>
 
-		</a>
-	<?php else: ?>
-		<?php echo e($model->say('title_limit')); ?>
-
-	<?php endif; ?>
 </td>
 
 
@@ -37,12 +30,15 @@
 	<?php endif; ?>
 </td>
 
-<?php if($branch->hasFeature('domain') and Auth::user()->isGlobal()): ?>
+<?php if($branch->hasFeature('domains')): ?>
 	<td>
 		<?php echo e($model->say('domains')); ?>
 
-		<?php if(str_contains($model->domains , '*') ): ?>
-			<i class="fa fa-globe mh5 text-success"></i>
+		<?php if($model->is_global_reflect ): ?>
+			<div class="mv10 f10 text-success">
+				<?php echo e(trans('posts.manage.also_in_global')); ?>
+
+			</div>
 		<?php endif; ?>
 	</td>
 <?php endif; ?>
@@ -53,7 +49,7 @@
 		'id' => $model->id ,
 		'actions' => [
 			['eye' , trans('manage.permits.view') , "urlN:".$model->say('preview')],
-			['pencil' , trans('manage.permits.edit') , "url:manage/posts/".$model->branch()->slug."/edit/-id-" , '*' , $model->canEdit()],
+			['pencil' , trans('manage.permits.edit') , "url:manage/posts/-id-/edit" , '*' , $model->canEdit()],
 			['times' , trans('forms.button.hard_delete') , 'modal:manage/posts/-id-/hard_delete' , "$module.bin" , $model->trashed() and Auth::user()->isDeveloper()] ,
 
 
