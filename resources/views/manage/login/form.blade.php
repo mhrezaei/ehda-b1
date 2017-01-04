@@ -17,7 +17,7 @@
 		@include('manage.login.input' , [
 			'name' => 'username' ,
 			'icon' => 'face',
-			'cap' => trans('validation.attributes.username')
+			'cap' => trans('validation.attributes.code_melli')
 		])
 		@include('manage.login.input' , [
 			'name' => 'password' ,

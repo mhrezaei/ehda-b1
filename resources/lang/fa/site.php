@@ -6,6 +6,7 @@ return [
         'ngo_address' 	=> 'تهران، خیابان ولیعصر، بعد از پل همت، روبروی خیابان دهم، ساختمان ۷۹۰، واحد ۱۲' ,
         'ngo_address_see_on_map' 	=> 'مشاهده برروی نقشه' ,
         'ngo_phone_number' 	=> '۸۸۱۹۰۱۸۰ ۲۱ ۹۸ +' ,
+        'ngo_email' => "info@ehda.center",
         'users_login' => 'ورود کاربران',
         'users_welcome_msg' => 'خوش آمدید!',
         'log_out' => 'خروج',
