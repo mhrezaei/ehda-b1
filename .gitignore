@@ -23,6 +23,5 @@
 .DS_Store
 .idea/
 gulpfile.js
-.env
 *.log
 storage/
