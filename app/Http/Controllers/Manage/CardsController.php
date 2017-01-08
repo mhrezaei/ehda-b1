@@ -67,6 +67,32 @@ class CardsController extends Controller
 
 	}
 
+	public function stats()
+	{
+		//Preparation...
+		$page = $this->page ;
+		$page[1] = ["stats/" , trans("people.cards.manage.stats") , 'stats' ] ;
+
+		//Model...
+//		$model_data = $model_data->orderBy('created_at' , 'desc')->paginate(50);
+		$data = [] ;
+		$db = new User();
+
+		$now = Carbon::now() ;
+
+		for($i=0 ; $i<=30 ; $i++) {
+			$today = Carbon::today()->subDays($i) ;
+			$yesterday = Carbon::today()->subDays($i-1) ;
+			$count = User::where('card_registered_at' , '>' , $today )->where('card_registered_at' , '<' , $yesterday )->count();
+			array_push($data , [$today , $count]) ;
+		}
+
+
+		//View...
+		return view("manage.cards.stats" , compact('page', 'db' , 'volunteer' , 'volunteer_id' , 'data'));
+
+	}
+
 
 	public function browse($request_tab = 'active' , $volunteer_id = 0)
 	{

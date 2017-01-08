@@ -101,6 +101,7 @@ return [
 						'all' => 'همه‌ی کارت‌ها' ,
 						'complete' => 'کارت‌های کامل' ,
 						'active' => 'فعال' ,
+					'stats' => "آمار ثبت نام",
 						'incomplete' => 'نقص اطلاعات' ,
 						'under_print' => 'در فرآیند چاپ' ,
 						'print_request' => 'درخواست چاپ' ,
