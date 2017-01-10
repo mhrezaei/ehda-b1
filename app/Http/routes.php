@@ -9,7 +9,7 @@ Route::group(['prefix' => '', 'middleware' => 'Subdomain'], function () {
 //    Route::get('removeDuplicates', 'TestController@removeDuplicates');
 //    Route::get('makeDomains', 'TestController@makeDomainsFromHomeCities');
 //
-//    Route::get('hadi', 'TestController@hadi');
+    Route::get('hadi', 'TestController@hadi');
 
     /*
     |--------------------------------------------------------------------------

@@ -36,6 +36,12 @@
                                 'extra' => 'disabled=disabled',
                                 ])
                             @endif
+                        @elseif(Auth::user()->volunteer_status == 0)
+                            @include('forms.button', [
+                                'shape' => 'success',
+                                'link' => url('/volunteers/exam'),
+                                'label' => trans('site.global.volunteer_exam'),
+                                ])
                         @else
                             @include('forms.button', [
                             'shape' => 'success stepOneBtn',

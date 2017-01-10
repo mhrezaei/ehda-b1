@@ -15,7 +15,8 @@
                         نام و نام خانوادگی: {{ $u->name_first . ' ' . $u->name_last }}<hr>
                         نام پدر: {{ $u->name_father }}<hr>
                         کدملی: {{ $u->code_melli }}<hr>
-                        تاریخ تولد: {{ $u->say('birth_date') }}
+                        تاریخ تولد: {{ $u->say('birth_date') }}<hr>
+                        رشته تحصیلی: {{ $u->say('edu_field') }}
                     </td>
                     <td style="border: 1px solid black;">
                         آدرس: {{ $u->home_address }}<hr>
