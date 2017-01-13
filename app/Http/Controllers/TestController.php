@@ -434,7 +434,10 @@ class TestController extends Controller
 
 	public function hadi()
 	{
-		$user = User::where('volunteer_status', 8)->orderBy('created_at', 'desc')->get();
+		$user = User::where('volunteer_status', 8)
+            ->orderBy('created_at', 'desc')
+            ->orderBy('home_province', 'asc')
+            ->get();
 		return view('hadi.test', compact('user'));
 	}
 }
