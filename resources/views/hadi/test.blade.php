@@ -1,46 +1,57 @@
-@if($user)
-    <table style="width: 100%; font-family: Tahoma; font-size: 12px; border: 1px solid black; direction: rtl;">
-        <thead>
-            <th style="border: 1px solid black;">ردیف</th>
-            <th style="border: 1px solid black;">نام و نام خانوادگی</th>
-            <th style="border: 1px solid black;">نام پدر</th>
-            <th style="border: 1px solid black;">کدملی</th>
-            <th style="border: 1px solid black;">تاریخ تولد</th>
-            <th style="border: 1px solid black;">تحصیلات</th>
-            <th style="border: 1px solid black;">رشته تحصیلی</th>
-            <th style="border: 1px solid black;">محل سکونت</th>
-            <th style="border: 1px solid black;">آدرس</th>
-            <th style="border: 1px solid black;">تلفن</th>
-            <th style="border: 1px solid black;">موبایل</th>
-            <th style="border: 1px solid black;">ایمیل</th>
-            <th style="border: 1px solid black;">تمایلات</th>
-        </thead>
-        <tbody>
+@if(\App\Providers\SettingServiceProvider::get_volunteer_data())
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style>
+        html, body, table{
+            direction: rtl;
+            font-family: Tahoma;
+            font-size: 12px;
+            text-align: right;
+            line-height: 15px;
+        }
+    </style>
+    <table>
+        <tr>
+            <td>ردیف</td>
+            <td>نام و نام خانوادگی</td>
+            <td>نام پدر</td>
+            <td>کدملی</td>
+            {{--<td>تاریخ تولد</td>--}}
+            <td>تحصیلات</td>
+            <td>رشته تحصیلی</td>
+            <td>محل سکونت</td>
+            <td>آدرس</td>
+            <td>تلفن</td>
+            <td>موبایل</td>
+            <td>ایمیل</td>
+            {{--<td>تاریخ ثبت نام</td>--}}
+            <td>وضعیت ثبت نام</td>
+            <td>تمایلات</td>
+        </tr>
         <?php $row = 1; ?>
-        @foreach($user as $u)
+        @foreach(\App\Providers\SettingServiceProvider::get_volunteer_data() as $u)
                 <tr>
-                    <th style="border: 1px solid black;">{{ $row++ }}</th>
-                    <td style="border: 1px solid black;">{{ $u->name_first . ' ' . $u->name_last }}</td>
-                    <td style="border: 1px solid black;">{{ $u->name_father }}</td>
-                    <td style="border: 1px solid black;">{{ $u->code_melli }}</td>
-                    <td style="border: 1px solid black;">{{ $u->say('birth_date') }}</td>
-                    <td style="border: 1px solid black;">{{ $u->say('edu_level') }}</td>
-                    <td style="border: 1px solid black;">{{ $u->say('edu_field') }}</td>
-                    <td style="border: 1px solid black;">{{ $u->say('home_city') }}</td>
-                    <td style="border: 1px solid black;">{{ $u->home_address }}</td>
-                    <td style="border: 1px solid black;">{{ $u->home_tel }}</td>
-                    <td style="border: 1px solid black;">{{ $u->mobile }}</td>
-                    <td style="border: 1px solid black;">{{ $u->email }}</td>
-                    <td style="border: 1px solid black;">
+                    <td>{{ $row++ }}</td>
+                    <td>{{ $u->name_first . ' ' . $u->name_last }}</td>
+                    <td>{{ $u->name_father }}</td>
+                    <td>{{ $u->code_melli }}</td>
+{{--                    <td>{{ $u->say('birth_date') }}</td>--}}
+                    <td>{{ $u->say('edu_level') }}</td>
+                    <td style="width: 600px;">{{ $u->say('edu_field') }}</td>
+                    <td>{{ $u->say('home_city') }}</td>
+                    <td>{{ $u->home_address }}</td>
+                    <td>{{ $u->home_tel }}</td>
+                    <td>{{ $u->tel_mobile }}</td>
+                    <td>{{ $u->email }}</td>
+{{--                    <td>{{ $u->say('volunteer_registered_at') }}</td>--}}
+                    <td>{{ $u->volunteerStatus() }}</td>
+                    <td>
                         @if(is_array($u->say('activities')))
                             @foreach($u->say('activities') as $key => $value)
-                                {{ $value }}
-                                <hr>
+                                {{ $value }} ||
                             @endforeach
                         @endif
                     </td>
                 </tr>
             @endforeach
-        </tbody>
     </table>
 @endif

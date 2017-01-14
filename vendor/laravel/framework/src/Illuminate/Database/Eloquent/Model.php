@@ -57,7 +57,14 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
     protected $primaryKey = 'id';
 
     /**
-     * The number of Models to return for pagination.
+     * The "type" of the auto-incrementing ID.
+     *
+     * @var string
+     */
+    protected $keyType = 'int';
+
+    /**
+     * The number of models to return for pagination.
      *
      * @var int
      */
@@ -218,7 +225,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
     protected static $dispatcher;
 
     /**
-     * The array of booted Models.
+     * The array of booted models.
      *
      * @var array
      */
@@ -326,7 +333,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
     }
 
     /**
-     * Clear the list of booted Models so they will be re-booted.
+     * Clear the list of booted models so they will be re-booted.
      *
      * @return void
      */
@@ -514,13 +521,13 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
 
         $model->setRawAttributes((array) $attributes, true);
 
-        $model->setConnection($connection ?: $this->connection);
+        $model->setConnection($connection ?: $this->getConnectionName());
 
         return $model;
     }
 
     /**
-     * Create a collection of Models from plain arrays.
+     * Create a collection of models from plain arrays.
      *
      * @param  array  $items
      * @param  string|null  $connection
@@ -538,7 +545,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
     }
 
     /**
-     * Create a collection of Models from a raw query.
+     * Create a collection of models from a raw query.
      *
      * @param  string  $query
      * @param  array  $bindings
@@ -628,7 +635,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
     }
 
     /**
-     * Get all of the Models from the database.
+     * Get all of the models from the database.
      *
      * @param  array|mixed  $columns
      * @return \Illuminate\Database\Eloquent\Collection|static[]
@@ -790,7 +797,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
         $instance = new $related;
 
         // Once we have the foreign key names, we'll just create a new Eloquent query
-        // for the related Models and returns the relationship instance which will
+        // for the related models and returns the relationship instance which will
         // actually be responsible for retrieving and hydrating every relations.
         $query = $instance->newQuery();
 
@@ -821,11 +828,11 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
         list($type, $id) = $this->getMorphs($name, $type, $id);
 
         // If the type value is null it is probably safe to assume we're eager loading
-        // the relationship. When that is the case we will pass in a dummy query as
-        // there are multiple types in the morph and we can't use single queries.
+        // the relationship. In this case we'll just pass in a dummy query where we
+        // need to remove any eager loads that may already be defined on a model.
         if (empty($class = $this->$type)) {
             return new MorphTo(
-                $this->newQuery(), $this, $id, null, $type, $name
+                $this->newQuery()->setEagerLoads([]), $this, $id, null, $type, $name
             );
         }
 
@@ -951,7 +958,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
         $otherKey = $otherKey ?: $instance->getForeignKey();
 
         // If no table name was provided, we can guess it by concatenating the two
-        // Models using underscores in alphabetical order. The two model names
+        // models using underscores in alphabetical order. The two model names
         // are transformed to snake case from their default CamelCase also.
         if (is_null($table)) {
             $table = $this->joiningTable($related);
@@ -1050,9 +1057,9 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
      */
     public function joiningTable($related)
     {
-        // The joining table name, by convention, is simply the snake cased Models
+        // The joining table name, by convention, is simply the snake cased models
         // sorted alphabetically and concatenated with an underscore, so we can
-        // just sort the Models and join them together to get the table name.
+        // just sort the models and join them together to get the table name.
         $base = Str::snake(class_basename($this));
 
         $related = Str::snake(class_basename($related));
@@ -1068,7 +1075,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
     }
 
     /**
-     * Destroy the Models for the given IDs.
+     * Destroy the models for the given IDs.
      *
      * @param  array|int  $ids
      * @return int
@@ -1084,7 +1091,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
 
         $instance = new static;
 
-        // We will actually pull the Models from the database table and call delete on
+        // We will actually pull the models from the database table and call delete on
         // each of them individually so that their events get fired properly with a
         // correct set of attributes in case the developers wants to check these.
         $key = $instance->getKeyName();
@@ -1116,8 +1123,8 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
                 return false;
             }
 
-            // Here, we'll touch the owning Models, verifying these timestamps get updated
-            // for the Models. This will allow any caching to get broken on the parents
+            // Here, we'll touch the owning models, verifying these timestamps get updated
+            // for the models. This will allow any caching to get broken on the parents
             // by the timestamp. Then we will go ahead and delete the model instance.
             $this->touchOwners();
 
@@ -1533,7 +1540,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
 
         if (count($dirty) > 0) {
             // If the updating event returns false, we will cancel the update operation so
-            // developers can hook Validation systems into their Models and cancel this
+            // developers can hook Validation systems into their models and cancel this
             // operation if the model does not pass validation. Otherwise, we update.
             if ($this->fireModelEvent('updating') === false) {
                 return false;
@@ -1548,7 +1555,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
 
             // Once we have run the update operation, we will fire the "updated" event for
             // this model instance. This will allow developers to hook into these after
-            // Models are updated, giving them a chance to do any special processing.
+            // models are updated, giving them a chance to do any special processing.
             $dirty = $this->getDirty();
 
             if (count($dirty) > 0) {
@@ -1592,7 +1599,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
 
         // If the table isn't incrementing we'll simply insert these attributes as they
         // are. These attribute arrays must contain an "id" column previously placed
-        // there by the developer as the manually determined key for these Models.
+        // there by the developer as the manually determined key for these models.
         else {
             $query->insert($attributes);
         }
@@ -1671,7 +1678,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
 
         // We will append the names of the class to the event to distinguish it from
         // other model events that are fired, allowing us to listen on each model
-        // event set individually instead of catching event for all the Models.
+        // event set individually instead of catching event for all the models.
         $event = "eloquent.{$event}: ".static::class;
 
         $method = $halt ? 'until' : 'fire';
@@ -2048,7 +2055,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
     }
 
     /**
-     * Get the number of Models to return per page.
+     * Get the number of models to return per page.
      *
      * @return int
      */
@@ -2058,7 +2065,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
     }
 
     /**
-     * Set the number of Models to return per page.
+     * Set the number of models to return per page.
      *
      * @param  int  $perPage
      * @return $this
@@ -2129,6 +2136,23 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
         if (! empty($this->visible)) {
             $this->addVisible($attributes);
         }
+
+        return $this;
+    }
+
+    /**
+     * Make the given, typically visible, attributes hidden.
+     *
+     * @param  array|string  $attributes
+     * @return $this
+     */
+    public function makeHidden($attributes)
+    {
+        $attributes = (array) $attributes;
+
+        $this->visible = array_diff($this->visible, $attributes);
+
+        $this->hidden = array_unique(array_merge($this->hidden, $attributes));
 
         return $this;
     }
@@ -2536,7 +2560,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
 
         foreach ($this->getArrayableRelations() as $key => $value) {
             // If the values implements the Arrayable interface we can just call this
-            // toArray method on the instances which will convert both Models and
+            // toArray method on the instances which will convert both models and
             // collections to their proper array form and we'll set the values.
             if ($value instanceof Arrayable) {
                 $relation = $value->toArray();
@@ -2544,7 +2568,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
 
             // If the value is null, we'll still go ahead and set it in this list of
             // attributes since null is used to represent empty relationships if
-            // if it a has one or belongs to type relationships on the Models.
+            // if it a has one or belongs to type relationships on the models.
             elseif (is_null($value)) {
                 $relation = $value;
             }
@@ -2588,10 +2612,14 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
     protected function getArrayableItems(array $values)
     {
         if (count($this->getVisible()) > 0) {
-            return array_intersect_key($values, array_flip($this->getVisible()));
+            $values = array_intersect_key($values, array_flip($this->getVisible()));
         }
 
-        return array_diff_key($values, array_flip($this->getHidden()));
+        if (count($this->getHidden()) > 0) {
+            $values = array_diff_key($values, array_flip($this->getHidden()));
+        }
+
+        return $values;
     }
 
     /**
@@ -2763,7 +2791,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
     {
         if ($this->getIncrementing()) {
             return array_merge([
-                $this->getKeyName() => 'int',
+                $this->getKeyName() => $this->keyType,
             ], $this->casts);
         }
 
@@ -3308,7 +3336,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
     }
 
     /**
-     * Unset the connection resolver for Models.
+     * Unset the connection resolver for models.
      *
      * @return void
      */
@@ -3339,7 +3367,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
     }
 
     /**
-     * Unset the event dispatcher for Models.
+     * Unset the event dispatcher for models.
      *
      * @return void
      */
@@ -3375,7 +3403,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
         $mutatedAttributes = [];
 
         // Here we will extract all of the mutated attributes so that we can quickly
-        // spin through them after we export Models to their array form, which we
+        // spin through them after we export models to their array form, which we
         // need to be fast. This'll let us know the attributes that can mutate.
         if (preg_match_all('/(?<=^|;)get([^;]+?)Attribute(;|$)/', implode(';', get_class_methods($class)), $matches)) {
             foreach ($matches[1] as $match) {
