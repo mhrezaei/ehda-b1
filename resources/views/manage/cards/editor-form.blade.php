@@ -14,9 +14,18 @@
 	@include('forms.input' , [
 		'name' => 'code_melli',
 		'value' =>  $model->code_melli ,
-		'class' => 'disabled',
-		'extra' => Auth::user()->isDeveloper()? '' : 'disabled' ,
+//		'class' => 'disabled',
+		'extra' => 'disabled' , //Auth::user()->isDeveloper()? '' : 'disabled' ,
 	])
+
+	@include("forms.select" , [
+		'name' => "event_id",
+		'value' => $model->event_id,
+		'blank_value' => "",
+		'blank_label' => " ",
+		'options' => $events,
+	])
+
 
 	@include('forms.input' , [
 		'name' => 'name_first',

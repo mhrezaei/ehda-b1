@@ -267,6 +267,8 @@ return [
 				"icon" => "نمایه",
 				"donation_date" => "تاریخ اهدای عضو" ,
 			'numbers' => "شماره‌ها",
+			'can_register_card' => "امکان ثبت نام کارت اهدا در این رویداد",
+			'event_id' => "رویداد",
 
 				"work_city" => "محل کار",
 				"work_address" => "نشانی محل کار",
