@@ -1,7 +1,6 @@
 <?php
 
 return [
-
 		"feed" => [
 				'wait' 	=> 'اندکی صبر...' ,
 				'error' 	=> 'بروز خطا' ,
@@ -39,6 +38,7 @@ return [
 				'card_save' => 'ذخیره کارت اهدای عضو',
 				'card_print' => 'چاپ کارت اهدای عضو',
 				'send_answer_sheet' => 'ارسال پاسخنامه',
+				'form_reset' => "تخلیه فرم",
 
 		],
 

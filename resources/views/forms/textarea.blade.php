@@ -27,6 +27,7 @@ if(isset($class) && str_contains($class, 'form-required')) {
                 placeholder="{{$placeholder or ''}}"
 				rows="{{$rows or 5}}"
                 {{$extra or ''}}
+                onkeyup="{{ $on_change or '' }}"
         >{{$value or ''}}</textarea>
 		<span class="help-block">
 			{{ $hint or '' }}

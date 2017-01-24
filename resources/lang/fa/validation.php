@@ -266,6 +266,7 @@ return [
 				"home_postal_code" => "کد پستی منزل" ,
 				"icon" => "نمایه",
 				"donation_date" => "تاریخ اهدای عضو" ,
+			'numbers' => "شماره‌ها",
 
 				"work_city" => "محل کار",
 				"work_address" => "نشانی محل کار",

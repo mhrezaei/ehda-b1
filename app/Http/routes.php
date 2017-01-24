@@ -94,6 +94,16 @@ Route::group(['prefix' => '', 'middleware' => 'Subdomain'], function () {
         Route::get('/', 'ManageController@index');
         Route::get('/index', 'ManageController@index');
 
+
+
+        /*
+        | Services
+        */
+        Route::group(['prefix' => "services"] , function() {
+            Route::get('sms' , 'ManageController@smsForm');
+            Route::post('sms' , 'ManageController@smsSend');
+        } );
+
         /*
         | Volunteers
         */
