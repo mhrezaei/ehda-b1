@@ -149,6 +149,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 	    'App\Providers\ValidationServiceProvider',
+        'Maatwebsite\Excel\ExcelServiceProvider',
 
         /*
          * Application Service Providers...
@@ -215,6 +216,7 @@ return [
         'jDate' => Morilog\Jalali\Facades\jDate::class,
         'Image' => Intervention\Image\Facades\Image::class,
 	    'Taha' => \App\Providers\TahaServiceProvider::class ,
+        'Excel' => 'Maatwebsite\Excel\Facades\Excel',
     ],
 
 ];

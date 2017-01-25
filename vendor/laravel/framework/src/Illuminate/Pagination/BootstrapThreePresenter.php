@@ -2,7 +2,6 @@
 
 namespace Illuminate\Pagination;
 
-use App\Providers\AppServiceProvider;
 use Illuminate\Support\HtmlString;
 use Illuminate\Contracts\Pagination\Paginator as PaginatorContract;
 use Illuminate\Contracts\Pagination\Presenter as PresenterContract;
@@ -79,7 +78,7 @@ class BootstrapThreePresenter implements PresenterContract
     {
         $rel = is_null($rel) ? '' : ' rel="'.$rel.'"';
 
-        return '<li><a href="'.htmlentities($url).'"'.$rel.'>'.AppServiceProvider::pd($page).'</a></li>'; //Taha Modified to use persian digits
+        return '<li><a href="'.htmlentities($url).'"'.$rel.'>'.$page.'</a></li>';
     }
 
     /**
@@ -101,7 +100,7 @@ class BootstrapThreePresenter implements PresenterContract
      */
     protected function getActivePageWrapper($text)
     {
-        return '<li class="active"><span>'.AppServiceProvider::pd($text).'</span></li>'; //Taha Modified to use persian digits
+        return '<li class="active"><span>'.$text.'</span></li>';
     }
 
     /**

@@ -30,7 +30,7 @@ class FactoryBuilder
     protected $name = 'default';
 
     /**
-     * The number of Models to build.
+     * The number of models to build.
      *
      * @var int
      */
@@ -61,7 +61,7 @@ class FactoryBuilder
     }
 
     /**
-     * Set the amount of Models you wish to create / make.
+     * Set the amount of models you wish to create / make.
      *
      * @param  int  $amount
      * @return $this
@@ -74,7 +74,7 @@ class FactoryBuilder
     }
 
     /**
-     * Create a collection of Models and persist them to the database.
+     * Create a collection of models and persist them to the database.
      *
      * @param  array  $attributes
      * @return mixed
@@ -95,7 +95,7 @@ class FactoryBuilder
     }
 
     /**
-     * Create a collection of Models.
+     * Create a collection of models.
      *
      * @param  array  $attributes
      * @return mixed

@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Session;
+use Maatwebsite\Excel\Facades\Excel;
 use Morilog\Jalali\jDate;
 use App\Events\SendSms;
 use Illuminate\Support\Facades\Event;
@@ -434,10 +435,20 @@ class TestController extends Controller
 
 	public function hadi()
 	{
-		$user = User::where('volunteer_status', 8)
+		$user = User::where('volunteer_status', 3)
             ->orderBy('created_at', 'desc')
             ->orderBy('home_province', 'asc')
             ->get();
-		return view('hadi.test', compact('user'));
+//		return view('hadi.test', compact('user'));
+
+        Excel::create('اطلاعات کل سفیران تهران', function($excel) {
+
+            $excel->sheet('New sheet', function($sheet) {
+
+                $sheet->loadView('hadi.test')->with('user');
+
+            });
+
+        })->download('xlsx');
 	}
 }
