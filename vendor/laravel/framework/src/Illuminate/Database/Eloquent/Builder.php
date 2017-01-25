@@ -168,7 +168,7 @@ class Builder
     }
 
     /**
-     * Find multiple Models by their primary keys.
+     * Find multiple models by their primary keys.
      *
      * @param  array  $ids
      * @param  array  $columns
@@ -315,7 +315,7 @@ class Builder
 
         $models = $builder->getModels($columns);
 
-        // If we actually found Models we will also eager load any relationships that
+        // If we actually found models we will also eager load any relationships that
         // have been specified as needing to be eager loaded, which will solve the
         // n+1 query issue for the developers to avoid running a lot of queries.
         if (count($models) > 0) {
@@ -443,7 +443,7 @@ class Builder
 
         // If the model has a mutator for the requested column, we will spin through
         // the results and mutate the values so that the mutated version of these
-        // columns are returned as you would expect from these Eloquent Models.
+        // columns are returned as you would expect from these Eloquent models.
         if ($this->model->hasGetMutator($column)) {
             foreach ($results as $key => &$value) {
                 $fill = [$column => $value];
@@ -482,16 +482,17 @@ class Builder
      */
     public function paginate($perPage = null, $columns = ['*'], $pageName = 'page', $page = null)
     {
+        $page = $page ?: Paginator::resolveCurrentPage($pageName);
+
+        $perPage = $perPage ?: $this->model->getPerPage();
+
         $query = $this->toBase();
 
         $total = $query->getCountForPagination();
 
-        $this->forPage(
-            $page = $page ?: Paginator::resolveCurrentPage($pageName),
-            $perPage = $perPage ?: $this->model->getPerPage()
-        );
+        $results = $total ? $this->forPage($page, $perPage)->get($columns) : new Collection;
 
-        return new LengthAwarePaginator($this->get($columns), $total, $perPage, $page, [
+        return new LengthAwarePaginator($results, $total, $perPage, $page, [
             'path' => Paginator::resolveCurrentPath(),
             'pageName' => $pageName,
         ]);
@@ -614,7 +615,7 @@ class Builder
     }
 
     /**
-     * Get the hydrated Models without eager loading.
+     * Get the hydrated models without eager loading.
      *
      * @param  array  $columns
      * @return \Illuminate\Database\Eloquent\Model[]
@@ -629,7 +630,7 @@ class Builder
     }
 
     /**
-     * Eager load the relationships for the Models.
+     * Eager load the relationships for the models.
      *
      * @param  array  $models
      * @return array
@@ -639,7 +640,7 @@ class Builder
         foreach ($this->eagerLoad as $name => $constraints) {
             // For nested eager loads we'll skip loading them here and they will be set as an
             // eager load on the query to retrieve the relation so that they will be eager
-            // loaded on that query, because that is where they get hydrated as Models.
+            // loaded on that query, because that is where they get hydrated as models.
             if (strpos($name, '.') === false) {
                 $models = $this->loadRelation($models, $name, $constraints);
             }
@@ -649,7 +650,7 @@ class Builder
     }
 
     /**
-     * Eagerly load the relationship on a set of Models.
+     * Eagerly load the relationship on a set of models.
      *
      * @param  array  $models
      * @param  string  $name
@@ -669,9 +670,9 @@ class Builder
 
         $models = $relation->initRelation($models, $name);
 
-        // Once we have the results, we just match those back up to their parent Models
+        // Once we have the results, we just match those back up to their parent models
         // using the relationship instance. Then we just return the finished arrays
-        // of Models which have been eagerly hydrated and are readied for return.
+        // of models which have been eagerly hydrated and are readied for return.
         $results = $relation->getEager();
 
         return $relation->match($models, $results, $name);
@@ -710,7 +711,7 @@ class Builder
      * @param  string  $relation
      * @return array
      */
-    public function nestedRelations($relation)
+    protected function nestedRelations($relation)
     {
         $nested = [];
 
@@ -1032,6 +1033,23 @@ class Builder
     }
 
     /**
+     * Prevent the specified relations from being eager loaded.
+     *
+     * @param  mixed  $relations
+     * @return $this
+     */
+    public function without($relations)
+    {
+        if (is_string($relations)) {
+            $relations = func_get_args();
+        }
+
+        $this->eagerLoad = array_diff_key($this->eagerLoad, array_flip($relations));
+
+        return $this;
+    }
+
+    /**
      * Add subselect queries to count the relations.
      *
      * @param  mixed  $relations
@@ -1123,6 +1141,29 @@ class Builder
         }
 
         return $results;
+    }
+
+    /**
+     * Add the given scopes to the current builder instance.
+     *
+     * @param  array  $scopes
+     * @return mixed
+     */
+    public function scopes(array $scopes)
+    {
+        $builder = $this;
+
+        foreach ($scopes as $scope => $parameters) {
+            if (is_int($scope)) {
+                list($scope, $parameters) = [$parameters, []];
+            }
+
+            $builder = $builder->callScope(
+                [$this->model, 'scope'.ucfirst($scope)], (array) $parameters
+            );
+        }
+
+        return $builder;
     }
 
     /**
@@ -1258,7 +1299,7 @@ class Builder
     /**
      * Get the underlying query builder instance.
      *
-     * @return \Illuminate\Database\Query\Builder|static
+     * @return \Illuminate\Database\Query\Builder
      */
     public function getQuery()
     {

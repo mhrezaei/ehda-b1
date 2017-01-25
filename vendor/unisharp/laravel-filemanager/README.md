@@ -1,6 +1,8 @@
 # Laravel Filemanager
 
-[![Latest Stable Version](https://poser.pugx.org/unisharp/laravel-filemanager/v/stable)](https://packagist.org/packages/unisharp/laravel-filemanager) [![Total Downloads](https://poser.pugx.org/unisharp/laravel-filemanager/downloads)](https://packagist.org/packages/unisharp/laravel-filemanager) [![Latest Unstable Version](https://poser.pugx.org/unisharp/laravel-filemanager/v/unstable)](https://packagist.org/packages/unisharp/laravel-filemanager) [![License](https://poser.pugx.org/unisharp/laravel-filemanager/license)](https://packagist.org/packages/unisharp/laravel-filemanager)
+[![Latest Stable Version](https://poser.pugx.org/unisharp/laravel-filemanager/v/stable)](https://packagist.org/packages/unisharp/laravel-filemanager)
+[![Total Downloads](https://poser.pugx.org/unisharp/laravel-filemanager/downloads)](https://packagist.org/packages/unisharp/laravel-filemanager)
+[![License](https://poser.pugx.org/unisharp/laravel-filemanager/license)](https://packagist.org/packages/unisharp/laravel-filemanager)
 
 A files and images management user interface with file uploading support. (Works well with CKEditor and TinyMCE)
 
@@ -10,19 +12,19 @@ PR is welcome!
 
  * The project was forked from [tsawler/laravel-filemanager](http://packalyst.com/packages/package/tsawler/laravel-filemanager)
  * Customizable routes and middlewares
- * Supported locales : en, fr, bg, tr, fa, es, pt-BR, tr, zh-CN, zh-TW
+ * Supported locales : ar, bg, en, es, fa, fr, he, hu, nl, pt-BR, ru, tr, zh-CN, zh-TW
  * Supports public and private folders for multi users
  * Supports multi-level folders
  * Supports using independently(see integration doc)
 
 ## Documents
 
-  1. [Installation](https://github.com/UniSharp/laravel-filemanager/blob/master/doc/installation.md)
-  1. [Intergration](https://github.com/UniSharp/laravel-filemanager/blob/master/doc/integration.md)
-  1. [Config](https://github.com/UniSharp/laravel-filemanager/blob/master/doc/config.md)
-  1. [Customization](https://github.com/UniSharp/laravel-filemanager/blob/master/doc/customization.md)
-  1. [Events](https://github.com/UniSharp/laravel-filemanager/blob/master/doc/events.md)
-  1. [Upgrade](https://github.com/UniSharp/laravel-filemanager/blob/master/doc/upgrade.md)
+  1. [Installation](https://github.com/UniSharp/laravel-filemanager/blob/master/docs/installation.md)
+  1. [Integration](https://github.com/UniSharp/laravel-filemanager/blob/master/docs/integration.md)
+  1. [Config](https://github.com/UniSharp/laravel-filemanager/blob/master/docs/config.md)
+  1. [Customization](https://github.com/UniSharp/laravel-filemanager/blob/master/docs/customization.md)
+  1. [Events](https://github.com/UniSharp/laravel-filemanager/blob/master/docs/events.md)
+  1. [Upgrade](https://github.com/UniSharp/laravel-filemanager/blob/master/docs/upgrade.md)
 
 ## Screenshots
   * Independent usage example :

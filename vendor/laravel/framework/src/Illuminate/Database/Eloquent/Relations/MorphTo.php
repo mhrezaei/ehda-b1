@@ -17,14 +17,14 @@ class MorphTo extends BelongsTo
     protected $morphType;
 
     /**
-     * The Models whose relations are being eager loaded.
+     * The models whose relations are being eager loaded.
      *
      * @var \Illuminate\Database\Eloquent\Collection
      */
     protected $models;
 
     /**
-     * All of the Models keyed by ID.
+     * All of the models keyed by ID.
      *
      * @var array
      */
@@ -81,7 +81,7 @@ class MorphTo extends BelongsTo
     }
 
     /**
-     * Build a dictionary with the Models.
+     * Build a dictionary with the models.
      *
      * @param  \Illuminate\Database\Eloquent\Collection  $models
      * @return void
@@ -183,11 +183,9 @@ class MorphTo extends BelongsTo
 
         $key = $instance->getTable().'.'.$instance->getKeyName();
 
-        $eagerLoads = $this->getQuery()->nestedRelations($this->relation);
-
         $query = $this->replayMacros($instance->newQuery())
             ->mergeModelDefinedRelationConstraints($this->getQuery())
-            ->with($eagerLoads);
+            ->with($this->getQuery()->getEagerLoads());
 
         return $query->whereIn($key, $this->gatherKeysByType($type)->all())->get();
     }
@@ -270,7 +268,7 @@ class MorphTo extends BelongsTo
 
         // If we tried to call a method that does not exist on the parent Builder instance,
         // we'll assume that we want to call a query macro (e.g. withTrashed) that only
-        // exists on related Models. We will just store the call and replay it later.
+        // exists on related models. We will just store the call and replay it later.
         catch (BadMethodCallException $e) {
             $this->macroBuffer[] = compact('method', 'parameters');
 
