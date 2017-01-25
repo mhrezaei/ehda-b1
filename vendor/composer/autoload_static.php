@@ -101,6 +101,7 @@ class ComposerStaticInitd22b1f41ad3b1e47c885a75b72357a10
         ),
         'C' => 
         array (
+            'Cron\\' => 5,
             'Collective\\Html\\' => 16,
             'Collective\\Annotations\\' => 23,
             'ClassPreloader\\' => 15,
@@ -267,6 +268,10 @@ class ComposerStaticInitd22b1f41ad3b1e47c885a75b72357a10
         array (
             0 => __DIR__ . '/..' . '/maximebf/debugbar/src/DebugBar',
         ),
+        'Cron\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mtdowling/cron-expression/src/Cron',
+        ),
         'Collective\\Html\\' => 
         array (
             0 => __DIR__ . '/..' . '/laravelcollective/html/src',
@@ -336,13 +341,6 @@ class ComposerStaticInitd22b1f41ad3b1e47c885a75b72357a10
             'Doctrine\\Common\\Inflector\\' => 
             array (
                 0 => __DIR__ . '/..' . '/doctrine/inflector/lib',
-            ),
-        ),
-        'C' => 
-        array (
-            'Cron' => 
-            array (
-                0 => __DIR__ . '/..' . '/mtdowling/cron-expression/src',
             ),
         ),
     );
@@ -451,6 +449,7 @@ class ComposerStaticInitd22b1f41ad3b1e47c885a75b72357a10
         'App\\Providers\\FaGDServiceProvider' => __DIR__ . '/../..' . '/app/Providers/FaGDServiceProvider.php',
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
         'App\\Providers\\SecKeyServiceProvider' => __DIR__ . '/../..' . '/app/Providers/SecKeyServiceProvider.php',
+        'App\\Providers\\SettingServiceProvider' => __DIR__ . '/../..' . '/app/Providers/SettingServiceProvider.php',
         'App\\Providers\\SmsServiceProvider' => __DIR__ . '/../..' . '/app/Providers/SmsServiceProvider.php',
         'App\\Providers\\TahaServiceProvider' => __DIR__ . '/../..' . '/app/Providers/TahaServiceProvider.php',
         'App\\Providers\\ValidationServiceProvider' => __DIR__ . '/../..' . '/app/Providers/ValidationServiceProvider.php',
@@ -500,6 +499,7 @@ class ComposerStaticInitd22b1f41ad3b1e47c885a75b72357a10
         'Barryvdh\\Debugbar\\Twig\\TokenParser\\StopwatchTokenParser' => __DIR__ . '/..' . '/barryvdh/laravel-debugbar/src/Twig/TokenParser/StopwatchTokenParser.php',
         'Carbon\\Carbon' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Carbon.php',
         'Carbon\\CarbonInterval' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/CarbonInterval.php',
+        'Carbon\\Exceptions\\InvalidDateException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/InvalidDateException.php',
         'ClassPreloader\\ClassList' => __DIR__ . '/..' . '/classpreloader/classpreloader/src/ClassList.php',
         'ClassPreloader\\ClassLoader' => __DIR__ . '/..' . '/classpreloader/classpreloader/src/ClassLoader.php',
         'ClassPreloader\\ClassNode' => __DIR__ . '/..' . '/classpreloader/classpreloader/src/ClassNode.php',
