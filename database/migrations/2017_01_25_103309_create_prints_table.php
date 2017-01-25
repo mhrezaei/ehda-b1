@@ -17,19 +17,19 @@ class CreatePrintsTable extends Migration
             $table->integer('user_id');
             $table->integer('event_id');
 
-            $table->dateTime('queued_at')->nullabe() ;
+            $table->timestamp('queued_at')->nullable() ;
             $table->integer('queued_by');
 
-            $table->dateTime('printed_at')->nullable();
+            $table->timestamp('printed_at')->nullable();
             $table->integer('printed_by');
 
-            $table->dateTime('verified_at')->nullable();
+            $table->timestamp('verified_at')->nullable();
             $table->integer('verified_by');
 
-            $table->dateTime('dispatched_at')->nullable();
+            $table->timestamp('dispatched_at')->nullable();
             $table->integer('dispatched_by');
 
-            $table->dateTime('delivered_at')->nullable();
+            $table->timestamp('delivered_at')->nullable();
             $table->integer('delivered_by');
 
             $table->timestamps();

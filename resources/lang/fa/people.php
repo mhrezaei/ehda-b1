@@ -6,6 +6,7 @@ return [
 		'dr' => 'دکتر',
 		'card' => 'کارت اهدا' ,
 		'volunteer' => 'سفیر اهدای عضو' ,
+		'printing' => "چاپ کارت",
 
 		"event" => [
 				'email_reset_password_title' => 'بازآوری رمز عبور',
@@ -32,6 +33,7 @@ return [
 				'view_card' => 'نمایش کارت' ,
 				'view_info' => 'نمایش جزئیات' ,
 				'print_status' => 'کارت چاپی',
+				'export_to_excel' => "خروجی اکسل",
 		],
 		"form" => [
 				"notify-with-email" => 'به کاربر از طریق ایمیل اطلاع‌رسانی شود.' ,
@@ -204,9 +206,12 @@ return [
 
 	'printing_status' => [
 		'all' => "همه با هم",
-		'pending' => "در انتظار",
-		'under_print' => "در نوبت چاپ",
-		'under_verification' => "در نوبت بازنگری",
+		'under_any_action' => "همه درخواست‌ها",
+		'pending' => "صف انتظار",
+//		'under_print' => "در نوبت چاپ",
+//		'under_verification' => "در نوبت بازنگری",
+		'under_print' => "در حال چاپ مستقیم",
+		'under_verification' => "در حال چاپ اکسل",
 		'under_dispatch' => "در نوبت ارسال",
 		'under_delivery' => "در انتظار تحویل",
 		'archive' => "بایگانی",

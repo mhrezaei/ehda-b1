@@ -30,12 +30,12 @@
 	<div class="text-{{ $model->cardStatus('color') }}">
 		{{ $model->cardStatus() }}
 	</div>
-	@if($model->card_print_status)
-		<div class="f10 mv5 text-{{ trans('people.card_print_status_color.'.$model->card_print_status) }}">
-			{{ trans('people.cards.manage.pvc_card') }}:&nbsp;
-			{{ trans('people.card_print_status.'.$model->card_print_status) }}
-		</div>
-	@endif
+	{{--@if($model->card_print_status)--}}
+		{{--<div class="f10 mv5 text-{{ trans('people.card_print_status_color.'.$model->card_print_status) }}">--}}
+			{{--{{ trans('people.cards.manage.pvc_card') }}:&nbsp;--}}
+			{{--{{ trans('people.card_print_status.'.$model->card_print_status) }}--}}
+		{{--</div>--}}
+	{{--@endif--}}
 	@if($model->newsletter)
 		<div class="badge badge-info f7">
 			{{ trans('people.cards.manage.newsletter_member') }}

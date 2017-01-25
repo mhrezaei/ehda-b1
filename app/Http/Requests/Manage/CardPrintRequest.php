@@ -31,7 +31,7 @@ class CardPrintRequest extends Request
 	public function rules()
 	{
 		return [
-			'status'=> 'required|in:n,1,2,3,4,9',
+//			'status'=> 'required|in:n,1,2,3,4,9',
 		];
 
 	}

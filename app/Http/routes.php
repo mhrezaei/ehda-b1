@@ -155,6 +155,8 @@ Route::group(['prefix' => '', 'middleware' => 'Subdomain'], function () {
             Route::get('/search', 'CardsController@search');
             Route::get('/reports', 'CardsController@reports');//@TODO: INTACT!
 
+            Route::get('/printings/{request_tab?}/{event_id?}/{user_id?}/{volunteer_id?}' , 'PrintingsController@browse');
+
             Route::get('/create/{volunteer_id?}', 'CardsController@create');
             Route::get('/{card_id}', 'CardsController@show');
             Route::get('/{card_id}/edit', 'CardsController@editor');

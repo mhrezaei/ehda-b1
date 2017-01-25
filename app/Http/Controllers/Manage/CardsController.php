@@ -10,6 +10,7 @@ use App\Http\Requests\Manage\CardSearchRequest;
 use App\Models\Domain;
 use App\Models\Post;
 use App\Models\Printer;
+use App\Models\Printing;
 use App\Models\State;
 use App\Models\User;
 use App\Providers\AppServiceProvider;
@@ -168,13 +169,21 @@ class CardsController extends Controller
 		switch($view_file) {
 			case 'print' :
 				$opt['print'] = User::virtualPrintTable() ;
+				$all_events = Post::selector('event' , 'auto')->orderBy('published_at' , 'desc')->get() ;
+				$events = [] ;
+				foreach($all_events as $event) {
+					if($event->meta('can_register_card')) {
+						array_push($events , $event);
+					}
+				}
+				$model->event_id = Session::get('user_favourite_event',0);
 				break;
 		}
 
 		if(!$model) return view('errors.m410');
 		if(!View::exists($view)) return view('errors.m404');
 
-		return view($view , compact('model' , 'opt')) ;
+		return view($view , compact('model' , 'opt' , 'events')) ;
 	}
 
 	private function modalBulkAction($view_file)
@@ -356,15 +365,15 @@ class CardsController extends Controller
 		}
 
 		//Processing print status...
-		if($data['_submit'] == 'print') {
-			if(!$data['id'])
-				$data['card_print_status'] = 1;
-			else {
-				$model = User::findBySlug($data['code_melli'], 'code_melli');
-				if($model and ($model->card_print_status == 0 or $model->card_print_status > 3))
-					$data['card_print_status'] = 1;
-			}
-		}
+//		if($data['_submit'] == 'print') {
+//			if(!$data['id'])
+//				$data['card_print_status'] = 1;
+//			else {
+//				$model = User::findBySlug($data['code_melli'], 'code_melli');
+//				if($model and ($model->card_print_status == 0 or $model->card_print_status > 3))
+//					$data['card_print_status'] = 1;
+//			}
+//		}
 
 		//Processing Domain...
 		$data['domain'] = Auth::user()->domain ;
@@ -390,8 +399,32 @@ class CardsController extends Controller
 		//Saving favourite event...
 		$request->session()->put('user_favourite_event' , $request->event_id);
 
-		//Save and Return...
+
+		//Save ....
 		$saved = User::store($data);
+
+		//if print requested...
+		if($data['_submit'] == 'print') {
+			$user = User::find($saved);
+
+			//Validation...
+			$already = Printing::where('user_id' , $user->id)->first();
+			if($already and !$already->delivered_at) {
+
+			}
+			else {
+				$parameters = [
+						'id' => null,
+						'user_id' => $user->id,
+						'event_id' => $request->event_id,
+				];
+				$ok = Printing::store($parameters);
+			}
+
+		}
+
+		//return...
+
 		return $this->jsonAjaxSaveFeedback($saved , [
 			'success_refresh' => true ,
 		]);
@@ -527,6 +560,7 @@ class CardsController extends Controller
 
 	public function single_print(Requests\Manage\CardPrintRequest $request)
 	{
+
 		//Preparations...
 		$request->status += 0 ;
 		$user = User::find($request->id);
@@ -534,30 +568,26 @@ class CardsController extends Controller
 		if(!$user or !$user->isCard())
 			return $this->jsonFeedback('Error #1');
 
-		//Processing Printer table...
-		if($request->status == 2) {
-			$printer = new Printer() ;
-			$printer->user_id = $user->id ;
-			$printer->name_full = $user->fullName() ;
-			$printer->name_father = $user->say('name_father') ;
-			$printer->code_melli = $user->say('code_melli') ;
-			$printer->birth_date = $user->say('birth_date_on_card') ;
-			$printer->registered_at = $user->say('register_date_on_card') ;
-			$printer->card_no = $user->say('card_no') ;
-			$printer->save() ;
-		}
-		else {
-			Printer::where('user_id',$user->id)->delete();
-		}
+		//Validation...
+		$already = Printing::where('user_id' , $user->id)->first();
+		if($already and !$already->delivered_at)
+			return $this->jsonFeedback(trans('people.cards.manage.print_already_requested'));
 
-		//Updating Status...
-		$ok = User::bulkSet($request->id , [
-			'card_print_status' => $request->status ,
-		]);
+
+		//Processing Printing table...
+		$parameters = [
+			'id' => null,
+			'user_id' => $user->id,
+			'event_id' => $request->event_id,
+		];
+		$ok = Printing::store($parameters);
+
+		//Saving favourite event...
+		$request->session()->put('user_favourite_event' , $request->event_id);
 
 		//Return...
 		return $this->jsonAjaxSaveFeedback($ok , [
-				'success_refresh' => '1' ,
+
 		]);
 
 	}
@@ -607,24 +637,35 @@ class CardsController extends Controller
 		if(!$user or !$user->isCard())
 			return $this->jsonFeedback() ;
 
+		if($request->_submit == 'edit') {
+			return $this->jsonFeedback(1,[
+					'ok' => 1 ,
+					'message' => trans('people.cards.manage.edit').'... ' ,
+					'redirect' => url("manage/cards/$user->id/edit") ,
+					'redirectTime' => 1 ,
+				]);
+		}
 
-		if($request->_submit == 'edit')
-		return $this->jsonFeedback(1,[
-				'ok' => 1 ,
-				'message' => trans('people.cards.manage.edit').'... ' ,
-				'redirect' => url("manage/cards/$user->id/edit") ,
-				'redirectTime' => 1 ,
-			]);
+
+		/*--------------------------------------------------------------------------
+		| If Print Request ...
+		*/
 
 
-		if($user->card_print_status > 0 and $user->card_print_status < 4)
-			return $this->jsonFeedback( trans('people.cards.manage.print_already_requested') , [
-				'refresh' => true ,
-			] ) ;
 
-		$user->card_print_status = 1 ;
-		$user->event_id = $request->event_id ;
-		$ok = $user->save() ;
+		//Validation...
+		$already = Printing::where('user_id' , $user->id)->first();
+		if($already and !$already->delivered_at)
+			return $this->jsonFeedback(trans('people.cards.manage.print_already_requested'));
+
+
+		//Processing Printing table...
+		$parameters = [
+				'id' => null,
+				'user_id' => $user->id,
+				'event_id' => $request->event_id,
+		];
+		$ok = Printing::store($parameters);
 
 		//Saving favourite event...
 		$request->session()->put('user_favourite_event' , $request->event_id);

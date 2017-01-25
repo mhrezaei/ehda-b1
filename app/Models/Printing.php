@@ -5,10 +5,13 @@ namespace App\Models;
 use App\Traits\TahaModelTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Printing extends Model
 {
 	use SoftDeletes, TahaModelTrait;
+	protected $guarded = ['id' ] ;
+
 
 	/*
 	|--------------------------------------------------------------------------
@@ -34,10 +37,19 @@ class Printing extends Model
 	|
 	*/
 
+	public static function counter($switches = [] , $overriding_criteria = false)
+	{
+		if($overriding_criteria)
+			$switches['criteria'] = $overriding_criteria ;
+
+		return self::selector($switches)->count();
+	}
+
+
 	/**
-	 * @param array $switches (accepts 'domain' , 'criteria' , 'user_id' , 'event_id' )
+	 * @param array $switches (accepts 'domain' , 'criteria' , 'user_id' , 'event_id' , 'volunteer_id' )
 	 */
-	public function selector($switches = [])
+	public static function selector($switches = [])
 	{
 		extract($switches) ;
 
@@ -59,15 +71,22 @@ class Printing extends Model
 		/*--------------------------------------------------------------------------
 		| Process user_id ...
 		*/
-		if(isset($user_id)) {
+		if(isset($user_id) and $user_id>0) {
 			$table = $table->where('user_id' , $user_id) ;
 		}
 
 		/*--------------------------------------------------------------------------
 		| Process event_id ...
 		*/
-		if(isset($event_id)){
+		if(isset($event_id) and $event_id>0){
 			$table = $table->where('event_id' , $event_id) ;
+		}
+
+		/*--------------------------------------------------------------------------
+		| Process volunteer_id ...
+		*/
+		if(isset($volunteer_id) and $volunteer_id>0){
+			$table = $table->where('volunteer_id' , $volunteer_id) ;
 		}
 
 
@@ -83,6 +102,9 @@ class Printing extends Model
 			case 'all' :
 				break;
 
+			case 'under_any_action' :
+				$table = $table->whereNull('delivered_at') ;
+
 			case 'all_with_trashed':
 				$table = $table->withTrashed() ;
 				break;
@@ -92,23 +114,23 @@ class Printing extends Model
 				break;
 
 			case 'under_print' :
-				$table = $table->where('queued_at')->whereNull('printed_at') ;
+				$table = $table->where('queued_at' , '>' , '0')->whereNull('printed_at') ;
 				break;
 
 			case 'under_verification' :
-				$table = $table->where('printed_at')->whereNull('verified_at') ;
+				$table = $table->where('printed_at' , '>' , '0')->whereNull('verified_at') ;
 				break;
 
 			case 'under_dispatch' :
-				$table = $table->where('verified_at')->whereNull('dispatched_at') ;
+				$table = $table->where('verified_at' , '>' , '0')->whereNull('dispatched_at') ;
 				break;
 
 			case 'under_delivery' :
-				$table = $table->where('dispatched_at')->whereNull('delivered_at') ;
+				$table = $table->where('dispatched_at' , '>' , '0')->whereNull('delivered_at') ;
 				break;
 
 			case 'archive' :
-				$table = $table->where('delivered_at') ;
+				$table = $table->where('delivered_at' , '>' , '0') ;
 				break;
 
 			case 'bin' :
