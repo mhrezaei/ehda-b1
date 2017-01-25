@@ -224,3 +224,24 @@ function downstreamPhotoPreview($input_selector)
 		window.open(url($url)) ;
 }
 
+function smsTextCounter($input_selector)
+{
+	if(!$input_selector) {
+		var $input_selector = '#txtSmsText';
+	}
+
+	var $length = $($input_selector).val().length
+	var $message_count = Math.floor(($length/70) + 1) ;
+	var $used_chars = ($length) % 70 ;
+
+	$($input_selector).parent().children('.help-block').html($length + ':' + $used_chars.toString() + ' / ' + $message_count.toString() ) ;
+
+	if($length > 400) {
+		forms_markError($input_selector);
+	}
+	else {
+		forms_markError($input_selector , 'reset');
+	}
+
+
+}

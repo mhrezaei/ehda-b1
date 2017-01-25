@@ -1,10 +1,12 @@
 @include('forms.group-start' , [
-    'label' => isset($domain)? $domain->title : trans('validation.attributes.global_value'),
+    'label' => '' ,
+    'fake' => isset($label)? '' : $label = trans('validation.attributes.global_value') ,
+    'fake2' => isset($name)? '' : $name = 'global_value',
 ])
 
 @include('forms.check' , [
-    'name' => isset($domain)? $domain->slug : 'global_value',
-    'label' => ' ',
+    'name' => isset($domain)? $domain->slug : $name,
+    'label' => isset($domain)? $domain->title : $label ,
     'class' => isset($domain)? '' : 'form-default',
 ])
 

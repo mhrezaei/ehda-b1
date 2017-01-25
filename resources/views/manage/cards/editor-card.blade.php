@@ -8,6 +8,7 @@
 
 <input type="hidden" id="txtCard" name="code_melli">
 
+
 @include('forms.button' , [
 	'label' => trans('people.cards.manage.send_to_print'),
 	'value' => 'print' ,
@@ -26,6 +27,16 @@
 	])
 @endif
 
+@include("forms.select" , [
+	'name' => "event_id",
+	'value' => $model->event_id,
+	'blank_value' => "",
+	'blank_label' => " ",
+	'options' => $events,
+])
+
+
 
 @include('forms.feed' , [])
 @include('forms.closer')
+<div class="mv45">&nbsp;</div>

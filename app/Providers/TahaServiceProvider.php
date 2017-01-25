@@ -138,6 +138,14 @@ class TahaServiceProvider extends ServiceProvider
             ]);
         }
 
+        if(Auth::user()->can('cards.send')) {
+            array_push($array , [
+               "manage/services/sms" ,
+                trans('people.commands.send_sms') ,
+                'mobile'
+            ]);
+        }
+
         return $array ;
 
     }

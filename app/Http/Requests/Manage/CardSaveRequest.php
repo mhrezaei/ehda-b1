@@ -32,6 +32,7 @@ class CardSaveRequest extends Request
 	{
 		$input = $this->all();
 		$id = $input['id'] ;
+		return [] ;
 		return [
 			'name_first' => "required|min:2",
 			'name_last' => "required|min:2",

@@ -8,6 +8,7 @@ use App\Events\UserAccountPublished;
 use App\Events\UserPasswordManualReset;
 use App\Http\Requests\Manage\CardSearchRequest;
 use App\Models\Domain;
+use App\Models\Post;
 use App\Models\Printer;
 use App\Models\State;
 use App\Models\User;
@@ -21,6 +22,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\View;
 
@@ -228,8 +230,18 @@ class CardsController extends Controller
 		}
 		$model->newsletter = 1 ;
 
+
+		$all_events = Post::selector('event' , 'auto')->orderBy('published_at' , 'desc')->get() ;
+		$events = [] ;
+		foreach($all_events as $event) {
+			if($event->meta('can_register_card')) {
+				array_push($events , $event);
+			}
+		}
+		$model->event_id = Session::get('user_favourite_event',0);
+
 		//View..
-		return view('manage.cards.editor' , compact('page','model','states'));
+		return view('manage.cards.editor' , compact('page','model','states','events'));
 
 	}
 
@@ -374,6 +386,9 @@ class CardsController extends Controller
 			if($model->isActiveVolunteer() and !Auth::user()->can('volunteers.edit'))
 				return $this->jsonFeedback(trans('validation.http.Eror403'));
 		}
+
+		//Saving favourite event...
+		$request->session()->put('user_favourite_event' , $request->event_id);
 
 		//Save and Return...
 		$saved = User::store($data);
@@ -608,7 +623,12 @@ class CardsController extends Controller
 			] ) ;
 
 		$user->card_print_status = 1 ;
+		$user->event_id = $request->event_id ;
 		$ok = $user->save() ;
+
+		//Saving favourite event...
+		$request->session()->put('user_favourite_event' , $request->event_id);
+
 
 		return $this->jsonSaveFeedback( $ok , [
 			'success_refresh' => true ,

@@ -6,6 +6,8 @@ use App\models\Branch;
 use App\Models\Post;
 use App\Models\User;
 use App\Providers\AppServiceProvider;
+use App\Providers\SmsServiceProvider;
+use App\Traits\TahaControllerTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -17,6 +19,7 @@ use Illuminate\Support\Facades\Session;
 
 class ManageController extends Controller
 {
+	use TahaControllerTrait;
 	private $page = array() ;
 
 	public function __construct()
@@ -76,7 +79,37 @@ class ManageController extends Controller
 
 	}
 
+	public function smsForm()
+	{
+		//Preparetions....
+		$page[0] = ["services/sms" , trans("people.commands.send_sms") ] ;
 
+		
+		//view...
+		return view("manage.services.sms",compact('page'));
+		
+	}
+
+	public function smsSend(Requests\Manage\SmsSendRequest $request)
+	{
+
+		$allowed_separators = [',' , '|' , '.' , "\n" , "\r" , "\n\r" ,'-'] ;
+		$numbers = str_replace(' ' , null , $request->numbers)  ;
+
+		foreach($allowed_separators as $separator) {
+			$numbers = str_replace($separator,',',$numbers) ;
+		}
+
+		$ok = SmsServiceProvider::send(explode(',',$numbers) , $request->text) ;
+
+		return $this->jsonAjaxSaveFeedback($ok , [
+				'success_callback' =>  "$('#txtNumbers').focus().val('')",
+		]);
+
+
+		return $this->jsonFeedback($numbers);
+
+	}
 
 
 }
