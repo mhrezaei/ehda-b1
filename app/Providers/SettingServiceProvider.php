@@ -29,8 +29,8 @@ class SettingServiceProvider extends ServiceProvider
 
     public static function get_volunteer_data()
     {
-        $user = User::where('home_province', 8)->where('volunteer_status', '!=', 0)
-//        $user = User::where('volunteer_status', '!=', 0)
+//        $user = User::where('home_province', 8)->where('volunteer_status', '!=', 0)
+        $user = User::where('volunteer_status', '>=', 8)->where('activities', 'like', '%lecture%')
 //        $user = User::where('activities', 'like', '%international%')
             ->orderBy('created_at', 'desc')
             ->orderBy('home_province', 'asc')

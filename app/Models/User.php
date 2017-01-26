@@ -382,25 +382,34 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 				else
 					return $default;
 			case 'activities' :
-				$act = '';
-				if ($this->activities)
+			    $act = array();
+				if ($this->activities and strlen($this->activities) > 1)
 				{
 					$activities = explode(',', $this->activities);
-					for ($i = 0; $i < count($activities); $i++)
-					{
-						if (strlen($activities[$i]))
-						{
-							$a = Activity::findBySlug($activities[$i]);
-							if ($a)
-							{
-								$act[] = $a->title;
-							}
-						}
-					}
+					if (is_array($activities) and count($activities) > 0)
+                    {
+                        for ($i = 0; $i < count($activities); $i++)
+                        {
+                            if (strlen($activities[$i]) > 1)
+                            {
+                                $a = Activity::findBySlug($activities[$i]);
+                                if ($a)
+                                {
+                                    $act[] = $a->title;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        return $act;
+                    }
 				}
 				else
-					return [] ;
-			return $act;
+                {
+                    return $act;
+                }
+                return $act;
 
 			default:
 				return $this->$property ;

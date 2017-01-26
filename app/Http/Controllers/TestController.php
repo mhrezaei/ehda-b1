@@ -445,7 +445,7 @@ class TestController extends Controller
 
             $excel->sheet('New sheet', function($sheet) {
 
-                $sheet->loadView('hadi.test')->with('user');
+                $sheet->loadView('hadi.test');
 
             });
 
