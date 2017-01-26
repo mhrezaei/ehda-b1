@@ -222,6 +222,12 @@ return [
 		'bin' => "زباله‌دان",
 	],
 
+	'printings' => [
+		'all_events' => "همه‌ی رویدادها",
+		'without_events' => "بدون رویدادها",
+		'event_selection' => "انتخاب رویداد",
+	],
+
 
 ]
 ?>

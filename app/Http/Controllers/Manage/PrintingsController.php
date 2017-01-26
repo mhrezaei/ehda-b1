@@ -51,6 +51,34 @@ class PrintingsController extends Controller
 
 		$page[1] = ['printings/' , trans('people.printing') , ''] ;
 
+		//Events Array...
+		$all_events = Post::selector('event' , 'auto')->orderBy('published_at' , 'desc')->get() ;
+		$events_array = [
+				[
+						$event_id=='0'? 'check' : '',
+						trans('people.printings.all_events'),
+						url("manage/cards/printings/$request_tab/all")
+				],
+//				[
+//						$event_id=='without'? 'check' : '',
+//						trans('people.printings.without_events'),
+//						url("manage/cards/printings/$request_tab/without")
+//				],
+				['-']
+		] ;
+
+		foreach($all_events as $event) {
+			if($event_id == $event->id) {
+				$event_title = $event->title ;
+			}
+			array_push($events_array , [
+					$event_id==$event->id? 'check' : '' ,
+					$event->title ,
+					url("manage/cards/printings/$request_tab/$event->id")
+			]);
+		}
+
+
 		//Model...
 		$model_data = Printing::selector([
 			'criteria' => $request_tab,
@@ -61,8 +89,9 @@ class PrintingsController extends Controller
 
 		$db = new Printing();
 
+
 		//View...
-		return view("manage.printings.browse" , compact('page','model_data' , 'db' , 'request_tab' , 'volunteer' , 'volunteer_id' , 'event_id' ,'user_id'));
+		return view("manage.printings.browse" , compact('page', 'events_array', 'event_title' ,'model_data' , 'db' , 'request_tab' , 'volunteer' , 'volunteer_id' , 'event_id' ,'user_id'));
 
 	}
 

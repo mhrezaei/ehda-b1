@@ -13,32 +13,37 @@
 	<div class="panel panel-toolbar row w100">
 		<div class="col-md-6">
 			<p class="title">
-				{{$page[1][1] or ''}}
-				{{--@if(isset($volunteer))--}}
-					{{--<span class="f8 mv5 text-grey">--}}
-						{{--({{ trans('posts.manage.created_by' , ['name' => $volunteer->fullName(),]) }})--}}
-					{{--</span>--}}
-				{{--@endif--}}
+				{{$page[1][1] or ''}}:{{ trans("people.printing_status.$request_tab") }}
+				@if(isset($event_title))
+					<span class="badge mh20 ph20">
+						{{ $event_title }}
+					</span>
+				@endif
 			</p>
 		</div>
 		<div class="col-md-6 tools">
 
-			@if(Auth::user()->can('cards.bulk'))
-				@include('manage.frame.widgets.grid-action' , [
-					'id' => '0',
-					'button_size' => 'md' ,
-					'button_class' => 'primary' ,
-					'button_label' => trans('forms.button.bulk_action'),
+			@include('manage.frame.widgets.grid-action' , [
+				'id' => '0',
+				'button_size' => 'md' ,
+				'button_class' => 'info' ,
+				'button_label' => trans('people.printings.event_selection'),
+				'actions' => $events_array
+			])
+			@include('manage.frame.widgets.grid-action' , [
+				'id' => '0',
+				'button_size' => 'md' ,
+				'button_class' => 'primary' ,
+				'button_label' => trans('forms.button.bulk_action'),
 //					'button_extra' => 'disabled' ,
-					'actions' => [
-						['file-excel-o' , trans('people.commands.export_to_excel') , 'modal:manage/cards/printings/modal/-id-/excel'],
-						['print' , trans('people.commands.direct_print') , 'modal:manage/cards/printings/modal/-id-/print' ] ,
-						['check-square-o' , trans('people.commands.confirm_good_print') , 'modal:manage/cards/printings/modal/-id-/confirm' , 'any' , $request_tab!='pending'],
+				'actions' => [
+					['file-excel-o' , trans('people.commands.export_to_excel') , 'modal:manage/cards/printings/modal/-id-/excel'],
+					['print' , trans('people.commands.direct_print') , 'modal:manage/cards/printings/modal/-id-/print' ] ,
+					['check-square-o' , trans('people.commands.confirm_good_print') , 'modal:manage/cards/printings/modal/-id-/confirm' , 'any' , $request_tab!='pending'],
 //						['times' , trans('forms.button.hard_delete') , 'modal:manage/cards/printings/modal/-id-/delete' , 'cards.delete' , $page[1][2]!='bin'] ,
 
-					]
-				])
-			@endif
+				]
+			])
 
 		</div>
 	</div>
