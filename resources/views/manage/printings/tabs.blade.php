@@ -1,5 +1,5 @@
 @include('manage.frame.use.tabs' , [
-	'current' => $page[1][0] ,
+	'current' => "printings/$request_tab/$event_id/$user_id/$volunteer_id" ,
 	'fake' => !isset($volunteer_id)? $volunteer_id = 0 : 1,
 	'fake' => $switches = [
 		'event_id' => $event_id,

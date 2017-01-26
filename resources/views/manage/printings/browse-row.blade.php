@@ -22,7 +22,7 @@
 </td>
 
 <td>
-	{{ $model->event->title }}
+	{{ $model->event ? $model->event->title : '-'}}
 </td>
 
 {{--<td>--}}
