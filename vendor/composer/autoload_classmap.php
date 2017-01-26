@@ -6,12 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-<<<<<<< HEAD
-    'AddEventsToUsersTable' => $baseDir . '/database/migrations/2017_01_24_184517_add_events_to_users_table.php',
-    'CreatePasswordResetsTable' => $baseDir . '/database/migrations/delete/2014_10_12_100000_create_password_resets_table.php',
-    'CreatePrintsTable' => $baseDir . '/database/migrations/2017_01_25_103309_create_prints_table.php',
-    'CreateUsersTable' => $baseDir . '/database/migrations/delete/2014_10_12_000000_create_users_table.php',
-=======
     'App\\Console\\Commands\\Inspire' => $baseDir . '/app/Console/Commands/Inspire.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Events\\Event' => $baseDir . '/app/Events/Event.php',
@@ -236,7 +230,6 @@ return array(
     'Cron\\MinutesField' => $vendorDir . '/mtdowling/cron-expression/src/Cron/MinutesField.php',
     'Cron\\MonthField' => $vendorDir . '/mtdowling/cron-expression/src/Cron/MonthField.php',
     'Cron\\YearField' => $vendorDir . '/mtdowling/cron-expression/src/Cron/YearField.php',
->>>>>>> master
     'DatabaseSeeder' => $baseDir . '/database/seeds/DatabaseSeeder.php',
     'DebugBar\\Bridge\\CacheCacheCollector' => $vendorDir . '/maximebf/debugbar/src/DebugBar/Bridge/CacheCacheCollector.php',
     'DebugBar\\Bridge\\DoctrineCollector' => $vendorDir . '/maximebf/debugbar/src/DebugBar/Bridge/DoctrineCollector.php',

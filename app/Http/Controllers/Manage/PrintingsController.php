@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\View;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class PrintingsController extends Controller
@@ -40,7 +41,7 @@ class PrintingsController extends Controller
 	}
 
 
-	public function browse($request_tab = 'under_any_action' , $event_id = 0 , $user_id = 0 , $volunteer_id = 0)
+	public function browse($request_tab = 'pending' , $event_id = 0 , $user_id = 0 , $volunteer_id = 0)
 	{
 		//Preparation...
 		$page = $this->page ;
@@ -190,23 +191,29 @@ class PrintingsController extends Controller
 			'queued_by' => Auth::user()->id,
 		]);
 
-		//Export to Excel...
-		Excel::create('Cards-To-Excel-For-Hard-Print', function($excel) {
-
-			$excel->sheet('Print Cards', function($sheet) {
-
-				$sheet->loadView('hadi.test');
-
-			});
-
-		})->download('xlsx');
-
 
 		//Return...
 		return $this->jsonAjaxSaveFeedback($ok , [
 				'success_refresh' => '1' ,
+//				'success_callback' => "window.open('')",
+				'success_redirect' => "manage/cards/printings/download_excel",
 		]);
 
+
+	}
+
+	public function excelDownload()
+	{
+		Excel::create('Cards-To-Excel-For-Hard-Print', function($excel) {
+
+			$excel->sheet('Print Cards', function($sheet) {
+
+				$sheet->loadView('manage.printings.excel_file');
+
+			});
+
+
+		})->download('xlsx');
 
 	}
 
