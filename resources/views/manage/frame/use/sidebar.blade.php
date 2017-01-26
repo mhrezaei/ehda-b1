@@ -37,9 +37,10 @@
 		['cards/create' , trans('people.cards.manage.create') , 'plus-square-o' , 'cards.create'] ,
 		['cards/browse/all' , trans('people.cards.manage.all') , 'bars' , 'cards.browse'],
 		['cards/browse/incomplete' , trans('people.cards.manage.incomplete') , 'star-half' , 'cards.browse'],
-		['cards/browse/print_request' , trans('people.cards.manage.print_request') , 'flag-checkered' , 'cards.browse'],
-		['cards/browse/print_control' , trans('people.cards.manage.print_control') , 'qrcode' , 'cards.browse'],
-		['cards/browse/under_print' , trans('people.cards.manage.under_print') , 'print' , 'cards.print'],
+//		['cards/browse/print_request' , trans('people.cards.manage.print_request') , 'flag-checkered' , 'cards.browse'],
+//		['cards/browse/print_control' , trans('people.cards.manage.print_control') , 'qrcode' , 'cards.browse'],
+//		['cards/browse/under_print' , trans('people.cards.manage.under_print') , 'print' , 'cards.print'],
+		['cards/printings' , trans('people.printing') , 'print' , 'cards.print'],
 		['cards/browse/newsletter_member' , trans('people.cards.manage.newsletter_member') , 'newspaper-o' , 'cards.send'],
 		['cards/search' , trans('forms.button.search') , 'search' , 'cards.search'],
 	]

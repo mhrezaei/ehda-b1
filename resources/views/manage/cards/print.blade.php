@@ -16,21 +16,20 @@
 		{{--'extra' => 'disabled' ,--}}
 	{{--])--}}
 
-	@include('forms.select' , [
-		'name' => 'status' ,
-		'value' =>  $model->card_print_status  ,
-		'blank_value' => '' ,
-		'options' => $opt['print'] ,
-		'value_field' => '0' ,
-		'caption_field' => '1' ,
-		'size' => 10 ,
-		'class' => 'form-required',
+	@include("forms.select" , [
+		'name' => "event_id",
+		'value' => $model->event_id,
+		'blank_value' => "",
+		'blank_label' => " ",
+		'options' => $events,
 	])
+
+
 
 	@include('forms.group-start')
 
 		@include('forms.button' , [
-			'label' => trans('forms.button.save'),
+			'label' => trans('people.cards.manage.send_to_print'),
 			'shape' => 'success',
 			'type' => 'submit' ,
 		])

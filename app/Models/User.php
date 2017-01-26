@@ -63,6 +63,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	{
 		//reserved for volunteer settings. It could be a better idea to use Meta instead of this crab!
 	}
+
+	public function printing()
+	{
+		return $this->hasMany('App\Models\Printing') ;
+	}
 	/*
 	|--------------------------------------------------------------------------
 	| Stators

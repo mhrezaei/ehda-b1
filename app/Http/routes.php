@@ -155,6 +155,10 @@ Route::group(['prefix' => '', 'middleware' => 'Subdomain'], function () {
             Route::get('/search', 'CardsController@search');
             Route::get('/reports', 'CardsController@reports');//@TODO: INTACT!
 
+            Route::get('/printings/modal/{printing_id}/{modal_action}', 'PrintingsController@modalActions');
+            Route::get('/printings/download_excel', 'PrintingsController@excelDownload');
+            Route::get('/printings/{request_tab?}/{event_id?}/{user_id?}/{volunteer_id?}' , 'PrintingsController@browse');
+
             Route::get('/create/{volunteer_id?}', 'CardsController@create');
             Route::get('/{card_id}', 'CardsController@show');
             Route::get('/{card_id}/edit', 'CardsController@editor');
@@ -175,6 +179,10 @@ Route::group(['prefix' => '', 'middleware' => 'Subdomain'], function () {
                 Route::post('/bulk_email', 'CardsController@bulk_email');
                 Route::post('/print', 'CardsController@single_print');
                 Route::post('/bulk_print', 'CardsController@bulk_print');
+                
+                Route::post('printings/bulk_excel' , 'PrintingsController@bulkExcel');
+                Route::post('printings/bulk_print' , 'PrintingsController@bulkPrint');
+                Route::post('printings/bulk_confirm' , 'PrintingsController@bulkConfirm');
             });
         });
 

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Printing;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use App\models\Branch;
@@ -187,5 +188,12 @@ class TahaServiceProvider extends ServiceProvider
         return strpos($route['controller'], 'HomeController@index');
     }
 
+    public static function getExcelExport()
+    {
+        return Printing::selector([
+//            'event_id' => "",
+            'criteria' => "under_verification",
+        ])->get();
+    }
 
 }
