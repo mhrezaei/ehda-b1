@@ -19,7 +19,7 @@
 		<?php echo $__env->make('manage.login.input' , [
 			'name' => 'username' ,
 			'icon' => 'face',
-			'cap' => trans('validation.attributes.username')
+			'cap' => trans('validation.attributes.code_melli')
 		], array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 		<?php echo $__env->make('manage.login.input' , [
 			'name' => 'password' ,

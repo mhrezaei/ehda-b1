@@ -165,6 +165,10 @@ class PrintingsController extends Controller
 
 	}
 
+	/**
+	 * @param Request $request
+	 * @return string
+	 */
 	public function bulkExcel(Request $request)
 	{
 		//Selector...
@@ -187,7 +191,16 @@ class PrintingsController extends Controller
 		]);
 
 		//Export to Excel...
-		//@TODO: Complete this!
+		Excel::create('Cards-To-Excel-For-Hard-Print', function($excel) {
+
+			$excel->sheet('Print Cards', function($sheet) {
+
+				$sheet->loadView('hadi.test');
+
+			});
+
+		})->download('xlsx');
+
 
 		//Return...
 		return $this->jsonAjaxSaveFeedback($ok , [

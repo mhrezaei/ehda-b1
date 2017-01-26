@@ -1,39 +1,57 @@
-@if($user)
-    <table style="width: 100%; font-family: Tahoma; font-size: 12px; border: 1px solid black; direction: rtl;">
-        <thead>
-            <th style="border: 1px solid black;">ردیف</th>
-            <th style="border: 1px solid black;">مشخصات</th>
-            <th style="border: 1px solid black;">اطلاعات تماس</th>
-            <th style="border: 1px solid black;">تمایلات</th>
-        </thead>
-        <tbody>
+@if(\App\Providers\SettingServiceProvider::get_volunteer_data())
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style>
+        html, body, table{
+            direction: rtl;
+            font-family: Tahoma;
+            font-size: 12px;
+            text-align: right;
+            line-height: 15px;
+        }
+    </style>
+    <table>
+        <tr>
+            <td>ردیف</td>
+            <td>نام و نام خانوادگی</td>
+            <td>نام پدر</td>
+            <td>کدملی</td>
+            {{--<td>تاریخ تولد</td>--}}
+            <td>تحصیلات</td>
+            <td>رشته تحصیلی</td>
+            <td>محل سکونت</td>
+            <td>آدرس</td>
+            <td>تلفن</td>
+            <td>موبایل</td>
+            <td>ایمیل</td>
+            {{--<td>تاریخ ثبت نام</td>--}}
+            <td>وضعیت ثبت نام</td>
+            <td>تمایلات</td>
+        </tr>
         <?php $row = 1; ?>
-        @foreach($user as $u)
+        @foreach(\App\Providers\SettingServiceProvider::get_volunteer_data() as $u)
                 <tr>
-                    <th style="border: 1px solid black;">{{ $row++ }}</th>
-                    <td style="border: 1px solid black;">
-                        نام و نام خانوادگی: {{ $u->name_first . ' ' . $u->name_last }}<hr>
-                        نام پدر: {{ $u->name_father }}<hr>
-                        کدملی: {{ $u->code_melli }}<hr>
-                        تاریخ تولد: {{ $u->say('birth_date') }}<hr>
-                        رشته تحصیلی: {{ $u->say('edu_field') }}
-                    </td>
-                    <td style="border: 1px solid black;">
-                        آدرس: {{ $u->home_address }}<hr>
-                        شماره تماس: {{ $u->home_tel }}<hr>
-                        موبایل: {{ $u->mobile }}<hr>
-                        استان و شهر: {{ $u->say('home_province') . ' ' . $u->say('home_city') }}
-                    </td>
-                    <td style="border: 1px solid black;">
+                    <td>{{ $row++ }}</td>
+                    <td>{{ $u->name_first . ' ' . $u->name_last }}</td>
+                    <td>{{ $u->name_father }}</td>
+                    <td>{{ $u->code_melli }}</td>
+{{--                    <td>{{ $u->say('birth_date') }}</td>--}}
+                    <td>{{ $u->say('edu_level') }}</td>
+                    <td style="width: 600px;">{{ $u->say('edu_field') }}</td>
+                    <td>{{ $u->say('home_city') }}</td>
+                    <td>{{ $u->home_address }}</td>
+                    <td>{{ $u->home_tel }}</td>
+                    <td>{{ $u->tel_mobile }}</td>
+                    <td>{{ $u->email }}</td>
+{{--                    <td>{{ $u->say('volunteer_registered_at') }}</td>--}}
+                    <td>{{ $u->volunteerStatus() }}</td>
+                    <td>
                         @if(is_array($u->say('activities')))
                             @foreach($u->say('activities') as $key => $value)
-                                {{ $value }}
-                                <hr>
+                                {{ $value }} ||
                             @endforeach
                         @endif
                     </td>
                 </tr>
             @endforeach
-        </tbody>
     </table>
 @endif

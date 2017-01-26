@@ -1,5 +1,7 @@
 html, body {
     height: 100%;
+    font-family: 'Tahoma';
+    font-size: 12px;
 }
 
 .img-row {
@@ -35,6 +37,7 @@ html, body {
 
 #content {
     overflow: auto;
+    overflow-x: hidden;
 }
 
 #tree1 {
