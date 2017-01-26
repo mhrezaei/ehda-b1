@@ -25,12 +25,12 @@
 	{{ $model->event->title }}
 </td>
 
-<td>
-	@include('manage.frame.widgets.grid-action' , [
-		'id' => $model->id ,
-		'actions' => [
-			['pencil' , trans('manage.permits.edit') , "url:manage/cards/-id-/edit" , $model->user->isActiveVolunteer()? 'volunteers.edit' : 'cards.edit'],
-			['times' , trans('forms.button.hard_delete') , 'modal:manage/cards/-id-/delete' , 'cards.delete' , !$model->trashed('card')] ,
-		],
-	])
-</td>
+{{--<td>--}}
+	{{--@include('manage.frame.widgets.grid-action' , [--}}
+		{{--'id' => $model->id ,--}}
+		{{--'actions' => [--}}
+			{{--['pencil' , trans('manage.permits.edit') , "url:manage/cards/-id-/edit" , $model->user->isActiveVolunteer()? 'volunteers.edit' : 'cards.edit'],--}}
+			{{--['times' , trans('forms.button.hard_delete') , 'modal:manage/cards/-id-/delete' , 'cards.delete' , !$model->trashed('card')] ,--}}
+		{{--],--}}
+	{{--])--}}
+{{--</td>--}}

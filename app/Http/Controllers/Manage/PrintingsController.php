@@ -61,15 +61,13 @@ class PrintingsController extends Controller
 		$db = new Printing();
 
 		//View...
-		return view("manage.printings.browse" , compact('page','model_data' , 'db' , 'volunteer' , 'volunteer_id' , 'event_id' ,'user_id'));
+		return view("manage.printings.browse" , compact('page','model_data' , 'db' , 'request_tab' , 'volunteer' , 'volunteer_id' , 'event_id' ,'user_id'));
 
 	}
 
 	public function modalActions($card_id , $view_file)
 	{
 
-		//@TODO: Do something for checking the permission, despite the fact that everything will be checked at the save method.
-		//@TODO: Reject if accessed without valid AJAX request
 		if($card_id==0)
 			return $this->modalBulkAction($view_file);
 
@@ -92,7 +90,7 @@ class PrintingsController extends Controller
 
 	private function modalBulkAction($view_file)
 	{
-		$view = "manage.cards.$view_file-bulk" ;
+		$view = "manage.printings.$view_file-bulk" ;
 
 		if(!View::exists($view)) return view('templates.say' , ['array'=>$view]); //@TODO: REMOVE THIS LINE
 		if(!View::exists($view)) return view('errors.m404');
@@ -104,59 +102,6 @@ class PrintingsController extends Controller
 		return view($view , compact('print')) ;
 	}
 
-	private function editorForVolunteers($id , $page)
-	{
-		$model = User::find($id);
-		if(!$model->isVolunteer())
-			return view('errors.410');
-
-		if(!$model->isCard()) {
-			foreach(User::$donatable_organs as $donatable_organ) {
-				$model->organs .= ' ' . trans("people.organs.$donatable_organ");
-			}
-		}
-
-		return view('manage.cards.editor-volunteer' , compact('model','page'));
-
-	}
-
-	public function create($volunteer_id = 0)
-	{
-		//Permission...
-		if(!Auth::user()->can('cards.create'))
-			return view('errors.403');
-
-		//Preparetions...
-		$page = $this->page ;
-		$page[1] = ["cards/create" , trans('people.cards.manage.create') , ''];
-
-		//If for Volunteer...
-		if($volunteer_id)
-			return $this->editorForVolunteers($volunteer_id , $page) ;
-
-		//Model...
-		$model = new User() ;
-		$states = State::get_combo() ;
-
-		foreach(User::$donatable_organs as $donatable_organ) {
-			$model->organs .= ' '.trans("people.organs.$donatable_organ");
-		}
-		$model->newsletter = 1 ;
-
-
-		$all_events = Post::selector('event' , 'auto')->orderBy('published_at' , 'desc')->get() ;
-		$events = [] ;
-		foreach($all_events as $event) {
-			if($event->meta('can_register_card')) {
-				array_push($events , $event);
-			}
-		}
-		$model->event_id = Session::get('user_favourite_event',0);
-
-		//View..
-		return view('manage.cards.editor' , compact('page','model','states','events'));
-
-	}
 
 	public function editor($model_id=0)
 	{
@@ -197,6 +142,92 @@ class PrintingsController extends Controller
 	|--------------------------------------------------------------------------
 	|
 	*/
+
+	public function bulkConfirm(Request $request)
+	{
+		//Selector...
+		$table = Printing::whereIn('id',explode(',',$request->ids)) ;
+
+		//Change Status...
+		$ok = $table->update([
+				'verified_at' => Carbon::now()->toDateTimeString(),
+				'verified_by' => Auth::user()->id,
+				'dispatched_at' => Carbon::now()->toDateTimeString(),
+				'dispatched_by' => Auth::user()->id,
+				'delivered_at' => Carbon::now()->toDateTimeString(),
+				'delivered_by' => Auth::user()->id,
+		]);
+
+		//Return...
+		return $this->jsonAjaxSaveFeedback($ok , [
+				'success_refresh' => '1' ,
+		]);
+
+	}
+
+	public function bulkExcel(Request $request)
+	{
+		//Selector...
+		if($request->select_all) {
+			$table = Printing::selector([
+				'event_id' => $request->browse_event_id,
+				'criteria' => "pending",
+			]);
+		}
+		else {
+			$table = Printing::whereIn('id',explode(',',$request->ids)) ;
+		}
+
+		//Change Status...
+		$ok = $table->update([
+			'printed_at' => Carbon::now()->toDateTimeString(),
+			'printed_by' => Auth::user()->id,
+			'queued_at' => Carbon::now()->toDateTimeString(),
+			'queued_by' => Auth::user()->id,
+		]);
+
+		//Export to Excel...
+		//@TODO: Complete this!
+
+		//Return...
+		return $this->jsonAjaxSaveFeedback($ok , [
+				'success_refresh' => '1' ,
+		]);
+
+
+	}
+
+	public function bulkPrint(Request $request)
+	{
+		//Selector...
+		if($request->select_all) {
+			$table = Printing::selector([
+				'event_id' => $request->browse_event_id,
+				'criteria' => "pending",
+			]);
+		}
+		else {
+			$table = Printing::whereIn('id',explode(',',$request->ids)) ;
+		}
+
+		//Change Status...
+		$ok = $table->update([
+			'printed_at' => null,
+			'printed_by' => null,
+			'queued_at' => Carbon::now()->toDateTimeString(),
+			'queued_by' => Auth::user()->id,
+		]);
+
+		//Export to Excel...
+		//@TODO: Complete this!
+
+		//Return...
+		return $this->jsonAjaxSaveFeedback($ok , [
+				'success_refresh' => '1' ,
+		]);
+
+
+	}
 
 
 	public function delete(Request $request)

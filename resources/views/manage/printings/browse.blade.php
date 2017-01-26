@@ -9,6 +9,7 @@
 	|--------------------------------------------------------------------------
 	|
 	--}}
+	<input id="txtEventId" type="hidden" value="{{$event_id}}">
 	<div class="panel panel-toolbar row w100">
 		<div class="col-md-6">
 			<p class="title">
@@ -30,9 +31,10 @@
 					'button_label' => trans('forms.button.bulk_action'),
 //					'button_extra' => 'disabled' ,
 					'actions' => [
-						['file-excel-o' , trans('people.commands.export_to_excel') , 'modal:manage/cards/printings/-id-/excel'],
-						['print' , trans('forms.button.card_print') , 'modal:manage/cards/-id-/print' , 'cards.print' ] ,
-						['times' , trans('forms.button.hard_delete') , 'modal:manage/cards/-id-/delete' , 'cards.delete' , $page[1][2]!='bin'] ,
+						['file-excel-o' , trans('people.commands.export_to_excel') , 'modal:manage/cards/printings/modal/-id-/excel'],
+						['print' , trans('people.commands.direct_print') , 'modal:manage/cards/printings/modal/-id-/print' ] ,
+						['check-square-o' , trans('people.commands.confirm_good_print') , 'modal:manage/cards/printings/modal/-id-/confirm' , 'any' , $request_tab!='pending'],
+//						['times' , trans('forms.button.hard_delete') , 'modal:manage/cards/printings/modal/-id-/delete' , 'cards.delete' , $page[1][2]!='bin'] ,
 
 					]
 				])
@@ -56,7 +58,7 @@
 			trans('validation.attributes.home_city'),
 			trans('people.cards.manage.domain'),
 			trans('validation.attributes.event_id'),
-			trans('forms.button.action'),
+//			trans('forms.button.action'),
 		],
 	])
 
