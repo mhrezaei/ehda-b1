@@ -19,10 +19,10 @@
     </tr>
     @foreach(\App\Providers\TahaServiceProvider::getExcelExport() as $row)
         <tr>
-            <td>{{ $row->user->card_no }}</td>
+            <td>@pd($row->user->card_no )</td>
             <td>{{ $row->user->fullName() }}</td>
             <td>{{ $row->user->name_father }}</td>
-            <td>{{ $row->user->code_melli }}</td>
+            <td>@pd($row->user->code_melli)</td>
             <td>{{ $row->user->say('birth_date_on_card') }}</td>
             <td>{{ $row->user->say('register_date_on_card') }}</td>
         </tr>

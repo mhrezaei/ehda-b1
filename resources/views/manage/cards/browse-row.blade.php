@@ -3,7 +3,9 @@
 </td>
 <td>
 	<div>
-		{{ $model->fullName() }}
+		<a href="javascript:void(0)" onclick="masterModal(url('manage/cards/{{$model->id}}/view'))">
+			{{ $model->fullName() }}
+		</a>
 		@if($model->isVolunteer())
 			<a href="{{Auth::user()->can('volunteers.search')? url('manage/volunteers/search?keyword='.$model->code_melli.'&searched=1') : 'javascript:void(0)'}}" class="badge badge-success mh10 f7">
 				{{ trans('people.volunteer') }}

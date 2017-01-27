@@ -53,14 +53,14 @@
 			</td>
 		</tr>
 
-		<tr>
-			<td class="head">
-				{{ trans('people.commands.print_status') }}
-			</td>
-			<td class="body text-{{trans('people.card_print_status_color.'.$model->card_print_status)}}">
-				{{ trans('people.card_print_status.'.$model->card_print_status) }}
-			</td>
-		</tr>
+		{{--<tr>--}}
+			{{--<td class="head">--}}
+				{{--{{ trans('people.commands.print_status') }}--}}
+			{{--</td>--}}
+			{{--<td class="body text-{{trans('people.card_print_status_color.'.$model->card_print_status)}}">--}}
+				{{--{{ trans('people.card_print_status.'.$model->card_print_status) }}--}}
+			{{--</td>--}}
+		{{--</tr>--}}
 
 
 		{{--

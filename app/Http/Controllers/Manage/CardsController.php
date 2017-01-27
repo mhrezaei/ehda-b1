@@ -270,6 +270,15 @@ class CardsController extends Controller
 		if(!$model)
 			return view('errors.410');
 
+		$all_events = Post::selector('event' , 'auto')->orderBy('published_at' , 'desc')->get() ;
+		$events = [] ;
+		foreach($all_events as $event) {
+			if($event->meta('can_register_card')) {
+				array_push($events , $event);
+			}
+		}
+
+
 		//Page..
 		if($model->isCard()) {
 			$page[1] = ["cards/$model_id/edit", trans('people.cards.manage.edit'), ''];
@@ -283,7 +292,7 @@ class CardsController extends Controller
 			return $this->editorForVolunteers($model->id , $page);
 
 		//View...
-		return view('manage.cards.editor' , compact('page' , 'model' , 'states'));
+		return view('manage.cards.editor' , compact('page' , 'events', 'model' , 'states'));
 
 	}
 

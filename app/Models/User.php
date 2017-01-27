@@ -361,7 +361,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 					return trans("people.$property.".$this->$property) ;
 
 			case 'education' :
-				return trans("people.education.".$this->edu_level+0);
+				return trans("people.education.".intval($this->edu_level));
 
 			case 'birth_city' :
 			case 'edu_city' :

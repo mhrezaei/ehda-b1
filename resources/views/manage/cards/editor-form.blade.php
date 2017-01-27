@@ -18,13 +18,15 @@
 		'extra' => 'disabled' , //Auth::user()->isDeveloper()? '' : 'disabled' ,
 	])
 
-	@include("forms.select" , [
-		'name' => "event_id",
-		'value' => $model->event_id,
-		'blank_value' => "",
-		'blank_label' => " ",
-		'options' => $events,
-	])
+	@if(!$model->id)
+		@include("forms.select" , [
+			'name' => "event_id",
+			'value' => $model->event_id,
+			'blank_value' => "",
+			'blank_label' => " ",
+			'options' => $events,
+		])
+	@endif
 
 
 	@include('forms.input' , [

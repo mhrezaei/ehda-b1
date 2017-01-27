@@ -180,6 +180,8 @@ class PrintingsController extends Controller
 
 		//Change Status...
 		$ok = $table->update([
+				'printed_at' => Carbon::now()->toDateTimeString(),
+				'printed_by' => Auth::user()->id,
 				'verified_at' => Carbon::now()->toDateTimeString(),
 				'verified_by' => Auth::user()->id,
 				'dispatched_at' => Carbon::now()->toDateTimeString(),
