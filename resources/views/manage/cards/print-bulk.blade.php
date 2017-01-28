@@ -17,15 +17,12 @@
 		'extra' => 'disabled' ,
 	])
 
-	@include('forms.select' , [
-		'name' => 'status' ,
-		'value' =>  ''  ,
-		'blank_value' => '' ,
-		'options' => $print ,
-		'value_field' => '0' ,
-		'caption_field' => '1' ,
-		'size' => 10 ,
-		'class' => 'form-required',
+	@include("forms.select" , [
+		'name' => "event_id",
+		'value' => $preferred_event_id,
+		'blank_value' => "",
+		'blank_label' => " ",
+		'options' => $events,
 	])
 
 	@include('forms.group-start')

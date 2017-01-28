@@ -226,6 +226,8 @@ return [
 		'all_events' => "همه‌ی رویدادها",
 		'without_events' => "بدون رویدادها",
 		'event_selection' => "انتخاب رویداد",
+		'users_added_to_print' => ":count نفر به صف چاپ اضافه شدند.",
+		'nobody_added_to_print' => "شخص جدیدی به صف چاپ اضافه نشد.",
 	],
 
 

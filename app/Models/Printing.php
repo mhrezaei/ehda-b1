@@ -30,6 +30,11 @@ class Printing extends Model
 		return $this->belongsTo('App\Models\Post');
 	}
 
+	public function printing()
+	{
+		return $this->hasOne('App\Models\Printing');
+	}
+
 	/*
 	|--------------------------------------------------------------------------
 	| Selectors

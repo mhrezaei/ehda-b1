@@ -176,7 +176,8 @@ class PrintingsController extends Controller
 	public function bulkConfirm(Request $request)
 	{
 		//Selector...
-		$table = Printing::whereIn('id',explode(',',$request->ids)) ;
+		$id_array = explode(',',$request->ids) ;
+		$table = Printing::whereIn('id',$id_array) ;
 
 		//Change Status...
 		$ok = $table->update([
@@ -189,6 +190,9 @@ class PrintingsController extends Controller
 				'delivered_at' => Carbon::now()->toDateTimeString(),
 				'delivered_by' => Auth::user()->id,
 		]);
+
+		//Clear Printer table...
+		Printer::whereIn('printing_id',$id_array)->delete() ;
 
 		//Return...
 		return $this->jsonAjaxSaveFeedback($ok , [
@@ -223,6 +227,8 @@ class PrintingsController extends Controller
 		]);
 
 
+		//Deleting Printer records....
+
 		//Return...
 		return $this->jsonAjaxSaveFeedback($ok , [
 				'success_refresh' => '1' ,
@@ -251,6 +257,7 @@ class PrintingsController extends Controller
 	public function bulkPrint(Request $request)
 	{
 		//Selector...
+		$id_array = explode(',',$request->ids) ;
 		if($request->select_all) {
 			$table = Printing::selector([
 				'event_id' => $request->browse_event_id,
@@ -258,8 +265,28 @@ class PrintingsController extends Controller
 			]);
 		}
 		else {
-			$table = Printing::whereIn('id',explode(',',$request->ids)) ;
+			$table = Printing::whereIn('id',$id_array) ;
 		}
+
+		//Filling the Printer table...
+		foreach($table->get() as $row) {
+			$user = $row->user ;
+			if(!$user) continue ;
+			$already = Printer::where('user_id' , $user->id)->first() ;
+			if($already) continue ;
+
+			$printer = new Printer() ;
+			$printer->user_id = $user->id ;
+			$printer->printing_id = $row->id ;
+			$printer->name_full = $user->fullName() ;
+			$printer->name_father = $user->say('name_father') ;
+			$printer->code_melli = $user->say('code_melli') ;
+			$printer->birth_date = $user->say('birth_date_on_card') ;
+			$printer->registered_at = $user->say('register_date_on_card') ;
+			$printer->card_no = $user->say('card_no') ;
+			$printer->save() ;
+		}
+
 
 		//Change Status...
 		$ok = $table->update([
@@ -268,9 +295,6 @@ class PrintingsController extends Controller
 			'queued_at' => Carbon::now()->toDateTimeString(),
 			'queued_by' => Auth::user()->id,
 		]);
-
-		//Export to Excel...
-		//@TODO: Complete this!
 
 		//Return...
 		return $this->jsonAjaxSaveFeedback($ok , [

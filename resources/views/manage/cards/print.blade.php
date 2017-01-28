@@ -9,13 +9,6 @@
 		['id' , $model->id ],
 	]])
 
-{{--	@include('forms.input' , [--}}
-		{{--'name' => '',--}}
-		{{--'label' => trans('validation.attributes.name_first'),--}}
-		{{--'value' => $model->fullName() ,--}}
-		{{--'extra' => 'disabled' ,--}}
-	{{--])--}}
-
 	@include("forms.select" , [
 		'name' => "event_id",
 		'value' => $model->event_id,
@@ -31,6 +24,7 @@
 		@include('forms.button' , [
 			'label' => trans('people.cards.manage.send_to_print'),
 			'shape' => 'success',
+
 			'type' => 'submit' ,
 		])
 		@include('forms.button' , [

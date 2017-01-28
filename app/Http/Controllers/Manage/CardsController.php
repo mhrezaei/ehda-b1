@@ -194,10 +194,17 @@ class CardsController extends Controller
 		if(!View::exists($view)) return view('errors.m404');
 
 		if($view_file == 'print')
-			$print = User::virtualPrintTable() ;
+			$all_events = Post::selector('event' , 'auto')->orderBy('published_at' , 'desc')->get() ;
+			$events = [] ;
+			foreach($all_events as $event) {
+				if($event->meta('can_register_card')) {
+					array_push($events , $event);
+				}
+			}
+			$preferred_event_id = Session::get('user_favourite_event',0);
 
 
-		return view($view , compact('print')) ;
+		return view($view , compact('events' , 'preferred_event_id')) ;
 	}
 
 	private function editorForVolunteers($id , $page)
@@ -578,8 +585,12 @@ class CardsController extends Controller
 			return $this->jsonFeedback('Error #1');
 
 		//Validation...
-		$already = Printing::where('user_id' , $user->id)->first();
-		if($already and !$already->delivered_at)
+		$already = Printing::selector([
+			'event_id' => $request->event_id,
+			'user_id' => $user->id,
+			'criteria' => "under_any_action",
+		])->first();
+		if($already)
 			return $this->jsonFeedback(trans('people.cards.manage.print_already_requested'));
 
 
@@ -596,7 +607,6 @@ class CardsController extends Controller
 
 		//Return...
 		return $this->jsonAjaxSaveFeedback($ok , [
-
 		]);
 
 	}
@@ -605,36 +615,46 @@ class CardsController extends Controller
 	{
 		//Preparations...
 		$request->status += 0 ;
+		$processed = 0 ;
 
-		//Processing Printer table...
-		$ids = explode(',',$request->ids);
-		if($request->status == 2) {
-			foreach($ids as $id) {
-				$user = User::find($id) ;
-				if(!$user) continue ;
-				$printer = new Printer() ;
-				$printer->user_id = $user->id ;
-				$printer->name_full = $user->fullName() ;
-				$printer->name_father = $user->say('name_father') ;
-				$printer->code_melli = $user->say('code_melli') ;
-				$printer->birth_date = $user->say('birth_date_on_card') ;
-				$printer->registered_at = $user->say('register_date_on_card') ;
-				$printer->card_no = $user->say('card_no') ;
-				$printer->save() ;
-			}
+		//Processing Printing table...
+		$id_array = explode(',',$request->ids);
+		foreach($id_array as $id) {
+			$user =  User::find($id) ;
+			if(!$user or !$user->isCard())
+				continue ;
+
+			$already = Printing::selector([
+					'event_id' => $request->event_id,
+					'user_id' => $user->id,
+					'criteria' => "under_any_action",
+			])->first();
+			if($already)
+				continue ;
+
+			$parameters = [
+					'id' => null,
+					'user_id' => $user->id,
+					'event_id' => $request->event_id,
+			];
+			$ok = Printing::store($parameters);
+
+			if($ok)
+				$processed++ ;
+
 		}
-		else {
-			Printer::whereIn('user_id',$ids)->delete();
-		}
 
-		//Updating Status...
-		$ok = User::bulkSet($request->ids , [
-			'card_print_status' => $request->status ,
-		]);
+		//Saving favourite event...
+		$request->session()->put('user_favourite_event' , $request->event_id);
 
-		//Return...
-		return $this->jsonAjaxSaveFeedback($ok , [
-			'success_refresh' => '1' ,
+
+		//Blind Return...
+		return $this->jsonAjaxSaveFeedback($processed , [
+			'success_refresh' => '0' ,
+			'success_message' => trans('people.printings.users_added_to_print' , [
+				'count' => AppServiceProvider::pd($processed),
+			]),
+			'danger_message' => trans('people.printings.nobody_added_to_print'),
 		]);
 
 	}
