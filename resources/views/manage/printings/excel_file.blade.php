@@ -1,4 +1,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style>
+    html, body, table{
+        direction: rtl;
+        font-family: Tahoma;
+        text-align: right;
+        line-height: 15px;
+    }
+</style>
 <table>
     <tr>
         <td>Card-No</td>
