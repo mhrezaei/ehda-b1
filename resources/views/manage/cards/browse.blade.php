@@ -40,9 +40,9 @@
 					'button_extra' => 'disabled' ,
 					'actions' => [
 //						['envelope-o' , trans('people.commands.send_email') , 'modal:manage/cards/-id-/email' , 'cards.send' ] ,
-//						['mobile' , trans('people.commands.send_sms') , 'modal:manage/cards/-id-/sms' , 'cards.send' ] ,
+						['mobile' , trans('people.commands.send_sms') , 'modal:manage/cards/-id-/sms' , 'cards.send' ] ,
 						['print' , trans('forms.button.card_print') , 'modal:manage/cards/-id-/print' , 'cards.print' ] ,
-						['times' , trans('forms.button.hard_delete') , 'modal:manage/cards/-id-/delete' , 'cards.delete' , $page[1][2]!='bin'] ,
+//						['times' , trans('forms.button.hard_delete') , 'modal:manage/cards/-id-/delete' , 'cards.delete' , $page[1][2]!='bin'] ,
 
 					]
 				])
@@ -71,7 +71,7 @@
 		'headings' => [
 			trans('validation.attributes.name_first') ,
 			trans('validation.attributes.home_city'),
-			trans('people.cards.manage.domain'),
+			trans('people.cards.manage.register'),
 			trans('validation.attributes.status'),
 			trans('forms.button.action'),
 		],

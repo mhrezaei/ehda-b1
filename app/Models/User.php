@@ -68,6 +68,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	{
 		return $this->hasMany('App\Models\Printing') ;
 	}
+
+	public function event()
+	{
+		return $this->belongsTo('App\Models\Post');
+	}
+
 	/*
 	|--------------------------------------------------------------------------
 	| Stators

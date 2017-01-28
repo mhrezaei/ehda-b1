@@ -12,6 +12,7 @@ use App\Models\Domain;
 use App\Models\State;
 use App\Models\User;
 use App\Providers\AppServiceProvider;
+use App\Providers\SmsServiceProvider;
 use App\Traits\TahaControllerTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -527,9 +528,33 @@ class VolunteersController extends Controller
 	public function bulk_sms(Requests\Manage\VolunteerSendMessage $request)
 	{
 
-		$done = true ; //@TODO: Write the event!
+		//Collecting Numbers...
+		$id_array = explode(',',$request->ids);
+		$numbers = [] ;
 
-		return $this->jsonAjaxSaveFeedback($done) ;
+		foreach($id_array as $id) {
+			$user = User::find($id) ;
+			if(!$user or !$user->tel_mobile)
+				continue;
+
+			array_push($numbers , $user->tel_mobile) ;
+		}
+
+
+		//Sending....
+		$ok = SmsServiceProvider::send($numbers , $request->message) ;
+		if($ok)
+			$count = count($numbers);
+		else
+			$count = 0 ;
+
+		//Feedback...
+		return $this->jsonAjaxSaveFeedback($count, [
+				'success_message' => trans('people.form.message_sent_to' , [
+						'count' => AppServiceProvider::pd($count),
+				]),
+				'danger_message' => trans('people.form.message_not_sent_to_anybody'),
+		]) ;
 	}
 
 	public function email(Requests\Manage\VolunteerSendMessage $request)

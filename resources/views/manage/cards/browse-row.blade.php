@@ -2,42 +2,52 @@
 	<input id="gridSelector-{{$model->id}}" data-value="{{$model->id}}" class="gridSelector" type="checkbox" onchange="gridSelector('selector','{{$model->id}}')">
 </td>
 <td>
-	<div>
-		<a href="javascript:void(0)" onclick="masterModal(url('manage/cards/{{$model->id}}/view'))">
-			{{ $model->fullName() }}
-		</a>
-		@if($model->isVolunteer())
-			<a href="{{Auth::user()->can('volunteers.search')? url('manage/volunteers/search?keyword='.$model->code_melli.'&searched=1') : 'javascript:void(0)'}}" class="badge badge-success mh10 f7">
-				{{ trans('people.volunteer') }}
-			</a>
-		@endif
-	</div>
-	<div class="mv5 f10 text-grey">
-		{{ trans('validation.attributes.card_no') }}:&nbsp;
-		{{ $model->say('card_no') }}
-	</div>
+	@include("manage.frame.widgets.grid-text" , [
+		'text' => $model->fullName(),
+		'link' => "modal:manage/cards/-id-/view",
+	])
+	@include("manage.frame.widgets.grid-tiny" , [
+		'text' => trans('validation.attributes.card_no').': '.$model->say('card_no'),
+		'icon' => "credit-card",
+	])
+	@include("manage.frame.widgets.grid-tiny" , [
+		'condition' => $model->isVolunteer(),
+		'text' => trans('people.volunteer'),
+		'color' => "success",
+		'link' => Auth::user()->can('volunteers.search')? 'url:manage/volunteers/search?keyword='.$model->code_melli.'&searched=1' : '',
+	])
 </td>
 
 
 <td>
-	{{ $model->say('home_city') }}
+	@include("manage.frame.widgets.grid-text" , [
+		'text' => $model->say('home_city'),
+	])
 </td>
-
 
 <td>
-	{{ $model->say('from_domain') }}
+	@include("manage.frame.widgets.grid-date" , [
+		'size' => "11",
+//		'text' => trans('validation.attributes.card_registered_at'),
+		'date' => $model->card_registered_at,
+		'color' => "black",
+	])
+	@include("manage.frame.widgets.grid-tiny" , [
+		'fake' => $domain = $model->say('from_domain'),
+		'condition' => $domain != '-',
+		'text' => $domain,
+	])
+	@include("manage.frame.widgets.grid-tiny" , [
+		'condition' => $model->event_id>0,
+		'text' => $model->event ? $model->event->title : '-' ,
+	])
 </td>
+
 
 <td>
 	<div class="text-{{ $model->cardStatus('color') }}">
 		{{ $model->cardStatus() }}
 	</div>
-	{{--@if($model->card_print_status)--}}
-		{{--<div class="f10 mv5 text-{{ trans('people.card_print_status_color.'.$model->card_print_status) }}">--}}
-			{{--{{ trans('people.cards.manage.pvc_card') }}:&nbsp;--}}
-			{{--{{ trans('people.card_print_status.'.$model->card_print_status) }}--}}
-		{{--</div>--}}
-	{{--@endif--}}
 	@if($model->newsletter)
 		<div class="badge badge-info f7">
 			{{ trans('people.cards.manage.newsletter_member') }}

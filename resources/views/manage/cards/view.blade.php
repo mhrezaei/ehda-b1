@@ -117,7 +117,7 @@
 				{{ trans('validation.attributes.birth_date') }}
 			</td>
 			<td class="body">
-				{{ $model->say('birth_date') }}
+				{{ $model->say('birth_date_on_card') }}
 				<span>
 					{{ $model->say('birth_city') }}
 				</span>

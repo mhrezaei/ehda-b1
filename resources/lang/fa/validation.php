@@ -245,6 +245,7 @@ return [
 				"birthday"=> "تاریخ تولد",
 				"full_name"=> "نام",
 				"name_first"=> "نام",
+			'card_registered_at' => "ثبت نام کارت اهدا:",
 				"name_last"=> "نام خانوادگی",
 				"name_father" => "نام پدر"  ,
 				"code_melli" => "کد ملی",

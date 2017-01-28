@@ -14,6 +14,7 @@ use App\Models\Printing;
 use App\Models\State;
 use App\Models\User;
 use App\Providers\AppServiceProvider;
+use App\Providers\SmsServiceProvider;
 use App\Traits\TahaControllerTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -51,7 +52,7 @@ class CardsController extends Controller
 		if(isset($request->searched)) {
 			$model_data = User::where('card_status' , '!=' , '0') ;
 
-			if(is_numeric($request->keyword and strlen($request->keyword)==10)) {
+			if(is_numeric($request->keyword) and strlen($request->keyword)==10) {
 				$model_data = $model_data->where('code_melli' , $request->keyword)->paginate(50) ;
 			}
 			elseif(is_numeric($request->keyword)) {
@@ -193,15 +194,16 @@ class CardsController extends Controller
 		if(!View::exists($view)) return view('templates.say' , ['array'=>$view]); //@TODO: REMOVE THIS LINE
 		if(!View::exists($view)) return view('errors.m404');
 
-		if($view_file == 'print')
-			$all_events = Post::selector('event' , 'auto')->orderBy('published_at' , 'desc')->get() ;
-			$events = [] ;
+		if($view_file == 'print') {
+			$all_events = Post::selector('event', 'auto')->orderBy('published_at', 'desc')->get();
+			$events = [];
 			foreach($all_events as $event) {
 				if($event->meta('can_register_card')) {
-					array_push($events , $event);
+					array_push($events, $event);
 				}
 			}
-			$preferred_event_id = Session::get('user_favourite_event',0);
+			$preferred_event_id = Session::get('user_favourite_event', 0);
+		}
 
 
 		return view($view , compact('events' , 'preferred_event_id')) ;
@@ -550,9 +552,33 @@ class CardsController extends Controller
 	public function bulk_sms(Requests\Manage\CardSendMessageRequest $request)
 	{
 
-		$done = true ; //@TODO: Write the event!
+		//Collecting Numbers...
+		$id_array = explode(',',$request->ids);
+		$numbers = [] ;
 
-		return $this->jsonAjaxSaveFeedback($done) ;
+		foreach($id_array as $id) {
+			$user = User::find($id) ;
+			if(!$user or !$user->tel_mobile)
+				continue;
+
+				array_push($numbers , $user->tel_mobile) ;
+		}
+
+
+		//Sending....
+		$ok = SmsServiceProvider::send($numbers , $request->message) ;
+		if($ok)
+			$count = count($numbers);
+		else
+			$count = 0 ;
+
+		//Feedback...
+		return $this->jsonAjaxSaveFeedback($count, [
+			'success_message' => trans('people.form.message_sent_to' , [
+				'count' => AppServiceProvider::pd($count),
+			]),
+			'danger_message' => trans('people.form.message_not_sent_to_anybody'),
+		]) ;
 	}
 
 	public function email(Requests\Manage\CardSendMessageRequest $request)
