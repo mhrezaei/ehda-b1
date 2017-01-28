@@ -92,7 +92,7 @@ class PostController extends Controller
 
 
         $store['text'] = $data['text'];
-        $store['branch'] = 'users_qs';
+        $store['branch'] = 'users-qs';
         $store['domains'] = 'free';
         $store['published_at'] = Carbon::now()->toDateTimeString();
 
