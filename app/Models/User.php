@@ -357,6 +357,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 			case 'register_date_on_card' :
 				return AppServiceProvider::pd(jDate::forge($this->card_registered_at)->format('Y/m/d'));
 
+            case 'birth_date_on_card_en' :
+                return jDate::forge($this->birth_date)->format('Y/m/d');
+
+            case 'register_date_on_card_en' :
+                return jDate::forge($this->card_registered_at)->format('Y/m/d');
+
 			case 'gender' :
 			case 'marital':
 			case 'edu_level' :

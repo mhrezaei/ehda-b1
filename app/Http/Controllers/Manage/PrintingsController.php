@@ -243,14 +243,14 @@ class PrintingsController extends Controller
 	{
 		Excel::create('Cards-To-Excel-For-Hard-Print', function($excel) {
 
-			$excel->sheet('Print Cards', function($sheet) {
+			$excel->sheet('print', function($sheet) {
 
 				$sheet->loadView('manage.printings.excel_file');
 
 			});
 
 
-		})->download('xlsx');
+		})->download('xls');
 
 	}
 
