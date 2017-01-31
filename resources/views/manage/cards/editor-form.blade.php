@@ -202,6 +202,7 @@
 				'value' => false ,
 				'label' => trans('people.cards.manage.password_set_to_mobile') ,
 			])
+
 		@else
 			<div class="text-danger disabled mv5">
 				<i class="fa fa-check-square"></i>
@@ -211,6 +212,19 @@
 
 
 	@include('forms.group-end')
+
+	@if($model->id)
+		@include("forms.select" , [
+			'name' => "event_id",
+			'value' => $model->event_id,
+			'blank_value' => "",
+			'blank_label' => " ",
+			'options' => $events,
+			'hint' => trans('people.printings.event_hint_for_card_edits'),
+		])
+
+
+	@endif
 
 	@include('forms.sep')
 

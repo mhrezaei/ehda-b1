@@ -62,16 +62,16 @@ class Printing extends Model
 		| Process Domain ...
 		*/
 
-		if(!isset($domain))
-			$domain = 'auto' ;
-
-		if($domain=='auto')
-			$domain =  Auth::user()->getDomain() ;
-
-		if($domain=='global')
+//		if(!isset($domain))
+//			$domain = 'auto' ;
+//
+//		if($domain=='auto')
+//			$domain =  Auth::user()->getDomain() ;
+//
+//		if($domain=='global')
 			$table = self::where('id' , '>' , 0) ;
-		else
-			$table = self::where('domain' , $domain) ;
+//		else
+//			$table = self::where('domain' , $domain) ;
 
 		/*--------------------------------------------------------------------------
 		| Process user_id ...

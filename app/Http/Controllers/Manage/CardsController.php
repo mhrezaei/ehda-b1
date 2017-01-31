@@ -300,6 +300,17 @@ class CardsController extends Controller
 		if($model->isActiveVolunteer() and !Auth::user()->can('volunteers.edit'))
 			return $this->editorForVolunteers($model->id , $page);
 
+		$all_events = Post::selector('event' , 'auto')->orderBy('published_at' , 'desc')->get() ;
+		$events = [] ;
+		foreach($all_events as $event) {
+			if($event->meta('can_register_card')) {
+				array_push($events , $event);
+			}
+		}
+		$model->event_id = Session::get('user_favourite_event',0);
+
+
+
 		//View...
 		return view('manage.cards.editor' , compact('page' , 'events', 'model' , 'states'));
 
@@ -358,6 +369,7 @@ class CardsController extends Controller
 		$user = Auth::user() ;
 
 		if($data['id']) {
+			unset($data['event_id']);
 			$model = User::find($data['id']);
 			if(!$model)
 				return $this->jsonFeedback(trans('validation.http.Eror410'));
@@ -428,7 +440,7 @@ class CardsController extends Controller
 			//Validation...
 			$already = Printing::where('user_id' , $user->id)->first();
 			if($already and !$already->delivered_at) {
-
+				// No need to do anything :)
 			}
 			else {
 				$parameters = [
