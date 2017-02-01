@@ -9,6 +9,7 @@
 </style>
 <table>
     <tr>
+        <td>Row</td>
         <td>Card-No</td>
         <td>Name</td>
         <td>Father</td>
@@ -16,14 +17,16 @@
         <td>Birth Date</td>
         <td>Card Issue</td>
     </tr>
+    <?php $r = 1; ?>
     @foreach(\App\Providers\TahaServiceProvider::getExcelExport() as $row)
         <tr>
-            <td>{{ $row->user->card_no }}</td>
+            <td>{{ $r++ }}</td>
+            <td>{{ $row->user->card_no }}&nbsp;</td>
             <td>{{ $row->user->fullName() }}</td>
             <td>{{ $row->user->name_father }}</td>
-            <td>{{ $row->user->code_melli }}</td>
-            <td>{{ $row->user->say('birth_date_on_card') }}</td>
-            <td>{{ $row->user->say('register_date_on_card') }}</td>
+            <td>{{ $row->user->code_melli }}&nbsp;</td>
+            <td>{{ $row->user->say('birth_date_on_card_en') }}</td>
+            <td>{{ $row->user->say('register_date_on_card_en') }}</td>
         </tr>
     @endforeach
 </table>
