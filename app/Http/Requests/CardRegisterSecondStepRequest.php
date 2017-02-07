@@ -46,7 +46,7 @@ class CardRegisterSecondStepRequest extends Request
             'tel_mobile' => 'required|phone:mobile',
             'home_tel' => 'required|phone:fixed',
             'home_city' => 'required|numeric|min:1',
-            'email' => 'required|email',
+            'email' => 'email',
             'password' => 'required|same:password2|min:8|max:50|',
 //            'chRegisterAll' => 'required_without_all:chRegisterHeart,chRegisterLung,chRegisterLiver,chRegisterKidney,chRegisterPancreas,chRegisterTissues'
 

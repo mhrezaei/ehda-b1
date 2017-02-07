@@ -5,7 +5,7 @@
             @foreach($iran_news as $one_news)
                 <li>
                     <a href="{{ $one_news->say('link') }}">@pd($one_news->say('title_limit'))</a>
-                    <span class="date">@pd(jDate::forge($one_news->published_at)->format('Y F d'))</span>
+                    <span class="date" style="font-size: 11px;">@pd(jDate::forge($one_news->published_at)->format('d F Y'))</span>
                 </li>
             @endforeach
         </ul>

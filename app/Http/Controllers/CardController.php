@@ -85,12 +85,27 @@ class CardController extends Controller
         // card extra detail
         $input['card_status'] = 8;
         $input['password'] = Hash::make($input['password']);
-        $input['birth_date'] = Carbon::createFromTimestamp($input['birth_date'])->toDateString();
         $input['home_province'] = State::find($input['home_city']);
         $input['domain'] = $input['home_province']->domain->slug ;
         $input['home_province'] = $input['home_province']->province()->id;
         $input['password_force_change'] = 0;
         unset($input['password2']);
+
+        // check birth date range
+        $minimum = -1539449865;
+        $maximum = Carbon::now()->timestamp;
+        if ($input['birth_date'] <= $minimum or $input['birth_date'] > $maximum)
+        {
+            return $this->jsonFeedback(null, [
+                'ok' => 0,
+                'message' => trans('site.global.birth_date_not_true'),
+            ]);
+        }
+        else
+        {
+            $input['birth_date'] = Carbon::createFromTimestamp($input['birth_date'])->toDateString();
+        }
+
 
         // disable organ check
         $input['organs'] = 'Heart Lung Liver Kidney Pancreas Tissues';

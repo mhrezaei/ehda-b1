@@ -69,6 +69,7 @@ return [
         'your_question_record_successfully' => 'پرسش شما با موفقیت ذخیره شد.',
         'does_not_have' => 'ندارد',
         'more' => 'ادامه...',
+        'birth_date_not_true' => 'تاریخ تولد را به درستی وارد نمایید.'
 
 
         
