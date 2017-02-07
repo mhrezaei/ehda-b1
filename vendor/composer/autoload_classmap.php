@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AddEventsToUsersTable' => $baseDir . '/database/migrations/2017_01_24_184517_add_events_to_users_table.php',
     'App\\Console\\Commands\\Inspire' => $baseDir . '/app/Console/Commands/Inspire.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Events\\Event' => $baseDir . '/app/Events/Event.php',
@@ -26,6 +27,7 @@ return array(
     'App\\Http\\Controllers\\Manage\\DevSettingsController' => $baseDir . '/app/Http/Controllers/Manage/DevSettingsController.php',
     'App\\Http\\Controllers\\Manage\\ManageController' => $baseDir . '/app/Http/Controllers/Manage/ManageController.php',
     'App\\Http\\Controllers\\Manage\\PostsController' => $baseDir . '/app/Http/Controllers/Manage/PostsController.php',
+    'App\\Http\\Controllers\\Manage\\PrintingsController' => $baseDir . '/app/Http/Controllers/Manage/PrintingsController.php',
     'App\\Http\\Controllers\\Manage\\SettingsController' => $baseDir . '/app/Http/Controllers/Manage/SettingsController.php',
     'App\\Http\\Controllers\\Manage\\VolunteersController' => $baseDir . '/app/Http/Controllers/Manage/VolunteersController.php',
     'App\\Http\\Controllers\\PostController' => $baseDir . '/app/Http/Controllers/PostController.php',
@@ -64,6 +66,7 @@ return array(
     'App\\Http\\Requests\\Manage\\DownstreamSaveRequest' => $baseDir . '/app/Http/Requests/Manage/DownstreamSaveRequest.php',
     'App\\Http\\Requests\\Manage\\PostSearchRequest' => $baseDir . '/app/Http/Requests/Manage/PostSearchRequest.php',
     'App\\Http\\Requests\\Manage\\SettingSaveRequest' => $baseDir . '/app/Http/Requests/Manage/SettingSaveRequest.php',
+    'App\\Http\\Requests\\Manage\\SmsSendRequest' => $baseDir . '/app/Http/Requests/Manage/SmsSendRequest.php',
     'App\\Http\\Requests\\Manage\\StatesSaveRequest' => $baseDir . '/app/Http/Requests/Manage/StatesSaveRequest.php',
     'App\\Http\\Requests\\Manage\\VolunteerCareRequest' => $baseDir . '/app/Http/Requests/Manage/VolunteerCareRequest.php',
     'App\\Http\\Requests\\Manage\\VolunteerChangePasswordRequest' => $baseDir . '/app/Http/Requests/Manage/VolunteerChangePasswordRequest.php',
@@ -97,6 +100,7 @@ return array(
     'App\\Models\\Domain' => $baseDir . '/app/Models/Domain.php',
     'App\\Models\\Post' => $baseDir . '/app/Models/Post.php',
     'App\\Models\\Printer' => $baseDir . '/app/Models/Printer.php',
+    'App\\Models\\Printing' => $baseDir . '/app/Models/Printing.php',
     'App\\Models\\Setting' => $baseDir . '/app/Models/Setting.php',
     'App\\Models\\State' => $baseDir . '/app/Models/State.php',
     'App\\Models\\Submit' => $baseDir . '/app/Models/Submit.php',
@@ -217,9 +221,9 @@ return array(
     'Collective\\Html\\HtmlBuilder' => $vendorDir . '/laravelcollective/html/src/HtmlBuilder.php',
     'Collective\\Html\\HtmlFacade' => $vendorDir . '/laravelcollective/html/src/HtmlFacade.php',
     'Collective\\Html\\HtmlServiceProvider' => $vendorDir . '/laravelcollective/html/src/HtmlServiceProvider.php',
-    'CreateJobsTable' => $baseDir . '/database/migrations/2016_07_30_115849_create_jobs_table.php',
     'CreatePasswordResetsTable' => $baseDir . '/database/migrations/delete/2014_10_12_100000_create_password_resets_table.php',
-    'CreateUsersTable' => $baseDir . '/database/migrations/2016_08_23_115708_create_users_table.php',
+    'CreatePrintsTable' => $baseDir . '/database/migrations/2017_01_25_103309_create_prints_table.php',
+    'CreateUsersTable' => $baseDir . '/database/migrations/delete/2014_10_12_000000_create_users_table.php',
     'Cron\\AbstractField' => $vendorDir . '/mtdowling/cron-expression/src/Cron/AbstractField.php',
     'Cron\\CronExpression' => $vendorDir . '/mtdowling/cron-expression/src/Cron/CronExpression.php',
     'Cron\\DayOfMonthField' => $vendorDir . '/mtdowling/cron-expression/src/Cron/DayOfMonthField.php',
