@@ -178,8 +178,7 @@
                         <div class="col-xs-12 col-sm-6">
                             @include('forms_site.input', [
                             'field' => 'email',
-                            'class' => 'form-email form-required',
-                            'required' => 1,
+                            'class' => 'form-email',
                             'value' => Auth::user()->email,
                             ])
                         </div>

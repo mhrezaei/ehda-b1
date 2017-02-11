@@ -200,7 +200,7 @@ function cardEditor($mood , $para='')
 		case 1 :
 			$('#divInquiry,#divForm').slideToggle('fast');
 			$('#frmEditor [name=code_melli]').val( $('#txtInquiry').val() ) ;
-			$('#frmEditor [name=name_first]').focus() ;
+			$('#frmEditor [name=gender]').focus() ;
 			break;
 
 		case 2:

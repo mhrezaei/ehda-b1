@@ -28,11 +28,16 @@
 		])
 	@endif
 
+	@include('forms.select-gender' , [
+		'value' => $model->id? $model->gender : '0' ,
+		'blank_value' => $model->id? 'NO' : ' ',
+		'class' => 'form-required form-default',
+	])
 
 	@include('forms.input' , [
 		'name' => 'name_first',
 		'value' =>$model->name_first ,
-		'class' => 'form-required form-default'
+		'class' => 'form-required'
 	])
 
 	@include('forms.input' , [
@@ -42,51 +47,18 @@
 	])
 
 	@include('forms.input' , [
-		'name' => 'code_id',
-		'value' => $model->code_id ,
-		'class' => 'form-required form-number' ,
-	])
-	@include('forms.input' , [
 		'name' => 'name_father',
 		'value' => $model->name_father ,
 		'class' => 'form-required' ,
 	])
 
 	@include('forms.input' , [
-		'name' => 'tel_mobile',
-		'value' => $model->tel_mobile ,
-		'class' => 'ltr form-required',
+		'name' => 'code_id',
+		'value' => $model->code_id ,
+		'class' => 'form-required form-number' ,
 	])
-
-
-	@include('forms.input' , [
-		'name' => 'email',
-		'value' => $model->email ,
-		'class' => 'ltr',
-		'type' => 'email'
-	])
-
-	{{--@if(!$model->id)--}}
-	{{--@include('forms.input' , [--}}
-	{{--'name' => 'password',--}}
-	{{--'value' => rand(10000000 , 99999999),--}}
-	{{--'class' => 'form-required ltr'--}}
-	{{--])--}}
-	{{--@endif--}}
 
 	@include('forms.sep')
-
-	@include('forms.select-gender' , [
-		'value' => $model->id? $model->gender : '0' ,
-		'blank_value' => $model->id? 'NO' : ' ',
-		'class' => 'form-required',
-	])
-
-	@include('forms.select-marital' , [
-		'blank_value' => ' ',
-		'value' => $model->id? $model->marital : '0' ,
-		'class' => '',
-	])
 
 	@include('forms.select' , [
 		'name' => 'birth_city' ,
@@ -106,12 +78,69 @@
 
 	@include('forms.sep')
 
+	@include('forms.input' , [
+			'name' => 'job',
+			'value' => $model->job  ,
+		])
+
 	@include('forms.select-education' , [
 		'name' => 'edu_level' ,
 		'class' => 'form-required' ,
 		'blank_value' => '' ,
 		'value' => $model->edu_level ,
 	])
+
+	@include('forms.sep')
+
+	@include('forms.input' , [
+	'name' => 'home_tel',
+	'value' => $model->home_tel ,
+	'class' => 'ltr',
+	])
+
+	@include('forms.input' , [
+		'name' => 'tel_mobile',
+		'value' => $model->tel_mobile ,
+		'class' => 'ltr form-required',
+	])
+
+	@include('forms.sep')
+
+	@include('forms.select' , [
+		'name' => 'home_city' ,
+		'value' => $model->id? $model->home_city : '0' ,
+		'blank_value' => '' ,
+		'options' => $states ,
+		'search' => true ,
+		'class' => 'form-required'
+	])
+
+	@include('forms.sep')
+
+	@include('forms.input' , [
+		'name' => 'email',
+		'value' => $model->email ,
+		'class' => 'ltr',
+		'type' => 'email'
+	])
+
+	{{--@if(!$model->id)--}}
+	{{--@include('forms.input' , [--}}
+	{{--'name' => 'password',--}}
+	{{--'value' => rand(10000000 , 99999999),--}}
+	{{--'class' => 'form-required ltr'--}}
+	{{--])--}}
+	{{--@endif--}}
+
+	@include('forms.sep')
+
+	@include('forms.select-marital' , [
+		'blank_value' => ' ',
+		'value' => $model->id? $model->marital : '0' ,
+		'class' => '',
+	])
+
+	@include('forms.sep')
 
 	@include('forms.input' , [
 		'name' => 'edu_field',
@@ -130,35 +159,15 @@
 
 	@include('forms.sep')
 
-	@include('forms.select' , [
-		'name' => 'home_city' ,
-		'value' => $model->id? $model->home_city : '0' ,
-		'blank_value' => '' ,
-		'options' => $states ,
-		'search' => true ,
-		'class' => 'form-required'
-	])
-
 	@include('forms.input' , [
 		'name' => 'home_address',
 		'value' => $model->home_address,
 	])
 
 	@include('forms.input' , [
-		'name' => 'home_tel',
-		'value' => $model->home_tel ,
-		'class' => 'ltr',
-	])
-
-	@include('forms.input' , [
 		'name' => 'home_postal_code',
 		'value' => $model->home_postal_code  ,
 		'class' => 'ltr',
-	])
-
-	@include('forms.input' , [
-		'name' => 'job',
-		'value' => $model->job  ,
 	])
 
 
