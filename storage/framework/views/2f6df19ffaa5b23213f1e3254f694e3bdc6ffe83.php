@@ -1,4 +1,12 @@
 <title><?php echo e(trans('global.siteTitle')); ?> | <?php echo App\Providers\AppServiceProvider::pd(($post->title)) ?></title>
+<?php $__env->startSection('meta'); ?>
+    <?php echo $__env->make('site.frame.meta',[
+        'title' => $post->say('title'),
+        'url' => $post->say('link'),
+        'image' => $post->say('featured_image'),
+        'description' => $post->say('abstract'),
+    ], array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
     <div class="container-fluid">
         <?php

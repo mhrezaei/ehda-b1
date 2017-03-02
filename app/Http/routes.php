@@ -31,6 +31,7 @@ Route::group(['prefix' => '', 'middleware' => 'Subdomain'], function () {
     Route::get('/card/show_card/mini/{national_hash}', 'CardController@card_mini');
     Route::get('/card/show_card/full/{national_hash}/{mode?}', 'CardController@card_full');
 
+    Route::get('/{id}', 'PostController@show')->where('id', '[0-9]+');
     Route::get('/showPost/{id}/{url?}', 'PostController@show');
     Route::get('/previewPost/{id}/{url?}', 'PostController@show');
     Route::get('/archive/{branch?}/{category?}', 'PostController@archive');

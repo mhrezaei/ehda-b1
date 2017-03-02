@@ -37,7 +37,7 @@
             return $result  ;
         }
     </script>
-    <meta name="enamad" content="183499414"/>
+    <?php echo $__env->yieldContent('meta'); ?>
 </head>
 <body>
 <script>

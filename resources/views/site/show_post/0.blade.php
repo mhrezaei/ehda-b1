@@ -1,5 +1,13 @@
 @extends('site.frame.frame')
 <title>{{ trans('global.siteTitle') }} | @pd($post->title)</title>
+@section('meta')
+    @include('site.frame.meta',[
+        'title' => $post->say('title'),
+        'url' => $post->say('link'),
+        'image' => $post->say('featured_image'),
+        'description' => $post->say('abstract'),
+    ])
+@endsection
 @section('content')
     <div class="container-fluid">
         <?php

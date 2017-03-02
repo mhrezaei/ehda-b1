@@ -27,7 +27,7 @@
             return $result  ;
         }
     </script>
-    <meta name="enamad" content="183499414"/>
+    @yield('meta')
 </head>
 <body>
 <script>

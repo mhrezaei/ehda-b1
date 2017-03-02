@@ -6,6 +6,10 @@
         <a class="a2a_button_twitter"></a>
         <a class="a2a_button_google_plus"></a>
         <a class="a2a_button_telegram"></a>
+        <div class="form-group" style="text-align: left;">
+            <label for="short_link" style="font-size: 10px;">لینک کوتاه&nbsp;</label>
+            <input id="short_link" value="{{ url('/' . $post->id) }}" style="float: left; width: 170px;" class="form-control">
+        </div>
     </div>
     <script>
         var a2a_config = a2a_config || {};
