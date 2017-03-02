@@ -9,6 +9,7 @@ use App\Models\Setting;
 use App\Models\State;
 use App\Models\User;
 use App\Models\Volunteer;
+use App\Providers\SettingServiceProvider;
 use App\Temp\Mhr_exam_questions;
 use App\Temp\Mhr_safiran_data;
 use App\Temp\Mhr_user;
@@ -433,15 +434,13 @@ class TestController extends Controller
 
 	}
 
-	public function hadi()
+	public function hadi($status = 'all', $act = 'all')
 	{
-		$user = User::where('volunteer_status', 3)
-            ->orderBy('created_at', 'desc')
-            ->orderBy('home_province', 'asc')
-            ->get();
-//		return view('hadi.test', compact('user'));
+        $export['status'] = $status;
+        $export['act'] = $act;
+        Session::put('export', $export);
 
-        Excel::create('اطلاعات کل سفیران تهران', function($excel) {
+	    Excel::create('خروجی اطلاعات', function($excel) {
 
             $excel->sheet('New sheet', function($sheet) {
 

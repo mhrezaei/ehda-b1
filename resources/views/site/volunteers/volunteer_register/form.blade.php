@@ -256,7 +256,7 @@
                             @include('forms_site.input', [
                             'field' => 'job',
                             'min' => 2,
-                            'class' => 'form-persian  form-required',
+                            'class' => 'form-persian form-required',
                             'required' => 1,
                             'value' => $user->job
                              ])

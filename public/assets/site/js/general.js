@@ -155,11 +155,11 @@ function showStar(circleIndex, name, imgSrc, donate_time){
     var circle = $($('.stars circle')[circleIndex]);
     var circleParent = circle.parent();
     userCard.find('.angel-img').attr('src', imgSrc);
-    userCard.find('.angel-name').text(name);
-    if (donate_time)
-    {
-        userCard.find('.angel-time').text('اهدا: ' + donate_time);
-    }
+    // userCard.find('.angel-name').text(name);
+    // if (donate_time)
+    // {
+    //     userCard.find('.angel-time').text('اهدا: ' + donate_time);
+    // }
     $('.stars').prepend(userCard);
     $('.user-card').fadeIn();
     var cardWidth = 140;
@@ -168,4 +168,19 @@ function showStar(circleIndex, name, imgSrc, donate_time){
         left: ((circleParent.offset().left+parseInt(circle.attr('cx'))) * circleParent.outerWidth() / 873.296875) - (cardWidth/2),
         top: circleParent.offset().top+parseInt(circle.attr('cy')) - (cardHeight/2)
     });
+}
+var angles_slide;
+function random_angles(angels) {
+    var rand = Math.floor(Math.random() * (19 - 1 + 1)) + 1;
+    var angel = angels[rand];
+    if (! angel)
+    {
+        rand = Math.floor(Math.random() * (19 - 1 + 1)) + 1;
+        angel = angels[rand];
+    }
+    var circle = $('.circle' + rand);
+    circle.addClass('active');
+    var circleIndex = circle.parent().find('circle').index(circle);
+    showStar(circleIndex, angel.name, angel.picture_url, angel.donate_time);
+    angles_slide = setTimeout(function(){ random_angles(angels); }, 3000);
 }

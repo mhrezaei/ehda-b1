@@ -130,12 +130,12 @@ class PostController extends Controller
     {
         $angels = Post::selector('angles')->orderByRaw("RAND()")->limit(19)->get();
 
-        $java_var = '';
+        $java_var = array();
         for ($i = 0; $i < count($angels); $i++)
         {
             $java_var[$i]['name'] = $angels[$i]->title;
             $java_var[$i]['picture_url'] = $angels[$i]->say('featured_image');
-            $java_var[$i]['donate_time'] = AppServiceProvider::pd(jDate::forge($angels[$i]->meta('donation_date'))->format('Y/m/d'));
+//            $java_var[$i]['donate_time'] = AppServiceProvider::pd(jDate::forge($angels[$i]->meta('donation_date'))->format('Y/m/d'));
         }
 
         $java_var = json_encode($java_var);

@@ -3,7 +3,7 @@ $('.stars circle').click(function(){
     $(this).addClass('active');
     var circleIndex = $(this).parent().find('circle').index(this);
     var angel = angels[circleIndex];
-    showStar(circleIndex, angel.name, angel.picture_url, angel.donate_time)
+    showStar(circleIndex, angel.name, angel.picture_url, angel.donate_time);
 });
 $(document).on('click', function (event) {
     if($('.user-card').length && !$(event.target).is('circle') && !$(event.target).parents('.user-card').length && !$(event.target).is('.user-card')) hideActiveStar();
@@ -20,6 +20,7 @@ $('.search-angel').on('submit', function(event){
 
     if (angels_name.length > 3)
     {
+        window.clearTimeout(angles_slide);
         $.ajax({
             type: "POST",
             url: "angels/find",
@@ -37,7 +38,10 @@ $('.search-angel').on('submit', function(event){
             }
             else if(Data.status == 'find')
             {
-                var circleIndex = $(this).parent().find('circle').index(this);
+                var rand = Math.floor(Math.random() * (19 - 1 + 1)) + 1;
+                var circle = $('.circle' + rand);
+                circle.addClass('active');
+                var circleIndex = circle.parent().find('circle').index(circle);
                 showStar(circleIndex, Data.name, Data.picture_url, Data.donate_time);
                 $("html, body").animate({ scrollTop: $('.user-card').offset().top -  $('.user-card').outerHeight() - $('.main-menu').outerHeight()});
                 $('.search-angel').removeClass('loading');
