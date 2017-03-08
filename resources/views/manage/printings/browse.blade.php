@@ -68,9 +68,11 @@
 	])
 
 	@foreach($model_data as $model)
-		<tr id="tr-{{$model->id}}" class="grid" ondblclick="gridSelector('tr','{{$model->id}}')">
-			@include('manage.printings.browse-row' , ['model'=>$model])
-		</tr>
+		@if($model->user)
+			<tr id="tr-{{$model->id}}" class="grid" ondblclick="gridSelector('tr','{{$model->id}}')">
+				@include('manage.printings.browse-row' , ['model'=>$model])
+			</tr>
+		@endif
 	@endforeach
 
 	@include('manage.cards.browse-null')
