@@ -69,6 +69,7 @@
                 <ul class="list-unstyled pull-left text-right">
                     <h3><?php echo e(trans('site.ability_menu.about_us')); ?></h3>
                     <li><a href="<?php echo e(url('/showPost/ngo_history/' . urlencode(trans('site.ability_menu.ngo_history')))); ?>"><?php echo e(trans('site.ability_menu.ngo_history')); ?></a></li>
+                    <li><a href="<?php echo e(url('/showPost/activities/' . urlencode(trans('site.ability_menu.activities')))); ?>"><?php echo e(trans('site.ability_menu.activities')); ?></a></li>
                     <li><a href="<?php echo e(url('/showPost/board_of_directories/' . urlencode(trans('site.ability_menu.board_of_directories')))); ?>"><?php echo e(trans('site.ability_menu.board_of_directories')); ?></a></li>
                     <li><a href="<?php echo e(url('/showPost/board_of_trustees/' . urlencode(trans('site.ability_menu.board_of_trustees')))); ?>"><?php echo e(trans('site.ability_menu.board_of_trustees')); ?></a></li>
                     <li><a href="<?php echo e(url('/showPost/founding/' . urlencode(trans('site.ability_menu.founding')))); ?>"><?php echo e(trans('site.ability_menu.founding')); ?></a></li>

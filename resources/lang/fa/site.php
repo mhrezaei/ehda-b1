@@ -123,6 +123,7 @@ return [
 
     "ability_menu" => [
         'about_us' => 'درباره ما',
+        'activities' => 'فعالیت ها',
         'ngo_history' => 'تاریخچه انجمن',
         'board_of_directories' => 'هیات مدیره',
         'board_of_trustees' => 'هیات امنا',

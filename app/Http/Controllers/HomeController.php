@@ -18,7 +18,7 @@ class HomeController extends Controller
 //		dd(TahaServiceProvider::getHomeControllerRoute());
 		$iran_news = Post::selector('iran-news')->where('category_id', 6)->orderBy('published_at', 'desc')->take(5)->get();
 		$ngo_news = Post::selector('iran-news')->where('category_id', 8)->orderBy('published_at', 'desc')->take(5)->get();
-		$events = Post::selector('event')->orderBy('published_at', 'desc')->take(5)->get();
+		$events = Post::selector('event')->orderBy('published_at', 'desc')->take(7)->get();
 		$slide_show = Post::selector('slideshows', [$this->domain(), 'global'])->where('category_id', '3')->orderBy('created_at', 'desc')->get();
 		$event_slide_show = Post::selector('slideshows')->where('category_id', '4')->get();
 		$static_paragraph['top'] = Post::findBySlug('home_page_top_paragraph');

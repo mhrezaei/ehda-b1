@@ -69,6 +69,7 @@
                 <ul class="list-unstyled pull-left text-right">
                     <h3>{{ trans('site.ability_menu.about_us') }}</h3>
                     <li><a href="{{ url('/showPost/ngo_history/' . urlencode(trans('site.ability_menu.ngo_history'))) }}">{{ trans('site.ability_menu.ngo_history') }}</a></li>
+                    <li><a href="{{ url('/showPost/activities/' . urlencode(trans('site.ability_menu.activities'))) }}">{{ trans('site.ability_menu.activities') }}</a></li>
                     <li><a href="{{ url('/showPost/board_of_directories/' . urlencode(trans('site.ability_menu.board_of_directories'))) }}">{{ trans('site.ability_menu.board_of_directories') }}</a></li>
                     <li><a href="{{ url('/showPost/board_of_trustees/' . urlencode(trans('site.ability_menu.board_of_trustees'))) }}">{{ trans('site.ability_menu.board_of_trustees') }}</a></li>
                     <li><a href="{{ url('/showPost/founding/' . urlencode(trans('site.ability_menu.founding'))) }}">{{ trans('site.ability_menu.founding') }}</a></li>

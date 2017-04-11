@@ -8,5 +8,7 @@
                 </li>
             @endforeach
         </ul>
+        <hr>
+        <a href="{{ url('/archive/event') }}" class="left">{{ trans('site.global.more') }}</a>
     @endif
 </div>
