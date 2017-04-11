@@ -26,3 +26,4 @@ gulpfile.js
 *.log
 .env
 storage/framework/session/*.php
+storage/framework/views/0177b771683f16bc219d361661959f70a141d985.php
