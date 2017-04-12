@@ -98,11 +98,11 @@ class CardsController extends Controller
 	}
 
 
-	public function browse($request_tab = 'active' , $volunteer_id = 0)
+	public function browse($request_tab = 'active' , $volunteer_id = 0 , $event_id = 0)
 	{
 		//Preparation...
 		$page = $this->page ;
-		$page[1] = ["browse/$request_tab/$volunteer_id" , trans("people.cards.manage.$request_tab") , $request_tab] ;
+		$page[1] = ["browse/$request_tab/$volunteer_id/$event_id" , trans("people.cards.manage.$request_tab") , $request_tab] ;
 
 		//Permission...
 		switch($request_tab) {
@@ -139,18 +139,27 @@ class CardsController extends Controller
 		$model_data = User::selector('card',$request_tab) ;
 
 		if($volunteer_id>0) {
-			$model_data = $model_data->where('created_by' , $volunteer_id) ;
-			$volunteer = User::find($volunteer_id);
-			if(!$volunteer or !$volunteer->isVolunteer())
+			$model_data = $model_data->where('created_by', $volunteer_id);
+			$volunteer  = User::find($volunteer_id);
+			if(!$volunteer or !$volunteer->isVolunteer()) {
 				return view('errors.410');
+			}
 
+		}
+
+		if($event_id>0) {
+			$model_data = $model_data->where('event_id' , $event_id) ;
+			$event = Post::find($event_id) ;
+			if(!$event or $event->branch != 'event') {
+				return view('errors.410');
+			}
 		}
 
 		$model_data = $model_data->orderBy('created_at' , 'desc')->paginate(50);
 		$db = User::first() ;
 
 		//View...
-		return view("manage.cards.browse" , compact('page','model_data' , 'db' , 'volunteer' , 'volunteer_id'));
+		return view("manage.cards.browse" , compact('page','model_data' , 'db' , 'volunteer' , 'volunteer_id' , 'event' , 'event_id'));
 
 	}
 

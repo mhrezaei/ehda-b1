@@ -139,6 +139,7 @@ return [
 						'print_already_requested' => 'این کارت هم‌اکنون نیز در صف چاپ است.' ,
 						'inquiry_was_volunteer' => 'حساب این شخص مسدود شده است.' ,
 						'inquiry_will_be_volunteer' => 'این کد ملی، متعلق به سفیر در انتظار تأیید است.' ,
+				          'registered_in' => "ثبت نام در :name",
 				],
 
 		],

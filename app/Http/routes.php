@@ -152,7 +152,7 @@ Route::group(['prefix' => '', 'middleware' => 'Subdomain'], function () {
             Route::get('/', 'CardsController@browse');
             Route::get('/browse', 'CardsController@browse');
             Route::get('/stats', 'CardsController@stats');
-            Route::get('/browse/{request_tab}/{volunteer?}', 'CardsController@browse');
+            Route::get('/browse/{request_tab}/{volunteer?}/{event?}', 'CardsController@browse');
             Route::get('/search', 'CardsController@search');
             Route::get('/reports', 'CardsController@reports');//@TODO: INTACT!
 

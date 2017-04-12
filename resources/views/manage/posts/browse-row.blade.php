@@ -29,6 +29,15 @@
 			{{ trans('posts.manage.deleted_by' , ['name'=>$model->say('deleted')])  }}
 		</div>
 	@endif
+
+		@include("manage.frame.widgets.grid-text" , [
+			'condition' => $model->branch == 'event',
+			'text' => $model->registeredUsers()->count() . ' ' . trans('people.cards.full_title'),
+			'color' => "info",
+			'link' => "url:manage/cards/browse/active/0/-id-",
+			'icon' => "credit-card",
+		])
+
 </td>
 
 @if($branch->hasFeature('domain') and Auth::user()->isGlobal())

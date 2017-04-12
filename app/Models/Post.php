@@ -62,6 +62,11 @@ class Post extends Model
 		return Branch::selectBySlug($this->branch);
 	}
 
+	public function registeredUsers()
+	{
+		return User::where('event_id' , $this->id) ;
+	}
+
 
 	public function loadPhotos()
 	{

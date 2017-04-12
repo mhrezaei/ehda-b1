@@ -18,6 +18,11 @@
 						({{ trans('posts.manage.created_by' , ['name' => $volunteer->fullName(),]) }})
 					</span>
 				@endif
+				@if(isset($event))
+					<span class="f8 mv5 text-grey">
+						({{ $event->title }})
+					</span>
+				@endif
 			</p>
 		</div>
 		<div class="col-md-6 tools">

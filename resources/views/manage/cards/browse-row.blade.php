@@ -16,6 +16,12 @@
 		'color' => "success",
 		'link' => Auth::user()->can('volunteers.search')? 'url:manage/volunteers/search?keyword='.$model->code_melli.'&searched=1' : '',
 	])
+	@include("manage.frame.widgets.grid-tiny" , [
+		'condition' => $model->event_id > 0,
+		'color' => "info",
+		'fake' => $model->event? $name = $model->event->title : $name = '',
+		'text' => trans('people.cards.manage.registered_in' , ['name' => $name,]),
+	])
 </td>
 
 
