@@ -39,7 +39,7 @@
                     @endforeach
 
                 <p id="exam_count" class="hide-element">{{ trans('site.global.volunteer_exam_count') }}</p>
-
+                <input type="hidden" name="exam" id="exam" value="{{ encrypt(count($tests)) }}">
                     @include('forms.feed')
                     @include('forms.button', [
                         'shape' => 'primary',

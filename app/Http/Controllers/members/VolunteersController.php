@@ -218,6 +218,8 @@ class VolunteersController extends Controller
     {
         $input = $request->toArray();
 
+        $exam_question_count = decrypt($input['exam']);
+
         $data = [];
         $count = 0;
         $true_answer = 0;
@@ -255,7 +257,7 @@ class VolunteersController extends Controller
 
         $store['exam_passed_at'] = Carbon::now()->toDateTimeString();
         $store['exam_sheet'] = json_encode($data);
-        $store['exam_result'] = ceil(($true_answer * 100) / 30);
+        $store['exam_result'] = ceil(($true_answer * 100) / $exam_question_count);
         
         if ($store['exam_result'] >= 50)
         {
