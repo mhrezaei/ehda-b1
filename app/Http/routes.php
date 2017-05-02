@@ -9,7 +9,9 @@ Route::group(['prefix' => '', 'middleware' => 'Subdomain'], function () {
 //    Route::get('removeDuplicates', 'TestController@removeDuplicates');
 //    Route::get('makeDomains', 'TestController@makeDomainsFromHomeCities');
 //
-    Route::get('hadi/{status?}/{act?}', 'TestController@hadi');
+    Route::get('hadi/ajax', 'TestController@hadi_ajax');
+    Route::post('hadi/ajax/response', 'TestController@hadi_ajax_response');
+    Route::get('mhadi/{status?}/{act?}', 'TestController@hadi');
 
     /*
     |--------------------------------------------------------------------------

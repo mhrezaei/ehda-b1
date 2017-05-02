@@ -6,7 +6,7 @@
             <li><a href="<?php echo e(url('/showPost/ngo_history/' . urlencode(trans('site.ability_menu.about_us')))); ?>"><?php echo e(trans('site.ability_menu.about_us')); ?></a></li>
         </div>
         <div class="col-xs-6">
-            <li><a href="<?php echo e(url('/volunteers' . urlencode(trans('site.ask_menu.organ_donation_volunteers')))); ?>"><?php echo e(trans('site.ask_menu.organ_donation_volunteers')); ?></a></li>
+            <li><a href="<?php echo e(url('/volunteers')); ?>"><?php echo e(trans('site.ask_menu.organ_donation_volunteers')); ?></a></li>
             <li><a href="<?php echo e(url('/gallery/categories/gallery')); ?>"><?php echo e(trans('site.ability_menu.gallery')); ?></a></li>
             <li><a href="<?php echo e(url('/angels')); ?>"><?php echo e(trans('site.ability_menu.photo_donors')); ?></a></li>
         </div>

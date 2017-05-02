@@ -450,4 +450,26 @@ class TestController extends Controller
 
         })->download('xlsx');
 	}
+
+    public function hadi_ajax()
+    {
+        return view('hadi.ajax');
+	}
+
+    public function hadi_ajax_response(Request $request)
+    {
+        $input = $request->toArray();
+        $data = array();
+
+        if ($input['pid'] == 123)
+        {
+            $data['time'] = Carbon::now()->toDateTimeString();
+        }
+        else
+        {
+            $data['time'] = '0000/0/0 00:00';
+        }
+
+        return json_encode($data);
+	}
 }
