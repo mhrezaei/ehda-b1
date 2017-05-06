@@ -143,7 +143,7 @@ class PostController extends Controller
         return view('site.angels.0', compact('angels', 'java_var'));
     }
 
-    public function angels_find(Request $request)
+    public function angels_find(Requests\AngelsSearchReguest $request)
     {
         $data = $request->toArray();
         $data = $data['angel_name'];
