@@ -1,5 +1,10 @@
 <?php
 
+// API
+Route::group(['prefix' => 'api'], function (){
+    Route::get('/ehda/card/search/{username}/{password}/{code_melli}', 'ApiController@ehda_card_search');
+});
+
 // subdomain
 Route::group(['prefix' => '', 'middleware' => 'Subdomain'], function () {
 
