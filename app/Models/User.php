@@ -74,6 +74,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		return $this->belongsTo('App\Models\Post');
 	}
 
+    public function api_tokens()
+    {
+        return $this->hasMany('App\Models\Api_token');
+    }
+
 	/*
 	|--------------------------------------------------------------------------
 	| Stators
