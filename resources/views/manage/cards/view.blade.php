@@ -10,6 +10,11 @@
 		<a href="{{url('/card/show_card/mini/'.$model->say('encrypted_code_melli'))}}" target="_blank">
 			<img src="{{url('/card/show_card/mini/'.$model->say('encrypted_code_melli'))}}" style="height: 450px">
 		</a>
+		<div class="text-center" style="position: relative ; top: -80px;">
+			@if(Auth::user()->can($model->isActiveVolunteer()? 'volunteers.edit' : 'cards.edit'))
+				<a href="{{ url("manage/cards/$model->id/edit") }}" class="btn btn-lg btn-primary">{{ trans('people.cards.manage.edit') }}</a>
+			@endif
+		</div>
 	</div>
 
 	<h2 class="mv20">

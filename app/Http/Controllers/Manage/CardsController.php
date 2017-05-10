@@ -624,17 +624,22 @@ class CardsController extends Controller
 
 		//Validation...
 		$already = Printing::selector([
-			'event_id' => $request->event_id,
+			//'event_id' => $request->event_id,
 			'user_id' => $user->id,
 			'criteria' => "under_any_action",
 		])->first();
-		if($already)
-			return $this->jsonFeedback(trans('people.cards.manage.print_already_requested'));
+		if($already) {
+			$id = $already->id ;
+			//return $this->jsonFeedback(trans('people.cards.manage.print_already_requested'));
+		}
+		else {
+			$id = 0 ;
+		}
 
 
 		//Processing Printing table...
 		$parameters = [
-			'id' => null,
+			'id' => $id,
 			'user_id' => $user->id,
 			'event_id' => $request->event_id,
 		];
@@ -663,15 +668,20 @@ class CardsController extends Controller
 				continue ;
 
 			$already = Printing::selector([
-					'event_id' => $request->event_id,
-					'user_id' => $user->id,
-					'criteria' => "under_any_action",
+				//'event_id' => $request->event_id,
+				'user_id' => $user->id,
+				'criteria' => "under_any_action",
 			])->first();
-			if($already)
-				continue ;
+			if($already) {
+				$id = $already->id ;
+				//return $this->jsonFeedback(trans('people.cards.manage.print_already_requested'));
+			}
+			else {
+				$id = 0 ;
+			}
 
 			$parameters = [
-					'id' => null,
+					'id' => $id,
 					'user_id' => $user->id,
 					'event_id' => $request->event_id,
 			];
