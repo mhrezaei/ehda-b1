@@ -12,12 +12,19 @@
 
 
 	@include("manage.frame.widgets.grid-text" , [
-		'link' => "urlN:manage/cards/printings/pending/-id-",
-		'class' => "btn btn-default btn-sm mv10" ,
-		'condition' => $model->branch=='event' ,
-		'text' => trans('people.printings.print_request') ,
+		'link' => "modal:manage/posts/-id-/stats" ,
+		'class' => "mv20" ,
+		'condition' => $model->branch=='event' and $total_cards = $model->cards()->count() ,
+		'icon' => "credit-card mv10" ,
+		'text' => \App\Providers\AppServiceProvider::pd($total_cards). ' ' . trans('people.cards.full_title') ,
+		'color' => "success" ,
 		'size' => "10" ,
 	]     )
+
+	{{--@include("manage.frame.widgets.grid-text" , [--}}
+		{{--'link' => "urlN:manage/cards/printings/pending/-id-",--}}
+		{{--'condition' => $model->branch=='event' and $total_prints = $model->printings()->count() ,--}}
+	{{--]     )--}}
 </td>
 
 

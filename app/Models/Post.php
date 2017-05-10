@@ -62,6 +62,15 @@ class Post extends Model
 		return Branch::selectBySlug($this->branch);
 	}
 
+	public function cards()
+	{
+		return User::where('event_id' , $this->id);
+	}
+
+	public function printings()
+	{
+		return Printing::where('event_id' , $this->id) ;
+	}
 
 	public function loadPhotos()
 	{
