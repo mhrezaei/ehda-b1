@@ -3,7 +3,15 @@
 </td>
 <td>
 	<div>
-		{{ $model->user->fullName() }}
+		@include("manage.frame.widgets.grid-text" , [
+			'text' => $model->user->fullName(),
+			'link' => "modal:manage/cards/".$model->user_id."/view",
+		])
+
+		{{--{{ $model->user->fullName() }}--}}
+		@if(Auth::user()->isDeveloper())
+			&nbsp;({{$model->user_id}})
+		@endif
 	</div>
 	<div class="mv5 f10 text-grey">
 		{{ trans('validation.attributes.card_no') }}:&nbsp;

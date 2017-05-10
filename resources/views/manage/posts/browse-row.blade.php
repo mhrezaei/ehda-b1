@@ -9,6 +9,15 @@
 	@else
 		{{ $model->say('title_limit') }}
 	@endif
+
+
+	@include("manage.frame.widgets.grid-text" , [
+		'link' => "urlN:manage/cards/printings/pending/-id-",
+		'class' => "btn btn-default btn-sm mv10" ,
+		'condition' => $model->branch=='event' ,
+		'text' => trans('people.printings.print_request') ,
+		'size' => "10" ,
+	]     )
 </td>
 
 
@@ -29,6 +38,7 @@
 			{{ trans('posts.manage.deleted_by' , ['name'=>$model->say('deleted')])  }}
 		</div>
 	@endif
+
 </td>
 
 @if($branch->hasFeature('domain') and Auth::user()->isGlobal())
@@ -45,7 +55,7 @@
 	@include('manage.frame.widgets.grid-action' , [
 		'id' => $model->id ,
 		'actions' => [
-			['eye' , trans('manage.permits.view') , "urlN:".$model->say('preview')],
+//			['eye' , trans('manage.permits.view') , "urlN:".$model->say('preview')],
 			['pencil' , trans('manage.permits.edit') , "url:manage/posts/".$model->branch()->slug."/edit/-id-" , '*' , $model->canEdit()],
 			['times' , trans('forms.button.hard_delete') , 'modal:manage/posts/-id-/hard_delete' , "$module.bin" , $model->trashed() and Auth::user()->isDeveloper()] ,
 

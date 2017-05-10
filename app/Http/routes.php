@@ -164,7 +164,7 @@ Route::group(['prefix' => '', 'middleware' => 'Subdomain'], function () {
             Route::get('/reports', 'CardsController@reports');//@TODO: INTACT!
 
             Route::get('/printings/modal/{printing_id}/{modal_action}', 'PrintingsController@modalActions');
-            Route::get('/printings/download_excel', 'PrintingsController@excelDownload');
+            Route::get('/printings/download_excel/{event_id}', 'PrintingsController@excelDownload');
             Route::get('/printings/{request_tab?}/{event_id?}/{user_id?}/{volunteer_id?}' , 'PrintingsController@browse');
 
             Route::get('/create/{volunteer_id?}', 'CardsController@create');

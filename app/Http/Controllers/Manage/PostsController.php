@@ -50,8 +50,10 @@ class PostsController extends Controller
 
 	public function searchResult(Requests\Manage\PostSearchRequest $request , $request_branch)
 	{
+		//dd($request_branch);
 		//Security...
-		if(!Auth::user()->can("posts-$request_branch.browse"))
+		//if(!Auth::user()->can("posts-$request_branch.browse"))
+		if(!Auth::user()->can("posts-$request_branch"))
 			return view('errors.403');
 
 		//Model...

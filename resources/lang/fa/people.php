@@ -226,12 +226,15 @@ return [
 	],
 
 	'printings' => [
+		'print_request' => "صف چاپ کارت" ,
 		'all_events' => "همه‌ی رویدادها",
 		'without_events' => "بدون رویدادها",
 		'event_selection' => "انتخاب رویداد",
 		'users_added_to_print' => ":count نفر به صف چاپ اضافه شدند.",
 		'nobody_added_to_print' => "شخص جدیدی به صف چاپ اضافه نشد.",
 		'event_hint_for_card_edits' => "اگر کارت را به صف چاپ فیزیکی می‌فرستید، می‌توانید رویداد را انتخاب کنید. در غیر این صورت انتخاب رویداد تأثیری ندارد.",
+	     'download_excel_file' => "دانلود فایل اکسل" ,
+	     'you_may_download_excel_file' => "اکنون می‌توانید فایل اکسل را دانلود کنید." ,
 	],
 
 

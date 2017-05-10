@@ -19,14 +19,16 @@
     </tr>
     <?php $r = 1; ?>
     @foreach(\App\Providers\TahaServiceProvider::getExcelExport() as $row)
-        <tr>
-            <td>{{ $r++ }}</td>
-            <td>{{ $row->user->card_no }}&nbsp;</td>
-            <td>{{ $row->user->fullName() }}</td>
-            <td>{{ $row->user->name_father }}</td>
-            <td>{{ $row->user->code_melli }}&nbsp;</td>
-            <td>{{ $row->user->say('birth_date_on_card_en') }}</td>
-            <td>{{ $row->user->say('register_date_on_card_en') }}</td>
-        </tr>
+        @if($row->user->birth_date != '0000-00-00')
+            <tr>
+                <td>{{ $r++ }}</td>
+                <td>{{ $row->user->card_no }}&nbsp;</td>
+                <td>{{ $row->user->fullName() }}</td>
+                <td>{{ $row->user->name_father }}</td>
+                <td>{{ $row->user->code_melli }}&nbsp;</td>
+                <td>{{ $row->user->say('birth_date_on_card_en') }}</td>
+                <td>{{ $row->user->say('register_date_on_card_en') }}</td>
+            </tr>
+        @endif
     @endforeach
 </table>
