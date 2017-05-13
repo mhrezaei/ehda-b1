@@ -17,7 +17,7 @@ class Authenticate
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if (Auth::guard($guard)->guest() or Auth::user()->volunteer_status < 8) {
+        if (Auth::guard($guard)->guest() or Auth::user()->volunteer_status < 0) {
             if ($request->ajax() || $request->wantsJson()) {
                 return response('Unauthorized.', 401);
             } else {

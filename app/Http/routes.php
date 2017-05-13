@@ -17,6 +17,7 @@ Route::group(['prefix' => '', 'middleware' => 'Subdomain'], function () {
     Route::get('hadi/ajax', 'TestController@hadi_ajax');
     Route::post('hadi/ajax/response', 'TestController@hadi_ajax_response');
     Route::get('mhadi/{status?}/{act?}', 'TestController@hadi');
+    Route::get('hadi/pwsets' , 'TestController@password_set_for_unverified_volunteers') ;
 
     /*
     |--------------------------------------------------------------------------

@@ -128,7 +128,7 @@ trait PermitsTrait
 		if($this->isDeveloper())
 			return true ;
 
-		if($this->volunteer_status<8)
+		if($this->volunteer_status<0)
 			return false ;
 
 		return $this->canDomain($requested_domain) AND $this->canRole($requested_role);
