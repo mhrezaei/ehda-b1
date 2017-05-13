@@ -28,7 +28,12 @@
 
 		{{-- Notes ...--}}
 
-		@if($model->unverified_flag < 0)
+		@if($model->volunteer_status<8)
+			@include("forms.note" , [
+				'text' => trans('manage.account.profile_completions_note_for_new_volunteers'),
+				'shape' => "info" ,
+			]     )
+		@elseif($model->unverified_flag < 0)
 			@include('forms.note' , [
 				'text' => trans('manage.account.profile_reject_note') ,
 				'shape' => 'danger' ,
@@ -45,23 +50,27 @@
 			])
 		@endif
 
+
+
 		@include('manage.account.profile-inside' , ['show_unchanged' => true])
 
 		@include('forms.group-start')
 
 		@include('forms.button' , [
-			'label' => trans('manage.account.profile_save'),
+			'label' => $model->volunteer_status<8? trans('forms.button.save') : trans('manage.account.profile_save'),
 			'shape' => 'primary',
 			'type' => 'submit' ,
 			'value' => 'save',
 		])
 
-		@include('forms.button' , [
-			'label' => trans('manage.account.profile_revert'),
-			'shape' => 'danger',
-			'type' => 'submit' ,
-			'value' => 'revert',
-		])
+		@if($model->volunteer_status>=8)
+			@include('forms.button' , [
+				'label' => trans('manage.account.profile_revert'),
+				'shape' => 'danger',
+				'type' => 'submit' ,
+				'value' => 'revert',
+			])
+		@endif
 
 	@include('forms.group-end')
 

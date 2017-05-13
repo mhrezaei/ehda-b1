@@ -21,6 +21,7 @@ use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
@@ -52,7 +53,7 @@ class TestController extends Controller
 	{
 		$users = User::whereNull('domain')->whereNotNull('home_city') ;
 		return view('templates.say' , ['array'=>$users->count()]);
-		
+
 		$total = 0 ;
 
 		foreach($users->get() as $user) {
@@ -471,5 +472,25 @@ class TestController extends Controller
         }
 
         return json_encode($data);
+	}
+
+	public function password_set_for_unverified_volunteers()
+	{
+		 $users = User::select('id','tel_mobile' , 'password' , 'password_force_change')->whereNull('password')->whereNotNull('tel_mobile')->limit(100)->get();
+		 $count = 0 ;
+		 $last_user = new User() ;
+
+		 foreach($users as $user) {
+		 	$user->password = Hash::make($user->tel_mobile) ;
+		 	$user->password_force_change = 1 ;
+		 	$count += boolval($user->save()) ;
+		 	$last_user = $user ;
+		 }
+
+		 echo $count . ' updated; last one: '.$last_user->id ;
+		 if($count>0) {
+		    echo "<script>location.reload()</script>" ;
+	    }
+		 return ;
 	}
 }

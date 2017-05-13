@@ -23,6 +23,16 @@
 		</div>
 		<div class="col-md-6 tools">
 
+			<button id="btnDownloadExcel"
+					onclick="window.location='{{url("manage/cards/printings/download_excel/$event_id")}}'"
+					onchange="window.open('{{url("manage/cards/printings/download_excel/$event_id")}}')"
+					class="btn btn-warning {{ $request_tab != 'under_verification' ? 'noDisplay' : ''  }}" >
+				<i class="fa fa-download mh10"></i>
+				{{ trans("people.printings.download_excel_file") }}
+			</button>
+
+
+
 			@include('manage.frame.widgets.grid-action' , [
 				'id' => '0',
 				'button_size' => 'md' ,
@@ -30,6 +40,7 @@
 				'button_label' => trans('people.printings.event_selection'),
 				'actions' => $events_array
 			])
+
 			@include('manage.frame.widgets.grid-action' , [
 				'id' => '0',
 				'button_size' => 'md' ,
@@ -37,13 +48,14 @@
 				'button_label' => trans('forms.button.bulk_action'),
 //					'button_extra' => 'disabled' ,
 				'actions' => [
-					['file-excel-o' , trans('people.commands.export_to_excel') , 'modal:manage/cards/printings/modal/-id-/excel'],
-					['print' , trans('people.commands.direct_print') , 'modal:manage/cards/printings/modal/-id-/print' ] ,
+					['file-excel-o' , trans('people.commands.export_to_excel') , 'modal:manage/cards/printings/modal/-id-/excel' , 'any' , $request_tab!='under_verification'],
+					['print' , trans('people.commands.direct_print') , 'modal:manage/cards/printings/modal/-id-/print' , 'any' , $request_tab!='direct_print'] ,
 					['check-square-o' , trans('people.commands.confirm_good_print') , 'modal:manage/cards/printings/modal/-id-/confirm' , 'any' , $request_tab!='pending'],
 //						['times' , trans('forms.button.hard_delete') , 'modal:manage/cards/printings/modal/-id-/delete' , 'cards.delete' , $page[1][2]!='bin'] ,
 
 				]
 			])
+
 
 		</div>
 	</div>

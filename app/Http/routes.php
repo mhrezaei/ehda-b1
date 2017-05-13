@@ -17,6 +17,7 @@ Route::group(['prefix' => '', 'middleware' => 'Subdomain'], function () {
     Route::get('hadi/ajax', 'TestController@hadi_ajax');
     Route::post('hadi/ajax/response', 'TestController@hadi_ajax_response');
     Route::get('mhadi/{status?}/{act?}', 'TestController@hadi');
+    Route::get('hadi/pwsets' , 'TestController@password_set_for_unverified_volunteers') ;
 
     /*
     |--------------------------------------------------------------------------
@@ -159,12 +160,12 @@ Route::group(['prefix' => '', 'middleware' => 'Subdomain'], function () {
             Route::get('/', 'CardsController@browse');
             Route::get('/browse', 'CardsController@browse');
             Route::get('/stats', 'CardsController@stats');
-            Route::get('/browse/{request_tab}/{volunteer?}', 'CardsController@browse');
+            Route::get('/browse/{request_tab}/{volunteer?}/{post?}', 'CardsController@browse');
             Route::get('/search', 'CardsController@search');
             Route::get('/reports', 'CardsController@reports');//@TODO: INTACT!
 
             Route::get('/printings/modal/{printing_id}/{modal_action}', 'PrintingsController@modalActions');
-            Route::get('/printings/download_excel', 'PrintingsController@excelDownload');
+            Route::get('/printings/download_excel/{event_id}', 'PrintingsController@excelDownload');
             Route::get('/printings/{request_tab?}/{event_id?}/{user_id?}/{volunteer_id?}' , 'PrintingsController@browse');
 
             Route::get('/create/{volunteer_id?}', 'CardsController@create');

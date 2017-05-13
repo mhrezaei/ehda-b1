@@ -119,29 +119,30 @@ class Printing extends Model
 				break;
 
 			case 'under_print' :
-				$table = $table->where('queued_at' , '>' , '0')->whereNull('printed_at') ;
+				$table = $table->whereNotNull('queued_at')->whereNull('printed_at') ;
 				break;
 
 			case 'under_verification' :
-				$table = $table->where('printed_at' , '>' , '0')->whereNull('verified_at') ;
+				$table = $table->whereNotNull('printed_at' )->whereNull('verified_at') ;
 				break;
 
 			case 'under_dispatch' :
-				$table = $table->where('verified_at' , '>' , '0')->whereNull('dispatched_at') ;
+				$table = $table->whereNotNull('verified_at')->whereNull('dispatched_at') ;
 				break;
 
 			case 'under_delivery' :
-				$table = $table->where('dispatched_at' , '>' , '0')->whereNull('delivered_at') ;
+				$table = $table->whereNotNull('dispatched_at' )->whereNull('delivered_at') ;
 				break;
 
 			case 'archive' :
-				$table = $table->where('delivered_at' , '>' , '0') ;
+				$table = $table->where('delivered_at' ) ;
 				break;
 
 			case 'bin' :
 				$table = $table->onlyTrashed();
 				break;
 		}
+
 
 		/*--------------------------------------------------------------------------
 		| Return ...

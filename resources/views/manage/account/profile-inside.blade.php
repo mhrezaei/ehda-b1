@@ -2,10 +2,53 @@
 
 @include('forms.input' , [
 	'name' => '_name',
-	'label' => trans('validation.attributes.name_first'),
-	'value' => $model->fullName() ,
+	'label' => trans('validation.attributes.code_melli'),
+	'value' => $model->code_melli ,
 	'extra' => 'disabled' ,
 ])
+
+@if($show_unchanged or isset($model->changes->name_first))
+	@include('forms.input' , [
+		'name' => 'name_first',
+		'value' => $model->name_first ,
+		'class' => 'form-required form-default'
+	])
+@endif
+
+@if($show_unchanged or isset($model->changes->name_last))
+	@include('forms.input' , [
+	'name' => 'name_last',
+	'value' => $model->name_last ,
+	'class' => 'form-required ' ,
+	])
+@endif
+
+
+@if($show_unchanged or isset($model->changes->code_id))
+	@include('forms.input' , [
+		'name' => 'code_id',
+		'value' => $model->code_id ,
+		'class' => 'form-required form-number' ,
+	])
+@endif
+
+
+
+@if($show_unchanged or isset($model->changes->name_father))
+	@include('forms.input' , [
+		'name' => 'name_father',
+		'value' => $model->name_father ,
+		'class' => 'form-required' ,
+	])
+@endif
+
+@if($show_unchanged or isset($model->changes->gender))
+	@include('forms.select-gender' , [
+		'value' => $model->gender,
+		'blank_value' => $model->gender? 'NO' : ' ',
+		'class' => 'form-required',
+	])
+@endif
 
 @if($show_unchanged or isset($model->changes->marital))
 	@include('forms.select-marital' , [

@@ -26,16 +26,15 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 {
 	use Authenticatable, CanResetPassword;
 	use PermitsTrait;
-	use TahaModelTrait ;
-	use TahaMetaTrait ;
+	use TahaModelTrait;
+	use TahaMetaTrait;
 
-	protected $guarded = ['id' , 'deleted_at' , 'roles' , 'domains' , 'unverified_changes' , 'unverified_flag' , 'settings'] ;
-	protected static $cards_mandatory_fields = ['code_melli' , 'code_id' , 'name_first' , 'name_last' , 'name_father' , 'birth_date' , 'birth_city' , 'gender' , 'home_province' , 'home_city' , 'organs'  ] ; //@TODO hadi check for data
-	protected static $cards_optional_fields = ['email' , 'marital' , 'tel_mobile' , 'home_address' , 'home_tel' , 'home_postal_code' , 'work_address' , 'work_province' , 'work_city' , 'work_tel' , 'work_postal_code' , 'edu_level', 'edu_city' , 'edu_field' , 'job' , 'newsletter' , 'print_status' ] ;
-	public static $donatable_organs = ['heart','lung','liver','kidney','pancreas','tissues'] ;
-	public static $cards_search_fields = ['name_first' , 'name_last' , 'email' ] ;
-	public static $volunteers_search_fields = ['name_first' , 'name_last' , 'code_melli' , 'email'] ;
-
+	public static    $donatable_organs         = ['heart', 'lung', 'liver', 'kidney', 'pancreas', 'tissues'];
+		public static    $cards_search_fields      = ['name_first', 'name_last', 'email']; //@TODO hadi check for data
+	public static    $volunteers_search_fields = ['name_first', 'name_last', 'code_melli', 'email'];
+protected static $cards_mandatory_fields   = ['code_melli', 'code_id', 'name_first', 'name_last', 'name_father', 'birth_date', 'birth_city', 'gender', 'home_province', 'home_city', 'organs'];
+	protected static $cards_optional_fields    = ['email', 'marital', 'tel_mobile', 'home_address', 'home_tel', 'home_postal_code', 'work_address', 'work_province', 'work_city', 'work_tel', 'work_postal_code', 'edu_level', 'edu_city', 'edu_field', 'job', 'newsletter', 'print_status'];
+	protected        $guarded                  = ['id', 'deleted_at', 'roles', 'domains', 'unverified_changes', 'unverified_flag', 'settings'];
 
 
 	/*
@@ -47,16 +46,17 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	public function printer()
 	{
-		return $this->hasOne('App\Models\Printer') ;
+		return $this->hasOne('App\Models\Printer');
 	}
+
 	public function logins()
 	{
-		return $this->hasMany('App\Models\Login') ;
+		return $this->hasMany('App\Models\Login');
 	}
 
 	public function activities()
 	{
-		return $this->hasMany('App\Models\Activity') ;
+		return $this->hasMany('App\Models\Activity');
 	}
 
 	public function setting($key)
@@ -66,7 +66,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	public function printing()
 	{
-		return $this->hasMany('App\Models\Printing') ;
+		return $this->hasMany('App\Models\Printing');
 	}
 
 	public function event()
@@ -83,45 +83,51 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	public static function searchRawQuery($keyword, $fields = null)
 	{
-		if(!$fields)
-			$fields = self::$cards_search_fields ;
-
-		$concat_string = " " ;
-		foreach($fields as $field) {
-			$concat_string .= " , `$field` " ;
+		if(!$fields) {
+			$fields = self::$cards_search_fields;
 		}
 
-		return " LOCATE('$keyword' , CONCAT_WS(' ' $concat_string)) " ;
+		$concat_string = " ";
+		foreach($fields as $field) {
+			$concat_string .= " , `$field` ";
+		}
+
+		return " LOCATE('$keyword' , CONCAT_WS(' ' $concat_string)) ";
 	}
 
 
 	public function isCardIncomplete()
 	{
 		foreach(self::$cards_mandatory_fields as $field) {
-			if(!$this->$field or $this->$field == '0')
-				return true ;
+			if(!$this->$field or $this->$field == '0') {
+				return true;
+			}
 		}
 
-		return false ;
+		return false;
 	}
 
-	public function trashed($type='volunteer')
+	public function trashed($type = 'volunteer')
 	{
-		switch($type) {
+		switch ($type) {
 			case 'volunteer' :
-				if($this->volunteer_status < 0)
-					return true ;
-				else
-					return false ;
+				if($this->volunteer_status < 0) {
+					return true;
+				}
+				else {
+					return false;
+				}
 
 			case 'card':
-				if($this->card_status < 0)
-					return true ;
-				else
-					return false ;
+				if($this->card_status < 0) {
+					return true;
+				}
+				else {
+					return false;
+				}
 
 			default :
-				return false ;
+				return false;
 
 		}
 
@@ -129,30 +135,34 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	}
 
 
-	public function cardStatus($key='text')
+	public function cardStatus($key = 'text')
 	{
 		if($this->card_status < 0) {
-			$return['text'] = trans('people.cards.status.deleted') ;
+			$return['text']  = trans('people.cards.status.deleted');
 			$return['color'] = 'danger';
 		}
 		elseif($this->isCardIncomplete()) {
-			$return['text'] = trans('people.cards.manage.incomplete') ;
+			$return['text']  = trans('people.cards.manage.incomplete');
 			$return['color'] = 'danger';
 		}
 		else {
-			$return['text'] = trans('people.cards.manage.active') ;
+			$return['text']  = trans('people.cards.manage.active');
 			$return['color'] = 'success';
 		}
 
 		//Return...
-		if($key=='array')
-			return $return ;
-		else
-			return $return[$key] ;
+		if($key == 'array') {
+			return $return;
+		}
+		else {
+			return $return[ $key ];
+		}
 
 	}
+
 	/**
 	 * @param string $key
+	 *
 	 * @return mixed
 	 */
 	public function volunteerStatus($key = 'text')
@@ -160,38 +170,42 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 		//Discover...
 		if($this->volunteer_status < 0) {
-			$return['text'] = trans('people.volunteers.status.blocked') ;
+			$return['text']  = trans('people.volunteers.status.blocked');
 			$return['color'] = 'danger';
 		}
 		elseif($this->volunteer_status == 1) {
-			$return['text'] = trans('people.volunteers.status.examining') ;
-			$return['color'] = 'info' ;
+			$return['text']  = trans('people.volunteers.status.examining');
+			$return['color'] = 'info';
 		}
 		elseif($this->volunteer_status == 2) {
-			$return['text'] = trans('people.volunteers.status.documentation') ;
-			$return['color'] = 'info' ;
+			$return['text']  = trans('people.volunteers.status.documentation');
+			$return['color'] = 'info';
 		}
 		elseif($this->volunteer_status == 3) {
-			$return['text'] = trans('people.volunteers.status.pending') ;
-			$return['color'] = 'warning' ;
+			$return['text']  = trans('people.volunteers.status.pending');
+			$return['color'] = 'warning';
 		}
-		elseif($this->volunteer_status>=8) {
+		elseif($this->volunteer_status >= 8) {
 			if($this->unverified_flag > 0) {
-				$return['text'] = trans('people.volunteers.status.care') ;
-				$return['color'] = 'warning' ;
-			} else {
-				$return['text'] = trans('people.volunteers.status.active') ;
-				$return['color'] = 'success' ;
+				$return['text']  = trans('people.volunteers.status.care');
+				$return['color'] = 'warning';
+			}
+			else {
+				$return['text']  = trans('people.volunteers.status.active');
+				$return['color'] = 'success';
 			}
 		}
-		else
-			$return = null ;
+		else {
+			$return = null;
+		}
 
 		//Return...
-		if($key=='array')
-			return $return ;
-		else
-			return $return[$key] ;
+		if($key == 'array') {
+			return $return;
+		}
+		else {
+			return $return[ $key ];
+		}
 	}
 
 
@@ -200,15 +214,17 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 */
 	public function isDeveloper()
 	{
-		return in_array($this->code_melli , ['0074715623' , '0012071110' ]) ;
+		return in_array($this->code_melli, ['0074715623', '0012071110']);
 	}
 
 	public function isActiveVolunteer()
 	{
-		if($this->volunteer_status >= 8)
-			return true ;
-		else
-			return false ;
+		if($this->volunteer_status >= 8) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 	/**
@@ -216,10 +232,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 */
 	public function isVolunteer()
 	{
-		if($this->volunteer_status != 0)
-			return true ;
-		else
-			return false ;
+		if($this->volunteer_status != 0) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 	/**
@@ -227,68 +245,81 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 */
 	public function isCard()
 	{
-		if($this->card_status != 0)
-			return true ;
-		else
-			return false ;
+		if($this->card_status != 0) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 	/**
 	 * @param string $type
+	 *
 	 * @return bool
 	 */
-	public function isActive($type='volunteer')
+	public function isActive($type = 'volunteer')
 	{
-		$field = $type."_status" ;
-		if($this->$field >= 8)
-			return true ;
-		else
-			return false ;
+		$field = $type . "_status";
+		if($this->$field >= 8) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 	public function title()
 	{
-		if($this->gender==1)
+		if($this->gender == 1) {
 			$title = trans('people.mr');
-		else
+		}
+		else {
 			$title = trans('people.mrs');
+		}
 
-		if($this->edu_level >= 6)
-			$title .= ' '.trans('people.dr');
+		if($this->edu_level >= 6) {
+			$title .= ' ' . trans('people.dr');
+		}
 
-		return $title ;
+		return $title;
 	}
 
 	public function fullName($with_title = false)
 	{
-		if(!$this) return false ;
-		$return = $this->name_first . " " . $this->name_last ;
-		if($with_title)
-			$return = $this->title() . " " . $return ;
+		if(!$this) {
+			return false;
+		}
+		$return = $this->name_first . " " . $this->name_last;
+		if($with_title) {
+			$return = $this->title() . " " . $return;
+		}
 
-		return $return ;
+		return $return;
 	}
 
 
 	public function occupation()
 	{
-		$return = null ;
+		$return = null;
 
-		if($this->job)
-			$return .= $this->job. " / " ;
+		if($this->job) {
+			$return .= $this->job . " / ";
+		}
 
 		$return .= $this->say('edu_level'); // trans('people.edu_level.'.$this->edu_level) ;
 
-		if($this->edu_field)
-			$return .= " / ".$this->edu_field ;
+		if($this->edu_field) {
+			$return .= " / " . $this->edu_field;
+		}
 
-		return $return ;
+		return $return;
 	}
 
 
-	public function say($property, $default='-')
+	public function say($property, $default = '-')
 	{
-		switch($property) {
+		switch ($property) {
 			case 'created_at' :
 			case 'updated_at' :
 			case 'published_at' :
@@ -299,24 +330,27 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 				if($this->$property) {
 					return AppServiceProvider::pd(jDate::forge($this->$property)->format('j F Y [H:m]'));
 				}
-				else
-					return $default ;
+				else {
+					return $default;
+				}
 
 			case 'created_by' :
 			case 'updated_by' :
 			case 'published_by' :
 			case 'deleted_by' :
 				$model = self::find($this->$property);
-				if($model)
-					return $model->fullName() ;
-				else
+				if($model) {
+					return $model->fullName();
+				}
+				else {
 					return trans('forms.general.deleted');
+				}
 
 			case 'code_meli' :
-				return $this->say('code_melli' , $default) ;
+				return $this->say('code_melli', $default);
 
 			case 'encrypted_code_melli' :
-				return Crypt::encrypt($this->code_melli) ;
+				return Crypt::encrypt($this->code_melli);
 
 			case 'code_melli' :
 			case 'card_no' :
@@ -340,40 +374,49 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 				return $this->organs; //TODO: Do something here.
 
 			case 'name' :
-				return $this->name_first . " " . $this->name_last ;
+				return $this->name_first . " " . $this->name_last;
 
 			case 'fullName' :
-				return $this->title().' '. $this->name_first . " " . $this->name_last ;
+				return $this->title() . ' ' . $this->name_first . " " . $this->name_last;
 
 			case 'birth_date' :
-				if(!$this->$property and $this->$property!='0000-00-00')
+				if(!$this->$property and $this->$property != '0000-00-00') {
 					return AppServiceProvider::pd(jDate::forge($this->$property)->format('j F Y'));
-				else
-					return $default ;
+				}
+				else {
+					return $default;
+				}
 
 			case 'birth_date_on_card' :
-				return AppServiceProvider::pd(jDate::forge($this->birth_date)->format('Y/m/d'));
+				if(!$this->birth_date and $this->birth_date != '0000-00-00') {
+					return AppServiceProvider::pd(jDate::forge($this->birth_date)->format('Y/m/d'));
+				}
+				else {
+					return $default;
+				}
 
 			case 'register_date_on_card' :
 				return AppServiceProvider::pd(jDate::forge($this->card_registered_at)->format('Y/m/d'));
 
-            case 'birth_date_on_card_en' :
-                return jDate::forge($this->birth_date)->format('Y/m/d');
+			case 'birth_date_on_card_en' :
+				return jDate::forge($this->birth_date)->format('Y/m/d');
 
-            case 'register_date_on_card_en' :
-                return jDate::forge($this->card_registered_at)->format('Y/m/d');
+			case 'register_date_on_card_en' :
+				return jDate::forge($this->card_registered_at)->format('Y/m/d');
 
 			case 'gender' :
 			case 'marital':
 			case 'edu_level' :
 			case 'familization' :
-				if(!$this->$property)
-					return '-' ;
-				else
-					return trans("people.$property.".$this->$property) ;
+				if(!$this->$property) {
+					return '-';
+				}
+				else {
+					return trans("people.$property." . $this->$property);
+				}
 
 			case 'education' :
-				return trans("people.education.".intval($this->edu_level));
+				return trans("people.education." . intval($this->edu_level));
 
 			case 'birth_city' :
 			case 'edu_city' :
@@ -382,49 +425,47 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 			case 'home_province' :
 			case 'work_province' :
 				$state = State::find($this->$property);
-				if($state)
+				if($state) {
 					return $state->fullName();
-				else
+				}
+				else {
 					return $default;
+				}
 
 			case 'from_domain' :
-				$domain = Domain::selectBySlug($this->$property) ;
-				if($domain)
+				$domain = Domain::selectBySlug($this->$property);
+				if($domain) {
 					return $domain->title;
-				else
-					return $default;
-			case 'activities' :
-			    $act = array();
-				if ($this->activities and strlen($this->activities) > 1)
-				{
-					$activities = explode(',', $this->activities);
-					if (is_array($activities) and count($activities) > 0)
-                    {
-                        for ($i = 0; $i < count($activities); $i++)
-                        {
-                            if (strlen($activities[$i]) > 1)
-                            {
-                                $a = Activity::findBySlug($activities[$i]);
-                                if ($a)
-                                {
-                                    $act[] = $a->title;
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        return $act;
-                    }
 				}
-				else
-                {
-                    return $act;
-                }
-                return $act;
+				else {
+					return $default;
+				}
+			case 'activities' :
+				$act = [];
+				if($this->activities and strlen($this->activities) > 1) {
+					$activities = explode(',', $this->activities);
+					if(is_array($activities) and count($activities) > 0) {
+						for($i = 0; $i < count($activities); $i++) {
+							if(strlen($activities[ $i ]) > 1) {
+								$a = Activity::findBySlug($activities[ $i ]);
+								if($a) {
+									$act[] = $a->title;
+								}
+							}
+						}
+					}
+					else {
+						return $act;
+					}
+				}
+				else {
+					return $act;
+				}
+
+				return $act;
 
 			default:
-				return $this->$property ;
+				return $this->$property;
 		}
 
 	}
@@ -440,7 +481,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 */
 	public function makeForgotPasswordToken()
 	{
-		$token['reset_token'] = rand(100000, 999999);
+		$token['reset_token']  = rand(100000, 999999);
 		$token['expire_token'] = Carbon::now()->addMinutes(5);
 
 		$this->reset_token = json_encode($token);
@@ -451,23 +492,27 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	/**
 	 * @param $password
+	 *
 	 * @return bool
 	 */
 	public function oldPasswordChange($password)
 	{
-		$this->password = Hash::make($password);
+		$this->password              = Hash::make($password);
 		$this->password_force_change = 0;
+
 		return $this->save();
 	}
 
 	/**
 	 * @param int $password_force_change
+	 *
 	 * @return bool
 	 */
 	public function updateUserForResetPassword($password_force_change = 1)
 	{
-		$this->reset_token = null;
+		$this->reset_token           = null;
 		$this->password_force_change = $password_force_change;
+
 		return $this->save();
 	}
 
@@ -478,71 +523,76 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	|
 	*/
 
-	public static function counter($type, $criteria , $domain='auto')
+	public static function counter($type, $criteria, $domain = 'auto')
 	{
-		return self::selector($type,$criteria,$domain)->count();
+		return self::selector($type, $criteria, $domain)->count();
 	}
-	public static function selector($type , $criteria , $domain='auto')
+
+	public static function selector($type, $criteria, $domain = 'auto')
 	{
 
 		//Process Domain...
-		if($domain=='auto')
-			$domain =  Auth::user()->getDomain() ;
+		if($domain == 'auto') {
+			$domain = Auth::user()->getDomain();
+		}
 
-		if($domain=='global')
-			$table = self::where('id' , '>' , 0) ;
-		else
-			$table = self::where('domain' , $domain) ;
+		if($domain == 'global') {
+			$table = self::where('id', '>', 0);
+		}
+		else {
+			$table = self::where('domain', $domain);
+		}
 
 		//Process Search...
-		if(str_contains($criteria , 'search')) {
-			$keyword = str_replace('search:' , null , $criteria) ;
-			$criteria = 'search' ;
+		if(str_contains($criteria, 'search')) {
+			$keyword  = str_replace('search:', null, $criteria);
+			$criteria = 'search';
 		}
 
 		//Process Criteria...
-		if($type=='volunteer' or $type=='volunteers') {
-			if(!Auth::user()->isDeveloper())
-				$table = $table->where('code_melli' , '<>' , '0074715623' );
+		if($type == 'volunteer' or $type == 'volunteers') {
+			if(!Auth::user()->isDeveloper()) {
+				$table = $table->where('code_melli', '<>', '0074715623');
+			}
 
-			switch($criteria) {
+			switch ($criteria) {
 				case 'examining':
-					return $table->where('volunteer_status' , '=' , '1') ;
+					return $table->where('volunteer_status', '=', '1');
 				case 'documentation' :
-					return $table->where('volunteer_status' , '=' , '2') ;
+					return $table->where('volunteer_status', '=', '2');
 				case 'pending' :
-					return $table->where('volunteer_status' , '=' , '3') ;
+					return $table->where('volunteer_status', '=', '3');
 				case 'active':
-					return $table->where('volunteer_status' , '>=' , '8') ;
+					return $table->where('volunteer_status', '>=', '8');
 				case 'care' :
-					return $table->where('volunteer_status' , '>' , '0')->where('unverified_flag' , '1');
+					return $table->where('volunteer_status', '>', '0')->where('unverified_flag', '1');
 				case 'bin' :
-					return $table->where('volunteer_status' , '<' , '0');
+					return $table->where('volunteer_status', '<', '0');
 				case 'search' :
-					return $table->where('volunteer_status' , '!=' , '0')->whereRaw(self::searchRawQuery($keyword,self::$volunteers_search_fields)) ;
+					return $table->where('volunteer_status', '!=', '0')->whereRaw(self::searchRawQuery($keyword, self::$volunteers_search_fields));
 			}
 		}
-		elseif($type=='card' or $type=='cards') {
-			switch($criteria) {
+		elseif($type == 'card' or $type == 'cards') {
+			switch ($criteria) {
 				case 'active':
 				case 'all' :
-					return $table->where('card_status' , '>=' , '8') ;
+					return $table->where('card_status', '>=', '8');
 				case 'bin' :
-					return $table->where('card_status' , '<' , '0');
+					return $table->where('card_status', '<', '0');
 				case 'complete' :
-					return $table->where('card_status' , '>=' , '8')->whereRaw( " NOT ".self::incompleteRawQuery()) ; //@TODO
+					return $table->where('card_status', '>=', '8')->whereRaw(" NOT " . self::incompleteRawQuery()); //@TODO
 				case 'incomplete' :
-					return $table->where('card_status' , '>=' , '8')->whereRaw(self::incompleteRawQuery()) ; //@TODO
+					return $table->where('card_status', '>=', '8')->whereRaw(self::incompleteRawQuery()); //@TODO
 				case 'print_request' :
-					return $table->where('card_status' , '>=' , '8')->where('card_print_status' , 1);
+					return $table->where('card_status', '>=', '8')->where('card_print_status', 1);
 				case 'print_control' :
-					return $table->where('card_status' , '>=' , '8')->where('card_print_status' , 3);
+					return $table->where('card_status', '>=', '8')->where('card_print_status', 3);
 				case 'under_print' :
-					return $table->where('card_status' , '>=' , '8')->whereBetween('card_print_status' , [1,8]);
+					return $table->where('card_status', '>=', '8')->whereBetween('card_print_status', [1, 8]);
 				case 'newsletter_member' :
-					return $table->where('card_status' , '>=' , '8')->where('newsletter' , 1)->whereNotNull('email');
+					return $table->where('card_status', '>=', '8')->where('newsletter', 1)->whereNotNull('email');
 				case 'search' :
-					return $table->where('card_status' , '!=' , '0')->whereRaw(self::searchRawQuery($keyword,self::$cards_search_fields)) ;
+					return $table->where('card_status', '!=', '0')->whereRaw(self::searchRawQuery($keyword, self::$cards_search_fields));
 			}
 		}
 
@@ -552,23 +602,23 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	private static function incompleteRawQuery()
 	{
-		$query = " false " ;
+		$query = " false ";
 		foreach(self::$cards_mandatory_fields as $field) {
-			$query .= " or `$field` = null or `$field` = '0' " ;
+			$query .= " or `$field` = null or `$field` = '0' ";
 		}
 
-		return " ( $query ) " ;
+		return " ( $query ) ";
 	}
 
 	public static function virtualPrintTable()
 	{
 		return [
-				['n', trans('people.card_print_status.0')],
-				[1, trans('people.card_print_status.1')],
-				[2, trans('people.card_print_status.2')],
-				[3, trans('people.card_print_status.3')],
-				[4, trans('people.card_print_status.4')],
-				[9, trans('people.card_print_status.9')],
+			['n', trans('people.card_print_status.0')],
+			[1, trans('people.card_print_status.1')],
+			[2, trans('people.card_print_status.2')],
+			[3, trans('people.card_print_status.3')],
+			[4, trans('people.card_print_status.4')],
+			[9, trans('people.card_print_status.9')],
 		];
 	}
 
@@ -577,21 +627,25 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 */
 	public function canBePermitted()
 	{
-		$logged_user = Auth::user() ;
+		$logged_user = Auth::user();
 
-		if(!$this->isActive())
-			return false ;
+		if(!$this->isActive()) {
+			return false;
+		}
 
-		if($this->isDeveloper())
-			return false ;
+		if($this->isDeveloper()) {
+			return false;
+		}
 
-		if($logged_user->id == $this->id)
-			return false ;
+		if($logged_user->id == $this->id) {
+			return false;
+		}
 
-		if($this->can('manage') and !$logged_user->isAdmin())
-			return false ;
+		if($this->can('manage') and !$logged_user->isAdmin()) {
+			return false;
+		}
 
-		return $logged_user->can('volunteers.permit',$this->domain);
+		return $logged_user->can('volunteers.permit', $this->domain);
 	}
 
 	/*
@@ -601,75 +655,81 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	|
 	*/
 
-	public static function findVolunteer($code_melli , $min_status=-9 , $max_status=9)
+	public static function findVolunteer($code_melli, $min_status = -9, $max_status = 9)
 	{
-		return self::where('code_melli' , $code_melli)->whereBetween('volunteer_status' , [$min_status , $max_status])->where('volunteer_status' , '<>' , 0)->first() ;
+		return self::where('code_melli', $code_melli)->whereBetween('volunteer_status', [$min_status, $max_status])->where('volunteer_status', '<>', 0)->first();
 	}
 
 
-	public static function findCard($code_melli , $min_status=-9 , $max_status=9)
+	public static function findCard($code_melli, $min_status = -9, $max_status = 9)
 	{
-		return self::where('code_melli' , $code_melli)->whereBetween('card_status' , [$min_status , $max_status])->where('card_status' , '<>' , 0)->first() ;
+		return self::where('code_melli', $code_melli)->whereBetween('card_status', [$min_status, $max_status])->where('card_status', '<>', 0)->first();
 	}
 
 
 	public static function generateCardNo()
 	{
-		$record = self::orderBy('card_no', 'desc')->first() ;
-		if(!$record)
-			return 1500 ;
-		else
-			return $record->card_no + 1 ;
+		$record = self::orderBy('card_no', 'desc')->first();
+		if(!$record) {
+			return 1500;
+		}
+		else {
+			return $record->card_no + 1;
+		}
 	}
 
 	public function cardDelete()
 	{
 		//Delete the printing row...
-		Printing::where('user_id' , $this->id)->delete() ;
+		Printing::where('user_id', $this->id)->delete();
 
 		//Delete the card...
 		if($this->isVolunteer()) {
-			$this->card_status = 0 ;
-			$this->card_registered_at = null ;
+			$this->card_status        = 0;
+			$this->card_registered_at = null;
 			//			$this->card_no = null ;
-			$this->organs = null ;
-			return $this->save() ;
+			$this->organs = null;
+
+			return $this->save();
 		}
 		else {
-			return parent::delete() ;
+			return parent::delete();
 		}
 	}
 
 	public function volunteerDelete()
 	{
-		$this->volunteer_status = -$this->volunteer_status ;
+		$this->volunteer_status = -$this->volunteer_status;
 		if(Auth::check()) {
-			$this->deleted_at = Carbon::now()->toDateTimeString() ;
-			$this->deleted_by = Auth::user()->id ;
+			$this->deleted_at = Carbon::now()->toDateTimeString();
+			$this->deleted_by = Auth::user()->id;
 		}
-		return $this->save() ;
+
+		return $this->save();
 	}
 
 	public function volunteerUndelete()
 	{
-		$this->volunteer_status = -$this->volunteer_status ;
-		$this->deleted_at = null ;
-		$this->deleted_by = null ;
-		return $this->save() ;
+		$this->volunteer_status = -$this->volunteer_status;
+		$this->deleted_at       = null;
+		$this->deleted_by       = null;
+
+		return $this->save();
 
 	}
 
 	public function volunteerHardDelete()
 	{
 		if($this->card_status) {
-			$this->volunteer_status = 0 ;
-			$this->volunteer_registered_at = null ;
-			$this->roles = null ;
+			$this->volunteer_status        = 0;
+			$this->volunteer_registered_at = null;
+			$this->roles                   = null;
+
 			//			$this->domains = null ;
-			return $this->save() ;
+			return $this->save();
 		}
 		else {
-			return parent::delete() ;
+			return parent::delete();
 		}
 	}
 

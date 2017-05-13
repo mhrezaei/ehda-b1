@@ -101,28 +101,43 @@ class AccountController extends Controller
 
 		}
 
+
+
 		// IF SAVE ...
-		$raw_data = $request->toArray() ;
-		$new_data = [] ;
-		foreach($raw_data as $field => $value) {
-			if(isset($model->$field) and $model->$field != $value) {
-				$new_data[$field] = $value ;
+		if($model->volunteer_status>=8) {
+			$raw_data = $request->toArray();
+			$new_data = [];
+			foreach($raw_data as $field => $value) {
+				//if(isset($model->$field) and $model->$field != $value) {
+				if($field[0] != '_' and $model->$field != $value) {
+					$new_data[ $field ] = $value;
+				}
 			}
-		}
-		if(sizeof($new_data)) {
-			$model->unverified_changes = json_encode($new_data);
-			$model->unverified_flag = 1 ;
+			if(sizeof($new_data)) {
+				$model->unverified_changes = json_encode($new_data);
+				$model->unverified_flag    = 1;
+			}
+			else {
+				$model->unverified_changes = null;
+				$model->unverified_flag    = 0;
+			}
+			$ok = $model->save();
+			return $this->jsonAjaxSaveFeedback($ok , [
+				'success_message' => trans('manage.account.profile_save_note') ,
+				'success_refresh' => 1 ,
+			]);
 		}
 		else {
-			$model->unverified_changes = null;
-			$model->unverified_flag = 0 ;
-		}
-		$ok = $model->save() ;
+			$data = $request->toArray() ;
+			$data['id']  = $model->id ;
+			$ok = User::store($data) ;
 
-		return $this->jsonAjaxSaveFeedback($ok , [
-			'success_message' => trans('manage.account.profile_save_note') ,
-			'success_refresh' => 1 ,
-		]);
+			return $this->jsonAjaxSaveFeedback( $ok , [
+				'success_message' => trans('forms.feed.done') ,
+				'success_refresh' => 0 ,
+			]);
+		}
+
 	}
 
 	public function card(Request $request)

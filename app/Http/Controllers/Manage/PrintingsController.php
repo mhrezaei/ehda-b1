@@ -232,20 +232,23 @@ class PrintingsController extends Controller
 		//Return...
 		return $this->jsonAjaxSaveFeedback($ok , [
 				'success_refresh' => '1' ,
-//				'success_callback' => "window.open('')",
-				'success_redirect' => "manage/cards/printings/download_excel",
+				'success_callback' => "$('#btnDownloadExcel').change()",
+//				'success_redirect' => "manage/cards/printings/download_excel",
 		]);
 
 
 	}
 
-	public function excelDownload()
+	public function excelDownload($event_id)
 	{
+		$event_id = intval($event_id);
+		session()->put('excel_event_id' , $event_id) ;
+
 		Excel::create('Cards-To-Excel-For-Hard-Print', function($excel) {
 
 			$excel->sheet('print', function($sheet) {
 
-				$sheet->loadView('manage.printings.excel_file');
+				$sheet->loadView('manage.printings.excel_file' );
 
 			});
 

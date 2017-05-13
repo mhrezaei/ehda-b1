@@ -17,9 +17,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\View;
 
+
 class PostsController extends Controller
 {
-    	use TahaControllerTrait;
+	use TahaControllerTrait;
 
 	private $page = [];
 
@@ -31,256 +32,320 @@ class PostsController extends Controller
 	public function searchPanel($request_branch)
 	{
 		//Security...
-		if(!Auth::user()->can("posts-$request_branch.browse"))
+		if(!Auth::user()->can("posts-$request_branch.browse")) {
 			return view('errors.403');
+		}
 
 		//Model...
-		$db = Post::first() ;
+		$db     = Post::first();
 		$branch = Branch::selectBySlug($request_branch);
 
 		//Page Construction...
-		$page = $this->page ;
-		$page[0] = ["posts/".$request_branch , $branch->title() , 'search'] ;
-		$page[1] = ["$request_branch/search" , trans("forms.button.search") , "$request_branch/search"] ;
+		$page    = $this->page;
+		$page[0] = ["posts/" . $request_branch, $branch->title(), 'search'];
+		$page[1] = ["$request_branch/search", trans("forms.button.search"), "$request_branch/search"];
 
 		//View...
-		return view("manage.posts.search" , compact('page' , 'db' , 'branch'));
+		return view("manage.posts.search", compact('page', 'db', 'branch'));
 
 	}
 
-	public function searchResult(Requests\Manage\PostSearchRequest $request , $request_branch)
+	public function searchResult(Requests\Manage\PostSearchRequest $request, $request_branch)
 	{
+		//dd($request_branch);
 		//Security...
-		if(!Auth::user()->can("posts-$request_branch.browse"))
+		//if(!Auth::user()->can("posts-$request_branch.browse"))
+		if(!Auth::user()->can("posts-$request_branch")) {
 			return view('errors.403');
+		}
 
 		//Model...
-		$db = Post::first() ;
-		$branch = Branch::selectBySlug($request_branch);
-		$keyword = $request->keyword ;
-		$model_data = Post::selector($request_branch , 'auto' , 'all')
-				->whereRaw(Post::searchRawQuery($keyword))
-				->paginate(50);
+		$db         = Post::first();
+		$branch     = Branch::selectBySlug($request_branch);
+		$keyword    = $request->keyword;
+		$model_data = Post::selector($request_branch, 'auto', 'all')
+			->whereRaw(Post::searchRawQuery($keyword))
+			->paginate(50)
+		;
 
 		//Page Construction...
-		$page = $this->page ;
-		$page[0] = ["posts/".$request_branch , $branch->title() , 'search'] ;
-		$page[1] = ["$request_branch/search" , trans("forms.button.search") , "$request_branch/search"] ;
+		$page    = $this->page;
+		$page[0] = ["posts/" . $request_branch, $branch->title(), 'search'];
+		$page[1] = ["$request_branch/search", trans("forms.button.search"), "$request_branch/search"];
 
 		//View...
-		return view("manage.posts.browse" , compact('page','branch','model_data' , 'db' , 'keyword'));
+		return view("manage.posts.browse", compact('page', 'branch', 'model_data', 'db', 'keyword'));
 
 	}
 
 
-	public function browse($request_branch, $request_tab = 'published' , $request_category = 'all')
+	public function browse($request_branch, $request_tab = 'published', $request_category = 'all')
 	{
 		//Redirect if $request_branch is a number!
-		if(is_numeric($request_branch))
-			return $this->modalActions($request_branch , $request_tab) ;
+		if(is_numeric($request_branch)) {
+			return $this->modalActions($request_branch, $request_tab);
+		}
 
 		//Redirect if create
-		if($request_tab=='create')
+		if($request_tab == 'create') {
 			return $this->create($request_branch);
+		}
 
 		//Preconditions...
-		switch($request_tab) {
+		switch ($request_tab) {
 			case 'search':
-				$permission = "$request_branch.search" ;
+				$permission = "$request_branch.search";
 				break;
 			case 'published' :
 				$permission = "$request_branch";
 				break;
 			case 'scheduled' :
-				$permission = "$request_branch" ;
-				break ;
+				$permission = "$request_branch";
+				break;
 			case 'pending' :
-				$permission = "$request_branch" ;
+				$permission = "$request_branch";
 				break;
 			case 'drafts' :
-				$permission = "$request_branch.publish" ;
+				$permission = "$request_branch.publish";
 				break;
 			case 'my_posts' :
-				$permission = "$request_branch.create" ;
+				$permission = "$request_branch.create";
 				break;
 			case 'my_drafts' :
-				$permission = "$request_branch.create" ;
+				$permission = "$request_branch.create";
 				break;
 			case 'bin' :
-				$permission = "$request_branch.bin" ;
-				break ;
+				$permission = "$request_branch.bin";
+				break;
 			default:
-				$permission = 'none' ;
+				$permission = 'none';
 		}
 
 		//Permission
-		if(!Auth::user()->can('posts-'.$permission))
+		if(!Auth::user()->can('posts-' . $permission)) {
 			return view('errors.403');
+		}
 
 		//Preparation...
 		$branch = Branch::selectBySlug($request_branch);
-		if(!$branch)
+		if(!$branch) {
 			return view('errors.404');
+		}
 
-		$page = $this->page ;
-		$page[0] = ["posts/".$request_branch , $branch->title() , $request_tab] ;
-		$page[1] = ["$request_branch/".$request_tab , trans("posts.manage.$request_tab") , "$request_branch/".$request_tab] ;
+		$page    = $this->page;
+		$page[0] = ["posts/" . $request_branch, $branch->title(), $request_tab];
+		$page[1] = ["$request_branch/" . $request_tab, trans("posts.manage.$request_tab"), "$request_branch/" . $request_tab];
 
 		//Categories...
 		if($branch->hasFeature('category')) {
-			$categories = Category::where('branch_id', $branch->id)->orderBy('title')->get() ;
+			$categories = Category::where('branch_id', $branch->id)->orderBy('title')->get();
 
 			$categories_array = [
 				[
-					$request_category=='all'? 'check' : '',
+					$request_category == 'all' ? 'check' : '',
 					trans('posts.categories.all'),
-					url("manage/posts/$branch->slug/$request_tab/all")
+					url("manage/posts/$branch->slug/$request_tab/all"),
 				],
 				[
-					$request_category=='without'? 'check' : '',
+					$request_category == 'without' ? 'check' : '',
 					trans('posts.categories.withouts'),
-					url("manage/posts/$branch->slug/$request_tab/without")
+					url("manage/posts/$branch->slug/$request_tab/without"),
 				],
-				['-']
-			] ;
+				['-'],
+			];
 
 			foreach($categories as $category) {
-				array_push($categories_array , [
-					$request_category==$category->slug? 'check' : '' ,
-					$category->title ,
-					url("manage/posts/$branch->slug/$request_tab/$category->slug") ,
+				array_push($categories_array, [
+					$request_category == $category->slug ? 'check' : '',
+					$category->title,
+					url("manage/posts/$branch->slug/$request_tab/$category->slug"),
 				]);
 			}
 
 			if($request_category == 'without') {
-				$category_id = '0';
+				$category_id    = '0';
 				$category_label = trans('posts.categories.withouts');
 			}
 			elseif($request_category == 'all') {
-				$category_id = 'all';
+				$category_id    = 'all';
 				$category_label = trans('posts.categories.all');
 			}
 			elseif($request_category) {
 				$category = Category::where('branch_id', $branch->id)->where('slug', $request_category)->first();
 				if($category) {
-					$category_id = $category->id;
-					$category_label = $category->title ;
+					$category_id    = $category->id;
+					$category_label = $category->title;
 				}
-				else
-					return view('errors.404');;
+				else {
+					return view('errors.404');
+				};
 			}
 			else {
 				$category_id = 'all';
 			}
 		}
-		else
-			$category_id = 'all' ;
+		else {
+			$category_id = 'all';
+		}
 
 		//Model...
-		$model_data = Post::selector($request_branch, 'auto' , $request_tab , $category_id)->orderBy('created_at' , 'desc')->paginate(50);
-		$db = Post::first() ;
+		$model_data = Post::selector($request_branch, 'auto', $request_tab, $category_id)->orderBy('created_at', 'desc')->paginate(50);
+		$db         = Post::first();
 
 		//View...
-		return view("manage.posts.browse" , compact('page','branch','model_data' , 'db' , 'categories_array' , 'category_label'));
+		return view("manage.posts.browse", compact('page', 'branch', 'model_data', 'db', 'categories_array', 'category_label'));
 
+	}
+
+	public function stats($model) // It's actually "CARD STATS" not the "POSTS STATS" :)
+	{
+		$total_count     = $model->cards()->count();
+		$first_card      = $model->cards()->orderBy('created_at')->first();
+		$last_card       = $model->cards()->orderBy('created_at', 'desc')->first();
+		$first_print     = $model->printings()->orderBy('created_at')->first();
+		$last_print      = $model->printings()->orderBy('created_at', 'desc')->first();
+		$daily_registers = [];
+
+		/*-----------------------------------------------
+		| Model ...
+		*/
+		//if($total_count>0) {
+		$today    = min($first_card->created_at->startOfDay(), $first_print->created_at->startOfDay());
+		$tomorrow = min($first_card->created_at->startOfDay(), $first_print->created_at->startOfDay())->addDay();
+
+		while ($today < max($last_card->created_at, $last_print->created_at)) {
+			$count1            = $model->cards()->where('created_at', '>=', $today)->where('created_at', '<', $tomorrow)->count();
+			$count2            = $model->printings()->where('created_at', '>=', $today)->where('created_at', '<', $tomorrow)->count();
+			$daily_registers[] = [$today->toDateTimeString(), $count1, $count2];
+
+			$today->addDay();
+			$tomorrow->addDay();
+		}
+		//}
+
+		/*-----------------------------------------------
+		| View ...
+		*/
+
+		return view('manage.posts.stats', compact('model', 'total_count', 'daily_registers'));
 	}
 
 	public function modalActions($post_id, $view_file)
 	{
 
-		if($view_file=='edit')
-			return $this->editor($post_id) ;
-		if($post_id==0)
+		if($view_file == 'edit') {
+			return $this->editor($post_id);
+		}
+		if($post_id == 0) {
 			return $this->modalBulkAction($view_file);
+		}
 
 		$model = Post::withTrashed()->find($post_id);
-		$view = "manage.posts.$view_file";
-		$opt = [] ;
+		$view  = "manage.posts.$view_file";
+		$opt   = [];
 
 		//Particular Actions..
-		switch($view_file) { //TODO: Remove if not neccessary!
+		switch ($view_file) { //TODO: Remove if not neccessary!
 			case 'permits' :
-				$opt['domains'] = Domain::orderBy('title')->get() ;
+				$opt['domains'] = Domain::orderBy('title')->get();
 				break;
+			case 'stats' :
+				return $this->stats($model);
 			case 'delete' :
 				return $this->soft_delete($post_id);
 			case 'undelete' :
-				return $this->undelete($post_id) ;
+				return $this->undelete($post_id);
 			case 'unpublish' :
-				return $this->unpublish($post_id) ;
+				return $this->unpublish($post_id);
 		}
 
-		if(!$model) return view('errors.m410');
-		if(!View::exists($view)) return view('templates.say' , ['array'=>$view]); //@TODO: REMOVE THIS LINE
-		if(!View::exists($view)) return view('errors.m404');
+		if(!$model) {
+			return view('errors.m410');
+		}
+		if(!View::exists($view)) {
+			return view('templates.say', ['array' => $view]);
+		} //@TODO: REMOVE THIS LINE
+		if(!View::exists($view)) {
+			return view('errors.m404');
+		}
 
-		return view($view , compact('model' , 'opt')) ;
+		return view($view, compact('model', 'opt'));
 
 	}
 
 
-
 	private function modalBulkAction($view_file)
 	{
-		$view = "manage.posts.$view_file-bulk" ;
+		$view = "manage.posts.$view_file-bulk";
 
-		if(!View::exists($view)) return view('templates.say' , ['array'=>$view]); //@TODO: REMOVE THIS LINE
-		if(!View::exists($view)) return view('errors.m404');
+		if(!View::exists($view)) {
+			return view('templates.say', ['array' => $view]);
+		} //@TODO: REMOVE THIS LINE
+		if(!View::exists($view)) {
+			return view('errors.m404');
+		}
 
-		return view($view) ;
+		return view($view);
 	}
 
 	private function create($branch_slug)
 	{
 		//Model...
-		$model = new Post() ;
-		$model->branch = $branch_slug ;
-		$model->domains = '' ;
-		if(!$model->branch())
+		$model          = new Post();
+		$model->branch  = $branch_slug;
+		$model->domains = '';
+		if(!$model->branch()) {
 			return view('errors.410');
+		}
 
 		//Permission...
-		if(!Auth::user()->can("posts-$branch_slug.create"))
+		if(!Auth::user()->can("posts-$branch_slug.create")) {
 			return view('errors.403');
+		}
 
 		//Preparetions...
-		$page = $this->page ;
-		$page[0] = ["posts/$branch_slug" , $model->branch()->title()] ;
-		$page[1] = ["posts/create/$branch_slug" , trans('posts.manage.create' , ['thing' => $model->branch()->title(1)])];
+		$page    = $this->page;
+		$page[0] = ["posts/$branch_slug", $model->branch()->title()];
+		$page[1] = ["posts/create/$branch_slug", trans('posts.manage.create', ['thing' => $model->branch()->title(1)])];
 
-		if(Auth::user()->isGlobal())
+		if(Auth::user()->isGlobal()) {
 			$domains = Domain::orderBy('title');
+		}
 
 		//View...
-		return view('manage.posts.editor' , compact('page', 'model' , 'domains'));
+		return view('manage.posts.editor', compact('page', 'model', 'domains'));
 
 	}
 
-	public function editor($branch_slug , $post_id)
+	public function editor($branch_slug, $post_id)
 	{
 		//Model...
-		$model = Post::withTrashed()->find($post_id) ;
-		$model->loadPhotos() ;
+		$model = Post::withTrashed()->find($post_id);
+		$model->loadPhotos();
 
-		if(!$model)
+		if(!$model) {
 			return view('errors.410');
+		}
 
 		//Permission...
-		if(!$model->canEdit())
+		if(!$model->canEdit()) {
 			return view('errors.403');
+		}
 
 		//Preparations...
-		$page = $this->page ;
-		$page[0] = ["posts/".$model->branch , $model->branch()->title() ] ;
-		$page[1] = ["posts/$post_id/edit" , trans('posts.manage.edit' , ['thing'=>$model->branch()->singular_title]) ] ;
+		$page    = $this->page;
+		$page[0] = ["posts/" . $model->branch, $model->branch()->title()];
+		$page[1] = ["posts/$post_id/edit", trans('posts.manage.edit', ['thing' => $model->branch()->singular_title])];
 
-		if(Auth::user()->isGlobal())
+		if(Auth::user()->isGlobal()) {
 			$domains = Domain::orderBy('title');
+		}
 
 		//View...
-		return view('manage.posts.editor' , compact('page','model' , 'domains'));
+		return view('manage.posts.editor', compact('page', 'model', 'domains'));
 
 	}
+
 	/*
 	|--------------------------------------------------------------------------
 	| Save Methods
@@ -291,17 +356,22 @@ class PostsController extends Controller
 	private function unpublish($post_id)
 	{
 		//Preparations...
-		$model = Post::find($post_id) ;
-		if(!$model) return $this->jsonFeedback() ;
+		$model = Post::find($post_id);
+		if(!$model) {
+			return $this->jsonFeedback();
+		}
 
-		if(!Auth::user()->can('posts-'.$model->branch.".publish",$model->domains))
-			return $this->jsonFeedback(trans('validation.http.Eror403')) ;
+		if(!Auth::user()->can('posts-' . $model->branch . ".publish", $model->domains)) {
+			return $this->jsonFeedback(trans('validation.http.Eror403'));
+		}
 
 		//Action...
-		if($model->unpublish())
-			echo ' <div class="alert alert-success">'. trans('forms.feed.done') .'</div> ';
-		else
-			echo ' <div class="alert alert-danger">'. trans('forms.feed.error') .'</div> ';
+		if($model->unpublish()) {
+			echo ' <div class="alert alert-success">' . trans('forms.feed.done') . '</div> ';
+		}
+		else {
+			echo ' <div class="alert alert-danger">' . trans('forms.feed.error') . '</div> ';
+		}
 
 	}
 
@@ -313,15 +383,17 @@ class PostsController extends Controller
 	{
 
 		//Preparations...
-		$model = Post::find($post_id) ;
-		if(!$model)
-			$this->feedback() ;
+		$model = Post::find($post_id);
+		if(!$model) {
+			$this->feedback();
+		}
 
-		if(!$model->canDelete())
-			$this->feedback(false , trans('validation.http.Eror403'));
+		if(!$model->canDelete()) {
+			$this->feedback(false, trans('validation.http.Eror403'));
+		}
 
 		//Action...
-		$is_ok = $model->delete() ;
+		$is_ok = $model->delete();
 		$this->feedback($is_ok);
 
 
@@ -330,35 +402,40 @@ class PostsController extends Controller
 
 	public function hard_delete(Request $request)
 	{
-		$model = Post::withTrashed()->find($request->id) ;
-		if(!Auth::user()->isDeveloper() ) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
+		$model = Post::withTrashed()->find($request->id);
+		if(!Auth::user()->isDeveloper()) {
+			return $this->jsonFeedback(trans('validation.http.Eror403'));
+		}
 
-		if(!$model->trashed()) return $this->jsonFeedback(trans('validation.http.Eror403'));
+		if(!$model->trashed()) {
+			return $this->jsonFeedback(trans('validation.http.Eror403'));
+		}
 
 
 		$done = $model->forceDelete();
 
-		return $this->jsonAjaxSaveFeedback($done , [
-//				'success_refresh' => true ,
+		return $this->jsonAjaxSaveFeedback($done, [
+			//				'success_refresh' => true ,
 		]);
 
 	}
 
 	/**
 	 * @param Requests\PostSaveRequest $request
+	 *
 	 * @return string
 	 */
 	public function save(Requests\PostSaveRequest $request)
 	{
-		$data = $request->toArray() ;
-		$action = $data['action'] ;
+		$data   = $request->toArray();
+		$action = $data['action'];
 		unset($data['action']);
 		unset($data['is_published']);
-		$now = Carbon::now()->toDateTimeString();
-		$user = Auth::user() ;
-		$user_id = $user->id ;
-		$success_redirect = null ;
-		$branch = Branch::findBySlug($request->branch);
+		$now              = Carbon::now()->toDateTimeString();
+		$user             = Auth::user();
+		$user_id          = $user->id;
+		$success_redirect = null;
+		$branch           = Branch::findBySlug($request->branch);
 
 		//Processing Custom Publish Date...
 		if($branch->hasFeature('schedule')) {
@@ -366,30 +443,31 @@ class PostsController extends Controller
 				$data['published_at'] = $data['publish_date'];
 			}
 			else {
-				$data['published_at'] = null ;
+				$data['published_at'] = null;
 			}
 			unset($data['publish_date']);
 			unset($data['publish_date_mode']);
 		}
 		else {
-			$data['published_at'] = null ;
+			$data['published_at'] = null;
 		}
 
 		//if new record...
 		if(!$data['id']) {
-			$success_redirect = 'manage/posts/'.$data['branch'].'/edit/-ID-/' ;
-			switch($action) {
+			$success_redirect = 'manage/posts/' . $data['branch'] . '/edit/-ID-/';
+			switch ($action) {
 				case 'draft' :
-					$data['is_draft'] = 1 ;
+					$data['is_draft'] = 1;
 					break;
 
 				case 'save' :
 					break;
 
 				case 'publish' :
-					$data['published_by'] = $user_id ;
-					if(!$data['published_at'])
-						$data['published_at'] = $now ;
+					$data['published_by'] = $user_id;
+					if(!$data['published_at']) {
+						$data['published_at'] = $now;
+					}
 					break;
 			}
 		}
@@ -397,31 +475,36 @@ class PostsController extends Controller
 		//if modified record...
 		if($data['id']) {
 			$model = Post::find($data['id']);
-			if(!$model)
+			if(!$model) {
 				return $this->jsonFeedback();
+			}
 
-			switch($action) {
+			switch ($action) {
 				case 'draft' :
-					if($model->isPublished())
+					if($model->isPublished()) {
 						return $this->jsonFeedback();
-					$data['is_draft'] = 1 ;
+					}
+					$data['is_draft'] = 1;
 					break;
 
 				case 'save' :
-					$data['is_draft'] = 0 ;
-					if($model->isPublished())
+					$data['is_draft'] = 0;
+					if($model->isPublished()) {
 						return $this->jsonFeedback();
+					}
 					break;
 
 				case 'publish' :
 					if($model->isPublished()) {
-						if(!$model->branch()->hasFeature('schedule'))
-							$data['published_at'] = $model->published_at ;
+						if(!$model->branch()->hasFeature('schedule')) {
+							$data['published_at'] = $model->published_at;
+						}
 					}
 					else {
-						$data['published_by'] = $user_id ;
-						if(!$data['published_at'])
-							$data['published_at'] = $now ;
+						$data['published_by'] = $user_id;
+						if(!$data['published_at']) {
+							$data['published_at'] = $now;
+						}
 					}
 					break;
 			}
@@ -431,83 +514,93 @@ class PostsController extends Controller
 		//Reading the domains...
 		if($branch->hasFeature('domain')) {
 			if(Auth::user()->getDomain() == 'global') {
-				if($data['_in_global'] and $data['domains'] != 'global')
-					$data['domains'] .= '*' ;
+				if($data['_in_global'] and $data['domains'] != 'global') {
+					$data['domains'] .= '*';
+				}
 			}
 			else {
-				if(!$data['id'])
-					$data['domains'] = Auth::user()->getDomain() ;
+				if(!$data['id']) {
+					$data['domains'] = Auth::user()->getDomain();
+				}
 			}
 		}
 		else {
-			$data['domains'] = 'free' ;
+			$data['domains'] = 'free';
 		}
 
 		//Stripping the Meta...
-		$allowed_metas = $branch->allowedMeta() ;
-		$meta = [] ;
-		foreach($allowed_metas as  $allowed_meta) {
-			$key = $allowed_meta['name'] ;
-			$meta[$key]['value'] = $data[$key] ;
-			$meta[$key]['type'] = $allowed_meta['type'] ;
-			if($allowed_meta['required'] and !$data[$key])
-				return $this->jsonFeedback(trans('validation.required' , ['attribute' => trans("validation.attributes.$key") ]));
-			unset($data[$key]) ;
+		$allowed_metas = $branch->allowedMeta();
+		$meta          = [];
+		foreach($allowed_metas as $allowed_meta) {
+			$key                   = $allowed_meta['name'];
+			$meta[ $key ]['value'] = $data[ $key ];
+			$meta[ $key ]['type']  = $allowed_meta['type'];
+			if($allowed_meta['required'] and !$data[ $key ]) {
+				return $this->jsonFeedback(trans('validation.required', ['attribute' => trans("validation.attributes.$key")]));
+			}
+			unset($data[ $key ]);
 		}
 
 		//Stripping unauthorized fields...
-		if(!$branch->hasFeature('image'))
-			unset($data['featured_image']) ;
-		if(!$branch->hasFeature('text'))
+		if(!$branch->hasFeature('image')) {
+			unset($data['featured_image']);
+		}
+		if(!$branch->hasFeature('text')) {
 			unset($data['text']);
-		if(!$branch->hasFeature('abstract'))
+		}
+		if(!$branch->hasFeature('abstract')) {
 			unset($data['abstract']);
-		if(!$branch->hasFeature('category'))
+		}
+		if(!$branch->hasFeature('category')) {
 			unset($data['category_id']);
+		}
 
 
 		//Save...
-		$is_saved = Post::store($data , ['in_global']) ;
+		$is_saved = Post::store($data, ['in_global']);
 
 		//Saving Meta...
-		$post = Post::find($is_saved) ;
+		$post = Post::find($is_saved);
 		foreach($meta as $key => $array) {
-			$post->meta($key , $array['value'] , $array['type']) ;
+			$post->meta($key, $array['value'], $array['type']);
 		}
 
 		//Making RSS...
 		//@TODO: Post RSS
 
 		//Saving attached photos...
-		if($post->branch()->hasFeature('gallery'))
-			$post->savePhotos($data) ;
+		if($post->branch()->hasFeature('gallery')) {
+			$post->savePhotos($data);
+		}
 
-		$success_redirect = str_replace('-ID-' , $is_saved , $success_redirect );
+		$success_redirect = str_replace('-ID-', $is_saved, $success_redirect);
+
 		//Choosing the redirection...
 
-		return $this->jsonAjaxSaveFeedback($is_saved , [
-			'success_redirect' => $success_redirect ,
-			'success_refresh' => 1 ,
+		return $this->jsonAjaxSaveFeedback($is_saved, [
+			'success_redirect' => $success_redirect,
+			'success_refresh'  => 1,
 		]);
-
 
 
 	}
 
 	public function undelete($post_id)
 	{
-		$model = Post::withTrashed()->find($post_id) ;
-		if(!$model) return $this->jsonFeedback() ;
+		$model = Post::withTrashed()->find($post_id);
+		if(!$model) {
+			return $this->jsonFeedback();
+		}
 
-		if(!$model->canDelete())
-			$this->feedback(false , trans('validation.http.Eror403'));
+		if(!$model->canDelete()) {
+			$this->feedback(false, trans('validation.http.Eror403'));
+		}
 
 		//Action...
-		$ok = $model->restore() ;
+		$ok = $model->restore();
 		$this->feedback($ok);
 
 	}
-
 
 
 }

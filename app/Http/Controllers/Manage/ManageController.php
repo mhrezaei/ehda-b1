@@ -30,6 +30,9 @@ class ManageController extends Controller
 
 	public function index()
 	{
+		if(Auth::user()->volunteer_status < 8)
+			return redirect('manage/account');
+
 		//Preparetions...
 		$page = $this->page ;
 		$digests = $this->index_digests() ;

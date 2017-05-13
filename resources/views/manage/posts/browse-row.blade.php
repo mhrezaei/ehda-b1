@@ -9,6 +9,24 @@
 	@else
 		{{ $model->say('title_limit') }}
 	@endif
+
+
+	@if($total_cards = $model->cards()->count())
+		@include("manage.frame.widgets.grid-text" , [
+			'link' => "modal:manage/posts/-id-/stats" ,
+			'class' => "mv20" ,
+			'condition' => $model->branch=='event' and $total_cards ,
+			'icon' => "credit-card mv10" ,
+			'text' => \App\Providers\AppServiceProvider::pd($total_cards). ' ' . trans('people.cards.full_title') ,
+			'color' => "success" ,
+			'size' => "10" ,
+		]     )
+	@endif
+
+	{{--@include("manage.frame.widgets.grid-text" , [--}}
+		{{--'link' => "urlN:manage/cards/printings/pending/-id-",--}}
+		{{--'condition' => $model->branch=='event' and $total_prints = $model->printings()->count() ,--}}
+	{{--]     )--}}
 </td>
 
 
@@ -29,6 +47,7 @@
 			{{ trans('posts.manage.deleted_by' , ['name'=>$model->say('deleted')])  }}
 		</div>
 	@endif
+
 </td>
 
 @if($branch->hasFeature('domain') and Auth::user()->isGlobal())
@@ -45,7 +64,7 @@
 	@include('manage.frame.widgets.grid-action' , [
 		'id' => $model->id ,
 		'actions' => [
-			['eye' , trans('manage.permits.view') , "urlN:".$model->say('preview')],
+//			['eye' , trans('manage.permits.view') , "urlN:".$model->say('preview')],
 			['pencil' , trans('manage.permits.edit') , "url:manage/posts/".$model->branch()->slug."/edit/-id-" , '*' , $model->canEdit()],
 			['times' , trans('forms.button.hard_delete') , 'modal:manage/posts/-id-/hard_delete' , "$module.bin" , $model->trashed() and Auth::user()->isDeveloper()] ,
 
