@@ -11,15 +11,17 @@
 	@endif
 
 
-	@include("manage.frame.widgets.grid-text" , [
-		'link' => "modal:manage/posts/-id-/stats" ,
-		'class' => "mv20" ,
-		'condition' => $model->branch=='event' and $total_cards = $model->cards()->count() ,
-		'icon' => "credit-card mv10" ,
-		'text' => \App\Providers\AppServiceProvider::pd($total_cards). ' ' . trans('people.cards.full_title') ,
-		'color' => "success" ,
-		'size' => "10" ,
-	]     )
+	@if($total_cards = $model->cards()->count())
+		@include("manage.frame.widgets.grid-text" , [
+			'link' => "modal:manage/posts/-id-/stats" ,
+			'class' => "mv20" ,
+			'condition' => $model->branch=='event' and $total_cards ,
+			'icon' => "credit-card mv10" ,
+			'text' => \App\Providers\AppServiceProvider::pd($total_cards). ' ' . trans('people.cards.full_title') ,
+			'color' => "success" ,
+			'size' => "10" ,
+		]     )
+	@endif
 
 	{{--@include("manage.frame.widgets.grid-text" , [--}}
 		{{--'link' => "urlN:manage/cards/printings/pending/-id-",--}}
