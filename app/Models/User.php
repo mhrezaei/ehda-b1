@@ -74,6 +74,11 @@ protected static $cards_mandatory_fields   = ['code_melli', 'code_id', 'name_fir
 		return $this->belongsTo('App\Models\Post');
 	}
 
+    public function api_tokens()
+    {
+        return $this->hasMany('App\Models\Api_token');
+    }
+
 	/*
 	|--------------------------------------------------------------------------
 	| Stators

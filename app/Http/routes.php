@@ -2,8 +2,15 @@
 
 // API
 Route::group(['prefix' => 'api'], function (){
-    Route::get('/ehda/card/search/{username}/{password}/{code_melli}', 'ApiController@ehda_card_search');
+    Route::post('ehda/getToken', 'ApiController@get_token');
+    Route::post('/ehda/card/search', 'ApiController@ehda_card_search');
+    Route::post('/ehda/card/register', 'ApiController@ehda_card_register');
+    Route::post('/ehda/card/get', 'ApiController@get_card');
+    Route::post('/ehda/province/get', 'ApiController@get_province');
+    Route::post('/ehda/cities/get', 'ApiController@get_cities');
+    Route::post('/ehda/education/get', 'ApiController@get_education');
 });
+
 
 // subdomain
 Route::group(['prefix' => '', 'middleware' => 'Subdomain'], function () {
