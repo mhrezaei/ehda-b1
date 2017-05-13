@@ -388,7 +388,7 @@ protected static $cards_mandatory_fields   = ['code_melli', 'code_id', 'name_fir
 				}
 
 			case 'birth_date_on_card' :
-				if(!$this->birth_date and $this->birth_date != '0000-00-00') {
+				if($this->birth_date and $this->birth_date != '0000-00-00') {
 					return AppServiceProvider::pd(jDate::forge($this->birth_date)->format('Y/m/d'));
 				}
 				else {
