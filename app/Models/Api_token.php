@@ -30,18 +30,18 @@ class Api_token extends Model
             return false;
 
 
-        try
-        {
-            $api_token = Crypt::decrypt($token);
-        }
-        catch (DecryptException $e) {
-            $api_token = null ;
-        }
+//        try
+//        {
+//            $api_token = Crypt::decrypt($token);
+//        }
+//        catch (DecryptException $e) {
+//            $api_token = null ;
+//        }
 
-        if (! $api_token)
-            return false;
+//        if (! $api_token)
+//            return false;
 
-        $token = self::where('api_token', $api_token)->first();
+        $token = self::where('api_token', $token)->first();
         if ($token)
         {
             return $token;

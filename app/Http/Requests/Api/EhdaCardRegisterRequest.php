@@ -5,7 +5,7 @@ namespace App\Http\Requests\Api;
 use App\Http\Requests\Request;
 use App\Providers\ValidationServiceProvider;
 
-class GetTokenRequest extends Request
+class EhdaCardRegisterRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -34,10 +34,28 @@ class GetTokenRequest extends Request
     {
         $value	= parent::all();
         $purified = ValidationServiceProvider::purifier($value,[
-            'username'  =>  'ed',
-            'password'  =>  'ed',
+            'code_melli'  =>  'ed',
+            'gender' => 'ed',
+
+            'name_first'  =>  'pd',
+            'name_last'  =>  'pd',
+            'name_father' => 'pd',
+
+            'code_id' => 'ed',
+
+            'birth_date' => 'ed',
+            'birth_city' => 'ed',
+
+            'edu_level' => 'ed',
+
+
+            'tel_mobile' => 'ed',
+
+            'home_city' => 'ed',
+
+            'token' => 'ed|decrypt',
+
         ]);
         return $purified;
-
     }
 }

@@ -5,7 +5,7 @@ namespace App\Http\Requests\Api;
 use App\Http\Requests\Request;
 use App\Providers\ValidationServiceProvider;
 
-class GetTokenRequest extends Request
+class GetCitiesListRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -34,8 +34,8 @@ class GetTokenRequest extends Request
     {
         $value	= parent::all();
         $purified = ValidationServiceProvider::purifier($value,[
-            'username'  =>  'ed',
-            'password'  =>  'ed',
+            'token'  =>  'ed|decrypt',
+            'province'  =>  'ed',
         ]);
         return $purified;
 
