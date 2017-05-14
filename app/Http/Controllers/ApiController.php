@@ -21,6 +21,11 @@ class ApiController extends Controller
         Api_token::delete_expired();
     }
 
+    public function index()
+    {
+        return redirect(url('/showPost/api-documentation'));
+    }
+
     public function get_token(Requests\Api\GetTokenRequest $request)
     {
         $data = $request->toArray();
@@ -59,7 +64,7 @@ class ApiController extends Controller
                 else
                 {
                     // password wrong
-                    $result['status'] = -2;
+                    $result['status'] = -1;
                 }
             }
             else
@@ -137,7 +142,7 @@ class ApiController extends Controller
                     else
                     {
                         // user exist but it have'nt ehda card
-                        $result['status'] = -9;
+                        $result['status'] = -10;
                     }
                 }
                 else
@@ -193,7 +198,7 @@ class ApiController extends Controller
                         {
                             // validation success and card attach
                             $result['status'] = 3;
-                            $result['ehda_card'] = url('card/show_card/mini/' . encrypt($request->code_melli));
+                            $result['ehda_card'] = self::create_ehda_card_link($request->code_melli);
                         }
                         else
                         {
@@ -325,7 +330,7 @@ class ApiController extends Controller
 
             // card register success and ehda card attach
             $result['status'] = 3;
-            $result['ehda_card'] = url('card/show_card/mini/' . encrypt($request->code_melli));
+            $result['ehda_card'] = self::create_ehda_card_link($request->code_melli);
         }
 
         return json_encode($result);
@@ -461,5 +466,16 @@ class ApiController extends Controller
             // wrong token
            return -6;
         }
+    }
+
+    // create ehda card links
+    private static function create_ehda_card_link($code_melli)
+    {
+        $cards = array();
+        $code_melli = encrypt($code_melli);
+        $cards['mini'] = url('card/show_card/mini/' . $code_melli);
+        $cards['print'] = url('card/show_card/full/' . $code_melli);
+        $cards['download'] = url('card/show_card/full/' . $code_melli . '/download');
+        return $cards;
     }
 }

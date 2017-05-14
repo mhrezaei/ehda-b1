@@ -2,6 +2,7 @@
 
 // API
 Route::group(['prefix' => 'api'], function (){
+    Route::get('/', 'ApiController@index');
     Route::post('ehda/getToken', 'ApiController@get_token');
     Route::post('/ehda/card/search', 'ApiController@ehda_card_search');
     Route::post('/ehda/card/register', 'ApiController@ehda_card_register');
