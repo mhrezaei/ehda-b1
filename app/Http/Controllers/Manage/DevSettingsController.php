@@ -492,7 +492,7 @@ class DevSettingsController extends Controller
 	public function loginAs(Request $request)
 	{
 		$user = User::find($request->id) ;
-		if(!$user->isActive())
+		if(!$user->canLogin())
 			return $this->jsonFeedback('user is not active');
 
 

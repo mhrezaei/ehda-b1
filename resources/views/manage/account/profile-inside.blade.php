@@ -130,6 +130,26 @@
 	@include('forms.sep')
 @endif
 
+@if($show_unchanged or isset($model->changes->birth_city))
+	@include('forms.select' , [
+		'name' => 'birth_city' ,
+		'class' => 'form-required',
+		'value' => $model->birth_city ,
+		'blank_value' => '0' ,
+		'options' => $states ,
+		'search' => true ,
+		'search_placeholder' => trans('forms.button.search') ,
+	])
+@endif
+
+@if($show_unchanged or isset($model->changes->birth_date))
+	@include('forms.datepicker' , [
+		'name' => 'birth_date',
+		'value' => $model->birth_date ,
+	])
+@endif
+
+
 @if($show_unchanged or isset($model->changes->home_city))
 	@include('forms.select' , [
 		'name' => 'home_city' ,

@@ -50,7 +50,7 @@
 			['undo' , trans('people.commands.unblock') , 'modal:manage/volunteers/-id-/undelete' , 'volunteers.bin' , $model->trashed()] ,
 			['times' , trans('people.commands.hard_delete') , 'modal:manage/volunteers/-id-/hard_delete' , 'volunteers.developer' , $model->trashed()] ,
 
-			['user' , trans('people.commands.login_as') , 'modal:manage/volunteers/-id-/login_as' , 'volunteers.developer' , $model->isActive()] ,
+			['user' , trans('people.commands.login_as') , 'modal:manage/volunteers/-id-/login_as' , 'volunteers.developer' , $model->canLogin()] ,
 
 
 		],

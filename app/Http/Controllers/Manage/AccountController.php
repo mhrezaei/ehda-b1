@@ -102,10 +102,27 @@ class AccountController extends Controller
 		}
 
 
+		// Purification ...
+		$raw_data = $request->toArray();
+
+		$home = State::find($request->home_city) ;
+		if($home) {
+			$raw_data['home_province'] = $home->parent_id  ;
+		}
+		else {
+			$raw_data['home_province'] = 0 ;
+		}
+
+		$work = State::find($request->work_city) ;
+		if($work) {
+			$raw_data['work_province'] = $work->parent_id  ;
+		}
+		else {
+			$raw_data['work_province'] = 0 ;
+		}
 
 		// IF SAVE ...
-		if($model->volunteer_status>=8) {
-			$raw_data = $request->toArray();
+		if($model->volunteer_status>=8) { //confirmed active profile
 			$new_data = [];
 			foreach($raw_data as $field => $value) {
 				//if(isset($model->$field) and $model->$field != $value) {
@@ -127,10 +144,24 @@ class AccountController extends Controller
 				'success_refresh' => 1 ,
 			]);
 		}
-		else {
-			$data = $request->toArray() ;
+		else { //pending profile (should be directly saved. no need to admin approval)
+			$data = $raw_data ;
 			$data['id']  = $model->id ;
+			$complete_profile = true ;
+
+			foreach(User::$volunteers_mandatory_fields as $field) {
+				if(!in_array($field , ['code_melli']) and !$data[$field]) {
+					$complete_profile = false ;
+					return $this->jsonFeedback($field);
+				}
+			}
+
+			if($complete_profile) {
+				$data['volunteer_status'] = 3 ;
+			}
+
 			$ok = User::store($data) ;
+
 
 			return $this->jsonAjaxSaveFeedback( $ok , [
 				'success_message' => trans('forms.feed.done') ,
