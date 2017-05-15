@@ -198,7 +198,7 @@ class ApiController extends Controller
                         {
                             // validation success and card attach
                             $result['status'] = 3;
-                            $result['ehda_card'] = self::create_ehda_card_link($request->code_melli);
+                            $result = array_merge($result, self::create_ehda_card_link($request->code_melli));
                         }
                         else
                         {
@@ -330,7 +330,7 @@ class ApiController extends Controller
 
             // card register success and ehda card attach
             $result['status'] = 3;
-            $result['ehda_card'] = self::create_ehda_card_link($request->code_melli);
+            $result = array_merge($result, self::create_ehda_card_link($request->code_melli));
         }
 
         return json_encode($result);
@@ -473,9 +473,9 @@ class ApiController extends Controller
     {
         $cards = array();
         $code_melli = encrypt($code_melli);
-        $cards['mini'] = url('card/show_card/mini/' . $code_melli);
-        $cards['print'] = url('card/show_card/full/' . $code_melli);
-        $cards['download'] = url('card/show_card/full/' . $code_melli . '/download');
+        $cards['ehda_card_mini'] = url('card/show_card/mini/' . $code_melli);
+        $cards['ehda_card_print'] = url('card/show_card/full/' . $code_melli);
+        $cards['ehda_card_download'] = url('card/show_card/full/' . $code_melli . '/download');
         return $cards;
     }
 }
