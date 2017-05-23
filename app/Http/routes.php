@@ -45,6 +45,7 @@ Route::group(['prefix' => '', 'middleware' => 'Subdomain'], function () {
     Route::post('/register/register_third_step', 'CardController@register_third_step');
 
     Route::get('/card/show_card/mini/{national_hash}', 'CardController@card_mini');
+    Route::get('/card/show_card/single/{national_hash}', 'CardController@card_single');
     Route::get('/card/show_card/full/{national_hash}/{mode?}', 'CardController@card_full');
 
     Route::get('/{id}', 'PostController@show')->where('id', '[0-9]+');

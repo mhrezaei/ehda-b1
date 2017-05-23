@@ -361,6 +361,76 @@ class CardController extends Controller
         imagedestroy($img);
     }
 
+    public function card_single($national_hash)
+    {
+        ini_set("error_reporting","E_ALL & ~E_NOTICE & ~E_STRICT");
+        try {
+            $national_hash = decrypt($national_hash);
+        } catch (DecryptException $e) {
+            return view('errors.404');
+        }
+
+        $user = User::selectBySlug($national_hash, 'code_melli');
+        $user = $user->toArray();
+
+        if ($user['card_status'] < 8)
+        {
+            return view('errors.403');
+        }
+
+        $font = public_path('assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'php' . DIRECTORY_SEPARATOR . 'BNazanin.ttf');
+        $enFont = public_path('assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'php' . DIRECTORY_SEPARATOR . 'calibri.ttf');
+
+        header("Content-type: image/png");
+        header('Content-Disposition: filename=' . 'کارت_اهدای_عضو_' . $user['card_no'] . '.png');
+
+        // orginal image
+        $img = imagecreatefrompng(public_path('assets' . DIRECTORY_SEPARATOR . 'site' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'cardSingle.png'));
+
+        // data
+        $name_first = FaGDServiceProvider::fagd($user['name_first'] . ' ' . $user['name_last'], 'fa', 'nastaligh');
+        $name_father = FaGDServiceProvider::fagd($user['name_father'], 'fa', 'nastaligh');
+        $birth_date = jDate::forge($user['birth_date'])->format('Y/m/d');
+        $register_date = jDate::forge($user['card_registered_at'])->format('Y/m/d');
+
+        // font size
+        $font_size = 25;
+
+        // position
+        $name_position = imagettfbbox($font_size, 0, $font, $name_first);
+        $name_position = $name_position[2] - $name_position[0];
+
+        $name_father_position = imagettfbbox($font_size, 0, $font, $name_father);
+        $name_father_position = $name_father_position[2] - $name_father_position[0];
+
+        $card_no_position = imagettfbbox($font_size, 0, $font, $user['card_no']);
+        $card_no_position = $card_no_position[2] - $card_no_position[0];
+
+        $national_position = imagettfbbox($font_size, 0, $font, $user['code_melli']);
+        $national_position = $national_position[2] - $national_position[0];
+
+        $birth_date_position = imagettfbbox($font_size, 0, $font, $birth_date);
+        $birth_date_position = $birth_date_position[2] - $birth_date_position[0];
+
+        $register_date_position = imagettfbbox($font_size, 0, $font, $register_date);
+        $register_date_position = $register_date_position[2] - $register_date_position[0];
+
+        // Create some colors
+        $black = imagecolorallocate($img, 0, 0, 0);
+
+        // Add the text
+        imagettftext($img, $font_size, 0, (500 - $card_no_position), 173, $black, $font, $user['card_no']);
+        imagettftext($img, $font_size, 0, (500 - $name_position), 212, $black, $font, $name_first);
+        imagettftext($img, $font_size, 0, (500 - $name_father_position), 254, $black, $font, $name_father);
+        imagettftext($img, $font_size, 0, (500 - $national_position), 300, $black, $font, $user['code_melli']);
+        imagettftext($img, $font_size, 0, (500 - $birth_date_position), 341, $black, $font, $birth_date);
+        imagettftext($img, $font_size, 0, (500 - $register_date_position), 382, $black, $font, $register_date);
+
+        // Using imagepng() results in clearer text compared with imagejpeg()
+        imagepng($img);
+        imagedestroy($img);
+    }
+
     public function card_full($national_hash, $mode = 'print')
     {
         ini_set("error_reporting","E_ALL & ~E_NOTICE & ~E_STRICT");
