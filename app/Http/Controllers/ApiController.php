@@ -474,6 +474,8 @@ class ApiController extends Controller
         $cards = array();
         $code_melli = encrypt($code_melli);
         $cards['ehda_card_mini'] = url('card/show_card/mini/' . $code_melli);
+        $cards['ehda_card_single'] = url('card/show_card/single/' . $code_melli);
+        $cards['ehda_card_social'] = url('card/show_card/social/' . $code_melli);
         $cards['ehda_card_print'] = url('card/show_card/full/' . $code_melli);
         $cards['ehda_card_download'] = url('card/show_card/full/' . $code_melli . '/download');
         return $cards;
