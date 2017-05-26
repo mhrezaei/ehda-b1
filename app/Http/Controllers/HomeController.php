@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\Post;
+use App\Models\User;
 use App\Providers\TahaServiceProvider;
 use App\Traits\GlobalControllerTrait;
 use Illuminate\Http\Request;
@@ -25,5 +26,19 @@ class HomeController extends Controller
 		$static_paragraph['fix_background'] = Post::findBySlug('home_page_fix_background_paragraph');
 
 		return view('site.home.0', compact('iran_news', 'ngo_news', 'events', 'slide_show', 'static_paragraph', 'event_slide_show'));
+	}
+
+    public function ramazan()
+    {
+        $count = User::where('created_by', '303958')->count();
+        return view('site.events.0', compact('count'));
+	}
+
+    public function ramazan_count()
+    {
+        $data['count'] = number_format(User::where('created_by', '303958')->count());
+        $data['status'] = 1;
+        $data['sm'] = csrf_token();
+        return json_encode($data);
 	}
 }
