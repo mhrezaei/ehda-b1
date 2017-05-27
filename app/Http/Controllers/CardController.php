@@ -543,10 +543,11 @@ class CardController extends Controller
         $register_date = jDate::forge($user['card_registered_at'])->format('Y/m/d');
 
         // font size
-        $font_size = 25;
+        $font_size = 21;
+        $name_font_size = 30;
 
         // position
-        $name_position = imagettfbbox($font_size, 0, $font, $name_first);
+        $name_position = imagettfbbox($name_font_size, 0, $font, $name_first);
         $name_position = $name_position[2] - $name_position[0];
 
         $name_father_position = imagettfbbox($font_size, 0, $font, $name_father);
@@ -568,12 +569,12 @@ class CardController extends Controller
         $black = imagecolorallocate($img, 0, 0, 0);
 
         // Add the text
-        imagettftext($img, $font_size, 0, (500 - $card_no_position), 247, $black, $font, $user['card_no']);
-        imagettftext($img, $font_size, 0, (500 - $name_position), 195, $black, $font, $name_first);
+        imagettftext($img, $font_size, 0, (590 - $card_no_position), 260, $black, $font, $user['card_no']);
+        imagettftext($img, $name_font_size, 0, (525 - $name_position), 205, $black, $font, $name_first);
 //        imagettftext($img, $font_size, 0, (500 - $name_father_position), 254, $black, $font, $name_father);
 //        imagettftext($img, $font_size, 0, (500 - $national_position), 300, $black, $font, $user['code_melli']);
 //        imagettftext($img, $font_size, 0, (500 - $birth_date_position), 341, $black, $font, $birth_date);
-        imagettftext($img, $font_size, 0, (500 - $register_date_position), 300, $black, $font, $register_date);
+        imagettftext($img, $font_size, 0, (597 - $register_date_position), 318, $black, $font, $register_date);
 
         // Using imagepng() results in clearer text compared with imagejpeg()
         imagepng($img);
