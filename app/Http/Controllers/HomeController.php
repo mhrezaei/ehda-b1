@@ -36,7 +36,7 @@ class HomeController extends Controller
 
     public function ramazan_count()
     {
-        $data['count'] = number_format(User::where('created_by', '303958')->count());
+        $data['count'] = User::where('created_by', '303958')->count();
         $data['status'] = 1;
         $data['sm'] = csrf_token();
         return json_encode($data);
