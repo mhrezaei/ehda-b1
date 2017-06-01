@@ -7,12 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-    <meta property="og:title" content="انجمن اهدای عضو ایرانیان - کمپین ۱۰۰ هزارتایی کارت اهدا" />
+    <meta property="og:title" content="انجمن اهدای عضو ایرانیان - کمپین ۱۰۰ هزار کارت اهدای عضو" />
     <meta property="og:url" content="https://telegram.me/Ehdayeozv_bot" />
-    <meta property="og:image" content="https://ehda.center/assets/site/images/header-logo.png" />
-    <meta property="og:description" content="تا پایان ماه مبارک رمضان، می خواهیم تعداد ثبت نام کارت اهدای عضو را، از طریق بات تلگرام به ۱۰۰.۰۰۰ نفر برسانیم." />
+    <meta property="og:image" content="https://ehda.center/assets/photos/posts/landing/logo-sq.jpg" />
+    <meta property="og:description" content="ثبت حماسه ای دیگر از نوعدوستی ایرانیان درماه مبارک رمضان - هر ایرانی یک سفیر اهدای عضو" />
 
-    <title>انجمن اهدای عضو ایرانیان - کمپین ۱۰۰ هزارتایی کارت اهدا</title>
+    <title>انجمن اهدای عضو ایرانیان - کمپین ۱۰۰ هزار کارت اهدای عضو</title>
 
     {!! Html::style('assets/site/events/css.css') !!}
     {!! Html::style('assets/site/events/bootstrap.css') !!}
@@ -112,6 +112,36 @@
             }
 
         }
+
+        .element {
+            /*height: 250px;*/
+            /*width: 250px;*/
+            margin: 0 auto;
+            /*background-color: red;*/
+            animation-name: stretch;
+            animation-duration: 2s;
+            animation-timing-function: ease-out;
+            animation-delay: 0;
+            animation-direction: alternate;
+            animation-iteration-count: infinite;
+            animation-fill-mode: none;
+            animation-play-state: running;
+        }
+
+        @keyframes stretch {
+            0% {
+                /*transform: scale(.3);*/
+                color: #233D90;
+                /*border-radius: 100%;*/
+            }
+            50% {
+                color: #5A9B20;
+            }
+            100% {
+                /*transform: scale(1.5);*/
+                color: #EE6E73;
+            }
+        }
     </style>
 
 </head>
@@ -149,11 +179,11 @@
                 <div class="row">
                     <div class="col-md-10 col-md-offset-1">
                         <div class="home-title section-title">
-                            <p class="text-center demo" style="font-family: 'IranSans'; font-size: 30px; color: #1A2865; line-height: 40px;">کمپین ۱۰۰ هزارتایی کارت اهدای عضو در ماه مبارک رمضان</p>
+                            <p class="text-center demo element" style="font-family: 'IranSans'; font-size: 30px; line-height: 40px;">کمپین ۱۰۰ هزار کارت اهدای عضو در ماه مبارک رمضان</p>
                             <p class="text-center demo" style="font-family: 'IranSans'; font-size: 30px; color: #1A2865; line-height: 40px; direction: ltr;"><a href="https://telegram.me/Ehdayeozv_bot" target="_blank">@Ehdayeozv_bot</a></p>
                             <h3 class="cd-headline clip is-full-width">
                     <span class="cd-words-wrapper" style="width: auto; margin: 0 auto; padding-right: 10px; line-height: 40px; max-width: 90%;">
-                        <b class="is-visible">ثبت حماسه ای دیگر از نوعدوستی ایرانیان درماه مبارک رمضان</b>
+                        <b class="is-visible">ثبت حماسه‌ای دیگر از نوع‌دوستی ایرانیان درماه مبارک رمضان</b>
                         <b class="is-hidden">هر ایرانی یک سفیر اهدای عضو</b>
                         {{--<b class="is-visible">تا پایان ماه مبارک رمضان،</b>--}}
                         {{--<b class="is-hidden">می خواهیم تعداد ثبت نام کارت اهدای عضو را،</b>--}}
@@ -214,10 +244,12 @@
 <div style="clear: both;">
 
 </div>
-    <p class="copyright iranSans">
-        انجمن اهدای عضو ایرانیان
+    <p class="copyright iranSans" style="direction: rtl;">
+        حقوق مادی و معنوی این سایت برای
+        <a href="https://ehda.center" target="_blank">انجمن اهدای عضو ایرانیان</a>
+         محفوظ است.
         <br>
-        <a href="https://yasnateam.com" target="_blank">طراحی و اجرا: گروه یسنا</a>
+        <a href="https://yasnateam.com" target="_blank" style="font-size: 10px; color: #9AACC1;">طراحی و اجرا: گروه یسنا</a>
     </p>
 
 </footer>
