@@ -361,7 +361,7 @@ class CardController extends Controller
         imagedestroy($img);
     }
 
-    public function card_single($national_hash)
+    public function card_single($national_hash, $mode = 'print')
     {
         ini_set("error_reporting","E_ALL & ~E_NOTICE & ~E_STRICT");
         try {
@@ -382,7 +382,26 @@ class CardController extends Controller
         $enFont = public_path('assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'php' . DIRECTORY_SEPARATOR . 'calibri.ttf');
 
         header("Content-type: image/png");
-        header('Content-Disposition: filename=' . 'کارت_اهدای_عضو_' . $user['card_no'] . '.png');
+        if($mode == 'print')
+        {
+            header('Content-Disposition: filename=' . 'کارت_اهدای_عضو_' . $user['card_no'] . '.png');
+        }
+        elseif($mode == 'download')
+        {
+            header('Content-Description: File Transfer');
+            header('Content-Type: image/png');
+            header('Content-Disposition: attachment; filename="' . $user['card_no'] . '.png"');
+            header('Content-Transfer-Encoding: binary');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+            header('Pragma: public');
+        }
+        else
+        {
+            header('Content-Disposition: filename=' . 'کارت_اهدای_عضو_' . $user['card_no'] . '.png');
+        }
+
+
 
         // orginal image
         $img = imagecreatefrompng(public_path('assets' . DIRECTORY_SEPARATOR . 'site' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'cardSingle.png'));
