@@ -142,6 +142,92 @@
                 color: #EE6E73;
             }
         }
+
+        .heartAn {
+            /*animation-name: n;*/
+            /*animation-duration: 1.3s;*/
+            /*animation-timing-function: ease-out;*/
+            /*animation-delay: 0;*/
+            /*animation-direction: alternate;*/
+            /*animation-iteration-count: infinite;*/
+            /*animation-fill-mode: none;*/
+            /*animation-play-state: running;*/
+            animation: 1.3s ease 0s normal none infinite running n;
+        }
+
+        @keyframes heartbeat
+        {
+            0%
+            {
+                transform: scale( .75 );
+            }
+            20%
+            {
+                transform: scale( 1 );
+            }
+            40%
+            {
+                transform: scale( .75 );
+            }
+            60%
+            {
+                transform: scale( 1 );
+            }
+            80%
+            {
+                transform: scale( .75 );
+            }
+            100%
+            {
+                transform: scale( .75 );
+            }
+        }
+
+        @-webkit-keyframes n {
+            0% {
+                -webkit-transform: scale(1);
+                transform: scale(1)
+            }
+            14% {
+                -webkit-transform: scale(1.3);
+                transform: scale(1.3)
+            }
+            28% {
+                -webkit-transform: scale(1);
+                transform: scale(1)
+            }
+            42% {
+                -webkit-transform: scale(1.3);
+                transform: scale(1.3)
+            }
+            70% {
+                -webkit-transform: scale(1);
+                transform: scale(1)
+            }
+        }
+
+        @keyframes n {
+            0% {
+                -webkit-transform: scale(1);
+                transform: scale(1)
+            }
+            14% {
+                -webkit-transform: scale(1.3);
+                transform: scale(1.3)
+            }
+            28% {
+                -webkit-transform: scale(1);
+                transform: scale(1)
+            }
+            42% {
+                -webkit-transform: scale(1.3);
+                transform: scale(1.3)
+            }
+            70% {
+                -webkit-transform: scale(1);
+                transform: scale(1)
+            }
+        }
     </style>
 
 </head>
@@ -163,10 +249,14 @@
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
-                <a class="navbar-brand dark-logo" href="https://ehda.center">
-                    <img src="https://ehda.center/assets/site/images/header-logo.png" title="انجمن اهدای عضو ایرانیان" style="max-width: 60%;">
+                <a class="navbar-brand dark-logo" href="https://ehda.center" style="">
+                    <img src="https://ehda.center/assets/site/images/header-logo.png" title="انجمن اهدای عضو ایرانیان" style="max-width: 50%;">
                 </a>
             </div>
+            <a class="" href="https://ehda.center" style="float: left; direction: ltr;">
+                <img src="https://ehda.center/assets/photos/posts/logo-9090-new-01.png" title="انجمن اهدای عضو ایرانیان" style="max-width: 49%; height: 49px;">
+                <img src="https://ehda.center/assets/photos/posts/Bashgahe-Havadaran-A.png" title="انجمن اهدای عضو ایرانیان" style="max-width: 49%; height: 49px;">
+            </a>
         </div><!-- /.container-fluid -->
     </nav>
 </header>
@@ -216,11 +306,11 @@
                                 </div>
                             </div>
                             <div class="scribe">
-                                <h2 class="iranSans" style="color: #1A2865; line-height: 50px;">تا کنون <strong class="s_counter" style="font-size: 40px; color: #5A9B20;">{{ number_format($count) }}</strong> نفر در این کمپین شرکت کرده اند.</h2>
+                                <h2 class="iranSans" style="color: #1A2865; line-height: 50px; font-size: 40px;">تا کنون <strong class="s_counter" style="font-size: 40px; color: #5A9B20;">{{ number_format($count) }}</strong> نفر در این کمپین شرکت کرده اند.</h2>
                             </div>
 
                             <div class="scribe" style="margin-top: 45px;">
-                                <a href="https://telegram.me/Ehdayeozv_bot" class="btn btn-lg btn-subscribe dark-btn iranSans" role="button">ثبت نام از طریق بات تلگرام</a>
+                                <a href="https://telegram.me/Ehdayeozv_bot" class="btn btn-lg btn-subscribe dark-btn iranSans regBtn" role="button">ثبت نام از طریق بات تلگرام</a>
                             </div>
                         </div>
                     </div><!--End-col-->
@@ -322,6 +412,7 @@
                         $('.s_counter').text(number_format(count));
                     }
                 }, 5);
+                $('.regBtn').addClass('heartAn').delay(1000).removeClass('heartAn');
             }
         });
         setTimeout(function () {
