@@ -250,13 +250,13 @@
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
                 <a class="navbar-brand dark-logo" href="https://ehda.center" style="">
-                    <img src="https://ehda.center/assets/site/images/header-logo.png" title="انجمن اهدای عضو ایرانیان" style="max-width: 50%;">
+                    <img src="https://ehda.center/assets/site/images/header-logo.png" title="انجمن اهدای عضو ایرانیان" style="max-width: 60%;">
                 </a>
             </div>
-            <a class="" href="https://ehda.center" style="float: left; direction: ltr;">
-                <img src="https://ehda.center/assets/photos/posts/logo-9090-new-01.png" title="انجمن اهدای عضو ایرانیان" style="max-width: 49%; height: 49px;">
-                <img src="https://ehda.center/assets/photos/posts/Bashgahe-Havadaran-A.png" title="انجمن اهدای عضو ایرانیان" style="max-width: 49%; height: 49px;">
-            </a>
+            {{--<a class="" href="https://ehda.center" style="float: left; direction: ltr;">--}}
+                {{--<img src="https://ehda.center/assets/photos/posts/logo-9090-new-01.png" title="انجمن اهدای عضو ایرانیان" style="max-width: 49%; height: 49px;">--}}
+                {{--<img src="https://ehda.center/assets/photos/posts/Bashgahe-Havadaran-A.png" title="انجمن اهدای عضو ایرانیان" style="max-width: 49%; height: 49px;">--}}
+            {{--</a>--}}
         </div><!-- /.container-fluid -->
     </nav>
 </header>
