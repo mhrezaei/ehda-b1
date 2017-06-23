@@ -42,6 +42,9 @@ Route::group(['prefix' => '', 'middleware' => 'Subdomain'], function () {
     Route::get('/ramazan', 'HomeController@ramazan');
     Route::post('/ramazan', 'HomeController@ramazan_count');
 
+    Route::get('/summer', 'HomeController@summer');
+    Route::post('/summer', 'HomeController@summer_count');
+
     Route::get('/register', 'CardController@register');
     Route::post('/register/first_step', 'CardController@register_first_step');
     Route::post('/register/second_step', 'CardController@register_second_step');

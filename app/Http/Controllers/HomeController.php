@@ -41,4 +41,24 @@ class HomeController extends Controller
         $data['sm'] = csrf_token();
         return json_encode($data);
 	}
+
+    public function summer()
+    {
+        $count = User::where('created_by', '303958')
+            ->where('card_registered_at' , '>' , '2017-06-22 00:00:00' )
+            ->where('card_registered_at' , '<' , '2017-09-22 23:59:59' )
+            ->count();
+        return view('site.events.summer.0', compact('count'));
+    }
+
+    public function summer_count()
+    {
+        $data['count'] = User::where('created_by', '303958')
+            ->where('card_registered_at' , '>' , '2017-06-22 00:00:00' )
+            ->where('card_registered_at' , '<' , '2017-09-22 23:59:59' )
+            ->count();
+        $data['status'] = 1;
+        $data['sm'] = csrf_token();
+        return json_encode($data);
+    }
 }
