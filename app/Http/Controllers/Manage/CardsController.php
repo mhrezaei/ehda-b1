@@ -84,11 +84,19 @@ class CardsController extends Controller
 
 		$now = Carbon::now() ;
 
-		for($i=0 ; $i<=30 ; $i++) {
+		for($i=0 ; $i<=60 ; $i++) {
 			$today = Carbon::today()->subDays($i) ;
 			$yesterday = Carbon::today()->subDays($i-1) ;
 			$count = User::where('card_registered_at' , '>' , $today )->where('card_registered_at' , '<' , $yesterday )->count();
-			array_push($data , [$today , $count]) ;
+			$bot_count = User::where('card_registered_at' , '>' , $today )
+                ->where('card_registered_at' , '<' , $yesterday )
+                ->where('created_by', '303958')
+                ->count();
+            $event_count = User::where('card_registered_at' , '>' , $today )
+                ->where('card_registered_at' , '<' , $yesterday )
+                ->where('event_id', '>', '0')
+                ->count();
+			array_push($data , [$today , $count, $bot_count, $event_count]) ;
 		}
 
 

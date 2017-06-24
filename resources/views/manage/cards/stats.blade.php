@@ -73,18 +73,39 @@
 					<tr>
 						<td>#</td>
 						<td>تاریخ</td>
-						<td>آمار ثبت نام</td>
+						<td>آمار کل ثبت نام</td>
+						<td>آمار ثبت نام بات</td>
+						<td>آمار ثبت نام سفیران</td>
 					</tr>
 				</thead>
 
 				<tbody>
+				<?php
+					$register_count = 0;
+					$bot_count = 0;
+					$event_count = 0;
+				?>
 					@foreach($data as $key => $item)
+						<?php
+							$register_count += $item[1];
+							$bot_count += $item[2];
+							$event_count += $item[3];
+                        ?>
 						<tr>
 							<td>@pd($key + 1)</td>
 							<td>@pd(jDate::forge($item[0])->format('j F Y'))</td>
 							<td>@pd($item[1])</td>
+							<td>@pd($item[2])</td>
+							<td>@pd($item[3])</td>
 						</tr>
 					@endforeach
+
+					<tr>
+						<td colspan="2">مجموع آمار</td>
+						<td>@pd($register_count)</td>
+						<td>@pd($bot_count)</td>
+						<td>@pd($event_count)</td>
+					</tr>
 
 				</tbody>
 			</table>
