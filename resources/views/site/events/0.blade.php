@@ -284,8 +284,8 @@
                         {{--<b class="is-hidden">فقط <strong style="color: green;">۲ دقیقه</strong> زمان نیاز دارد.</b>--}}
                     </span>
                             </h3>
-                            <div class="dark-time dark-circle animated bounceOut countdown-time" data-date="2017-06-25 23:59:59" data-timer="1000" bg-color="#b4c4d4" circle-color="#ee6e73" data-tc-id="632c19f3-f3bf-df60-b48f-0c39f9846c9a">
-                                <div class="time_circles" style="margin: 0 auto !important;">
+                            <div class="dark-time dark-circle animated bounceOut countdown-time mhrTimer" data-date="2017-06-25 23:59:59" data-timer="0" bg-color="#b4c4d4" circle-color="#ee6e73" data-tc-id="632c19f3-f3bf-df60-b48f-0c39f9846c9a">
+                                <div class="time_circles mhrTimer" style="margin: 0 auto !important;">
                                     <canvas height="205" width="820"></canvas>
                                     <div class="textDiv_Days" style="top: 72px; left: 0px; width: 205px;">
                                         <h4 style="font-size: 14px; line-height: 14px;">روز</h4>
@@ -365,6 +365,7 @@
 {!! Form::close() !!}
 <script>
     $(document).ready(function () {
+        $(".mhrTimer").TimeCircles({count_past_zero: false});
         rtl_text();
         counter();
     });
