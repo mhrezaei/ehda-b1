@@ -2,6 +2,7 @@
 namespace App\Traits;
 
 
+use App\Models\Domain;
 use Illuminate\Support\Facades\Session;
 
 trait GlobalControllerTrait
@@ -34,7 +35,15 @@ trait GlobalControllerTrait
 			}
 		}
 
-		return $subdomain;
+        $domain = Domain::where('alias', $subdomain)->first();
+		if ($domain)
+        {
+            return $domain['slug'];
+        }
+        else
+        {
+            return 'global';
+        }
 	}
 
 	public function domain()
